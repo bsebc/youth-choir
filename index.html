@@ -31,9 +31,7 @@
   .wrap{max-width:1200px;margin:0 auto;background:#fff;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
   /* masthead */
   .mast{background:var(--ink);padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top));padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right));display:flex;align-items:center;gap:11px}
-  .logo{width:26px;height:32px;background:var(--paper);border-radius:13px 13px 2px 2px;position:relative;display:flex;align-items:center;justify-content:center;flex:none}
-  .logo i{width:3px;height:15px;background:var(--ink);display:block}
-  .logo b{width:11px;height:3px;background:var(--ink);position:absolute;top:11px}
+  .logo{width:32px;height:32px;flex:none;display:block}
   .brand{font-family:'Alice',serif;color:#fff;font-size:20px;line-height:1.1}
   .lang{margin-left:auto;display:flex;border:1px solid #3a4463;border-radius:999px;overflow:hidden}
   .lang button{padding:5px 11px;font-size:12px;font-weight:600;border:0;background:transparent;color:#9aa3bd;letter-spacing:.04em}
@@ -348,7 +346,7 @@ function songStats(id, from, to){
 function mast(){
   return `<div class="mast">
     <a href="#/home" style="display:flex;align-items:center;gap:11px;color:inherit">
-      <div class="logo"><i></i><b></b></div>
+      <svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="56.5" y="12" width="7" height="46" fill="#c9a227"></rect><rect x="44" y="24" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path><ellipse cx="79" cy="79" rx="7" ry="5.5" fill="#17203a"></ellipse><rect x="84" y="60" width="3.5" height="19" fill="#17203a"></rect></svg>
       <div class="brand">BSEBC Youth Choir</div>
     </a>
     <div class="lang">
