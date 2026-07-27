@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BSEBC Youth Choir</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#17203a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Youth Choir">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alice&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17203a; --paper:#eff0ec; --rule:#dcded7; --blue:#2c3e8f;
+    --red:#9e3b2e; --gold:#c9a227; --muted:#6b7166; --faint:#8a9086;
+    --nameW:152px; --tallyW:46px; --cell:34px; --songW:168px;
+  }
+  @media (min-width:900px){ :root{ --nameW:220px; --tallyW:62px; --cell:40px; --songW:280px; } }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--ink);font-family:'Golos Text',system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;touch-action:manipulation}
+  input,select,textarea{font-size:16px}  /* 16px or more stops iOS zooming on focus */
+  a{color:var(--blue);text-decoration:none}
+  a:hover{color:var(--ink)}
+  button{font:inherit;cursor:pointer}
+  input,select{font:inherit;color:var(--ink)}
+  .wrap{max-width:1200px;margin:0 auto;background:#fff;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+  /* masthead */
+  .mast{background:var(--ink);padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top));padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right));display:flex;align-items:center;gap:11px}
+  .logo{width:26px;height:32px;background:var(--paper);border-radius:13px 13px 2px 2px;position:relative;display:flex;align-items:center;justify-content:center;flex:none}
+  .logo i{width:3px;height:15px;background:var(--ink);display:block}
+  .logo b{width:11px;height:3px;background:var(--ink);position:absolute;top:11px}
+  .brand{font-family:'Alice',serif;color:#fff;font-size:20px;line-height:1.1}
+  .lang{margin-left:auto;display:flex;border:1px solid #3a4463;border-radius:999px;overflow:hidden}
+  .lang button{padding:5px 11px;font-size:12px;font-weight:600;border:0;background:transparent;color:#9aa3bd;letter-spacing:.04em}
+  .lang button.on{background:var(--gold);color:var(--ink)}
+  .gold{height:2px;background:var(--gold)}
+  .nav{display:flex;background:var(--ink);padding:0 8px}
+  .nav a{padding:11px 12px;color:#9aa3bd;font-size:14px}
+  .nav a.on{color:#fff;font-weight:600;border-bottom:3px solid var(--gold)}
+  .nav .right{margin-left:auto}
+  /* tabs + controls */
+  .tabs{display:flex;background:#fff;border-bottom:1px solid var(--rule)}
+  .tabs a{flex:1;padding:11px 0;text-align:center;font-size:15px;color:var(--muted);border-bottom:3px solid transparent}
+  .tabs a.on{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+  .ctrl{background:#fff;padding:12px 14px 14px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:10px}
+  .ctlbar{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:10px 12px;background:#fff;border-bottom:1px solid var(--rule)}
+  .ctlbar .rangebtn{width:100%;justify-content:space-between}
+  .ctlbar .seg.tiny{margin-left:0}
+  .ctlbar .seg.tiny button{flex:1}
+  .ctlbar.wide{flex-direction:row;align-items:center;gap:16px;padding:12px 20px;flex-wrap:wrap}
+  .ctlbar.wide .chips{flex:none}
+  .ctlbar.wide .chips button{padding:7px 16px}
+  .ctlbar.wide .dates{flex:none;width:340px}
+  .ctlbar.wide .seg.tiny{margin-left:auto}
+  .ctlbar.wide .rangebtn{width:auto}
+  .rangebtn.open{border-color:var(--ink);background:#fff}
+  .rangebtn{display:flex;align-items:center;gap:7px;border:1px solid var(--blue);background:#f2f4fb;border-radius:999px;padding:7px 12px;font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .rangebtn .lb{font-style:normal;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .rangebtn .rv{font-weight:600}
+  .rangebtn .ed{font-style:normal;color:var(--blue);font-weight:600;font-size:12px}
+  .seg.tiny{margin-left:auto;border-radius:999px}
+  .seg.tiny button{padding:7px 11px;font-size:13px}
+  .panel{background:#fbfbf9;border-bottom:1px solid var(--rule);padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+  .searchrow{padding:0 12px 12px;background:#fff;border-bottom:1px solid var(--rule)}
+  .hero{padding:20px 16px 2px;font-family:'Alice',serif;font-size:19px;color:var(--ink);background:#fff}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 16px 28px;background:#fff}
+  @media (min-width:700px){ .tiles{grid-template-columns:repeat(3,1fr);gap:16px;padding:18px 20px 34px} }
+  .tile{display:flex;flex-direction:column;gap:10px;border:1px solid var(--rule);border-radius:16px;padding:14px;background:#fff;color:var(--ink);box-shadow:0 1px 0 rgba(23,32,58,.04)}
+  .tile:hover{border-color:var(--ink)}
+  .tile .tt{font-family:'Alice',serif;font-size:17px;line-height:1.15}
+  .tile .ts{font-size:12px;color:var(--muted);line-height:1.3;text-wrap:pretty}
+  .tile.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+  .tile.dark .ts{color:#9aa3bd}
+  /* app-style icons, drawn from plain divs */
+  .ic{width:52px;height:52px;border-radius:14px;background:var(--paper);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;padding:9px}
+  .tile.dark .ic{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18)}
+  .ic-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:3px;width:100%;height:100%}
+  .ic-grid span{background:#c9cdc4;border-radius:1px}
+  .ic-grid span.on{background:var(--red)}
+  .ic-grid span.b{background:var(--blue)}
+  .ic-bars{display:flex;flex-direction:column;justify-content:center;gap:5px;width:100%;height:100%}
+  .ic-bars span{height:5px;border-radius:3px;background:var(--blue)}
+  .ic-cols{display:flex;align-items:flex-end;gap:4px;width:100%;height:100%}
+  .ic-cols span{flex:1;background:var(--blue);border-radius:2px}
+  .ic-lines{display:flex;flex-direction:column;justify-content:center;gap:5px;width:100%;height:100%;border-left:2px solid var(--gold);padding-left:7px}
+  .ic-lines span{height:4px;border-radius:2px;background:#c9cdc4}
+  .ic-user{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+  .ic-user b{width:13px;height:13px;border-radius:50%;background:var(--gold);display:block}
+  .ic-user i{width:24px;height:12px;border-radius:12px 12px 0 0;background:var(--gold);display:block}
+  .ic-doc{width:26px;height:32px;background:#fff;border:1px solid #c9cdc4;border-radius:2px;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:0 5px}
+  .ic-doc span{height:3px;border-radius:2px;background:var(--blue)}
+  .ic-doc span:last-child{width:60%;background:#c9cdc4}
+  @media (min-width:900px){ .panel{flex-direction:row;align-items:center;gap:20px} .panel .dates{max-width:420px} }
+  @media (min-width:900px){ .ctrl{flex-direction:row;align-items:center;flex-wrap:wrap;padding:16px 20px} }
+  .dates{display:flex;align-items:center;gap:8px}
+  .dates input{flex:1;min-width:0;border:1px solid var(--rule);border-radius:6px;padding:8px 10px;font-size:16px;background:#fbfbf9;font-variant-numeric:tabular-nums}
+  .chips{display:flex;gap:6px}
+  .chips button{flex:1;padding:7px 10px;border-radius:999px;font-size:13px;border:1px solid var(--rule);background:var(--paper);color:#3c4438;white-space:nowrap}
+  .chips button.on{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
+  .seg{display:flex;border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+  .seg button{flex:1;padding:8px 6px;font-size:14px;border:0;background:#fff;color:#3c4438;border-left:1px solid var(--rule)}
+  .seg button:first-child{border-left:0}
+  .seg button.on{background:var(--blue);color:#fff;font-weight:600}
+  .field{width:100%;max-width:100%;min-width:0;border:1px solid var(--rule);border-radius:6px;padding:10px 11px;font-size:16px;background:#fbfbf9}
+  input[type=date].field{-webkit-appearance:none;appearance:none;display:block;text-align:left}
+  .card{min-width:0}
+  .card > *{min-width:0;max-width:100%}
+  .dates input{-webkit-appearance:none;appearance:none}
+  /* grid */
+  .scroll{overflow:auto;background:#fff;border-bottom:1px solid var(--rule)}
+  .gwrap{min-width:max-content}
+  .row{display:flex;min-width:100%}
+  .spacer{width:calc(var(--nameW) + var(--tallyW));flex:none;position:sticky;left:0;z-index:3;background:#fff;border-right:2px solid var(--ink)}
+  .hmonth{position:sticky;top:0;z-index:4}
+  .hmonth .spacer{height:26px;background:#f4f5f1;border-bottom:1px solid var(--rule)}
+  .hmonth .m{height:26px;flex:none;display:flex;align-items:center;justify-content:center;font-family:'Alice',serif;font-size:13px;background:#f4f5f1;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);white-space:nowrap;overflow:hidden}
+  .hday{position:sticky;top:26px;z-index:4}
+  .hday .spacer{height:40px;display:flex;align-items:center;padding:0 8px;font-family:'Alice',serif;font-size:13px;color:var(--muted);border-bottom:2px solid var(--ink)}
+  .hday .d{width:var(--cell);flex:none;height:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:#fff;border-right:1px solid var(--rule);border-bottom:2px solid var(--ink)}
+  .hday .d.svc{background:#e7ebf5}
+  .hday .d span{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+  .hday .d em{font-size:10px;font-style:normal;color:var(--muted);line-height:1}
+  .hday .d.svc em{color:var(--blue)}
+  .sect{display:flex;min-width:100%}
+  .sect .lbl{width:calc(var(--nameW) + var(--tallyW));flex:none;position:sticky;left:0;z-index:3;background:var(--ink);color:var(--paper);height:28px;display:flex;align-items:center;padding:0 10px;font-family:'Alice',serif;font-size:12px;letter-spacing:.16em}
+  .sect .fill{flex:1 0 auto;height:28px;background:var(--ink);color:#7c86a3;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;font-size:11px}
+  .name{width:var(--nameW);flex:none;height:var(--cell);position:sticky;left:0;z-index:2;background:#fff;display:flex;align-items:center;padding:0 8px;font-size:14px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tally{width:var(--tallyW);flex:none;height:var(--cell);position:sticky;left:var(--nameW);z-index:2;background:#fbfbf9;display:flex;align-items:center;justify-content:center;font-size:14px;font-variant-numeric:tabular-nums;color:#3c4438;border-right:2px solid var(--ink);border-bottom:1px solid var(--rule)}
+  .tally.low{color:var(--red)}
+  .cell{width:var(--cell);flex:none;height:var(--cell);display:flex;align-items:center;justify-content:center;background:#fff;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);font-size:15px;font-weight:700;color:var(--red)}
+  .cell.svc{background:#e7ebf5}
+  .cell .sq{width:14px;height:14px;background:var(--ink)}
+  .tail{flex:1 0 auto;background:#fff;border-bottom:1px solid var(--rule)}
+  .srow .name,.srow .tally,.srow .cell{height:48px}
+  .srow .name{width:var(--songW);flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;white-space:normal;line-height:1.15}
+  .srow .tally{left:var(--songW)}
+  .srow .spacer,.srow.hd .spacer{width:calc(var(--songW) + var(--tallyW))}
+  .sub{font-size:11px;color:var(--faint);font-style:italic}
+  .legend{padding:12px 14px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12px;color:var(--muted)}
+  .legend i{width:16px;height:16px;border:1px solid var(--rule);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:11px;color:var(--red)}
+  /* lists */
+  .sectbar{background:var(--ink);color:var(--paper);font-family:'Alice',serif;font-size:13px;letter-spacing:.14em;padding:7px 16px}
+  .li{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rule);background:#fff}
+  .li.tap{min-height:58px;cursor:pointer;user-select:none}
+  .li.off{background:#f7e9e6}
+  .li .nm{font-size:17px}
+  .li.off .nm{color:var(--red);font-weight:600}
+  .pill{margin-left:auto;font-size:14px;font-weight:600;padding:7px 14px;border-radius:999px;background:var(--paper);color:var(--muted);min-width:86px;text-align:center}
+  .li.off .pill{background:var(--red);color:#fff}
+  .bar{flex:1;height:8px;background:var(--paper);border-radius:4px;overflow:hidden}
+  .bar i{display:block;height:100%;background:var(--blue)}
+  .pct{width:52px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  .box{width:26px;height:26px;flex:none;border-radius:5px;border:1px solid #b9bdb2;background:#fff;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+  .li.on .box{background:var(--blue);border-color:var(--blue)}
+  .li.on{background:#f2f4fb}
+  .mini{border:1px solid var(--rule);border-radius:6px;padding:8px 12px;font-size:14px;color:var(--blue);font-weight:600;background:#fff}
+  .mini.danger{border-color:#e2cdc8;color:var(--red)}
+  .acts{display:flex;gap:8px;flex:none;align-items:center}
+  label.mini{cursor:pointer}
+  .btn{display:block;width:100%;background:var(--ink);color:#fff;text-align:center;font-size:17px;font-weight:600;padding:15px 0;border-radius:8px;border:0}
+  .btn.ghost{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+  .pad{padding:16px}
+  .note{padding:14px 16px 24px;font-size:13px;color:var(--muted);text-wrap:pretty}
+  .h{font-family:'Alice',serif;font-size:17px;padding:12px 16px;background:#fff;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:8px}
+  .h .n{margin-left:auto;font-weight:600;font-variant-numeric:tabular-nums}
+  .step{font-family:'Alice',serif;font-size:15px;color:#3c4438;letter-spacing:.06em}
+  .card{background:#fff;padding:16px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:10px;overflow:hidden}
+  .opt{display:flex;align-items:center;gap:12px;min-height:54px;padding:0 14px;border:1px solid var(--rule);border-radius:8px;background:#fff;cursor:pointer}
+  .opt.on{border:2px solid var(--ink);background:#f2f4fb}
+  .opt .dot{width:18px;height:18px;flex:none;border-radius:50%;border:1px solid #b9bdb2;background:#fff}
+  .opt.on .dot{border:5px solid var(--blue)}
+  .opt .tag{margin-left:auto;font-size:12px;color:var(--muted);background:var(--paper);border-radius:999px;padding:3px 9px}
+  .tabbar{display:flex;background:#fff;border-top:1px solid var(--rule);position:sticky;bottom:0;padding-bottom:env(safe-area-inset-bottom)}
+  .tabbar a{flex:1;text-align:center;padding:15px 2px;font-size:13px;color:var(--faint);border-top:3px solid transparent}
+  .tabbar a.on{color:var(--ink);font-weight:600;border-top-color:var(--ink);background:#f4f5f1}
+  .body{flex:1}
+  .msg{padding:20px 16px;color:var(--muted);font-size:15px}
+  .err{color:var(--red)}
+  .svc-card{background:#fff;border-bottom:1px solid var(--rule);padding:13px 16px;display:flex;flex-direction:column;gap:8px}
+  .svc-card .top{display:flex;align-items:baseline;gap:10px}
+  .svc-card .date{font-family:'Alice',serif;font-size:17px}
+  .svc-card .kind{font-size:12px;color:var(--blue);border:1px solid #c6cde6;background:#f2f4fb;border-radius:999px;padding:3px 9px}
+  .svc-card .s{font-size:15px;color:#3c4438;padding-left:14px;border-left:2px solid var(--rule)}
+  .login{padding:44px 26px;display:flex;flex-direction:column;gap:16px;max-width:420px;margin:0 auto;width:100%}
+  .login label{font-family:'Alice',serif;font-size:14px;color:#3c4438;letter-spacing:.06em}
+  .login input{width:100%;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px 13px;font-size:16px}
+  .toast{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--red);color:#fff;display:flex;align-items:center;gap:12px;padding:12px 16px;padding-bottom:calc(12px + env(safe-area-inset-bottom));font-size:14px}
+  .toast button{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:6px;padding:8px 12px;font-weight:600}
+  .toast .m{flex:1;min-width:0}
+  .xbtn{border:1px solid var(--rule);border-radius:6px;padding:12px;font-size:15px;font-weight:600;color:var(--blue);background:#fff;flex:1}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const SUPABASE_URL = 'https://cetjvfzgituzeiooxaex.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNldGp2ZnpnaXR1emVpb294YWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxODY0ODAsImV4cCI6MjEwMDc2MjQ4MH0.cMannk6niEUPPLBzJRo7Fs2VPWVp7LeNrvWD-DkBJl8';
+
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ---------- i18n ---------- */
+const STR = {
+  en:{attendance:'Attendance',songs:'Songs',signin:'Sign in',signout:'Sign out',grid:'Grid',summary:'Summary',
+    byService:'By service',all:'All',services:'Services',rehearsals:'Rehearsals',m2:'2 mo',m3:'3 mo',m6:'6 mo',year:'Year',
+    singer:'Singer',song:'Song',times:'Times',last:'Last sung',present:'present',absent:'absent',service:'service',
+    sung:'sung at this service',labels:'M — morning service · E — evening service · R — rehearsal',
+    admin:'Admin',songList:'Song list',members:'Members',whoCame:'Who came',absentN:'absent',whatSang:'What we sang',selected:'selected',
+    autosave:'Every tap saves right away — there is no Save button.',done:'Done',date:'1 · DATE',event:'2 · EVENT',
+    rehearsal:'Rehearsal',morning:'Sunday morning',evening:'Sunday evening',other:'Other event',
+    eventName:'Event name',shortLabel:'Label',labelHint:'The short label shows under the date in the grid — 1–2 letters.',
+    markAtt:'Mark attendance →',chooseSongs:'Choose songs →',recent:'RECENT ENTRIES',edit:'Edit',del:'Delete',
+    add:'Add',fullName:'First and last name',voicePart:'Voice part',songTitle:'Song title',subtitle:'Subtitle (optional)',
+    search:'Search…',email:'Email',password:'Password',loginNote:'Only the choir director signs in. Everyone else can read the ledger.',
+    loading:'Loading…',noEvents:'No events in this range yet.',noSongs:'No songs recorded yet.',
+    exportTitle:'EXPORT',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
+    period:'Period',changePeriod:'Change',
+    tSheets:'Sheet music',tSheetsSub:'Download the notes for each song',
+    sheets:'Sheet music',download:'Open',upload:'Upload PDF',replace:'Replace',removePdf:'Remove',
+    noPdf:'No file yet',uploading:'Uploading…',pdfOnly:'Please choose a PDF file.',
+    confirmRemovePdf:'Remove the PDF for this song?',withPdf:n=>n+' with sheet music',
+    sessionLost:'Your sign-in expired. Please sign in again.',
+    home:'Home',homeSub:'Youth choir attendance and song ledger',
+    tAttGrid:'Attendance',tAttGridSub:'Who was at each rehearsal and service',
+    tAttSum:'Attendance summary',tAttSumSub:'Percentage per singer',
+    tSongGrid:'Songs',tSongGridSub:'What was sung, service by service',
+    tSongSvc:'By service',tSongSvcSub:'A list of every service and its songs',
+    tSongSum:'Song summary',tSongSumSub:'How often each song is sung',
+    tAdmin:'Admin',tAdminSub:'Record attendance and songs',
+    tSignIn:'Sign in',tSignInSub:'For the choir director',
+    deleteEvent:'Delete this event and everything recorded for it?',notSaved:'Not saved',retry:'Retry',offline:'Offline — showing the last loaded data.',
+    deleteSinger:'Delete this singer? Past marks stay in the ledger.',deleteSong:'Delete this song? Past services keep their record.',
+    renameSinger:'Name',renameSong:'Title',soprano:'SOPRANO',alto:'ALTO',tenor:'TENOR',bass:'BASS',
+    singersN:n=>n+' singers',songsN:n=>n+' songs',sungN:(n,d)=>'sung '+n+'× · last '+(d||'—'),wasPresent:'Present',wasAbsent:'Absent'},
+  ru:{attendance:'Посещаемость',songs:'Песни',signin:'Вход',signout:'Выйти',grid:'Сетка',summary:'Сводка',
+    byService:'По служениям',all:'Всё',services:'Служения',rehearsals:'Спевки',m2:'2 мес',m3:'3 мес',m6:'Полгода',year:'Год',
+    singer:'Хорист',song:'Песня',times:'Всего',last:'Последний',present:'был',absent:'не был',service:'служение',
+    sung:'пели в это служение',labels:'Ут — утреннее · Вч — вечернее · Сп — спевка',
+    admin:'Админка',songList:'Список песен',members:'Состав',whoCame:'Кто был',absentN:'отсутствуют',whatSang:'Что пели',selected:'выбрано',
+    autosave:'Изменения сохраняются сразу — кнопки «Сохранить» нет.',done:'Готово',date:'1 · ДАТА',event:'2 · СОБЫТИЕ',
+    rehearsal:'Спевка',morning:'Воскресное утреннее',evening:'Воскресное вечернее',other:'Другое событие',
+    eventName:'Название события',shortLabel:'Метка',labelHint:'Короткая метка показывается под датой в сетке — 1–2 буквы.',
+    markAtt:'Отметить посещаемость →',chooseSongs:'Выбрать песни →',recent:'ПОСЛЕДНИЕ ЗАПИСИ',edit:'Изм.',del:'Удал.',
+    add:'Добавить',fullName:'Имя и фамилия',voicePart:'Партия',songTitle:'Название песни',subtitle:'Подзаголовок',
+    search:'Поиск…',email:'Эл. почта',password:'Пароль',loginNote:'Доступ только у регента. Просмотр журнала — без входа.',
+    loading:'Загрузка…',noEvents:'В этом периоде событий нет.',noSongs:'Записей пока нет.',
+    exportTitle:'ЭКСПОРТ',exportAtt:'Посещаемость CSV',exportSongs:'История песен CSV',
+    home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
+    period:'Период',changePeriod:'Изменить',
+    tSheets:'Ноты',tSheetsSub:'Скачать ноты к каждой песне',
+    sheets:'Ноты',download:'Открыть',upload:'Загрузить PDF',replace:'Заменить',removePdf:'Удалить',
+    noPdf:'Файла нет',uploading:'Загрузка…',pdfOnly:'Выберите файл PDF.',
+    confirmRemovePdf:'Удалить ноты этой песни?',withPdf:n=>'с нотами: '+n,
+    sessionLost:'Сеанс истёк. Войдите снова.',
+    tAttGrid:'Посещаемость',tAttGridSub:'Кто был на спевках и служениях',
+    tAttSum:'Сводка посещаемости',tAttSumSub:'Процент по каждому хористу',
+    tSongGrid:'Песни',tSongGridSub:'Что пели на каждом служении',
+    tSongSvc:'По служениям',tSongSvcSub:'Список служений и их песнопений',
+    tSongSum:'Сводка песен',tSongSumSub:'Как часто поют каждую песню',
+    tAdmin:'Админка',tAdminSub:'Отметки и запись песен',
+    tSignIn:'Вход',tSignInSub:'Для регента',
+    deleteEvent:'Удалить это событие и все его записи?',notSaved:'Не сохранено',retry:'Повторить',offline:'Нет сети — показаны последние загруженные данные.',
+    deleteSinger:'Удалить хориста? Прошлые отметки останутся в журнале.',deleteSong:'Удалить песню? История служений сохранится.',
+    renameSinger:'Имя',renameSong:'Название',soprano:'СОПРАНО',alto:'АЛЬТ',tenor:'ТЕНОР',bass:'БАС',
+    singersN:n=>n+' чел.',songsN:n=>n+' песен',sungN:(n,d)=>'спето '+n+' · посл. '+(d||'—'),wasPresent:'Был',wasAbsent:'Не был'}
+};
+const MON = { en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+              ru:['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'] };
+const MONF = { en:['January','February','March','April','May','June','July','August','September','October','November','December'],
+               ru:['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'] };
+const PARTS = ['soprano','alto','tenor','bass'];
+const KIND_LABEL = { en:{rehearsal:'R',morning:'M',evening:'E'}, ru:{rehearsal:'Сп',morning:'Ут',evening:'Вч'} };
+const evLabel = e => e.kind === 'other' ? e.label : KIND_LABEL[S.lang][e.kind];
+
+const S = {
+  lang: localStorage.getItem('bsebc-youth-lang') || 'en',
+  session: null,
+  route: location.hash || '#/home',
+  loading: true,
+  error: '',
+  singers: [], songs: [], events: [], absences: [], eventSongs: [],
+  uploading: null,
+  from: null, to: null,           // public grid range
+  sumFrom: null, sumTo: null,     // summary range
+  typeFilter: 'all',
+  preset: { grid: '2', sum: '6' },
+  query: '',
+  draft: { date: today(), kind: 'morning', name: '', label: '' }
+};
+const t = k => { const v = STR[S.lang][k]; return typeof v === 'function' ? v : v; };
+const isWide = () => window.innerWidth >= 900;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------- dates ---------- */
+function today(){ return new Date().toISOString().slice(0,10); }
+function shift(months){ const d = new Date(); d.setMonth(d.getMonth() - months); return d.toISOString().slice(0,10); }
+function fmtLong(iso){ const [y,m,d] = iso.split('-').map(Number);
+  return S.lang === 'en' ? MONF.en[m-1] + ' ' + d + ', ' + y : d + ' ' + MONF.ru[m-1] + ' ' + y; }
+function fmtShort(iso){ const [y,m,d] = iso.split('-');
+  return m + '/' + d + '/' + y.slice(2); }   // numeric dates stay mm/dd/yy in both languages
+function monthKey(iso){ const [y,m] = iso.split('-').map(Number); return MON[S.lang][m-1] + ' ' + String(y).slice(2); }
+
+/* ---------- data ---------- */
+async function load(silent){
+  if (!silent) { S.loading = true; render(); }
+  const [si, so, ev, ab, es] = await Promise.all([
+    sb.from('singers').select('*').order('part').order('sort_order'),
+    sb.from('songs').select('*').order('title'),
+    sb.from('events').select('*').order('date'),
+    sb.from('absences').select('*'),
+    sb.from('event_songs').select('*')
+  ]);
+  const err = [si,so,ev,ab,es].find(r => r.error);
+  S.error = err ? err.error.message : '';
+  S.singers = si.data || []; S.songs = so.data || []; S.events = ev.data || [];
+  S.absences = ab.data || []; S.eventSongs = es.data || [];
+  S.loading = false; render();
+}
+
+const isAbsent = (e,s) => S.absences.some(a => a.event_id === e && a.singer_id === s);
+const wasSung  = (e,s) => S.eventSongs.some(x => x.event_id === e && x.song_id === s);
+const inRange  = (d,a,b) => d >= a && d <= b;
+
+function gridEvents(){
+  return S.events.filter(e => inRange(e.date, S.from, S.to))
+    .filter(e => S.typeFilter === 'all' ? true
+      : S.typeFilter === 'services' ? e.kind !== 'rehearsal' : e.kind === 'rehearsal');
+}
+function songStats(id, from, to){
+  const rows = S.eventSongs.filter(x => {
+    if (x.song_id !== id) return false;
+    if (!from) return true;
+    const e = S.events.find(y => y.id === x.event_id);
+    return e && inRange(e.date, from, to);
+  });
+  const dates = rows.map(r => (S.events.find(e => e.id === r.event_id) || {}).date).filter(Boolean).sort();
+  return { n: rows.length, last: dates.length ? fmtShort(dates[dates.length-1]) : '' };
+}
+
+/* ---------- chrome ---------- */
+function mast(){
+  return `<div class="mast">
+    <a href="#/home" style="display:flex;align-items:center;gap:11px;color:inherit">
+      <div class="logo"><i></i><b></b></div>
+      <div class="brand">BSEBC Youth Choir</div>
+    </a>
+    <div class="lang">
+      <button data-lang="en" class="${S.lang==='en'?'on':''}">EN</button>
+      <button data-lang="ru" class="${S.lang==='ru'?'on':''}">RU</button>
+    </div>
+  </div><div class="gold"></div>`;
+}
+function homePage(){
+  const ICON = {
+    attGrid: `<div class="ic-grid">${['','on','','','','','on','','','','','on'].slice(0,9)
+        .map(c => `<span class="${c}"></span>`).join('')}</div>`,
+    attSum:  `<div class="ic-bars"><span style="width:100%"></span><span style="width:72%"></span><span style="width:45%"></span></div>`,
+    songGrid:`<div class="ic-grid">${['b','','b','','b','','b','','b']
+        .map(c => `<span class="${c}"></span>`).join('')}</div>`,
+    songSvc: `<div class="ic-lines"><span style="width:100%"></span><span style="width:80%"></span><span style="width:90%"></span></div>`,
+    songSum: `<div class="ic-cols"><span style="height:40%"></span><span style="height:75%"></span><span style="height:55%"></span><span style="height:100%"></span></div>`,
+    sheets:  `<div class="ic-doc"><span></span><span></span><span></span></div>`,
+    user:    `<div class="ic-user"><b></b><i></i></div>`
+  };
+  const tile = (href, title, sub, icon, dark) => `<a class="tile ${dark?'dark':''}" href="${href}">
+      <div class="ic">${icon}</div>
+      <div><div class="tt">${esc(t(title))}</div><div class="ts">${esc(t(sub))}</div></div></a>`;
+  return `<div class="hero">${esc(t('homeSub'))}</div>
+    <div class="tiles">
+      ${tile('#/attendance/grid','tAttGrid','tAttGridSub',ICON.attGrid)}
+      ${tile('#/songs/grid','tSongGrid','tSongGridSub',ICON.songGrid)}
+      ${tile('#/sheets','tSheets','tSheetsSub',ICON.sheets)}
+      ${S.session ? tile('#/admin/attendance','tAdmin','tAdminSub',ICON.user,true)
+                  : tile('#/login','tSignIn','tSignInSub',ICON.user,true)}
+    </div>`;
+}
+function publicNav(active){
+  const right = S.session
+    ? `<a href="#/attendance" class="right" data-signout>${esc(t('signout'))}</a>`
+    : `<a href="#/login" class="right">${esc(t('signin'))}</a>`;
+  const adminTab = S.session
+    ? `<a href="#/admin/attendance" class="${active==='admin'?'on':''}">${esc(t('admin'))}</a>` : '';
+  return `<div class="nav">
+    <a href="#/attendance" class="${active==='att'?'on':''}">${esc(t('attendance'))}</a>
+    <a href="#/songs" class="${active==='songs'?'on':''}">${esc(t('songs'))}</a>
+    <a href="#/sheets" class="${active==='sheets'?'on':''}">${esc(t('sheets'))}</a>
+    ${adminTab}${right}
+  </div>`;
+}
+function adminBar(active){
+  const i = (href,key,name) => `<a href="${href}" class="${active===key?'on':''}">${esc(t(name))}</a>`;
+  return `<div class="tabbar">
+    ${i('#/admin/attendance','att','attendance')}
+    ${i('#/admin/songs','songs','songs')}
+    ${i('#/admin/songlist','list','songList')}
+    ${i('#/admin/members','members','members')}
+  </div>`;
+}
+function rangeCtrl(kind, typeFilter){
+  const from = kind==='sum' ? S.sumFrom : S.from, to = kind==='sum' ? S.sumTo : S.to;
+  const presets = kind==='sum'
+    ? [['3',t('m3')],['6',t('m6')],['12',t('year')],['all',t('all')]]
+    : [['2',t('m2')],['6',t('m6')],['12',t('year')],['all',t('all')]];
+  const seg = typeFilter ? `<div class="seg tiny">${
+      [['all','all'],['services','services'],['rehearsals','rehearsals']].map(([v,l]) =>
+        `<button data-type="${v}" class="${S.typeFilter===v?'on':''}">${esc(t(l))}</button>`).join('')
+    }</div>` : '';
+  const chips = `<div class="chips">${presets.map(([v,l]) =>
+      `<button data-preset="${v}" data-range="${kind}" class="${S.preset[kind]===v?'on':''}">${esc(l)}</button>`).join('')}</div>`;
+  const dates = `<div class="dates">
+      <input type="date" value="${from}" data-range="${kind}" data-edge="from">
+      <span>—</span>
+      <input type="date" value="${to}" data-range="${kind}" data-edge="to">
+    </div>`;
+
+  // wide screens: everything on one line, no pill
+  if (isWide()) return `<div class="ctlbar wide">${chips}${dates}${seg}</div>`;
+
+  // phone: a pill that opens the drawer
+  return `<div class="ctlbar">
+      <button class="rangebtn ${S.showRange?'open':''}" data-toggle-range>
+        <em class="lb">${esc(t('period'))}</em>
+        <span class="rv">${esc(fmtShort(from))} – ${esc(fmtShort(to))}</span>
+        <em class="ed">${esc(t('changePeriod'))} ${S.showRange?'▴':'▾'}</em>
+      </button>
+      ${seg}
+    </div>${S.showRange ? `<div class="panel">${chips}${dates}</div>` : ''}`;
+}
+
+/* ---------- public: attendance ---------- */
+function attendanceGrid(){
+  const ev = gridEvents();
+  const months = [];
+  ev.forEach(e => { const k = monthKey(e.date); const last = months[months.length-1];
+    if (last && last.k === k) last.n++; else months.push({k, n:1}); });
+  const head = `<div class="row hmonth"><div class="spacer"></div>${
+      months.map(m => `<div class="m" style="width:calc(var(--cell) * ${m.n})">${esc(m.k)}</div>`).join('')
+    }<div class="tail" style="height:26px;background:#f4f5f1"></div></div>
+    <div class="row hday"><div class="spacer">${esc(t('singer'))}</div>${
+      ev.map(e => `<div class="d ${e.kind!=='rehearsal'?'svc':''}"><span>${+e.date.slice(8,10)}</span><em>${esc(evLabel(e))}</em></div>`).join('')
+    }<div class="tail" style="height:40px;border-bottom:2px solid var(--ink)"></div></div>`;
+
+  const body = PARTS.map(p => {
+    const rows = S.singers.filter(s => s.part === p && s.active !== false);
+    if (!rows.length) return '';
+    return `<div class="sect"><div class="lbl">${esc(t(p))}</div><div class="fill">${esc(t('singersN')(rows.length))}</div></div>` +
+      rows.map(s => {
+        const cells = ev.map(e => `<div class="cell ${e.kind!=='rehearsal'?'svc':''}">${isAbsent(e.id, s.id) ? esc(S.lang==='en'?'A':'Н') : ''}</div>`).join('');
+        const miss = ev.filter(e => isAbsent(e.id, s.id)).length;
+        return `<div class="row"><div class="name">${esc(s.name)}</div>
+          <div class="tally ${miss>3?'low':''}">${ev.length - miss}/${ev.length}</div>${cells}<div class="tail"></div></div>`;
+      }).join('');
+  }).join('');
+
+  if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
+  return `<div class="scroll"><div class="gwrap">${head}${body}</div></div>
+    <div class="legend">
+      <span><i style="background:#fff"></i> ${esc(t('present'))}</span>
+      <span><i>${S.lang==='en'?'A':'Н'}</i> ${esc(t('absent'))}</span>
+      <span><i style="background:#e7ebf5"></i> ${esc(t('service'))}</span>
+    </div>
+    <div class="legend" style="padding-top:0">${esc(t('labels'))}</div>`;
+}
+function attendanceSummary(){
+  const ev = S.events.filter(e => inRange(e.date, S.sumFrom, S.sumTo));
+  if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
+  return PARTS.map(p => {
+    const rows = S.singers.filter(s => s.part === p && s.active !== false);
+    if (!rows.length) return '';
+    return `<div class="sectbar">${esc(t(p))}</div>` + rows.map(s => {
+      const miss = ev.filter(e => isAbsent(e.id, s.id)).length;
+      const pct = Math.round((ev.length - miss) / ev.length * 100);
+      return `<div class="li"><div style="width:44%;font-size:15px">${esc(s.name)}</div>
+        <div class="bar"><i style="width:${pct}%;background:${pct>=85?'var(--blue)':pct>=70?'var(--gold)':'var(--red)'}"></i></div>
+        <div class="pct" style="color:${pct>=70?'var(--ink)':'var(--red)'}">${pct}%</div></div>`;
+    }).join('');
+  }).join('');
+}
+
+/* ---------- public: songs ---------- */
+function songsGrid(){
+  const ev = S.events.filter(e => e.kind !== 'rehearsal' && inRange(e.date, S.from, S.to));
+  const songs = S.songs.filter(s => s.active !== false &&
+    (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
+  if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
+  const months = [];
+  ev.forEach(e => { const k = monthKey(e.date); const last = months[months.length-1];
+    if (last && last.k === k) last.n++; else months.push({k, n:1}); });
+  const head = `<div class="row hmonth srow hd"><div class="spacer"></div>${
+      months.map(m => `<div class="m" style="width:calc(var(--cell) * ${m.n})">${esc(m.k)}</div>`).join('')
+    }<div class="tail" style="height:26px;background:#f4f5f1"></div></div>
+    <div class="row hday srow hd"><div class="spacer">${esc(t('song'))}</div>${
+      ev.map(e => `<div class="d svc"><span>${+e.date.slice(8,10)}</span><em>${esc(evLabel(e))}</em></div>`).join('')
+    }<div class="tail" style="height:40px;border-bottom:2px solid var(--ink)"></div></div>`;
+  const body = songs.map(s => {
+    const st = songStats(s.id);
+    return `<div class="row srow"><div class="name">${esc(s.title)}${s.subtitle?`<span class="sub">${esc(s.subtitle)}</span>`:''}</div>
+      <div class="tally">${st.n}</div>${
+      ev.map(e => `<div class="cell svc">${wasSung(e.id, s.id) ? '<i class="sq"></i>' : ''}</div>`).join('')
+    }<div class="tail"></div></div>`;
+  }).join('');
+  return `<div class="scroll"><div class="gwrap">${head}${body}</div></div>
+    <div class="legend"><span><i style="background:var(--ink);border:0"></i> ${esc(t('sung'))}</span></div>`;
+}
+function songsByService(){
+  const ev = S.events.filter(e => e.kind !== 'rehearsal' && inRange(e.date, S.from, S.to)).slice().reverse();
+  if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
+  return ev.map(e => {
+    const list = S.eventSongs.filter(x => x.event_id === e.id)
+      .map(x => (S.songs.find(s => s.id === x.song_id) || {}).title).filter(Boolean);
+    return `<div class="svc-card"><div class="top"><div class="date">${esc(fmtLong(e.date))}</div>
+      <div class="kind">${esc(e.name || t(e.kind))}</div></div>
+      ${list.length ? list.map(x => `<div class="s">${esc(x)}</div>`).join('') : `<div class="s" style="color:var(--faint)">—</div>`}</div>`;
+  }).join('');
+}
+function songsSummary(){
+  const rows = S.songs.map(s => ({ s, st: songStats(s.id, S.sumFrom, S.sumTo) }))
+    .filter(r => r.st.n > 0).sort((a,b) => b.st.n - a.st.n);
+  if (!rows.length) return `<div class="msg">${esc(t('noSongs'))}</div>`;
+  const max = Math.max(1, ...rows.map(r => r.st.n));
+  return `<div class="li" style="background:#fbfbf9;font-size:12px;color:var(--muted)">
+      <div style="flex:1">${esc(t('song'))}</div><div style="width:54px;text-align:right">${esc(t('times'))}</div>
+      <div style="width:84px;text-align:right">${esc(t('last'))}</div></div>` +
+    rows.map(({s,st}) => `<div class="li">
+      <div style="flex:1;min-width:0"><div style="font-size:15px;line-height:1.2">${esc(s.title)}</div>
+        <div class="bar" style="margin-top:5px"><i style="width:${Math.round(st.n/max*100)}%"></i></div></div>
+      <div style="width:54px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums">${st.n}</div>
+      <div style="width:84px;text-align:right;font-size:13px;color:var(--muted)">${esc(st.last || '—')}</div></div>`).join('');
+}
+
+/* ---------- admin ---------- */
+function eventPicker(target){
+  const kinds = ['rehearsal','morning','evening','other'];
+  const recent = S.events.slice().reverse().slice(0,4);
+  return `<div class="card">
+      <div class="step">${esc(t('date'))}</div>
+      <input class="field" type="date" id="draft-date" value="${S.draft.date}">
+    </div>
+    <div class="card">
+      <div class="step">${esc(t('event'))}</div>
+      ${kinds.map(k => `<div class="opt ${S.draft.kind===k?'on':''}" data-kind="${k}">
+        <div class="dot"></div><div>${esc(t(k))}</div>
+        <div class="tag">${esc(k==='other' ? (S.draft.label || '—') : KIND_LABEL[S.lang][k])}</div></div>`).join('')}
+      ${S.draft.kind==='other' ? `<div style="display:flex;gap:8px">
+        <input class="field" id="draft-name" placeholder="${esc(t('eventName'))}" value="${esc(S.draft.name)}">
+        <input class="field" id="draft-label" style="width:96px;flex:none;text-align:center" placeholder="${esc(t('shortLabel'))}" value="${esc(S.draft.label)}">
+      </div><div style="font-size:12px;color:var(--faint)">${esc(t('labelHint'))}</div>` : ''}
+    </div>
+    <div class="pad"><button class="btn" data-go="${target}">${esc(t(target==='att'?'markAtt':'chooseSongs'))}</button></div>
+    <div class="pad" style="padding-top:0">
+      <div class="step" style="margin-bottom:8px">${esc(t('recent'))}</div>
+      ${recent.map(e => `<div class="li" style="border:1px solid var(--rule);border-radius:8px;margin-bottom:8px">
+        <a href="#/admin/${target==='att'?'attendance':'songs'}/${e.id}" style="flex:1;min-width:0;color:inherit">
+          <div style="font-variant-numeric:tabular-nums">${esc(fmtLong(e.date))}</div>
+          <div style="font-size:13px;color:var(--muted)">${esc(e.name || t(e.kind))}</div></a>
+        <a class="mini" href="#/admin/${target==='att'?'attendance':'songs'}/${e.id}">${esc(t('edit'))}</a>
+        <button class="mini danger" data-del-event="${e.id}">${esc(t('del'))}</button></div>`).join('')}
+    </div>
+    <div class="pad" style="padding-top:0">
+      <div class="step" style="margin-bottom:8px">${esc(t('exportTitle'))}</div>
+      <div style="display:flex;gap:8px">
+        <button class="xbtn" data-export="att">${esc(t('exportAtt'))}</button>
+        <button class="xbtn" data-export="songs">${esc(t('exportSongs'))}</button>
+      </div>
+    </div>`;
+}
+function markAttendance(ev){
+  const n = S.singers.filter(s => isAbsent(ev.id, s.id)).length;
+  return `<div class="h"><a href="#/admin/attendance" style="font-size:22px;color:var(--faint);margin-right:6px">‹</a>
+      ${esc(fmtLong(ev.date))} <span class="n" style="color:var(--red)">${n}</span>
+      <span style="font-size:13px;color:var(--muted)">${esc(t('absentN'))}</span></div>` +
+    PARTS.map(p => {
+      const rows = S.singers.filter(s => s.part === p && s.active !== false);
+      if (!rows.length) return '';
+      return `<div class="sectbar">${esc(t(p))}</div>` + rows.map(s => {
+        const off = isAbsent(ev.id, s.id);
+        return `<div class="li tap ${off?'off':''}" data-toggle-absent="${s.id}" data-event="${ev.id}">
+          <div class="nm">${esc(s.name)}</div>
+          <div class="pill">${esc(off ? t('wasAbsent') : t('wasPresent'))}</div></div>`;
+      }).join('');
+    }).join('') +
+    `<div class="note">${esc(t('autosave'))}</div>
+     <div class="pad" style="padding-top:0"><a class="btn" href="#/admin/attendance">${esc(t('done'))}</a></div>`;
+}
+function markSongs(ev){
+  const picked = S.eventSongs.filter(x => x.event_id === ev.id).length;
+  const list = S.songs.filter(s => s.active !== false &&
+    (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
+  return `<div class="h"><a href="#/admin/songs" style="font-size:22px;color:var(--faint);margin-right:6px">‹</a>
+      ${esc(fmtLong(ev.date))} <span class="n" style="color:var(--blue)">${picked}</span>
+      <span style="font-size:13px;color:var(--muted)">${esc(t('selected'))}</span></div>
+    <div class="card"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>` +
+    list.map(s => {
+      const on = wasSung(ev.id, s.id);
+      return `<div class="li tap ${on?'on':''}" data-toggle-song="${s.id}" data-event="${ev.id}">
+        <div class="box">${on?'✓':''}</div>
+        <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:1.2">${esc(s.title)}</div>
+        ${s.subtitle?`<div class="sub">${esc(s.subtitle)}</div>`:''}</div>
+        <div style="font-size:14px;color:var(--muted)">${songStats(s.id).n}</div></div>`;
+    }).join('') +
+    `<div class="note">${esc(t('autosave'))}</div>
+     <div class="pad" style="padding-top:0"><a class="btn" href="#/admin/songs">${esc(t('done'))}</a></div>`;
+}
+function manageSongs(){
+  const list = S.songs.filter(s => !S.query || s.title.toLowerCase().includes(S.query.toLowerCase()));
+  return `<div class="h">${esc(t('songList'))}<span class="n">${esc(t('songsN')(S.songs.length))}</span></div>
+    <div class="card">
+      <input class="field" id="new-song-title" placeholder="${esc(t('songTitle'))}">
+      <div style="display:flex;gap:8px">
+        <input class="field" id="new-song-sub" placeholder="${esc(t('subtitle'))}">
+        <button class="mini" style="background:var(--blue);color:#fff;border-color:var(--blue);padding:12px 20px" data-add-song>${esc(t('add'))}</button>
+      </div>
+      <input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}">
+    </div>` +
+    list.map(s => { const st = songStats(s.id);
+      return `<div class="li"><div style="flex:1;min-width:0">
+        <div style="font-size:16px;line-height:1.2">${esc(s.title)}</div>
+        <div class="sub" style="font-style:normal">${esc((s.subtitle ? s.subtitle + ' · ' : '') + t('sungN')(st.n, st.last))}</div></div>
+        <button class="mini" data-edit-song="${s.id}">${esc(t('edit'))}</button>
+        <button class="mini danger" data-del-song="${s.id}">${esc(t('del'))}</button></div>`;
+    }).join('');
+}
+function manageMembers(){
+  return `<div class="h">${esc(t('members'))}<span class="n">${esc(t('singersN')(S.singers.length))}</span></div>
+    <div class="card">
+      <input class="field" id="new-singer-name" placeholder="${esc(t('fullName'))}">
+      <div style="display:flex;gap:8px">
+        <select class="field" id="new-singer-part">${PARTS.map(p => `<option value="${p}">${esc(t(p))}</option>`).join('')}</select>
+        <button class="mini" style="background:var(--blue);color:#fff;border-color:var(--blue);padding:12px 20px" data-add-singer>${esc(t('add'))}</button>
+      </div>
+    </div>` +
+    PARTS.map(p => {
+      const rows = S.singers.filter(s => s.part === p);
+      if (!rows.length) return '';
+      return `<div class="sectbar">${esc(t(p))}</div>` + rows.map(s =>
+        `<div class="li"><div style="flex:1;font-size:16px">${esc(s.name)}</div>
+          <button class="mini" data-edit-singer="${s.id}">${esc(t('edit'))}</button>
+          <button class="mini danger" data-del-singer="${s.id}">${esc(t('del'))}</button></div>`).join('');
+    }).join('');
+}
+function loginPage(){
+  return `<div class="login">
+    <div style="font-family:'Alice',serif;font-size:26px">${esc(t('signin'))}</div>
+    ${S.error ? `<div class="err">${esc(S.error)}</div>` : ''}
+    <div><label for="em">${esc(t('email'))}</label><input id="em" type="email" autocomplete="username"></div>
+    <div><label for="pw">${esc(t('password'))}</label><input id="pw" type="password" autocomplete="current-password"></div>
+    <button class="btn" data-login>${esc(t('signin'))}</button>
+    <div style="font-size:14px;color:var(--muted);text-align:center">${esc(t('loginNote'))}</div>
+  </div>`;
+}
+
+function sheetsPage(){
+  const list = S.songs.filter(s => !S.query || s.title.toLowerCase().includes(S.query.toLowerCase()));
+  const withPdf = S.songs.filter(s => s.pdf_path).length;
+  return `<div class="h">${esc(t('sheets'))}<span class="n">${esc(t('withPdf')(withPdf + '/' + S.songs.length))}</span></div>
+    <div class="searchrow" style="padding-top:12px"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>` +
+    list.map(s => {
+      const busy = S.uploading === s.id;
+      const url = s.pdf_path ? sb.storage.from('sheets').getPublicUrl(s.pdf_path).data.publicUrl : '';
+      const left = `<div style="flex:1;min-width:0">
+          <div style="font-size:16px;line-height:1.2">${esc(s.title)}</div>
+          ${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}
+          ${s.pdf_path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}
+        </div>`;
+      if (busy) return `<div class="li">${left}<div style="color:var(--blue);font-weight:600;font-size:14px">${esc(t('uploading'))}</div></div>`;
+      const dl = s.pdf_path
+        ? `<a class="mini" href="${esc(url)}" target="_blank" rel="noopener">${esc(t('download'))}</a>` : '';
+      const admin = S.session ? `
+        <label class="mini" for="up-${s.id}">${esc(s.pdf_path ? t('replace') : t('upload'))}
+          <input id="up-${s.id}" type="file" accept="application/pdf,.pdf" data-upload="${s.id}" style="display:none">
+        </label>
+        ${s.pdf_path ? `<button class="mini danger" data-del-pdf="${s.id}">${esc(t('removePdf'))}</button>` : ''}` : '';
+      return `<div class="li">${left}<div class="acts">${dl}${admin}</div></div>`;
+    }).join('') +
+    (S.session ? '' : `<div class="note">${esc(t('loginNote'))}</div>`);
+}
+
+/* ---------- CSV export ---------- */
+function download(name, text){
+  const url = URL.createObjectURL(new Blob(['\uFEFF' + text], { type:'text/csv;charset=utf-8' }));
+  const a = document.createElement('a');
+  a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+
+function exportCSV(kind){
+  const ev = S.events.slice().sort((a,b) => a.date < b.date ? -1 : 1);
+  if (kind === 'att') {
+    const head = ['singer','part', ...ev.map(e => e.date + ' ' + evLabel(e))];
+    const rows = PARTS.flatMap(p => S.singers.filter(s => s.part === p).map(s =>
+      [s.name, p, ...ev.map(e => isAbsent(e.id, s.id) ? 'A' : '')]));
+    download('attendance-' + today() + '.csv', [head, ...rows].map(r => r.map(q).join(',')).join('\n'));
+  } else {
+    const head = ['date','event','song','subtitle'];
+    const rows = [];
+    ev.forEach(e => S.eventSongs.filter(x => x.event_id === e.id).forEach(x => {
+      const s = S.songs.find(y => y.id === x.song_id); if (!s) return;
+      rows.push([e.date, e.name || e.kind, s.title, s.subtitle]);
+    }));
+    download('songs-' + today() + '.csv', [head, ...rows].map(r => r.map(q).join(',')).join('\n'));
+  }
+}
+
+/* ---------- render ---------- */
+function render(){
+  const r = S.route;
+  let html = mast();
+
+  if (S.loading) { document.getElementById('app').innerHTML = html + `<div class="msg">${esc(t('loading'))}</div>`; return; }
+
+  if (r.startsWith('#/admin')) {
+    if (!S.session) { location.hash = '#/login'; return; }
+    const seg = r.split('/');          // #, admin, section, id?
+    const section = seg[2] || 'attendance', id = seg[3];
+    const ev = id ? S.events.find(e => e.id === id) : null;
+    html += publicNav('admin');
+    html += `<div class="body">`;
+    if (section === 'attendance') html += ev ? markAttendance(ev) : eventPicker('att');
+    else if (section === 'songs') html += ev ? markSongs(ev) : eventPicker('songs');
+    else if (section === 'songlist') html += manageSongs();
+    else html += manageMembers();
+    html += `</div>` + adminBar(section === 'attendance' ? 'att' : section === 'songs' ? 'songs'
+      : section === 'songlist' ? 'list' : 'members');
+  }
+  else if (r.startsWith('#/login')) { html += publicNav('') + loginPage(); }
+  else if (r.startsWith('#/sheets')) { html += publicNav('sheets') + sheetsPage(); }
+  else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
+  else if (r.startsWith('#/songs')) {
+    const tab = r.split('/')[2] || 'grid';
+    html += publicNav('songs') + `<div class="tabs">
+      <a href="#/songs/grid" class="${tab==='grid'?'on':''}">${esc(t('grid'))}</a>
+      <a href="#/songs/services" class="${tab==='services'?'on':''}">${esc(t('byService'))}</a>
+      <a href="#/songs/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
+    if (tab === 'summary') html += rangeCtrl('sum') + songsSummary();
+    else if (tab === 'services') html += rangeCtrl('grid') + songsByService();
+    else html += rangeCtrl('grid')
+      + `<div class="searchrow"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>`
+      + songsGrid();
+  }
+  else {
+    const tab = r.split('/')[2] || 'grid';
+    html += publicNav('att') + `<div class="tabs">
+      <a href="#/attendance/grid" class="${tab==='grid'?'on':''}">${esc(t('grid'))}</a>
+      <a href="#/attendance/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
+    if (tab === 'summary') html += rangeCtrl('sum') + attendanceSummary();
+    else html += rangeCtrl('grid', true) + attendanceGrid();
+  }
+  document.getElementById('app').innerHTML = html + toastHTML();
+  afterRender();
+}
+
+function toastHTML(){
+  if (!S.toast) return '';
+  return `<div class="toast"><div class="m">${esc(S.toast)}</div>
+    ${S.retry ? `<button data-retry>${esc(t('retry'))}</button>` : ''}
+    <button data-dismiss>×</button></div>`;
+}
+
+// keep the newest dates in view: jump the grid to its right edge when the page changes
+function afterRender(){
+  const sc = document.querySelector('.scroll');
+  if (!sc) return;
+  const key = S.route + '|' + S.from + '|' + S.to + '|' + S.typeFilter;
+  // innerHTML rebuilds the grid, so scroll position has to be re-applied every render:
+  // jump to the newest dates when the page or range changes, otherwise stay put.
+  if (S.scrollKey !== key) { S.scrollKey = key; sc.scrollLeft = sc.scrollWidth; }
+  else if (S.scrollLeft) { sc.scrollLeft = S.scrollLeft; }
+  S.scrollLeft = sc.scrollLeft;
+  sc.addEventListener('scroll', () => { S.scrollLeft = sc.scrollLeft; }, { passive: true });
+}
+
+/* An expired access token is rejected by row-level security with no error object —
+   the write simply affects nothing. Refresh before every admin write, and treat
+   "zero rows changed" as a lost session rather than a success. */
+async function ensureSession(){
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { S.session = null; render(); return false; }
+  if ((session.expires_at || 0) * 1000 - Date.now() < 60000) {
+    const { data, error } = await sb.auth.refreshSession();
+    if (error || !data.session) { S.session = null; location.hash = '#/login'; return false; }
+    S.session = data.session;
+  }
+  return true;
+}
+
+function wrote(res){
+  if (res.error) { fail(res.error); return false; }
+  if (Array.isArray(res.data) && res.data.length === 0) {
+    fail({ message: t('sessionLost') });
+    S.session = null;
+    return false;
+  }
+  return true;
+}
+
+function fail(error, retry){
+  S.toast = t('notSaved') + ' — ' + (navigator.onLine ? error.message : t('offline'));
+  S.retry = retry || null;
+  render();
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click', async e => {
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf]');
+  if (!el) return;
+  const d = el.dataset;
+
+  if (d.lang) { S.lang = d.lang; localStorage.setItem('bsebc-youth-lang', d.lang); return render(); }
+
+  if (el.hasAttribute('data-toggle-range')) { S.showRange = !S.showRange; return render(); }
+  if (d.preset) {
+    const months = d.preset === 'all' ? 600 : +d.preset;
+    S.preset[d.range] = d.preset;
+    if (d.range === 'sum') { S.sumFrom = shift(months); S.sumTo = today(); }
+    else { S.from = shift(months); S.to = today(); }
+    return render();
+  }
+  if (d.type) { S.typeFilter = d.type; return render(); }
+  if (d.kind) { S.draft.kind = d.kind; return render(); }
+
+  if (d.go) {
+    const dateEl = document.getElementById('draft-date');
+    S.draft.date = dateEl ? dateEl.value : S.draft.date;
+    const nameEl = document.getElementById('draft-name'), labEl = document.getElementById('draft-label');
+    if (nameEl) S.draft.name = nameEl.value;
+    if (labEl) S.draft.label = labEl.value;
+    const label = S.draft.kind === 'other'
+      ? (S.draft.label || (S.draft.name || '?').slice(0,2)) : KIND_LABEL[S.lang][S.draft.kind];
+    const row = { date: S.draft.date, kind: S.draft.kind, label, name: S.draft.kind === 'other' ? S.draft.name : null };
+    let ev = S.events.find(x => x.date === row.date && x.kind === row.kind && (x.name || '') === (row.name || ''));
+    if (!ev) {
+      const { data, error } = await sb.from('events').insert(row).select().single();
+      if (error) return fail(error);
+      ev = data; S.events.push(ev); S.events.sort((a,b) => a.date < b.date ? -1 : 1);
+    }
+    location.hash = '#/admin/' + (d.go === 'att' ? 'attendance' : 'songs') + '/' + ev.id;
+    return;
+  }
+
+  if (d.toggleAbsent) {
+    const ev = d.event, si = d.toggleAbsent, on = isAbsent(ev, si);
+    const go = async () => {
+      S.toast = ''; S.retry = null;
+      if (on) {
+        S.absences = S.absences.filter(a => !(a.event_id === ev && a.singer_id === si)); render();
+        const { error } = await sb.from('absences').delete().match({ event_id: ev, singer_id: si });
+        if (error) { S.absences.push({ event_id: ev, singer_id: si }); fail(error, go); }
+      } else {
+        S.absences.push({ event_id: ev, singer_id: si }); render();
+        const { error } = await sb.from('absences').insert({ event_id: ev, singer_id: si });
+        if (error) { S.absences = S.absences.filter(a => !(a.event_id === ev && a.singer_id === si)); fail(error, go); }
+      }
+    };
+    return go();
+  }
+  if (d.toggleSong) {
+    const ev = d.event, so = d.toggleSong, on = wasSung(ev, so);
+    const go = async () => {
+      S.toast = ''; S.retry = null;
+      if (on) {
+        S.eventSongs = S.eventSongs.filter(x => !(x.event_id === ev && x.song_id === so)); render();
+        const { error } = await sb.from('event_songs').delete().match({ event_id: ev, song_id: so });
+        if (error) { S.eventSongs.push({ event_id: ev, song_id: so }); fail(error, go); }
+      } else {
+        S.eventSongs.push({ event_id: ev, song_id: so }); render();
+        const { error } = await sb.from('event_songs').insert({ event_id: ev, song_id: so });
+        if (error) { S.eventSongs = S.eventSongs.filter(x => !(x.event_id === ev && x.song_id === so)); fail(error, go); }
+      }
+    };
+    return go();
+  }
+
+  if (d.delEvent) {
+    e.preventDefault();
+    if (!confirm(t('deleteEvent'))) return;
+    if (!await ensureSession()) return;
+    const res = await sb.from('events').delete().eq('id', d.delEvent).select();
+    if (!wrote(res)) return render();
+    S.events = S.events.filter(x => x.id !== d.delEvent);
+    S.absences = S.absences.filter(a => a.event_id !== d.delEvent);
+    S.eventSongs = S.eventSongs.filter(x => x.event_id !== d.delEvent);
+    return render();
+  }
+  if (d.delPdf) {
+    const song = S.songs.find(s => s.id === d.delPdf);
+    if (!song || !song.pdf_path || !confirm(t('confirmRemovePdf'))) return;
+    const path = song.pdf_path;
+    const { error } = await sb.from('songs').update({ pdf_path: null }).eq('id', song.id);
+    if (error) return fail(error);
+    song.pdf_path = null; render();
+    await sb.storage.from('sheets').remove([path]);
+    return;
+  }
+  if (d.export) { return exportCSV(d.export); }
+  if (el.hasAttribute('data-dismiss')) { S.toast = ''; S.retry = null; return render(); }
+  if (el.hasAttribute('data-retry')) { const r = S.retry; S.toast = ''; S.retry = null; render(); return r && r(); }
+
+  if (d.addSong !== undefined && el.hasAttribute('data-add-song')) {
+    const title = document.getElementById('new-song-title').value.trim();
+    if (!title) return;
+    const subtitle = document.getElementById('new-song-sub').value.trim() || null;
+    const { data, error } = await sb.from('songs').insert({ title, subtitle }).select().single();
+    if (error) return fail(error);
+    S.songs.push(data); S.songs.sort((a,b) => a.title.localeCompare(b.title)); return render();
+  }
+  if (d.editSong) {
+    const s = S.songs.find(x => x.id === d.editSong);
+    const title = prompt(t('renameSong'), s.title); if (title === null) return;
+    const clean = title.trim(); if (!clean) return;
+    const subtitle = prompt(t('subtitle'), s.subtitle || '');
+    if (!await ensureSession()) return;
+    const res = await sb.from('songs').update({ title: clean, subtitle: (subtitle || '').trim() || null })
+      .eq('id', s.id).select();
+    if (!wrote(res)) return render();
+    s.title = clean; s.subtitle = (subtitle || '').trim() || null;
+    S.songs.sort((a,b) => a.title.localeCompare(b.title));
+    return render();
+  }
+  if (d.delSong) {
+    if (!confirm(t('deleteSong'))) return;
+    if (!await ensureSession()) return;
+    const res = await sb.from('songs').delete().eq('id', d.delSong).select();
+    if (!wrote(res)) return render();
+    S.songs = S.songs.filter(x => x.id !== d.delSong);
+    S.eventSongs = S.eventSongs.filter(x => x.song_id !== d.delSong);
+    return render();
+  }
+  if (el.hasAttribute('data-add-singer')) {
+    const name = document.getElementById('new-singer-name').value.trim();
+    if (!name) return;
+    const part = document.getElementById('new-singer-part').value;
+    const { data, error } = await sb.from('singers').insert({ name, part }).select().single();
+    if (error) return fail(error);
+    S.singers.push(data); return render();
+  }
+  if (d.editSinger) {
+    const s = S.singers.find(x => x.id === d.editSinger);
+    const name = prompt(t('renameSinger'), s.name); if (name === null) return;
+    const clean = name.trim(); if (!clean) return;
+    if (!await ensureSession()) return;
+    const res = await sb.from('singers').update({ name: clean }).eq('id', s.id).select();
+    if (!wrote(res)) return render();
+    s.name = clean; return render();
+  }
+  if (d.delSinger) {
+    if (!confirm(t('deleteSinger'))) return;
+    if (!await ensureSession()) return;
+    const res = await sb.from('singers').delete().eq('id', d.delSinger).select();
+    if (!wrote(res)) return render();
+    S.singers = S.singers.filter(x => x.id !== d.delSinger);
+    S.absences = S.absences.filter(x => x.singer_id !== d.delSinger);
+    return render();
+  }
+
+  if (el.hasAttribute('data-login')) {
+    const email = document.getElementById('em').value.trim();
+    const password = document.getElementById('pw').value;
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) { S.error = error.message; return render(); }
+    S.session = data.session; S.error = ''; location.hash = '#/admin/attendance'; return;
+  }
+  if (el.hasAttribute('data-signout')) { await sb.auth.signOut(); S.session = null; location.hash = '#/attendance'; return; }
+});
+
+document.addEventListener('change', async e => {
+  const el = e.target;
+  if (el.dataset.upload) {
+    const song = S.songs.find(s => s.id === el.dataset.upload);
+    const file = el.files && el.files[0];
+    if (!song || !file) return;
+    if (file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)) { alert(t('pdfOnly')); return; }
+    const old = song.pdf_path;
+    const path = song.id + '/' + Date.now() + '.pdf';
+    S.uploading = song.id; render();
+    const up = await sb.storage.from('sheets').upload(path, file, { contentType: 'application/pdf' });
+    if (up.error) { S.uploading = null; return fail(up.error); }
+    const { error } = await sb.from('songs').update({ pdf_path: path }).eq('id', song.id);
+    if (error) { S.uploading = null; await sb.storage.from('sheets').remove([path]); return fail(error); }
+    song.pdf_path = path;
+    if (old) await sb.storage.from('sheets').remove([old]);
+    S.uploading = null; return render();
+  }
+  if (el.dataset.range) {
+    const v = el.value;
+    S.preset[el.dataset.range] = null;
+    if (el.dataset.range === 'sum') { if (el.dataset.edge === 'from') S.sumFrom = v; else S.sumTo = v; }
+    else { if (el.dataset.edge === 'from') S.from = v; else S.to = v; }
+    render();
+  }
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'q') {
+    S.query = e.target.value;
+    const pos = e.target.selectionStart; render();
+    const again = document.getElementById('q'); if (again) { again.focus(); again.setSelectionRange(pos, pos); }
+  }
+});
+window.addEventListener('hashchange', () => {
+  S.route = location.hash || '#/home';
+  S.error = ''; S.query = '';
+  render();
+});
+
+/* ---------- boot ---------- */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+window.addEventListener('online', () => { if (S.toast) { S.toast = ''; render(); } load(true); });
+S.from = shift(2); S.to = today(); S.sumFrom = shift(6); S.sumTo = today();
+let wasWide = isWide();
+window.addEventListener('resize', () => { if (isWide() !== wasWide) { wasWide = isWide(); render(); } });
+const { data: { session } } = await sb.auth.getSession();
+S.session = session;
+sb.auth.onAuthStateChange((_e, s) => { S.session = s; render(); });
+// iOS suspends a home-screen app rather than closing it: the token can be hours
+// stale when it comes back. Refresh it, and re-read the data, on return.
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState !== 'visible') return;
+  if (S.session) await ensureSession();
+  load(true);
+});
+await load();
+</script>
+</body>
+</html>
