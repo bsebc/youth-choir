@@ -1,0 +1,28 @@
+name: Keep Supabase awake
+
+# Free-tier Supabase projects pause after 7 days with no API requests.
+# This makes one tiny read twice a week so that never happens.
+# The anon key is public (it is already in index.html), so no repo secrets
+# are needed — nothing here can write to the database.
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'      # Mondays, 12:00 UTC
+    - cron: '0 12 * * 4'      # Thursdays, 12:00 UTC
+  workflow_dispatch:          # lets you run it by hand from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the REST API
+        env:
+          SUPABASE_URL: https://cetjvfzgituzeiooxaex.supabase.co
+          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNldGp2ZnpnaXR1emVpb294YWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxODY0ODAsImV4cCI6MjEwMDc2MjQ4MH0.cMannk6niEUPPLBzJRo7Fs2VPWVp7LeNrvWD-DkBJl8
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/")
+          echo "HTTP $code"
+          test "$code" = "200"
