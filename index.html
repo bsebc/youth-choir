@@ -256,6 +256,8 @@ const STR = {
     exportTitle:'EXPORT',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
     period:'Period',changePeriod:'Change',
     tSheets:'Sheet music',tSheetsSub:'Download the notes for each song',
+    tPiano:'Piano sheets',tPianoSub:'Accompaniment for each song',piano:'Piano sheets',
+    withPiano:n=>n+' with piano sheets',
     sheets:'Sheet music',download:'Open',upload:'Upload PDF',replace:'Replace',removePdf:'Remove',
     noPdf:'No file yet',uploading:'Uploading…',pdfOnly:'Please choose a PDF file.',
     confirmRemovePdf:'Remove the PDF for this song?',withPdf:n=>n+' with sheet music',
@@ -293,6 +295,8 @@ const STR = {
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
     period:'Период',changePeriod:'Изменить',
     tSheets:'Ноты',tSheetsSub:'Скачать ноты к каждой песне',
+    tPiano:'Ноты для фортепиано',tPianoSub:'Аккомпанемент к каждой песне',piano:'Фортепиано',
+    withPiano:n=>'с фортепиано: '+n,
     sheets:'Ноты',download:'Открыть',upload:'Загрузить PDF',replace:'Заменить',removePdf:'Удалить',
     noPdf:'Файла нет',uploading:'Загрузка…',pdfOnly:'Выберите файл PDF.',
     confirmRemovePdf:'Удалить ноты этой песни?',withPdf:n=>'с нотами: '+n,
@@ -328,7 +332,8 @@ const S = {
   uploading: null,
   from: null, to: null,           // public grid range
   sumFrom: null, sumTo: null,     // summary range
-  typeFilter: 'all',
+  typeFilter: 'all',            // grid picker
+  sumType: 'all',               // summary picker
   preset: { grid: '2', sum: '6' },
   query: '',
   draft: { date: today(), kind: 'morning', name: '', label: '' },
@@ -444,6 +449,13 @@ function homePage(){
     songSvc: `<div class="ic-lines"><span style="width:100%"></span><span style="width:80%"></span><span style="width:90%"></span></div>`,
     songSum: `<div class="ic-cols"><span style="height:40%"></span><span style="height:75%"></span><span style="height:55%"></span><span style="height:100%"></span></div>`,
     sheets:  `<div class="ic-doc"><span></span><span></span><span></span></div>`,
+    piano:   `<svg class="ic-note" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="3" y="9" width="28" height="17" rx="2" fill="#fff" stroke="#c9cdc4" stroke-width="1.6"></rect>
+        <g stroke="#c9cdc4" stroke-width="1.2"><path d="M11 9v17"></path><path d="M17 9v17"></path><path d="M25 9v17"></path></g>
+        <g fill="var(--ink)"><rect x="8" y="9" width="4" height="10" rx="1"></rect>
+          <rect x="15" y="9" width="4" height="10" rx="1"></rect>
+          <rect x="22" y="9" width="4" height="10" rx="1"></rect></g>
+      </svg>`,
     user:    `<div class="ic-user"><b></b><i></i></div>`
   };
   const tile = (href, title, sub, icon, dark) => `<a class="tile ${dark?'dark':''}" href="${href}">
@@ -454,6 +466,7 @@ function homePage(){
       ${tile('#/attendance/grid','tAttGrid','tAttGridSub',ICON.attGrid)}
       ${tile('#/songs/grid','tSongGrid','tSongGridSub',ICON.songGrid)}
       ${tile('#/sheets','tSheets','tSheetsSub',ICON.sheets)}
+      ${tile('#/piano','tPiano','tPianoSub',ICON.piano)}
       ${S.session ? tile('#/admin/attendance','tAdmin','tAdminSub',ICON.user,true)
                   : tile('#/login','tSignIn','tSignInSub',ICON.user,true)}
     </div>`;
@@ -468,6 +481,7 @@ function publicNav(active){
     <a href="#/attendance" class="${active==='att'?'on':''}">${esc(t('attendance'))}</a>
     <a href="#/songs" class="${active==='songs'?'on':''}">${esc(t('songs'))}</a>
     <a href="#/sheets" class="${active==='sheets'?'on':''}">${esc(t('sheets'))}</a>
+    <a href="#/piano" class="${active==='piano'?'on':''}">${esc(t('piano'))}</a>
     ${adminTab}${right}
   </div>`;
 }
@@ -485,9 +499,10 @@ function rangeCtrl(kind, typeFilter){
   const presets = kind==='sum'
     ? [['3',t('m3')],['6',t('m6')],['12',t('year')],['all',t('all')]]
     : [['2',t('m2')],['6',t('m6')],['12',t('year')],['all',t('all')]];
+  const cur = kind==='sum' ? S.sumType : S.typeFilter;
   const seg = typeFilter ? `<div class="seg tiny">${
       [['all','all'],['services','services'],['rehearsals','rehearsals']].map(([v,l]) =>
-        `<button data-type="${v}" class="${S.typeFilter===v?'on':''}">${esc(t(l))}</button>`).join('')
+        `<button data-type="${v}" data-scope="${kind}" class="${cur===v?'on':''}">${esc(t(l))}</button>`).join('')
     }</div>` : '';
   const chips = `<div class="chips">${presets.map(([v,l]) =>
       `<button data-preset="${v}" data-range="${kind}" class="${S.preset[kind]===v?'on':''}">${esc(l)}</button>`).join('')}</div>`;
@@ -549,7 +564,9 @@ function attendanceGrid(){
     <div class="legend" style="padding-top:0">${esc(t('labels'))}</div>`;
 }
 function attendanceSummary(){
-  const ev = S.events.filter(e => inRange(e.date, S.sumFrom, S.sumTo));
+  const ev = S.events.filter(e => inRange(e.date, S.sumFrom, S.sumTo))
+    .filter(e => S.sumType === 'all' ? true
+      : S.sumType === 'services' ? e.kind !== 'rehearsal' : e.kind === 'rehearsal');
   if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
   return PARTS.map(p => {
     const rows = S.singers.filter(s => s.part === p && s.active !== false);
@@ -777,27 +794,37 @@ function loginPage(){
   </div>`;
 }
 
-function sheetsPage(){
+/* Sheet music and piano sheets are the same page over two different files:
+   'sheets' → songs.pdf_path in the "sheets" bucket
+   'piano'  → songs.piano_path in the "piano" bucket */
+const SHEETKIND = {
+  sheets: { col: 'pdf_path',   bucket: 'sheets', title: 'sheets', count: 'withPdf'   },
+  piano:  { col: 'piano_path', bucket: 'piano',  title: 'piano',  count: 'withPiano' }
+};
+function sheetsPage(kind){
+  const K = SHEETKIND[kind];
   const list = S.songs.filter(s => !S.query || s.title.toLowerCase().includes(S.query.toLowerCase()));
-  const withPdf = S.songs.filter(s => s.pdf_path).length;
-  return `<div class="h">${esc(t('sheets'))}<span class="n">${esc(t('withPdf')(withPdf + '/' + S.songs.length))}</span></div>
+  const withPdf = S.songs.filter(s => s[K.col]).length;
+  return `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>
     <div class="searchrow" style="padding-top:12px"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>` +
     list.map(s => {
-      const busy = S.uploading === s.id;
-      const url = s.pdf_path ? sb.storage.from('sheets').getPublicUrl(s.pdf_path).data.publicUrl : '';
+      const path = s[K.col];
+      const busy = S.uploading === kind + ':' + s.id;
+      const url = path ? sb.storage.from(K.bucket).getPublicUrl(path).data.publicUrl : '';
       const left = `<div style="flex:1;min-width:0">
           <div style="font-size:16px;line-height:1.2">${esc(s.title)}</div>
           ${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}
-          ${s.pdf_path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}
+          ${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}
         </div>`;
       if (busy) return `<div class="li">${left}<div style="color:var(--blue);font-weight:600;font-size:14px">${esc(t('uploading'))}</div></div>`;
-      const dl = s.pdf_path
+      const dl = path
         ? `<a class="mini" href="${esc(url)}" target="_blank" rel="noopener">${esc(t('download'))}</a>` : '';
       const admin = S.session ? `
-        <label class="mini" for="up-${s.id}">${esc(s.pdf_path ? t('replace') : t('upload'))}
-          <input id="up-${s.id}" type="file" accept="application/pdf,.pdf" data-upload="${s.id}" style="display:none">
+        <label class="mini" for="up-${kind}-${s.id}">${esc(path ? t('replace') : t('upload'))}
+          <input id="up-${kind}-${s.id}" type="file" accept="application/pdf,.pdf"
+                 data-upload="${s.id}" data-kind="${kind}" style="display:none">
         </label>
-        ${s.pdf_path ? `<button class="mini danger" data-del-pdf="${s.id}">${esc(t('removePdf'))}</button>` : ''}` : '';
+        ${path ? `<button class="mini danger" data-del-pdf="${s.id}" data-kind="${kind}">${esc(t('removePdf'))}</button>` : ''}` : '';
       return `<div class="li">${left}<div class="acts">${dl}${admin}</div></div>`;
     }).join('') +
     (S.session ? '' : `<div class="note">${esc(t('loginNote'))}</div>`);
@@ -854,7 +881,8 @@ function render(){
       : section === 'songlist' ? 'list' : 'members');
   }
   else if (r.startsWith('#/login')) { html += publicNav('') + loginPage(); }
-  else if (r.startsWith('#/sheets')) { html += publicNav('sheets') + sheetsPage(); }
+  else if (r.startsWith('#/sheets')) { html += publicNav('sheets') + sheetsPage('sheets'); }
+  else if (r.startsWith('#/piano'))  { html += publicNav('piano')  + sheetsPage('piano'); }
   else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
   else if (r.startsWith('#/songs')) {
     const tab = r.split('/')[2] || 'grid';
@@ -873,7 +901,7 @@ function render(){
     html += publicNav('att') + `<div class="tabs">
       <a href="#/attendance/grid" class="${tab==='grid'?'on':''}">${esc(t('grid'))}</a>
       <a href="#/attendance/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
-    if (tab === 'summary') html += rangeCtrl('sum') + attendanceSummary();
+    if (tab === 'summary') html += rangeCtrl('sum', true) + attendanceSummary();
     else html += rangeCtrl('grid', true) + attendanceGrid();
   }
   document.getElementById('app').innerHTML = html + toastHTML();
@@ -946,7 +974,7 @@ document.addEventListener('click', async e => {
     else { S.from = shift(months); S.to = today(); }
     return render();
   }
-  if (d.type) { S.typeFilter = d.type; return render(); }
+  if (d.type) { if (d.scope === 'sum') S.sumType = d.type; else S.typeFilter = d.type; return render(); }
   if (d.kind) { S.draft.kind = d.kind; return render(); }
 
   if (d.go) {
@@ -1032,13 +1060,14 @@ document.addEventListener('click', async e => {
     return render();
   }
   if (d.delPdf) {
+    const K = SHEETKIND[d.kind || 'sheets'];
     const song = S.songs.find(s => s.id === d.delPdf);
-    if (!song || !song.pdf_path || !confirm(t('confirmRemovePdf'))) return;
-    const path = song.pdf_path;
-    const { error } = await sb.from('songs').update({ pdf_path: null }).eq('id', song.id);
+    if (!song || !song[K.col] || !confirm(t('confirmRemovePdf'))) return;
+    const path = song[K.col];
+    const { error } = await sb.from('songs').update({ [K.col]: null }).eq('id', song.id);
     if (error) return fail(error);
-    song.pdf_path = null; render();
-    await sb.storage.from('sheets').remove([path]);
+    song[K.col] = null; render();
+    await sb.storage.from(K.bucket).remove([path]);
     return;
   }
   if (d.export) { return exportCSV(d.export); }
@@ -1119,15 +1148,16 @@ document.addEventListener('change', async e => {
     const file = el.files && el.files[0];
     if (!song || !file) return;
     if (file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)) { alert(t('pdfOnly')); return; }
-    const old = song.pdf_path;
+    const kind = el.dataset.kind || 'sheets', K = SHEETKIND[kind];
+    const old = song[K.col];
     const path = song.id + '/' + Date.now() + '.pdf';
-    S.uploading = song.id; render();
-    const up = await sb.storage.from('sheets').upload(path, file, { contentType: 'application/pdf' });
+    S.uploading = kind + ':' + song.id; render();
+    const up = await sb.storage.from(K.bucket).upload(path, file, { contentType: 'application/pdf' });
     if (up.error) { S.uploading = null; return fail(up.error); }
-    const { error } = await sb.from('songs').update({ pdf_path: path }).eq('id', song.id);
-    if (error) { S.uploading = null; await sb.storage.from('sheets').remove([path]); return fail(error); }
-    song.pdf_path = path;
-    if (old) await sb.storage.from('sheets').remove([old]);
+    const { error } = await sb.from('songs').update({ [K.col]: path }).eq('id', song.id);
+    if (error) { S.uploading = null; await sb.storage.from(K.bucket).remove([path]); return fail(error); }
+    song[K.col] = path;
+    if (old) await sb.storage.from(K.bucket).remove([old]);
     S.uploading = null; return render();
   }
   if (el.dataset.range) {
