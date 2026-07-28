@@ -8,6 +8,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#17203a">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Youth Choir">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -976,13 +977,13 @@ function sheetsPage(kind){
       const admin = S.session ? `
         ${path ? '' : `<label class="mini" for="up-${kind}-${s.id}">${esc(t('upload'))}
           <input id="up-${kind}-${s.id}" type="file" accept="application/pdf,.pdf"
-                 data-upload="${s.id}" data-kind="${kind}" style="display:none">
+                 data-upload="${s.id}" data-sheet-kind="${kind}" style="display:none">
         </label>`}
         ${path ? `<button class="mini icon ${locked?'on':''}" data-lock="${kind}:${s.id}"
             title="${esc(locked ? t('makePublic') : t('makeAdminOnly'))}"
             aria-label="${esc(locked ? t('makePublic') : t('makeAdminOnly'))}">${
             locked ? lockSVG(true) : lockSVG(false)}</button>
-          <button class="mini danger" data-del-pdf="${s.id}" data-kind="${kind}">${esc(t('removePdf'))}</button>` : ''}` : '';
+          <button class="mini danger" data-del-pdf="${s.id}" data-sheet-kind="${kind}">${esc(t('removePdf'))}</button>` : ''}` : '';
       return `<div class="li">${left}<div class="acts">${dl}${admin}</div></div>`;
     }).join('') +
     (S.session ? `<div class="note">${esc(t('adminOnlyNote'))}</div>`
@@ -1109,7 +1110,12 @@ async function ensureSession(){
   if (!session) { S.session = null; render(); return false; }
   if ((session.expires_at || 0) * 1000 - Date.now() < 60000) {
     const { data, error } = await sb.auth.refreshSession();
-    if (error || !data.session) { S.session = null; location.hash = '#/login'; return false; }
+    if (error || !data.session) {
+      // The stored token is dead. Clear it locally, or every later call retries
+      // it and Supabase logs another "Invalid Refresh Token".
+      await sb.auth.signOut({ scope: 'local' }).catch(() => {});
+      S.session = null; location.hash = '#/login'; return false;
+    }
     S.session = data.session;
   }
   return true;
@@ -1299,7 +1305,7 @@ document.addEventListener('click', async e => {
     return render();
   }
   if (d.delPdf) {
-    const K = SHEETKIND[d.kind || 'sheets'];
+    const K = SHEETKIND[d.sheetKind || 'sheets'];
     const song = S.songs.find(s => s.id === d.delPdf);
     if (!song || !song[K.col] || !confirm(t('confirmRemovePdf'))) return;
     const path = song[K.col];
@@ -1387,9 +1393,10 @@ document.addEventListener('change', async e => {
     const file = el.files && el.files[0];
     if (!song || !file) return;
     if (file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)) { alert(t('pdfOnly')); return; }
-    const kind = el.dataset.kind || 'sheets', K = SHEETKIND[kind];
+    const kind = el.dataset.sheetKind || 'sheets', K = SHEETKIND[kind];
     const old = song[K.col];
     const path = sheetPath(song[K.lock], song.id);
+    el.value = '';                        // so picking the same file again still fires
     S.uploading = kind + ':' + song.id; render();
     const up = await sb.storage.from(K.bucket).upload(path, file, { contentType: 'application/pdf' });
     if (up.error) { S.uploading = null; return fail(up.error); }
