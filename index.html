@@ -173,6 +173,10 @@
   .li.tap{min-height:58px;cursor:pointer;user-select:none;transition:background .14s ease}
   .li.tap:hover{background:#fbfbf9}
   .li.tap:hover.off{background:#f4e2de}
+  .mini.locked{background:#f4efdc;border-color:#e2d6a8;color:#8a7320;cursor:default}
+  .mini.on{background:#f4efdc;border-color:#e2d6a8;color:#8a7320}
+  .mini.icon{padding:0;width:40px;flex:none}
+  .mini.locked{gap:5px}
   .li.off{background:#f7e9e6}
   .li.na{background:#f4f5f1}
   .li.tap:hover.na{background:#eceee7}
@@ -188,7 +192,7 @@
   .box{width:26px;height:26px;flex:none;border-radius:5px;border:1px solid #b9bdb2;background:#fff;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
   .li.on .box{background:var(--blue);border-color:var(--blue)}
   .li.on{background:#f2f4fb}
-  .mini{border:1px solid var(--rule);border-radius:6px;padding:8px 12px;font-size:14px;color:var(--blue);font-weight:600;background:#fff}
+  .mini{border:1px solid var(--rule);border-radius:6px;padding:8px 12px;font-size:14px;line-height:1.25;color:var(--blue);font-weight:600;background:#fff;height:38px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center}
   .mini.danger{border-color:#e2cdc8;color:var(--red)}
   .acts{display:flex;gap:8px;flex:none;align-items:center}
   label.mini{cursor:pointer}
@@ -258,6 +262,8 @@ const STR = {
     tSheets:'Sheet music',tSheetsSub:'Download the notes for each song',
     tPiano:'Piano sheets',tPianoSub:'Accompaniment for each song',piano:'Piano sheets',
     withPiano:n=>n+' with piano sheets',
+    adminOnly:'Admin only',adminOnlyShort:'Admin only',makeAdminOnly:'Make admin only',makePublic:'Make public',
+    adminOnlyNote:'Admin-only files are hidden from everyone who is not signed in.',opening:'Opening…',
     sheets:'Sheet music',download:'Open',upload:'Upload PDF',replace:'Replace',removePdf:'Remove',
     noPdf:'No file yet',uploading:'Uploading…',pdfOnly:'Please choose a PDF file.',
     confirmRemovePdf:'Remove the PDF for this song?',withPdf:n=>n+' with sheet music',
@@ -297,6 +303,8 @@ const STR = {
     tSheets:'Ноты',tSheetsSub:'Скачать ноты к каждой песне',
     tPiano:'Ноты для фортепиано',tPianoSub:'Аккомпанемент к каждой песне',piano:'Фортепиано',
     withPiano:n=>'с фортепиано: '+n,
+    adminOnly:'Только для админа',adminOnlyShort:'Только админ',makeAdminOnly:'Скрыть от всех',makePublic:'Открыть всем',
+    adminOnlyNote:'Закрытые файлы не видны тем, кто не вошёл в систему.',opening:'Открываем…',
     sheets:'Ноты',download:'Открыть',upload:'Загрузить PDF',replace:'Заменить',removePdf:'Удалить',
     noPdf:'Файла нет',uploading:'Загрузка…',pdfOnly:'Выберите файл PDF.',
     confirmRemovePdf:'Удалить ноты этой песни?',withPdf:n=>'с нотами: '+n,
@@ -797,8 +805,8 @@ function loginPage(){
    'sheets' → songs.pdf_path in the "sheets" bucket
    'piano'  → songs.piano_path in the "piano" bucket */
 const SHEETKIND = {
-  sheets: { col: 'pdf_path',   bucket: 'sheets', title: 'sheets', count: 'withPdf'   },
-  piano:  { col: 'piano_path', bucket: 'piano',  title: 'piano',  count: 'withPiano' }
+  sheets: { col: 'pdf_path',   lock: 'pdf_locked',   bucket: 'sheets', title: 'sheets', count: 'withPdf'   },
+  piano:  { col: 'piano_path', lock: 'piano_locked', bucket: 'piano',  title: 'piano',  count: 'withPiano' }
 };
 function sheetsPage(kind){
   const K = SHEETKIND[kind];
@@ -807,27 +815,45 @@ function sheetsPage(kind){
   return `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>
     <div class="searchrow" style="padding-top:12px"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>` +
     list.map(s => {
-      const path = s[K.col];
+      const path = s[K.col], locked = !!s[K.lock];
       const busy = S.uploading === kind + ':' + s.id;
-      const url = path ? sb.storage.from(K.bucket).getPublicUrl(path).data.publicUrl : '';
       const left = `<div style="flex:1;min-width:0">
           <div style="font-size:16px;line-height:1.2">${esc(s.title)}</div>
           ${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}
           ${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}
+          ${locked ? `<div class="sub" style="font-style:normal;color:var(--gold)">${esc(t('adminOnly'))}</div>` : ''}
         </div>`;
       if (busy) return `<div class="li">${left}<div style="color:var(--blue);font-weight:600;font-size:14px">${esc(t('uploading'))}</div></div>`;
-      const dl = path
-        ? `<a class="mini" href="${esc(url)}" target="_blank" rel="noopener">${esc(t('download'))}</a>` : '';
+      /* Files are served through short-lived signed URLs, so an admin-only PDF
+         cannot be opened by guessing its address. */
+      const dl = !path ? ''
+        : locked && !S.session
+          ? `<span class="mini locked">${lockSVG(true)}${esc(t('adminOnlyShort'))}</span>`
+          : `<button class="mini" data-open="${kind}:${s.id}">${esc(t('download'))}</button>`;
       const admin = S.session ? `
-        <label class="mini" for="up-${kind}-${s.id}">${esc(path ? t('replace') : t('upload'))}
+        ${path ? '' : `<label class="mini" for="up-${kind}-${s.id}">${esc(t('upload'))}
           <input id="up-${kind}-${s.id}" type="file" accept="application/pdf,.pdf"
                  data-upload="${s.id}" data-kind="${kind}" style="display:none">
-        </label>
-        ${path ? `<button class="mini danger" data-del-pdf="${s.id}" data-kind="${kind}">${esc(t('removePdf'))}</button>` : ''}` : '';
+        </label>`}
+        ${path ? `<button class="mini icon ${locked?'on':''}" data-lock="${kind}:${s.id}"
+            title="${esc(locked ? t('makePublic') : t('makeAdminOnly'))}"
+            aria-label="${esc(locked ? t('makePublic') : t('makeAdminOnly'))}">${
+            locked ? lockSVG(true) : lockSVG(false)}</button>
+          <button class="mini danger" data-del-pdf="${s.id}" data-kind="${kind}">${esc(t('removePdf'))}</button>` : ''}` : '';
       return `<div class="li">${left}<div class="acts">${dl}${admin}</div></div>`;
     }).join('') +
-    (S.session ? '' : `<div class="note">${esc(t('loginNote'))}</div>`);
+    (S.session ? `<div class="note">${esc(t('adminOnlyNote'))}</div>`
+               : `<div class="note">${esc(t('loginNote'))}</div>`);
 }
+/* 'locked/' is the prefix the storage policy refuses to serve to guests */
+function lockSVG(shut){
+  return `<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" fill="none"
+    stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+    <rect x="2.5" y="7" width="11" height="7.5" rx="1.6"></rect>
+    <path d="${shut ? 'M5.2 7V5.2a2.8 2.8 0 0 1 5.6 0V7' : 'M5.2 7V5.2a2.8 2.8 0 0 1 5.3-1.2'}"></path>
+  </svg>`;
+}
+const sheetPath = (locked, songId) => (locked ? 'locked/' : '') + songId + '/' + Date.now() + '.pdf';
 
 /* ---------- CSV export ---------- */
 function download(name, text){
@@ -959,7 +985,7 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock]');
   if (!el) return;
   const d = el.dataset;
 
@@ -1058,6 +1084,34 @@ document.addEventListener('click', async e => {
     S.eventSongs = S.eventSongs.filter(x => x.event_id !== d.delEvent);
     return render();
   }
+  if (d.open) {
+    const [kind, id] = d.open.split(':'), K = SHEETKIND[kind];
+    const song = S.songs.find(s => s.id === id);
+    if (!song || !song[K.col]) return;
+    const w = window.open('', '_blank');          // opened before the await, or the popup blocker eats it
+    const { data, error } = await sb.storage.from(K.bucket).createSignedUrl(song[K.col], 3600);
+    if (error || !data) { if (w) w.close(); return fail(error || new Error('signing failed')); }
+    if (w) w.location = data.signedUrl; else location.href = data.signedUrl;
+    return;
+  }
+  if (d.lock) {
+    const [kind, id] = d.lock.split(':'), K = SHEETKIND[kind];
+    const song = S.songs.find(s => s.id === id);
+    if (!song || !song[K.col]) return;
+    if (!await ensureSession()) return;
+    const next = !song[K.lock];
+    const from = song[K.col];
+    const to = next ? 'locked/' + from.replace(/^locked\//, '')
+                    : from.replace(/^locked\//, '');
+    if (to !== from) {                            // moving it is what actually enforces the rule
+      const mv = await sb.storage.from(K.bucket).move(from, to);
+      if (mv.error) return fail(mv.error);
+    }
+    const { error } = await sb.from('songs').update({ [K.col]: to, [K.lock]: next }).eq('id', song.id);
+    if (error) { await sb.storage.from(K.bucket).move(to, from); return fail(error); }
+    song[K.col] = to; song[K.lock] = next;
+    return render();
+  }
   if (d.delPdf) {
     const K = SHEETKIND[d.kind || 'sheets'];
     const song = S.songs.find(s => s.id === d.delPdf);
@@ -1149,7 +1203,7 @@ document.addEventListener('change', async e => {
     if (file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)) { alert(t('pdfOnly')); return; }
     const kind = el.dataset.kind || 'sheets', K = SHEETKIND[kind];
     const old = song[K.col];
-    const path = song.id + '/' + Date.now() + '.pdf';
+    const path = sheetPath(song[K.lock], song.id);
     S.uploading = kind + ':' + song.id; render();
     const up = await sb.storage.from(K.bucket).upload(path, file, { contentType: 'application/pdf' });
     if (up.error) { S.uploading = null; return fail(up.error); }
