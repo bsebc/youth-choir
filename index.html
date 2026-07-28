@@ -78,6 +78,9 @@
   .savebar .sb.go{background:var(--blue);border-color:var(--blue);color:#fff}
   .savebar .sb.go:hover{background:#33488f}
   .savebar .sb[disabled]{opacity:.45;cursor:default}
+  .pager{display:flex;align-items:center;gap:10px;padding:0 16px 20px}
+  .pager .pg{flex:1;text-align:center;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  a.back{text-decoration:none}
   .back{border:0;background:transparent;font-size:26px;line-height:1;color:var(--faint);padding:0 8px 0 0;margin-right:2px}
   .back:hover{color:var(--ink)}
   .searchrow{padding:12px;background:#fff;border-bottom:1px solid var(--rule)}
@@ -275,6 +278,8 @@ const STR = {
     rehearsal:'Rehearsal',morning:'Sunday morning',evening:'Sunday evening',other:'Other event',
     eventName:'Event name',shortLabel:'Label',labelHint:'The short label shows under the date in the grid — 1–2 letters.',
     markAtt:'Mark attendance →',chooseSongs:'Choose songs →',recent:'RECENT ENTRIES',edit:'Edit',del:'Delete',
+    allEntries:'All entries',olderEntries:'Older entries →',entriesN:n=>n+' entries',noEntries:'Nothing recorded yet',
+    allYears:'All years',prevPage:'← Newer',nextPage:'Older →',ofPages:(a,b)=>a+' of '+b,showingN:(a,b)=>a+' of '+b,
     cancelled:'cancelled',cancelledEvent:'Cancelled',markCancelled:'Mark as cancelled',unmarkCancelled:'Not cancelled after all',
     cancelledNote:'A cancelled date counts for nobody — it is left out of every attendance percentage.',
     add:'Add',fullName:'First and last name',voicePart:'Voice part',songTitle:'Song title',subtitle:'Subtitle (optional)',
@@ -319,6 +324,8 @@ const STR = {
     rehearsal:'Спевка',morning:'Воскресное утреннее',evening:'Воскресное вечернее',other:'Другое событие',
     eventName:'Название события',shortLabel:'Метка',labelHint:'Короткая метка показывается под датой в сетке — 1–2 буквы.',
     markAtt:'Отметить посещаемость →',chooseSongs:'Выбрать песни →',recent:'ПОСЛЕДНИЕ ЗАПИСИ',edit:'Изм.',del:'Удал.',
+    allEntries:'Все записи',olderEntries:'Более ранние записи →',entriesN:n=>'записей: '+n,noEntries:'Пока ничего не записано',
+    allYears:'Все годы',prevPage:'← Новее',nextPage:'Ранее →',ofPages:(a,b)=>a+' из '+b,showingN:(a,b)=>a+' из '+b,
     cancelled:'отменено',cancelledEvent:'Отменено',markCancelled:'Отметить как отменённое',unmarkCancelled:'Отмена не состоялась',
     cancelledNote:'Отменённая дата не учитывается ни у кого — она исключена из всех процентов.',
     add:'Добавить',fullName:'Имя и фамилия',voicePart:'Партия',songTitle:'Название песни',subtitle:'Подзаголовок',
@@ -371,6 +378,7 @@ const S = {
   sumFrom: null, sumTo: null,     // summary range
   typeFilter: 'all',            // grid picker
   sumType: 'all',               // summary picker
+  entYear: 'all', entType: 'all', entPage: 0,   // all-entries page
   preset: { grid: '2', sum: '6' },
   query: '',
   draft: { date: today(), kind: 'morning', name: '', label: '' },
@@ -720,13 +728,10 @@ function eventPicker(target){
     <div class="pad"><button class="btn" data-go="${target}">${esc(t(target==='att'?'markAtt':'chooseSongs'))}</button></div>
     <div class="pad" style="padding-top:0">
       <div class="step" style="margin-bottom:8px">${esc(t('recent'))}</div>
-      ${recent.map(e => `<div class="li" style="border:1px solid var(--rule);border-radius:8px;margin-bottom:8px">
-        <a href="#/admin/${target==='att'?'attendance':'songs'}/${e.id}" style="flex:1;min-width:0;color:inherit">
-          <div style="font-variant-numeric:tabular-nums">${esc(fmtLong(e.date))}</div>
-          <div style="font-size:13px;color:${e.cancelled?'var(--red)':'var(--muted)'}">${
-            esc(e.name || t(e.kind))}${e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</div></a>
-        <a class="mini" href="#/admin/${target==='att'?'attendance':'songs'}/${e.id}">${esc(t('edit'))}</a>
-        <button class="mini danger" data-del-event="${e.id}">${esc(t('del'))}</button></div>`).join('')}
+      ${recent.map(e => entryRow(e, target)).join('')}
+      ${S.events.length > recent.length
+        ? `<a class="mini" style="display:flex;justify-content:center" href="#/admin/entries/${target}">${esc(t('olderEntries'))}</a>`
+        : ''}
     </div>
     <div class="pad" style="padding-top:0">
       <div class="step" style="margin-bottom:8px">${esc(t('exportTitle'))}</div>
@@ -735,6 +740,51 @@ function eventPicker(target){
         <button class="xbtn" data-export="songs">${esc(t('exportSongs'))}</button>
       </div>
     </div>`;
+}
+function entryRow(e, target){
+  const href = '#/admin/' + (target === 'att' ? 'attendance' : 'songs') + '/' + e.id;
+  return `<div class="li" style="border:1px solid var(--rule);border-radius:8px;margin-bottom:8px">
+    <a href="${href}" style="flex:1;min-width:0;color:inherit">
+      <div style="font-variant-numeric:tabular-nums">${esc(fmtLong(e.date))}</div>
+      <div style="font-size:13px;color:${e.cancelled?'var(--red)':'var(--muted)'}">${
+        esc(e.name || t(e.kind))}${e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</div></a>
+    <a class="mini" href="${href}">${esc(t('edit'))}</a>
+    <button class="mini danger" data-del-event="${e.id}">${esc(t('del'))}</button></div>`;
+}
+/* Every entry back to the very first one, newest first, grouped by month.
+   Filtered by year and by kind, then paged, so the list stays short enough to
+   read on a phone however many years the choir has been going. */
+const ENT_PER_PAGE = 25;
+function allEntries(target){
+  const years = [...new Set(S.events.map(e => e.date.slice(0,4)))].sort().reverse();
+  const all = S.events.slice().sort((a,b) => a.date < b.date ? 1 : -1)
+    .filter(e => S.entYear === 'all' || e.date.slice(0,4) === S.entYear)
+    .filter(e => S.entType === 'all' ? true
+      : S.entType === 'services' ? e.kind !== 'rehearsal' : e.kind === 'rehearsal');
+  const pages = Math.max(1, Math.ceil(all.length / ENT_PER_PAGE));
+  const page = Math.min(S.entPage, pages - 1);
+  const rows = all.slice(page * ENT_PER_PAGE, (page + 1) * ENT_PER_PAGE);
+  let month = '';
+  const controls = `<div class="ctlbar">
+      <div class="seg tiny">${[['all','all'],['services','services'],['rehearsals','rehearsals']].map(([v,l]) =>
+        `<button data-ent-type="${v}" class="${S.entType===v?'on':''}">${esc(t(l))}</button>`).join('')}</div>
+      <div class="chips">${[['all', t('allYears')], ...years.map(y => [y, y])].map(([v,l]) =>
+        `<button data-ent-year="${v}" class="${S.entYear===v?'on':''}">${esc(l)}</button>`).join('')}</div>
+    </div>`;
+  const pager = pages > 1 ? `<div class="pager">
+      <button class="mini" data-ent-page="${page-1}" ${page===0?'disabled':''}>${esc(t('prevPage'))}</button>
+      <div class="pg">${esc(t('ofPages')(page+1, pages))}</div>
+      <button class="mini" data-ent-page="${page+1}" ${page>=pages-1?'disabled':''}>${esc(t('nextPage'))}</button>
+    </div>` : '';
+  return `<div class="h"><a class="back" href="#/admin/${target==='att'?'attendance':'songs'}">‹</a>
+      ${esc(t('allEntries'))}<span class="n">${esc(t('showingN')(rows.length, all.length))}</span></div>` +
+    controls +
+    (rows.length ? `<div class="pad">` + rows.map(e => {
+        const k = monthKey(e.date), head = k === month ? '' : `<div class="step" style="margin:14px 0 8px">${esc(k)}</div>`;
+        month = k;
+        return head + entryRow(e, target);
+      }).join('') + '</div>' + pager
+    : `<div class="msg">${esc(t('noEntries'))}</div>`);
 }
 /* Marking pages are buffered: taps change S.edit only, Save writes the diff.
    That way nothing reaches the database until the director says so, and no
@@ -994,9 +1044,14 @@ function render(){
     if (section === 'attendance') html += ev ? markAttendance(ev) : eventPicker('att');
     else if (section === 'songs') html += ev ? markSongs(ev) : eventPicker('songs');
     else if (section === 'songlist') html += manageSongs();
+    else if (section === 'entries') html += allEntries(id === 'songs' ? 'songs' : 'att');
     else html += manageMembers();
-    html += `</div>` + adminBar(section === 'attendance' ? 'att' : section === 'songs' ? 'songs'
-      : section === 'songlist' ? 'list' : 'members');
+    html += `</div>` + adminBar(
+      section === 'attendance' ? 'att'
+      : section === 'songs' ? 'songs'
+      : section === 'songlist' ? 'list'
+      : section === 'entries' ? (id === 'songs' ? 'songs' : 'att')
+      : 'members');
   }
   else if (r.startsWith('#/login')) { html += publicNav('') + loginPage(); }
   else if (r.startsWith('#/sheets')) { html += publicNav('sheets') + sheetsPage('sheets'); }
@@ -1086,7 +1141,7 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page]');
   if (!el) return;
   const d = el.dataset;
 
@@ -1101,6 +1156,13 @@ document.addEventListener('click', async e => {
     return render();
   }
   if (d.type) { if (d.scope === 'sum') S.sumType = d.type; else S.typeFilter = d.type; return render(); }
+  if (d.entType) { S.entType = d.entType; S.entPage = 0; return render(); }
+  if (d.entYear) { S.entYear = d.entYear; S.entPage = 0; return render(); }
+  if (d.entPage !== undefined && el.hasAttribute('data-ent-page')) {
+    S.entPage = Math.max(0, +d.entPage);
+    window.scrollTo(0, 0);
+    return render();
+  }
   if (d.kind) { S.draft.kind = d.kind; return render(); }
 
   if (d.go) {
