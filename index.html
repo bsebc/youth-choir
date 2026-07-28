@@ -465,8 +465,10 @@ function latestService(){
 }
 const inRange  = (d,a,b) => d >= a && d <= b;
 
+const hasAtt = e => e.attendance_taken || S.absences.some(a => a.event_id === e.id);
+const hasSongs = e => songsFor(e.id).length > 0;
 function gridEvents(){
-  return S.events.filter(e => inRange(e.date, S.from, S.to))
+  return S.events.filter(hasAtt).filter(e => inRange(e.date, S.from, S.to))
     .filter(e => S.typeFilter === 'all' ? true
       : S.typeFilter === 'services' ? e.kind !== 'rehearsal' : e.kind === 'rehearsal');
 }
@@ -638,7 +640,7 @@ function attendanceGrid(){
     <div class="legend" style="padding-top:0">${esc(t('labels'))}</div>`;
 }
 function attendanceSummary(){
-  const ev = S.events.filter(e => inRange(e.date, S.sumFrom, S.sumTo))
+  const ev = S.events.filter(hasAtt).filter(e => inRange(e.date, S.sumFrom, S.sumTo))
     .filter(e => S.sumType === 'all' ? true
       : S.sumType === 'services' ? e.kind !== 'rehearsal' : e.kind === 'rehearsal');
   if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
@@ -658,7 +660,7 @@ function attendanceSummary(){
 
 /* ---------- public: songs ---------- */
 function songsGrid(){
-  const ev = S.events.filter(e => e.kind !== 'rehearsal' && inRange(e.date, S.from, S.to));
+  const ev = S.events.filter(e => e.kind !== 'rehearsal' && hasSongs(e) && inRange(e.date, S.from, S.to));
   const songs = S.songs.filter(s => s.active !== false &&
     (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
   if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
@@ -683,7 +685,7 @@ function songsGrid(){
     <div class="legend"><span><i style="background:var(--ink);border:0"></i> ${esc(t('sung'))}</span></div>`;
 }
 function songsByService(){
-  const ev = S.events.filter(e => e.kind !== 'rehearsal' && inRange(e.date, S.from, S.to)).slice().reverse();
+  const ev = S.events.filter(e => e.kind !== 'rehearsal' && hasSongs(e) && inRange(e.date, S.from, S.to)).slice().reverse();
   if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
   return ev.map(e => {
     const list = songsFor(e.id).map(s => s.title);
@@ -711,9 +713,10 @@ function songsSummary(){
 /* ---------- admin ---------- */
 function eventPicker(target){
   const kinds = ['rehearsal','morning','evening','other'];
-  const recent = S.events.slice().reverse()
-    .filter(e => target !== 'songs' || e.kind !== 'rehearsal' || songsFor(e.id).length)
-    .slice(0,4);
+  const inScope = e => target === 'songs'
+    ? (e.kind !== 'rehearsal' || hasSongs(e))
+    : (hasAtt(e) || !hasSongs(e));
+  const recent = S.events.slice().reverse().filter(inScope).slice(0,4);
   return `<div class="card">
       <div class="step">${esc(t('date'))}</div>
       <input class="field" type="date" id="draft-date" value="${S.draft.date}">
@@ -732,7 +735,7 @@ function eventPicker(target){
     <div class="pad" style="padding-top:0">
       <div class="step" style="margin-bottom:8px">${esc(t('recent'))}</div>
       ${recent.map(e => entryRow(e, target)).join('')}
-      ${S.events.filter(e => target !== 'songs' || e.kind !== 'rehearsal' || songsFor(e.id).length).length > recent.length
+      ${S.events.filter(inScope).length > recent.length
         ? `<a class="mini" style="display:flex;justify-content:center" href="#/admin/entries/${target}">${esc(t('olderEntries'))}</a>`
         : ''}
     </div>
@@ -759,7 +762,9 @@ function entryRow(e, target){
    read on a phone however many years the choir has been going. */
 const ENT_PER_PAGE = 25;
 function allEntries(target){
-  const scope = S.events.filter(e => target !== 'songs' || e.kind !== 'rehearsal' || songsFor(e.id).length);
+  const scope = S.events.filter(e => target === 'songs'
+    ? (e.kind !== 'rehearsal' || hasSongs(e))
+    : (hasAtt(e) || !hasSongs(e)));
   const years = [...new Set(scope.map(e => e.date.slice(0,4)))].sort().reverse();
   const all = scope.slice().sort((a,b) => a.date < b.date ? 1 : -1)
     .filter(e => S.entYear === 'all' || e.date.slice(0,4) === S.entYear)
@@ -1013,7 +1018,8 @@ function download(name, text){
 const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
 
 function exportCSV(kind){
-  const ev = S.events.slice().sort((a,b) => a.date < b.date ? -1 : 1);
+  const ev = S.events.filter(kind === 'att' ? hasAtt : hasSongs)
+    .slice().sort((a,b) => a.date < b.date ? -1 : 1);
   if (kind === 'att') {
     const head = ['singer','part', ...ev.map(e => e.date + ' ' + evLabel(e))];
     const rows = PARTS.flatMap(p => S.singers.filter(s => s.part === p).map(s =>
@@ -1233,17 +1239,22 @@ document.addEventListener('click', async e => {
     let evId = E.evId;
     if (evId === 'new') {
       const { data, error } = await sb.from('events')
-        .insert(Object.assign({}, S.pending, { cancelled: !!E.cancelled })).select().single();
+        .insert(Object.assign({}, S.pending,
+          { cancelled: !!E.cancelled, attendance_taken: E.mode === 'att' })).select().single();
       if (error) return fail(error);
       S.events.push(data); S.events.sort((a,b) => a.date < b.date ? -1 : 1);
       evId = data.id; S.pending = null;
     }
-    if (E.cancelled !== E.wasCancelled && E.evId !== 'new') {
-      const { error } = await sb.from('events').update({ cancelled: E.cancelled }).eq('id', evId);
+    const evRow0 = S.events.find(x => x.id === evId);
+    const patch = {};
+    if (E.cancelled !== E.wasCancelled) patch.cancelled = E.cancelled;
+    if (E.mode === 'att' && evRow0 && !evRow0.attendance_taken) patch.attendance_taken = true;
+    if (Object.keys(patch).length && E.evId !== 'new') {
+      const { error } = await sb.from('events').update(patch).eq('id', evId);
       if (error) return fail(error);
     }
     const evRow = S.events.find(x => x.id === evId);
-    if (evRow) evRow.cancelled = E.cancelled;
+    if (evRow) { evRow.cancelled = E.cancelled; if (E.mode === 'att') evRow.attendance_taken = true; }
     if (isAttCancelled(E)) E.sel = new Map();      // a cancelled date records nobody
     const isAtt = E.mode === 'att';
     const table = isAtt ? 'absences' : 'event_songs';
