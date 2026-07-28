@@ -140,6 +140,7 @@
   /* grid */
   .scroll{overflow:auto;background:#fff;border-bottom:1px solid var(--rule);overscroll-behavior:contain}
   .gwrap{min-width:max-content}
+  .topctl{position:sticky;left:0;z-index:7;width:var(--vw,100%);background:#fff}
   .row{display:flex;min-width:100%}
   .spacer{width:calc(var(--nameW) + var(--tallyW));flex:none;position:sticky;left:0;z-index:3;background:#fff;border-right:2px solid var(--ink)}
   .hmonth{position:sticky;top:0;z-index:5}
@@ -175,7 +176,8 @@
   .srow .tally{left:var(--songW)}
   .srow .spacer,.srow.hd .spacer{width:calc(var(--songW) + var(--tallyW))}
   .sub{font-size:11px;color:var(--faint);font-style:italic}
-  .legend{padding:12px 14px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12px;color:var(--muted)}
+  .legend{padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:11px;color:var(--muted);line-height:1.2}
+  @media (min-width:900px){ .legend{padding:12px 14px;gap:14px;font-size:12px} }
   .legend i.na{color:#b3b7ac;background:#f1f2ee}
   .legend i{width:16px;height:16px;border:1px solid var(--rule);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:11px;color:var(--red)}
   /* lists */
@@ -600,8 +602,9 @@ function rangeCtrl(kind, typeFilter){
     </div>${S.showRange ? `<div class="panel">${chips}${dates}</div>` : ''}`;
 }
 
+const topBar = html => html ? `<div class="topctl">${html}</div>` : '';
 /* ---------- public: attendance ---------- */
-function attendanceGrid(){
+function attendanceGrid(top){
   const ev = gridEvents();
   const months = [];
   ev.forEach(e => { const k = monthKey(e.date); const last = months[months.length-1];
@@ -629,8 +632,8 @@ function attendanceGrid(){
       }).join('');
   }).join('');
 
-  if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
-  return `<div class="scroll"><div class="gwrap">${head}${body}</div></div>
+  if (!ev.length) return (top || '') + `<div class="msg">${esc(t('noEvents'))}</div>`;
+  return `<div class="scroll">${topBar(top)}<div class="gwrap">${head}${body}</div></div>
     <div class="legend">
       <span><i style="background:#fff"></i> ${esc(t('present'))}</span>
       <span><i>${S.lang==='en'?'A':'Н'}</i> ${esc(t('absent'))}</span>
@@ -660,11 +663,11 @@ function attendanceSummary(){
 }
 
 /* ---------- public: songs ---------- */
-function songsGrid(){
+function songsGrid(top){
   const ev = S.events.filter(e => e.kind !== 'rehearsal' && hasSongs(e) && inRange(e.date, S.from, S.to));
   const songs = S.songs.filter(s => s.active !== false &&
     (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
-  if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
+  if (!ev.length) return (top || '') + `<div class="msg">${esc(t('noEvents'))}</div>`;
   const months = [];
   ev.forEach(e => { const k = monthKey(e.date); const last = months[months.length-1];
     if (last && last.k === k) last.n++; else months.push({k, n:1}); });
@@ -682,7 +685,7 @@ function songsGrid(){
         : `<div class="cell svc">${wasSung(e.id, s.id) ? '<i class="sq"></i>' : ''}</div>`).join('')
     }<div class="tail"></div></div>`;
   }).join('');
-  return `<div class="scroll"><div class="gwrap">${head}${body}</div></div>
+  return `<div class="scroll">${topBar(top)}<div class="gwrap">${head}${body}</div></div>
     <div class="legend"><span><i style="background:var(--ink);border:0"></i> ${esc(t('sung'))}</span></div>`;
 }
 function songsByService(){
@@ -1077,9 +1080,8 @@ function render(){
       <a href="#/songs/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
     if (tab === 'summary') html += rangeCtrl('sum') + songsSummary();
     else if (tab === 'services') html += rangeCtrl('grid') + songsByService();
-    else html += rangeCtrl('grid')
-      + `<div class="searchrow"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>`
-      + songsGrid();
+    else html += songsGrid(rangeCtrl('grid')
+      + `<div class="searchrow"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>`);
   }
   else {
     const tab = r.split('/')[2] || 'grid';
@@ -1087,7 +1089,7 @@ function render(){
       <a href="#/attendance/grid" class="${tab==='grid'?'on':''}">${esc(t('grid'))}</a>
       <a href="#/attendance/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
     if (tab === 'summary') html += rangeCtrl('sum', true) + attendanceSummary();
-    else html += rangeCtrl('grid', true) + attendanceGrid();
+    else html += attendanceGrid(rangeCtrl('grid', true));
   }
   document.getElementById('app').innerHTML = html + toastHTML();
   afterRender();
@@ -1100,20 +1102,37 @@ function toastHTML(){
     <button data-dismiss>×</button></div>`;
 }
 
+/* Size the grid to the space actually left below it. Measuring must not disturb
+   the box: clearing maxHeight first would remove the overflow, reset scrollTop,
+   change the page height and re-trigger this through the viewport listener. */
+let fitPending = false;
+function fitGrid(){
+  const sc = document.querySelector('.scroll');
+  if (!sc) return;
+  const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+  let below = 0;
+  for (let n = sc.nextElementSibling; n; n = n.nextElementSibling) {
+    if (getComputedStyle(n).position === 'fixed') continue;
+    below += n.getBoundingClientRect().height;
+  }
+  sc.style.setProperty('--vw', sc.clientWidth + 'px');
+  const room = Math.max(220, vh - sc.getBoundingClientRect().top - below - 2);
+  if (Math.abs(parseFloat(sc.style.maxHeight) - room) < 1) return;   // already right: don't touch it
+  sc.style.maxHeight = room + 'px';
+}
+function queueFit(){
+  if (fitPending) return;
+  fitPending = true;
+  requestAnimationFrame(() => { fitPending = false; fitGrid(); });
+}
+window.addEventListener('resize', queueFit, { passive: true });
+if (window.visualViewport) window.visualViewport.addEventListener('resize', queueFit, { passive: true });
+
 // keep the newest dates in view: jump the grid to its right edge when the page changes
 function afterRender(){
   const sc = document.querySelector('.scroll');
   if (!sc) return;
-  const fitGrid = () => {
-    sc.style.maxHeight = '';
-    const top = sc.getBoundingClientRect().top;
-    const room = window.innerHeight - top - 8;
-    sc.style.maxHeight = Math.max(220, room) + 'px';
-  };
   fitGrid();
-  if (S.fitGrid) window.removeEventListener('resize', S.fitGrid);
-  S.fitGrid = fitGrid;
-  window.addEventListener('resize', fitGrid, { passive: true });
   const key = S.route + '|' + S.from + '|' + S.to + '|' + S.typeFilter;
   // innerHTML rebuilds the grid, so scroll position has to be re-applied every render:
   // jump to the newest dates when the page or range changes, otherwise stay put.
