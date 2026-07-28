@@ -156,6 +156,7 @@
   .tally.low{color:var(--red)}
   .cell{width:var(--cell);flex:none;height:var(--cell);display:flex;align-items:center;justify-content:center;background:#fff;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);font-size:15px;font-weight:700;color:var(--red)}
   .cell.svc{background:#e7ebf5}
+  .cell.na{background:#f1f2ee;color:#b3b7ac}
   .cell .sq{width:14px;height:14px;background:var(--ink)}
   .tail{flex:1 0 auto;background:#fff;border-bottom:1px solid var(--rule)}
   .srow .name,.srow .tally,.srow .cell{height:48px}
@@ -164,6 +165,7 @@
   .srow .spacer,.srow.hd .spacer{width:calc(var(--songW) + var(--tallyW))}
   .sub{font-size:11px;color:var(--faint);font-style:italic}
   .legend{padding:12px 14px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12px;color:var(--muted)}
+  .legend i.na{color:#b3b7ac;background:#f1f2ee}
   .legend i{width:16px;height:16px;border:1px solid var(--rule);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:11px;color:var(--red)}
   /* lists */
   .sectbar{background:var(--ink);color:var(--paper);font-family:'Alice',serif;font-size:13px;letter-spacing:.14em;padding:7px 16px}
@@ -172,6 +174,10 @@
   .li.tap:hover{background:#fbfbf9}
   .li.tap:hover.off{background:#f4e2de}
   .li.off{background:#f7e9e6}
+  .li.na{background:#f4f5f1}
+  .li.tap:hover.na{background:#eceee7}
+  .li.na .nm{color:var(--faint)}
+  .li.na .pill{background:#dcded6;color:#6c7266}
   .li .nm{font-size:17px}
   .li.off .nm{color:var(--red);font-weight:600}
   .pill{margin-left:auto;font-size:14px;font-weight:600;padding:7px 14px;border-radius:999px;background:var(--paper);color:var(--muted);min-width:86px;text-align:center}
@@ -234,7 +240,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const STR = {
   en:{attendance:'Attendance',songs:'Songs',signin:'Sign in',signout:'Sign out',grid:'Grid',summary:'Summary',
     byService:'By service',all:'All',services:'Services',rehearsals:'Rehearsals',m2:'2 mo',m3:'3 mo',m6:'6 mo',year:'Year',
-    singer:'Singer',song:'Song',times:'Times',last:'Last sung',present:'present',absent:'absent',service:'service',
+    singer:'Singer',song:'Song',times:'Times',last:'Last sung',present:'present',absent:'absent',notListed:'not in choir yet',service:'service',
     sung:'sung at this service',labels:'M — morning service · E — evening service · R — rehearsal',
     admin:'Admin',songList:'Song list',members:'Members',whoCame:'Who came',absentN:'absent',whatSang:'What we sang',selected:'selected',
     autosave:'Nothing is saved until you press Save.',done:'Done',date:'1 · DATE',event:'2 · EVENT',
@@ -265,10 +271,11 @@ const STR = {
     deleteEvent:'Delete this event and everything recorded for it?',notSaved:'Not saved',retry:'Retry',offline:'Offline — showing the last loaded data.',
     deleteSinger:'Delete this singer? Past marks stay in the ledger.',deleteSong:'Delete this song? Past services keep their record.',
     renameSinger:'Name',renameSong:'Title',soprano:'SOPRANO',alto:'ALTO',tenor:'TENOR',bass:'BASS',
-    singersN:n=>n+' singers',songsN:n=>n+' songs',sungN:(n,d)=>'sung '+n+'× · last '+(d||'—'),wasPresent:'Present',wasAbsent:'Absent'},
+    singersN:n=>n+' singers',songsN:n=>n+' songs',sungN:(n,d)=>'sung '+n+'× · last '+(d||'—'),wasPresent:'Present',wasAbsent:'Absent',wasNA:'Not listed',
+    tapHint:'Tap a name: Present → Absent → Not listed.',naNote:'“Not listed” means the singer was not in the choir yet — those rehearsals are left out of their percentage.'},
   ru:{attendance:'Посещаемость',songs:'Песни',signin:'Вход',signout:'Выйти',grid:'Сетка',summary:'Сводка',
     byService:'По служениям',all:'Всё',services:'Служения',rehearsals:'Спевки',m2:'2 мес',m3:'3 мес',m6:'Полгода',year:'Год',
-    singer:'Хорист',song:'Песня',times:'Всего',last:'Последний',present:'был',absent:'не был',service:'служение',
+    singer:'Хорист',song:'Песня',times:'Всего',last:'Последний',present:'был',absent:'не был',notListed:'ещё не в хоре',service:'служение',
     sung:'пели в это служение',labels:'Ут — утреннее · Вч — вечернее · Сп — спевка',
     admin:'Админка',songList:'Список песен',members:'Состав',whoCame:'Кто был',absentN:'отсутствуют',whatSang:'Что пели',selected:'выбрано',
     autosave:'Ничего не сохраняется, пока вы не нажмёте «Сохранить».',done:'Готово',date:'1 · ДАТА',event:'2 · СОБЫТИЕ',
@@ -300,7 +307,8 @@ const STR = {
     deleteEvent:'Удалить это событие и все его записи?',notSaved:'Не сохранено',retry:'Повторить',offline:'Нет сети — показаны последние загруженные данные.',
     deleteSinger:'Удалить хориста? Прошлые отметки останутся в журнале.',deleteSong:'Удалить песню? История служений сохранится.',
     renameSinger:'Имя',renameSong:'Название',soprano:'СОПРАНО',alto:'АЛЬТ',tenor:'ТЕНОР',bass:'БАС',
-    singersN:n=>n+' чел.',songsN:n=>n+' песен',sungN:(n,d)=>'спето '+n+' · посл. '+(d||'—'),wasPresent:'Был',wasAbsent:'Не был'}
+    singersN:n=>n+' чел.',songsN:n=>n+' песен',sungN:(n,d)=>'спето '+n+' · посл. '+(d||'—'),wasPresent:'Был',wasAbsent:'Не был',wasNA:'Не в составе',
+    tapHint:'Нажимайте на имя: Был → Не был → Не в составе.',naNote:'«Не в составе» — хорист тогда ещё не пел; такие спевки не входят в его процент.'}
 };
 const MON = { en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
               ru:['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'] };
@@ -341,14 +349,30 @@ function fmtShort(iso){ const [y,m,d] = iso.split('-');
 function monthKey(iso){ const [y,m] = iso.split('-').map(Number); return MON[S.lang][m-1] + ' ' + String(y).slice(2); }
 
 /* ---------- data ---------- */
+/* Supabase caps one response at 1000 rows, and years of absences run well past
+   that — read every table in pages so nothing silently goes missing. Ordering
+   is fully deterministic, otherwise page boundaries could skip or repeat rows. */
+async function selectAll(table, order){
+  const STEP = 1000;
+  let rows = [], from = 0;
+  for (;;) {
+    let q = sb.from(table).select('*');
+    order.forEach(c => { q = q.order(c); });
+    const r = await q.range(from, from + STEP - 1);
+    if (r.error) return { data: rows, error: r.error };
+    rows = rows.concat(r.data || []);
+    if ((r.data || []).length < STEP) return { data: rows, error: null };
+    from += STEP;
+  }
+}
 async function load(silent){
   if (!silent) { S.loading = true; render(); }
   const [si, so, ev, ab, es] = await Promise.all([
-    sb.from('singers').select('*').order('part').order('sort_order'),
-    sb.from('songs').select('*').order('title'),
-    sb.from('events').select('*').order('date'),
-    sb.from('absences').select('*'),
-    sb.from('event_songs').select('*')
+    selectAll('singers', ['part','sort_order','name']),
+    selectAll('songs', ['title','id']),
+    selectAll('events', ['date','id']),
+    selectAll('absences', ['event_id','singer_id']),
+    selectAll('event_songs', ['event_id','song_id'])
   ]);
   const err = [si,so,ev,ab,es].find(r => r.error);
   S.error = err ? err.error.message : '';
@@ -357,7 +381,21 @@ async function load(silent){
   S.loading = false; render();
 }
 
-const isAbsent = (e,s) => S.absences.some(a => a.event_id === e && a.singer_id === s);
+/* Three states per singer per event. Only the exceptions are stored:
+   an absences row with status 'absent' (missed it) or 'not_listed' (was not in
+   the choir yet — excluded from their percentage). No row at all = present. */
+function attStatus(e,s){
+  const a = S.absences.find(x => x.event_id === e && x.singer_id === s);
+  return !a ? 'present' : a.status === 'not_listed' ? 'na' : 'absent';
+}
+const isAbsent = (e,s) => attStatus(e,s) === 'absent';
+/* present / total, counting only events the singer was actually in the choir for */
+function attCount(ev, sid){
+  let miss = 0, na = 0;
+  ev.forEach(e => { const st = attStatus(e.id, sid); if (st === 'absent') miss++; else if (st === 'na') na++; });
+  const of = ev.length - na;
+  return { miss, na, of, came: of - miss, pct: of ? Math.round((of - miss) / of * 100) : null };
+}
 const wasSung  = (e,s) => S.eventSongs.some(x => x.event_id === e && x.song_id === s);
 const inRange  = (d,a,b) => d >= a && d <= b;
 
@@ -491,10 +529,12 @@ function attendanceGrid(){
     if (!rows.length) return '';
     return `<div class="sect"><div class="lbl">${esc(t(p))}</div><div class="fill">${esc(t('singersN')(rows.length))}</div></div>` +
       rows.map(s => {
-        const cells = ev.map(e => `<div class="cell ${e.kind!=='rehearsal'?'svc':''}">${isAbsent(e.id, s.id) ? esc(S.lang==='en'?'A':'Н') : ''}</div>`).join('');
-        const miss = ev.filter(e => isAbsent(e.id, s.id)).length;
+        const cells = ev.map(e => { const st = attStatus(e.id, s.id);
+          return `<div class="cell ${e.kind!=='rehearsal'?'svc':''} ${st==='na'?'na':''}">${
+            st==='absent' ? esc(S.lang==='en'?'A':'Н') : st==='na' ? '–' : ''}</div>`; }).join('');
+        const c = attCount(ev, s.id);
         return `<div class="row"><div class="name">${esc(s.name)}</div>
-          <div class="tally ${miss>3?'low':''}">${ev.length - miss}/${ev.length}</div>${cells}<div class="tail"></div></div>`;
+          <div class="tally ${c.miss>3?'low':''}">${c.of ? c.came + '/' + c.of : '—'}</div>${cells}<div class="tail"></div></div>`;
       }).join('');
   }).join('');
 
@@ -503,6 +543,7 @@ function attendanceGrid(){
     <div class="legend">
       <span><i style="background:#fff"></i> ${esc(t('present'))}</span>
       <span><i>${S.lang==='en'?'A':'Н'}</i> ${esc(t('absent'))}</span>
+      <span><i class="na">–</i> ${esc(t('notListed'))}</span>
       <span><i style="background:#e7ebf5"></i> ${esc(t('service'))}</span>
     </div>
     <div class="legend" style="padding-top:0">${esc(t('labels'))}</div>`;
@@ -514,8 +555,9 @@ function attendanceSummary(){
     const rows = S.singers.filter(s => s.part === p && s.active !== false);
     if (!rows.length) return '';
     return `<div class="sectbar">${esc(t(p))}</div>` + rows.map(s => {
-      const miss = ev.filter(e => isAbsent(e.id, s.id)).length;
-      const pct = Math.round((ev.length - miss) / ev.length * 100);
+      const c = attCount(ev, s.id), pct = c.pct;
+      if (pct === null) return `<div class="li"><div style="width:44%;font-size:15px;color:var(--faint)">${esc(s.name)}</div>
+        <div class="bar"></div><div class="pct" style="color:var(--faint)">—</div></div>`;
       return `<div class="li"><div style="width:44%;font-size:15px">${esc(s.name)}</div>
         <div class="bar"><i style="width:${pct}%;background:${pct>=85?'var(--blue)':pct>=70?'var(--gold)':'var(--red)'}"></i></div>
         <div class="pct" style="color:${pct>=70?'var(--ink)':'var(--red)'}">${pct}%</div></div>`;
@@ -616,18 +658,26 @@ function eventPicker(target){
 function editFor(mode, ev){
   const key = mode + ':' + ev.id;
   if (!S.edit || S.edit.key !== key) {
-    const base = ev.id === 'new' ? []
-      : mode === 'att' ? S.absences.filter(a => a.event_id === ev.id).map(a => a.singer_id)
-                       : S.eventSongs.filter(x => x.event_id === ev.id).map(x => x.song_id);
-    S.edit = { key, mode, evId: ev.id, base: new Set(base), sel: new Set(base) };
+    const base = new Map();
+    if (ev.id !== 'new') {
+      if (mode === 'att') S.absences.filter(a => a.event_id === ev.id)
+        .forEach(a => base.set(a.singer_id, a.status === 'not_listed' ? 'na' : 'absent'));
+      else S.eventSongs.filter(x => x.event_id === ev.id).forEach(x => base.set(x.song_id, 'on'));
+    }
+    S.edit = { key, mode, evId: ev.id, base, sel: new Map(base) };
   }
   return S.edit;
 }
 function editDelta(){
-  const e = S.edit; if (!e) return { add: [], rm: [], n: 0 };
-  const add = [...e.sel].filter(x => !e.base.has(x));
-  const rm  = [...e.base].filter(x => !e.sel.has(x));
-  return { add, rm, n: add.length + rm.length };
+  const e = S.edit; if (!e) return { del: [], ins: [], n: 0 };
+  const del = [], ins = [];
+  new Set([...e.base.keys(), ...e.sel.keys()]).forEach(k => {
+    const b = e.base.get(k), s = e.sel.get(k);
+    if (b === s) return;
+    if (b) del.push(k);          // row exists and must go or change
+    if (s) ins.push([k, s]);
+  });
+  return { del, ins, n: new Set([...del, ...ins.map(i => i[0])]).size };
 }
 function editDirty(){ return !!S.edit && (S.edit.evId === 'new' || editDelta().n > 0); }
 function saveBar(mode){
@@ -642,7 +692,7 @@ function saveBar(mode){
 }
 function markAttendance(ev){
   const E = editFor('att', ev);
-  const n = E.sel.size;
+  const n = [...E.sel.values()].filter(v => v === 'absent').length;
   return `<div class="h"><button class="back" data-cancel-marks="att">‹</button>
       ${esc(fmtLong(ev.date))} <span class="n" style="color:var(--red)">${n}</span>
       <span style="font-size:13px;color:var(--muted)">${esc(t('absentN'))}</span></div>` +
@@ -650,12 +700,14 @@ function markAttendance(ev){
       const rows = S.singers.filter(s => s.part === p && s.active !== false);
       if (!rows.length) return '';
       return `<div class="sectbar">${esc(t(p))}</div>` + rows.map(s => {
-        const off = E.sel.has(s.id);
-        return `<div class="li tap ${off?'off':''}" data-toggle-absent="${s.id}" data-event="${ev.id}">
+        const st = E.sel.get(s.id) || 'present';
+        return `<div class="li tap ${st==='absent'?'off':st==='na'?'na':''}" data-toggle-absent="${s.id}" data-event="${ev.id}">
           <div class="nm">${esc(s.name)}</div>
-          <div class="pill">${esc(off ? t('wasAbsent') : t('wasPresent'))}</div></div>`;
+          <div class="pill">${esc(st==='absent' ? t('wasAbsent') : st==='na' ? t('wasNA') : t('wasPresent'))}</div></div>`;
       }).join('');
     }).join('') +
+    `<div class="note" style="padding-bottom:0">${esc(t('tapHint'))}</div>
+     <div class="note" style="color:var(--faint)">${esc(t('naNote'))}</div>` +
     saveBar('att');
 }
 function markSongs(ev){
@@ -765,7 +817,8 @@ function exportCSV(kind){
   if (kind === 'att') {
     const head = ['singer','part', ...ev.map(e => e.date + ' ' + evLabel(e))];
     const rows = PARTS.flatMap(p => S.singers.filter(s => s.part === p).map(s =>
-      [s.name, p, ...ev.map(e => isAbsent(e.id, s.id) ? 'A' : '')]));
+      [s.name, p, ...ev.map(e => { const st = attStatus(e.id, s.id);
+        return st === 'absent' ? 'Absent' : st === 'na' ? 'Not Listed' : 'Present'; })]));
     download('attendance-' + today() + '.csv', [head, ...rows].map(r => r.map(q).join(',')).join('\n'));
   } else {
     const head = ['date','event','song','subtitle'];
@@ -912,10 +965,17 @@ document.addEventListener('click', async e => {
     return;
   }
 
-  const mark = d.toggleAbsent || d.toggleSong;
-  if (mark && S.edit) {
+  if (d.toggleAbsent && S.edit) {              // present → absent → not listed → present
     S.toast = ''; S.retry = null;
-    S.edit.sel.has(mark) ? S.edit.sel.delete(mark) : S.edit.sel.add(mark);
+    const cur = S.edit.sel.get(d.toggleAbsent);
+    if (!cur) S.edit.sel.set(d.toggleAbsent, 'absent');
+    else if (cur === 'absent') S.edit.sel.set(d.toggleAbsent, 'na');
+    else S.edit.sel.delete(d.toggleAbsent);
+    return render();
+  }
+  if (d.toggleSong && S.edit) {
+    S.toast = ''; S.retry = null;
+    S.edit.sel.has(d.toggleSong) ? S.edit.sel.delete(d.toggleSong) : S.edit.sel.set(d.toggleSong, 'on');
     return render();
   }
   if (d.cancelMarks) {
@@ -936,18 +996,22 @@ document.addEventListener('click', async e => {
       S.events.push(data); S.events.sort((a,b) => a.date < b.date ? -1 : 1);
       evId = data.id; S.pending = null;
     }
-    const table = E.mode === 'att' ? 'absences' : 'event_songs';
-    const col   = E.mode === 'att' ? 'singer_id' : 'song_id';
-    const { add, rm } = editDelta();
-    if (add.length) {
-      const { error } = await sb.from(table).insert(add.map(x => ({ event_id: evId, [col]: x })));
+    const isAtt = E.mode === 'att';
+    const table = isAtt ? 'absences' : 'event_songs';
+    const col   = isAtt ? 'singer_id' : 'song_id';
+    const row   = (k, v) => isAtt
+      ? { event_id: evId, singer_id: k, status: v === 'na' ? 'not_listed' : 'absent' }
+      : { event_id: evId, song_id: k };
+    const { del, ins } = editDelta();
+    if (del.length) {   // delete first: a state change is a delete + insert
+      const { error } = await sb.from(table).delete().eq('event_id', evId).in(col, del);
       if (error) return fail(error);
     }
-    if (rm.length) {
-      const { error } = await sb.from(table).delete().eq('event_id', evId).in(col, rm);
+    if (ins.length) {
+      const { error } = await sb.from(table).insert(ins.map(([k,v]) => row(k,v)));
       if (error) return fail(error);
     }
-    const rows = [...E.sel].map(x => ({ event_id: evId, [col]: x }));
+    const rows = [...E.sel].map(([k,v]) => row(k,v));
     if (E.mode === 'att') S.absences = S.absences.filter(a => a.event_id !== evId).concat(rows);
     else S.eventSongs = S.eventSongs.filter(x => x.event_id !== evId).concat(rows);
     S.edit = null; S.toast = t('savedOk');
