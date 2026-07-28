@@ -402,6 +402,8 @@ function fmtLong(iso){ const [y,m,d] = iso.split('-').map(Number);
   return S.lang === 'en' ? MONF.en[m-1] + ' ' + d + ', ' + y : d + ' ' + MONF.ru[m-1] + ' ' + y; }
 function fmtShort(iso){ const [y,m,d] = iso.split('-');
   return m + '/' + d + '/' + y.slice(2); }   // numeric dates stay mm/dd/yy in both languages
+function fmtPill(iso){ const [y,m,d] = iso.split('-');
+  return MON[S.lang][+m-1] + ' ' + +d + ', ' + y.slice(2); }
 function monthKey(iso){ const [y,m] = iso.split('-').map(Number); return MON[S.lang][m-1] + ' ' + String(y).slice(2); }
 
 /* ---------- data ---------- */
@@ -597,7 +599,7 @@ function rangeCtrl(kind, typeFilter){
   return `<div class="ctlbar">
       <button class="rangebtn ${S.showRange?'open':''}" data-toggle-range>
         <em class="lb">${esc(t('period'))}</em>
-        <span class="rv">${esc(fmtShort(from))} – ${esc(fmtShort(to))}</span>
+        <span class="rv">${esc(fmtPill(from))} – ${esc(fmtPill(to))}</span>
         <em class="ed">${esc(t('changePeriod'))} ${S.showRange?'▴':'▾'}</em>
       </button>
       ${seg}
@@ -1076,22 +1078,24 @@ function render(){
   else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
   else if (r.startsWith('#/songs')) {
     const tab = r.split('/')[2] || 'grid';
-    html += publicNav('songs') + `<div class="tabs">
+    const songTabs = `<div class="tabs">
       <a href="#/songs/grid" class="${tab==='grid'?'on':''}">${esc(t('grid'))}</a>
       <a href="#/songs/services" class="${tab==='services'?'on':''}">${esc(t('byService'))}</a>
       <a href="#/songs/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
-    if (tab === 'summary') html += rangeCtrl('sum') + songsSummary();
-    else if (tab === 'services') html += rangeCtrl('grid') + songsByService();
-    else html += songsGrid(rangeCtrl('grid')
+    html += publicNav('songs');
+    if (tab === 'summary') html += songTabs + rangeCtrl('sum') + songsSummary();
+    else if (tab === 'services') html += songTabs + rangeCtrl('grid') + songsByService();
+    else html += songsGrid(songTabs + rangeCtrl('grid')
       + `<div class="searchrow"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>`);
   }
   else {
     const tab = r.split('/')[2] || 'grid';
-    html += publicNav('att') + `<div class="tabs">
+    const attTabs = `<div class="tabs">
       <a href="#/attendance/grid" class="${tab==='grid'?'on':''}">${esc(t('grid'))}</a>
       <a href="#/attendance/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
-    if (tab === 'summary') html += rangeCtrl('sum', true) + attendanceSummary();
-    else html += attendanceGrid(rangeCtrl('grid', true));
+    html += publicNav('att');
+    if (tab === 'summary') html += attTabs + rangeCtrl('sum', true) + attendanceSummary();
+    else html += attendanceGrid(attTabs + rangeCtrl('grid', true));
   }
   document.getElementById('app').innerHTML = html + toastHTML();
   afterRender();
