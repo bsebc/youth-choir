@@ -159,6 +159,10 @@
   .cell{width:var(--cell);flex:none;height:var(--cell);display:flex;align-items:center;justify-content:center;background:#fff;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);font-size:15px;font-weight:700;color:var(--red)}
   .cell.svc{background:#e7ebf5}
   .cell.na{background:#f1f2ee;color:#b3b7ac}
+  .cell.cx{background:repeating-linear-gradient(135deg,#eceee8 0 4px,#f6f7f3 4px 8px)}
+  .hday .d.cx{color:var(--faint);background:#f0f1ed}
+  .hday .d.cx em{color:#b3b7ac}
+  .legend i.cx{background:repeating-linear-gradient(135deg,#eceee8 0 4px,#f6f7f3 4px 8px);border-color:var(--rule)}
   .cell .sq{width:14px;height:14px;background:var(--ink)}
   .tail{flex:1 0 auto;background:#fff;border-bottom:1px solid var(--rule)}
   .srow .name,.srow .tally,.srow .cell{height:48px}
@@ -239,6 +243,7 @@
   .login{padding:44px 26px;display:flex;flex-direction:column;gap:16px;max-width:420px;margin:0 auto;width:100%}
   .login label{font-family:'Alice',serif;font-size:14px;color:#3c4438;letter-spacing:.06em}
   .login input{width:100%;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px 13px;font-size:16px}
+  .toast.ok{background:var(--green)}
   .toast{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--red);color:#fff;display:flex;align-items:center;gap:12px;padding:12px 16px;padding-bottom:calc(12px + env(safe-area-inset-bottom));font-size:14px}
   .toast button{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:6px;padding:8px 12px;font-weight:600}
   .toast .m{flex:1;min-width:0}
@@ -270,6 +275,8 @@ const STR = {
     rehearsal:'Rehearsal',morning:'Sunday morning',evening:'Sunday evening',other:'Other event',
     eventName:'Event name',shortLabel:'Label',labelHint:'The short label shows under the date in the grid — 1–2 letters.',
     markAtt:'Mark attendance →',chooseSongs:'Choose songs →',recent:'RECENT ENTRIES',edit:'Edit',del:'Delete',
+    cancelled:'cancelled',cancelledEvent:'Cancelled',markCancelled:'Mark as cancelled',unmarkCancelled:'Not cancelled after all',
+    cancelledNote:'A cancelled date counts for nobody — it is left out of every attendance percentage.',
     add:'Add',fullName:'First and last name',voicePart:'Voice part',songTitle:'Song title',subtitle:'Subtitle (optional)',
     search:'Search…',email:'Email',password:'Password',loginNote:'Only the choir director signs in. Everyone else can read the ledger.',
     loading:'Loading…',noEvents:'No events in this range yet.',noSongs:'No songs recorded yet.',
@@ -312,6 +319,8 @@ const STR = {
     rehearsal:'Спевка',morning:'Воскресное утреннее',evening:'Воскресное вечернее',other:'Другое событие',
     eventName:'Название события',shortLabel:'Метка',labelHint:'Короткая метка показывается под датой в сетке — 1–2 буквы.',
     markAtt:'Отметить посещаемость →',chooseSongs:'Выбрать песни →',recent:'ПОСЛЕДНИЕ ЗАПИСИ',edit:'Изм.',del:'Удал.',
+    cancelled:'отменено',cancelledEvent:'Отменено',markCancelled:'Отметить как отменённое',unmarkCancelled:'Отмена не состоялась',
+    cancelledNote:'Отменённая дата не учитывается ни у кого — она исключена из всех процентов.',
     add:'Добавить',fullName:'Имя и фамилия',voicePart:'Партия',songTitle:'Название песни',subtitle:'Подзаголовок',
     search:'Поиск…',email:'Эл. почта',password:'Пароль',loginNote:'Доступ только у регента. Просмотр журнала — без входа.',
     loading:'Загрузка…',noEvents:'В этом периоде событий нет.',noSongs:'Записей пока нет.',
@@ -425,7 +434,11 @@ const isAbsent = (e,s) => attStatus(e,s) === 'absent';
 /* present / total, counting only events the singer was actually in the choir for */
 function attCount(ev, sid){
   let miss = 0, na = 0;
-  ev.forEach(e => { const st = attStatus(e.id, sid); if (st === 'absent') miss++; else if (st === 'na') na++; });
+  ev.forEach(e => {
+    if (e.cancelled) { na++; return; }          // nothing happened that day
+    const st = attStatus(e.id, sid);
+    if (st === 'absent') miss++; else if (st === 'na') na++;
+  });
   const of = ev.length - na;
   return { miss, na, of, came: of - miss, pct: of ? Math.round((of - miss) / of * 100) : null };
 }
@@ -438,7 +451,7 @@ function songsFor(evId){
 }
 /* newest service that has songs — what the home tile shows */
 function latestService(){
-  return S.events.filter(e => e.kind !== 'rehearsal' && songsFor(e.id).length)
+  return S.events.filter(e => e.kind !== 'rehearsal' && !e.cancelled && songsFor(e.id).length)
     .slice().sort((a,b) => a.date < b.date ? 1 : -1)[0] || null;
 }
 const inRange  = (d,a,b) => d >= a && d <= b;
@@ -585,7 +598,7 @@ function attendanceGrid(){
       months.map(m => `<div class="m" style="width:calc(var(--cell) * ${m.n})">${esc(m.k)}</div>`).join('')
     }<div class="tail" style="height:26px;background:#f4f5f1"></div></div>
     <div class="row hday"><div class="spacer">${esc(t('singer'))}</div>${
-      ev.map(e => `<div class="d ${e.kind!=='rehearsal'?'svc':''}"><span>${+e.date.slice(8,10)}</span><em>${esc(evLabel(e))}</em></div>`).join('')
+      ev.map(e => `<div class="d ${e.kind!=='rehearsal'?'svc':''} ${e.cancelled?'cx':''}"><span>${+e.date.slice(8,10)}</span><em>${e.cancelled?'×':esc(evLabel(e))}</em></div>`).join('')
     }<div class="tail" style="height:40px;border-bottom:2px solid var(--ink)"></div></div>`;
 
   const body = PARTS.map(p => {
@@ -593,7 +606,9 @@ function attendanceGrid(){
     if (!rows.length) return '';
     return `<div class="sect"><div class="lbl">${esc(t(p))}</div><div class="fill">${esc(t('singersN')(rows.length))}</div></div>` +
       rows.map(s => {
-        const cells = ev.map(e => { const st = attStatus(e.id, s.id);
+        const cells = ev.map(e => {
+          if (e.cancelled) return `<div class="cell cx"></div>`;
+          const st = attStatus(e.id, s.id);
           return `<div class="cell ${e.kind!=='rehearsal'?'svc':''} ${st==='na'?'na':''}">${
             st==='absent' ? esc(S.lang==='en'?'A':'Н') : st==='na' ? '–' : ''}</div>`; }).join('');
         const c = attCount(ev, s.id);
@@ -608,6 +623,7 @@ function attendanceGrid(){
       <span><i style="background:#fff"></i> ${esc(t('present'))}</span>
       <span><i>${S.lang==='en'?'A':'Н'}</i> ${esc(t('absent'))}</span>
       <span><i class="na">–</i> ${esc(t('notListed'))}</span>
+      <span><i class="cx"></i> ${esc(t('cancelled'))}</span>
       <span><i style="background:#e7ebf5"></i> ${esc(t('service'))}</span>
     </div>
     <div class="legend" style="padding-top:0">${esc(t('labels'))}</div>`;
@@ -644,13 +660,14 @@ function songsGrid(){
       months.map(m => `<div class="m" style="width:calc(var(--cell) * ${m.n})">${esc(m.k)}</div>`).join('')
     }<div class="tail" style="height:26px;background:#f4f5f1"></div></div>
     <div class="row hday srow hd"><div class="spacer">${esc(t('song'))}</div>${
-      ev.map(e => `<div class="d svc"><span>${+e.date.slice(8,10)}</span><em>${esc(evLabel(e))}</em></div>`).join('')
+      ev.map(e => `<div class="d svc ${e.cancelled?'cx':''}"><span>${+e.date.slice(8,10)}</span><em>${e.cancelled?'×':esc(evLabel(e))}</em></div>`).join('')
     }<div class="tail" style="height:40px;border-bottom:2px solid var(--ink)"></div></div>`;
   const body = songs.map(s => {
     const st = songStats(s.id);
     return `<div class="row srow"><div class="name">${esc(s.title)}${s.subtitle?`<span class="sub">${esc(s.subtitle)}</span>`:''}</div>
       <div class="tally">${st.n}</div>${
-      ev.map(e => `<div class="cell svc">${wasSung(e.id, s.id) ? '<i class="sq"></i>' : ''}</div>`).join('')
+      ev.map(e => e.cancelled ? `<div class="cell cx"></div>`
+        : `<div class="cell svc">${wasSung(e.id, s.id) ? '<i class="sq"></i>' : ''}</div>`).join('')
     }<div class="tail"></div></div>`;
   }).join('');
   return `<div class="scroll"><div class="gwrap">${head}${body}</div></div>
@@ -662,7 +679,7 @@ function songsByService(){
   return ev.map(e => {
     const list = songsFor(e.id).map(s => s.title);
     return `<div class="svc-card"><div class="top"><div class="date">${esc(fmtLong(e.date))}</div>
-      <div class="kind">${esc(e.name || t(e.kind))}</div></div>
+      <div class="kind">${e.cancelled ? esc(t('cancelledEvent')) : esc(e.name || t(e.kind))}</div></div>
       ${list.length ? list.map((x, i) => `<div class="s"><b>${i + 1}</b>${esc(x)}</div>`).join('')
                     : `<div class="s" style="color:var(--faint)">—</div>`}</div>`;
   }).join('');
@@ -706,7 +723,8 @@ function eventPicker(target){
       ${recent.map(e => `<div class="li" style="border:1px solid var(--rule);border-radius:8px;margin-bottom:8px">
         <a href="#/admin/${target==='att'?'attendance':'songs'}/${e.id}" style="flex:1;min-width:0;color:inherit">
           <div style="font-variant-numeric:tabular-nums">${esc(fmtLong(e.date))}</div>
-          <div style="font-size:13px;color:var(--muted)">${esc(e.name || t(e.kind))}</div></a>
+          <div style="font-size:13px;color:${e.cancelled?'var(--red)':'var(--muted)'}">${
+            e.cancelled ? esc(t('cancelledEvent')) : esc(e.name || t(e.kind))}</div></a>
         <a class="mini" href="#/admin/${target==='att'?'attendance':'songs'}/${e.id}">${esc(t('edit'))}</a>
         <button class="mini danger" data-del-event="${e.id}">${esc(t('del'))}</button></div>`).join('')}
     </div>
@@ -730,7 +748,8 @@ function editFor(mode, ev){
         .forEach(a => base.set(a.singer_id, a.status === 'not_listed' ? 'na' : 'absent'));
       else songsFor(ev.id).forEach((s, i) => base.set(s.id, i + 1));
     }
-    S.edit = { key, mode, evId: ev.id, base, sel: new Map(base) };
+    S.edit = { key, mode, evId: ev.id, base, sel: new Map(base),
+               wasCancelled: !!ev.cancelled, cancelled: !!ev.cancelled };
   }
   return S.edit;
 }
@@ -747,24 +766,37 @@ function editDelta(){
   });
   return { del, ins, n: new Set([...del, ...ins.map(i => i[0])]).size };
 }
-function editDirty(){ return !!S.edit && (S.edit.evId === 'new' || editDelta().n > 0); }
+const isAttCancelled = E => E.mode === 'att' && E.cancelled;
+function editDirty(){
+  const E = S.edit;
+  if (!E) return false;
+  if (E.evId === 'new' || E.cancelled !== E.wasCancelled) return true;
+  return !isAttCancelled(E) && editDelta().n > 0;
+}
 function saveBar(mode){
-  const isNew = S.edit && S.edit.evId === 'new', n = editDelta().n;
-  const status = isNew ? t('newEntry') : n ? t('unsavedN')(n) : t('noChanges');
+  const isNew = S.edit && S.edit.evId === 'new', dirty = editDirty();
+  const n = isAttCancelled(S.edit) ? S.edit.base.size : editDelta().n;
+  const status = isNew ? t('newEntry') : dirty ? t('unsavedN')(Math.max(n, 1)) : t('noChanges');
   return `<div class="note">${esc(t('autosave'))}</div>
     <div class="savebar">
-      <div class="st ${isNew || n ? 'live' : ''}">${esc(status)}</div>
+      <div class="st ${dirty ? 'live' : ''}">${esc(status)}</div>
       <button class="sb ghost" data-cancel-marks="${mode}">${esc(t('cancel'))}</button>
-      <button class="sb go" data-save-marks ${isNew || n ? '' : 'disabled'}>${esc(t('save'))}</button>
+      <button class="sb go" data-save-marks ${dirty ? '' : 'disabled'}>${esc(t('save'))}</button>
     </div>`;
 }
 function markAttendance(ev){
   const E = editFor('att', ev);
-  const n = [...E.sel.values()].filter(v => v === 'absent').length;
+  const n = E.cancelled ? 0 : [...E.sel.values()].filter(v => v === 'absent').length;
+  const cancelCard = `<div class="pad">
+      <button class="btn ${E.cancelled ? '' : 'ghost'}" data-toggle-cancel>${
+        esc(E.cancelled ? t('unmarkCancelled') : t('markCancelled'))}</button>
+      ${E.cancelled ? `<div class="note" style="padding:10px 0 0">${esc(t('cancelledNote'))}</div>` : ''}
+    </div>`;
   return `<div class="h"><button class="back" data-cancel-marks="att">‹</button>
       ${esc(fmtLong(ev.date))} <span class="n" style="color:var(--red)">${n}</span>
       <span style="font-size:13px;color:var(--muted)">${esc(t('absentN'))}</span></div>` +
-    PARTS.map(p => {
+    cancelCard +
+    (E.cancelled ? '' : PARTS.map(p => {
       const rows = S.singers.filter(s => s.part === p && s.active !== false);
       if (!rows.length) return '';
       return `<div class="sectbar">${esc(t(p))}</div>` + rows.map(s => {
@@ -775,7 +807,7 @@ function markAttendance(ev){
       }).join('');
     }).join('') +
     `<div class="note" style="padding-bottom:0">${esc(t('tapHint'))}</div>
-     <div class="note" style="color:var(--faint)">${esc(t('naNote'))}</div>` +
+     <div class="note" style="color:var(--faint)">${esc(t('naNote'))}</div>`) +
     saveBar('att');
 }
 function orderCard(){
@@ -930,7 +962,8 @@ function exportCSV(kind){
   if (kind === 'att') {
     const head = ['singer','part', ...ev.map(e => e.date + ' ' + evLabel(e))];
     const rows = PARTS.flatMap(p => S.singers.filter(s => s.part === p).map(s =>
-      [s.name, p, ...ev.map(e => { const st = attStatus(e.id, s.id);
+      [s.name, p, ...ev.map(e => { if (e.cancelled) return 'Cancelled';
+        const st = attStatus(e.id, s.id);
         return st === 'absent' ? 'Absent' : st === 'na' ? 'Not Listed' : 'Present'; })]));
     download('attendance-' + today() + '.csv', [head, ...rows].map(r => r.map(q).join(',')).join('\n'));
   } else {
@@ -995,7 +1028,7 @@ function render(){
 
 function toastHTML(){
   if (!S.toast) return '';
-  return `<div class="toast"><div class="m">${esc(S.toast)}</div>
+  return `<div class="toast ${S.toastOk ? 'ok' : ''}"><div class="m">${esc(S.toast)}</div>
     ${S.retry ? `<button data-retry>${esc(t('retry'))}</button>` : ''}
     <button data-dismiss>×</button></div>`;
 }
@@ -1037,7 +1070,15 @@ function wrote(res){
   return true;
 }
 
+/* a confirmation, not a problem: green, and gone on its own */
+let toastTimer = null;
+function okToast(msg){
+  S.toast = msg; S.toastOk = true; S.retry = null;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { S.toast = ''; S.toastOk = false; render(); }, 2500);
+}
 function fail(error, retry){
+  clearTimeout(toastTimer); S.toastOk = false;
   S.toast = t('notSaved') + ' — ' + (navigator.onLine ? error.message : t('offline'));
   S.retry = retry || null;
   render();
@@ -1045,7 +1086,7 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel]');
   if (!el) return;
   const d = el.dataset;
 
@@ -1101,6 +1142,11 @@ document.addEventListener('click', async e => {
     S.edit.sel = new Map(ids.map((k, n) => [k, n + 1]));
     return render();
   }
+  if (el.hasAttribute('data-toggle-cancel') && S.edit) {
+    S.toast = ''; S.retry = null;
+    S.edit.cancelled = !S.edit.cancelled;          // marks stay in the buffer, so untapping is a true undo
+    return render();
+  }
   if (d.cancelMarks) {
     e.preventDefault();
     if (editDirty() && !confirm(t('discardQ'))) return;
@@ -1114,11 +1160,19 @@ document.addEventListener('click', async e => {
     S.toast = ''; S.retry = null;
     let evId = E.evId;
     if (evId === 'new') {
-      const { data, error } = await sb.from('events').insert(S.pending).select().single();
+      const { data, error } = await sb.from('events')
+        .insert(Object.assign({}, S.pending, { cancelled: !!E.cancelled })).select().single();
       if (error) return fail(error);
       S.events.push(data); S.events.sort((a,b) => a.date < b.date ? -1 : 1);
       evId = data.id; S.pending = null;
     }
+    if (E.cancelled !== E.wasCancelled && E.evId !== 'new') {
+      const { error } = await sb.from('events').update({ cancelled: E.cancelled }).eq('id', evId);
+      if (error) return fail(error);
+    }
+    const evRow = S.events.find(x => x.id === evId);
+    if (evRow) evRow.cancelled = E.cancelled;
+    if (isAttCancelled(E)) E.sel = new Map();      // a cancelled date records nobody
     const isAtt = E.mode === 'att';
     const table = isAtt ? 'absences' : 'event_songs';
     const col   = isAtt ? 'singer_id' : 'song_id';
@@ -1137,7 +1191,7 @@ document.addEventListener('click', async e => {
     const rows = [...E.sel].map(([k,v]) => row(k,v));
     if (E.mode === 'att') S.absences = S.absences.filter(a => a.event_id !== evId).concat(rows);
     else S.eventSongs = S.eventSongs.filter(x => x.event_id !== evId).concat(rows);
-    S.edit = null; S.toast = t('savedOk');
+    S.edit = null; okToast(t('savedOk'));
     location.hash = '#/admin/' + (E.mode === 'att' ? 'attendance' : 'songs');
     render();
     return load(true);   // silent re-read, so the grids match the database exactly
