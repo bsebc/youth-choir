@@ -141,6 +141,8 @@
   .scroll{overflow:auto;background:#fff;border-bottom:1px solid var(--rule);overscroll-behavior:contain}
   .gwrap{min-width:max-content}
   .topctl{position:sticky;left:0;z-index:7;width:var(--vw,100%);background:#fff}
+  .endbar{position:sticky;left:0;width:var(--vw,100%);background:#fff;border-top:1px solid var(--rule)}
+  .endbar + .endbar{border-top:0}
   .row{display:flex;min-width:100%}
   .spacer{width:calc(var(--nameW) + var(--tallyW));flex:none;position:sticky;left:0;z-index:3;background:#fff;border-right:2px solid var(--ink)}
   .hmonth{position:sticky;top:0;z-index:5}
@@ -633,15 +635,15 @@ function attendanceGrid(top){
   }).join('');
 
   if (!ev.length) return (top || '') + `<div class="msg">${esc(t('noEvents'))}</div>`;
-  return `<div class="scroll">${topBar(top)}<div class="gwrap">${head}${body}</div></div>
-    <div class="legend">
+  return `<div class="scroll">${topBar(top)}<div class="gwrap">${head}${body}</div>
+    <div class="legend endbar">
       <span><i style="background:#fff"></i> ${esc(t('present'))}</span>
       <span><i>${S.lang==='en'?'A':'Н'}</i> ${esc(t('absent'))}</span>
       <span><i class="na">–</i> ${esc(t('notListed'))}</span>
       <span><i class="cx"></i> ${esc(t('cancelled'))}</span>
       <span><i style="background:#e7ebf5"></i> ${esc(t('service'))}</span>
     </div>
-    <div class="legend" style="padding-top:0">${esc(t('labels'))}</div>`;
+    <div class="legend endbar" style="padding-top:0">${esc(t('labels'))}</div></div>`;
 }
 function attendanceSummary(){
   const ev = S.events.filter(hasAtt).filter(e => inRange(e.date, S.sumFrom, S.sumTo))
@@ -685,8 +687,8 @@ function songsGrid(top){
         : `<div class="cell svc">${wasSung(e.id, s.id) ? '<i class="sq"></i>' : ''}</div>`).join('')
     }<div class="tail"></div></div>`;
   }).join('');
-  return `<div class="scroll">${topBar(top)}<div class="gwrap">${head}${body}</div></div>
-    <div class="legend"><span><i style="background:var(--ink);border:0"></i> ${esc(t('sung'))}</span></div>`;
+  return `<div class="scroll">${topBar(top)}<div class="gwrap">${head}${body}</div>
+    <div class="legend endbar"><span><i style="background:var(--ink);border:0"></i> ${esc(t('sung'))}</span></div></div>`;
 }
 function songsByService(){
   const ev = S.events.filter(e => e.kind !== 'rehearsal' && hasSongs(e) && inRange(e.date, S.from, S.to)).slice().reverse();
