@@ -178,6 +178,20 @@
   .mini.locked{background:#f4efdc;border-color:#e2d6a8;color:#8a7320;cursor:default}
   .mini.on{background:#f4efdc;border-color:#e2d6a8;color:#8a7320}
   .mini.icon{padding:0;width:40px;flex:none}
+  .mini[disabled]{opacity:.35;cursor:default}
+  .ord{width:26px;flex:none;font-weight:700;font-variant-numeric:tabular-nums;color:var(--blue)}
+  .tile.order{grid-column:1/-1;background:var(--ink);color:var(--paper);border-color:var(--ink);
+    box-shadow:0 12px 30px -16px rgba(23,32,58,.55)}
+  .tile.order:hover{border-color:var(--gold);box-shadow:0 16px 34px -14px rgba(23,32,58,.6)}
+  .tile.order .oh{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .tile.order .tt{font-size:12px;letter-spacing:.10em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .tile.order .od{font-family:'Alice',serif;font-size:24px;line-height:1.15;margin-top:4px}
+  .tile.order .ok{font-size:13px;color:#a6afc7;margin-top:2px}
+  .tile.order .ic{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18)}
+  .tile.order .olist{margin:4px 0 0;padding:0 0 0 22px;display:grid;gap:5px}
+  .tile.order .olist li{font-size:15px;line-height:1.25;color:#e7e9ee}
+  .tile.order .olist li::marker{color:var(--gold);font-weight:700;font-size:13px}
+  .tile.order .ts{color:#a6afc7}
   .mini.locked{gap:5px}
   .li.off{background:#f7e9e6}
   .li.na{background:#f4f5f1}
@@ -261,6 +275,8 @@ const STR = {
     loading:'Loading…',noEvents:'No events in this range yet.',noSongs:'No songs recorded yet.',
     exportTitle:'EXPORT',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
     period:'Period',changePeriod:'Change',
+    order:'Order of songs',orderHint:'Numbered in the order you tap them. Use the arrows to rearrange.',
+    tOrder:'Song order for',noOrderYet:'No songs chosen for a service yet',up:'Move up',down:'Move down',
     tSheets:'Sheet music',tSheetsSub:'Download the notes for each song',
     tPiano:'Piano sheets',tPianoSub:'Accompaniment for each song',piano:'Piano sheets',
     withPiano:n=>n+' with piano sheets',
@@ -302,6 +318,8 @@ const STR = {
     exportTitle:'ЭКСПОРТ',exportAtt:'Посещаемость CSV',exportSongs:'История песен CSV',
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
     period:'Период',changePeriod:'Изменить',
+    order:'Порядок песнопений',orderHint:'Номера ставятся в порядке нажатия. Стрелками можно поменять местами.',
+    tOrder:'Порядок песнопений на',noOrderYet:'Песни ещё не выбраны',up:'Выше',down:'Ниже',
     tSheets:'Ноты',tSheetsSub:'Скачать ноты к каждой песне',
     tPiano:'Ноты для фортепиано',tPianoSub:'Аккомпанемент к каждой песне',piano:'Фортепиано',
     withPiano:n=>'с фортепиано: '+n,
@@ -387,7 +405,7 @@ async function load(silent){
     selectAll('songs', ['title','id']),
     selectAll('events', ['date','id']),
     selectAll('absences', ['event_id','singer_id']),
-    selectAll('event_songs', ['event_id','song_id'])
+    selectAll('event_songs', ['event_id','position','song_id'])
   ]);
   const err = [si,so,ev,ab,es].find(r => r.error);
   S.error = err ? err.error.message : '';
@@ -412,6 +430,17 @@ function attCount(ev, sid){
   return { miss, na, of, came: of - miss, pct: of ? Math.round((of - miss) / of * 100) : null };
 }
 const wasSung  = (e,s) => S.eventSongs.some(x => x.event_id === e && x.song_id === s);
+/* the songs of one service, in the order the director set */
+function songsFor(evId){
+  return S.eventSongs.filter(x => x.event_id === evId)
+    .slice().sort((a,b) => (a.position ?? 9999) - (b.position ?? 9999))
+    .map(x => S.songs.find(s => s.id === x.song_id)).filter(Boolean);
+}
+/* newest service that has songs — what the home tile shows */
+function latestService(){
+  return S.events.filter(e => e.kind !== 'rehearsal' && songsFor(e.id).length)
+    .slice().sort((a,b) => a.date < b.date ? 1 : -1)[0] || null;
+}
 const inRange  = (d,a,b) => d >= a && d <= b;
 
 function gridEvents(){
@@ -471,8 +500,19 @@ function homePage(){
   const tile = (href, title, sub, icon, dark) => `<a class="tile ${dark?'dark':''}" href="${href}">
       <div class="ic">${icon}</div>
       <div><div class="tt">${esc(t(title))}</div><div class="ts">${esc(t(sub))}</div></div></a>`;
+  const svc = latestService();
+  const orderTile = `<a class="tile order" href="#/songs/services">
+      <div class="oh"><div>
+        <div class="tt">${esc(t('tOrder'))}</div>
+        <div class="od">${svc ? esc(fmtLong(svc.date)) : ''}</div>
+        ${svc ? `<div class="ok">${esc(svc.name || t(svc.kind))}</div>` : ''}
+      </div><div class="ic">${ICON.songSvc}</div></div>
+      ${svc ? `<ol class="olist">${songsFor(svc.id).map(s =>
+            `<li>${esc(s.title)}</li>`).join('')}</ol>`
+            : `<div class="ts">${esc(t('noOrderYet'))}</div>`}</a>`;
   return `<div class="hero">${esc(t('homeSub'))}</div>
     <div class="tiles">
+      ${orderTile}
       ${tile('#/attendance/grid','tAttGrid','tAttGridSub',ICON.attGrid)}
       ${tile('#/songs/grid','tSongGrid','tSongGridSub',ICON.songGrid)}
       ${tile('#/sheets','tSheets','tSheetsSub',ICON.sheets)}
@@ -620,11 +660,11 @@ function songsByService(){
   const ev = S.events.filter(e => e.kind !== 'rehearsal' && inRange(e.date, S.from, S.to)).slice().reverse();
   if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
   return ev.map(e => {
-    const list = S.eventSongs.filter(x => x.event_id === e.id)
-      .map(x => (S.songs.find(s => s.id === x.song_id) || {}).title).filter(Boolean);
+    const list = songsFor(e.id).map(s => s.title);
     return `<div class="svc-card"><div class="top"><div class="date">${esc(fmtLong(e.date))}</div>
       <div class="kind">${esc(e.name || t(e.kind))}</div></div>
-      ${list.length ? list.map(x => `<div class="s">${esc(x)}</div>`).join('') : `<div class="s" style="color:var(--faint)">—</div>`}</div>`;
+      ${list.length ? list.map((x, i) => `<div class="s"><b>${i + 1}</b>${esc(x)}</div>`).join('')
+                    : `<div class="s" style="color:var(--faint)">—</div>`}</div>`;
   }).join('');
 }
 function songsSummary(){
@@ -688,12 +728,14 @@ function editFor(mode, ev){
     if (ev.id !== 'new') {
       if (mode === 'att') S.absences.filter(a => a.event_id === ev.id)
         .forEach(a => base.set(a.singer_id, a.status === 'not_listed' ? 'na' : 'absent'));
-      else S.eventSongs.filter(x => x.event_id === ev.id).forEach(x => base.set(x.song_id, 'on'));
+      else songsFor(ev.id).forEach((s, i) => base.set(s.id, i + 1));
     }
     S.edit = { key, mode, evId: ev.id, base, sel: new Map(base) };
   }
   return S.edit;
 }
+const orderedSel = () => [...S.edit.sel.entries()].sort((a,b) => a[1] - b[1]).map(e => e[0]);
+function renumber(){ S.edit.sel = new Map(orderedSel().map((k, i) => [k, i + 1])); }
 function editDelta(){
   const e = S.edit; if (!e) return { del: [], ins: [], n: 0 };
   const del = [], ins = [];
@@ -736,6 +778,22 @@ function markAttendance(ev){
      <div class="note" style="color:var(--faint)">${esc(t('naNote'))}</div>` +
     saveBar('att');
 }
+function orderCard(){
+  const ids = orderedSel();
+  if (!ids.length) return '';
+  return `<div class="sectbar">${esc(t('order'))}</div>` +
+    ids.map((id, i) => {
+      const s = S.songs.find(x => x.id === id); if (!s) return '';
+      return `<div class="li"><div class="ord">${i + 1}</div>
+        <div style="flex:1;min-width:0"><div style="font-size:15px;line-height:1.2">${esc(s.title)}</div>
+        ${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}</div>
+        <div class="acts">
+          <button class="mini icon" data-move="up:${id}" ${i === 0 ? 'disabled' : ''} aria-label="${esc(t('up'))}">↑</button>
+          <button class="mini icon" data-move="down:${id}" ${i === ids.length - 1 ? 'disabled' : ''} aria-label="${esc(t('down'))}">↓</button>
+        </div></div>`;
+    }).join('') +
+    `<div class="note" style="padding-bottom:0">${esc(t('orderHint'))}</div>`;
+}
 function markSongs(ev){
   const E = editFor('songs', ev);
   const picked = E.sel.size;
@@ -748,11 +806,12 @@ function markSongs(ev){
     list.map(s => {
       const on = E.sel.has(s.id);
       return `<div class="li tap ${on?'on':''}" data-toggle-song="${s.id}" data-event="${ev.id}">
-        <div class="box">${on?'✓':''}</div>
+        <div class="box">${on ? E.sel.get(s.id) : ''}</div>
         <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:1.2">${esc(s.title)}</div>
         ${s.subtitle?`<div class="sub">${esc(s.subtitle)}</div>`:''}</div>
         <div style="font-size:14px;color:var(--muted)">${songStats(s.id).n}</div></div>`;
     }).join('') +
+    orderCard() +
     saveBar('songs');
 }
 function manageSongs(){
@@ -875,11 +934,10 @@ function exportCSV(kind){
         return st === 'absent' ? 'Absent' : st === 'na' ? 'Not Listed' : 'Present'; })]));
     download('attendance-' + today() + '.csv', [head, ...rows].map(r => r.map(q).join(',')).join('\n'));
   } else {
-    const head = ['date','event','song','subtitle'];
+    const head = ['date','event','no','song','subtitle'];
     const rows = [];
-    ev.forEach(e => S.eventSongs.filter(x => x.event_id === e.id).forEach(x => {
-      const s = S.songs.find(y => y.id === x.song_id); if (!s) return;
-      rows.push([e.date, e.name || e.kind, s.title, s.subtitle]);
+    ev.forEach(e => songsFor(e.id).forEach((s, i) => {
+      rows.push([e.date, e.name || e.kind, i + 1, s.title, s.subtitle]);
     }));
     download('songs-' + today() + '.csv', [head, ...rows].map(r => r.map(q).join(',')).join('\n'));
   }
@@ -987,7 +1045,7 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move]');
   if (!el) return;
   const d = el.dataset;
 
@@ -1030,7 +1088,17 @@ document.addEventListener('click', async e => {
   }
   if (d.toggleSong && S.edit) {
     S.toast = ''; S.retry = null;
-    S.edit.sel.has(d.toggleSong) ? S.edit.sel.delete(d.toggleSong) : S.edit.sel.set(d.toggleSong, 'on');
+    const sel = S.edit.sel;
+    if (sel.has(d.toggleSong)) sel.delete(d.toggleSong);
+    else sel.set(d.toggleSong, sel.size + 1);      // added at the end of the order
+    renumber(); return render();
+  }
+  if (d.move && S.edit) {                          // swap with the neighbour
+    const [dir, id] = d.move.split(':');
+    const ids = orderedSel(), i = ids.indexOf(id), j = dir === 'up' ? i - 1 : i + 1;
+    if (i < 0 || j < 0 || j >= ids.length) return;
+    ids.splice(j, 0, ids.splice(i, 1)[0]);
+    S.edit.sel = new Map(ids.map((k, n) => [k, n + 1]));
     return render();
   }
   if (d.cancelMarks) {
@@ -1056,7 +1124,7 @@ document.addEventListener('click', async e => {
     const col   = isAtt ? 'singer_id' : 'song_id';
     const row   = (k, v) => isAtt
       ? { event_id: evId, singer_id: k, status: v === 'na' ? 'not_listed' : 'absent' }
-      : { event_id: evId, song_id: k };
+      : { event_id: evId, song_id: k, position: v };
     const { del, ins } = editDelta();
     if (del.length) {   // delete first: a state change is a delete + insert
       const { error } = await sb.from(table).delete().eq('event_id', evId).in(col, del);
