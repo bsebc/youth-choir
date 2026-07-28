@@ -17,7 +17,7 @@
 <style>
   :root{
     --ink:#17203a; --paper:#eff0ec; --rule:#dcded7; --blue:#2c3e8f;
-    --red:#9e3b2e; --gold:#c9a227; --muted:#6b7166; --faint:#8a9086;
+    --red:#9e3b2e; --gold:#c9a227; --green:#3f7d4e; --muted:#6b7166; --faint:#8a9086;
     --nameW:152px; --tallyW:46px; --cell:34px; --songW:168px;
   }
   @media (min-width:900px){ :root{ --nameW:220px; --tallyW:62px; --cell:40px; --songW:280px; } }
@@ -559,8 +559,8 @@ function attendanceSummary(){
       if (pct === null) return `<div class="li"><div style="width:44%;font-size:15px;color:var(--faint)">${esc(s.name)}</div>
         <div class="bar"></div><div class="pct" style="color:var(--faint)">—</div></div>`;
       return `<div class="li"><div style="width:44%;font-size:15px">${esc(s.name)}</div>
-        <div class="bar"><i style="width:${pct}%;background:${pct>=85?'var(--blue)':pct>=70?'var(--gold)':'var(--red)'}"></i></div>
-        <div class="pct" style="color:${pct>=70?'var(--ink)':'var(--red)'}">${pct}%</div></div>`;
+        <div class="bar"><i style="width:${pct}%;background:${pct>=50?'var(--green)':pct>=10?'var(--gold)':'var(--red)'}"></i></div>
+        <div class="pct" style="color:${pct>=50?'var(--ink)':pct>=10?'var(--gold)':'var(--red)'}">${pct}%</div></div>`;
     }).join('');
   }).join('');
 }
