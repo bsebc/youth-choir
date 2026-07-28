@@ -159,7 +159,7 @@
   .cell{width:var(--cell);flex:none;height:var(--cell);display:flex;align-items:center;justify-content:center;background:#fff;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);font-size:15px;font-weight:700;color:var(--red)}
   .cell.svc{background:#e7ebf5}
   .cell.na{background:#f1f2ee;color:#b3b7ac}
-  .cell.cx{background:repeating-linear-gradient(135deg,#eceee8 0 4px,#f6f7f3 4px 8px)}
+  .cell.cx{background:repeating-linear-gradient(135deg,#eceee8 0 4px,#f6f7f3 4px 8px);color:#b3b7ac;font-size:13px}
   .hday .d.cx{color:var(--faint);background:#f0f1ed}
   .hday .d.cx em{color:#b3b7ac}
   .legend i.cx{background:repeating-linear-gradient(135deg,#eceee8 0 4px,#f6f7f3 4px 8px);border-color:var(--rule)}
@@ -598,7 +598,7 @@ function attendanceGrid(){
       months.map(m => `<div class="m" style="width:calc(var(--cell) * ${m.n})">${esc(m.k)}</div>`).join('')
     }<div class="tail" style="height:26px;background:#f4f5f1"></div></div>
     <div class="row hday"><div class="spacer">${esc(t('singer'))}</div>${
-      ev.map(e => `<div class="d ${e.kind!=='rehearsal'?'svc':''} ${e.cancelled?'cx':''}"><span>${+e.date.slice(8,10)}</span><em>${e.cancelled?'×':esc(evLabel(e))}</em></div>`).join('')
+      ev.map(e => `<div class="d ${e.kind!=='rehearsal'?'svc':''} ${e.cancelled?'cx':''}"><span>${+e.date.slice(8,10)}</span><em>${esc(evLabel(e))}</em></div>`).join('')
     }<div class="tail" style="height:40px;border-bottom:2px solid var(--ink)"></div></div>`;
 
   const body = PARTS.map(p => {
@@ -607,7 +607,7 @@ function attendanceGrid(){
     return `<div class="sect"><div class="lbl">${esc(t(p))}</div><div class="fill">${esc(t('singersN')(rows.length))}</div></div>` +
       rows.map(s => {
         const cells = ev.map(e => {
-          if (e.cancelled) return `<div class="cell cx"></div>`;
+          if (e.cancelled) return `<div class="cell cx">×</div>`;
           const st = attStatus(e.id, s.id);
           return `<div class="cell ${e.kind!=='rehearsal'?'svc':''} ${st==='na'?'na':''}">${
             st==='absent' ? esc(S.lang==='en'?'A':'Н') : st==='na' ? '–' : ''}</div>`; }).join('');
@@ -660,13 +660,13 @@ function songsGrid(){
       months.map(m => `<div class="m" style="width:calc(var(--cell) * ${m.n})">${esc(m.k)}</div>`).join('')
     }<div class="tail" style="height:26px;background:#f4f5f1"></div></div>
     <div class="row hday srow hd"><div class="spacer">${esc(t('song'))}</div>${
-      ev.map(e => `<div class="d svc ${e.cancelled?'cx':''}"><span>${+e.date.slice(8,10)}</span><em>${e.cancelled?'×':esc(evLabel(e))}</em></div>`).join('')
+      ev.map(e => `<div class="d svc ${e.cancelled?'cx':''}"><span>${+e.date.slice(8,10)}</span><em>${esc(evLabel(e))}</em></div>`).join('')
     }<div class="tail" style="height:40px;border-bottom:2px solid var(--ink)"></div></div>`;
   const body = songs.map(s => {
     const st = songStats(s.id);
     return `<div class="row srow"><div class="name">${esc(s.title)}${s.subtitle?`<span class="sub">${esc(s.subtitle)}</span>`:''}</div>
       <div class="tally">${st.n}</div>${
-      ev.map(e => e.cancelled ? `<div class="cell cx"></div>`
+      ev.map(e => e.cancelled ? `<div class="cell cx">×</div>`
         : `<div class="cell svc">${wasSung(e.id, s.id) ? '<i class="sq"></i>' : ''}</div>`).join('')
     }<div class="tail"></div></div>`;
   }).join('');
@@ -679,7 +679,7 @@ function songsByService(){
   return ev.map(e => {
     const list = songsFor(e.id).map(s => s.title);
     return `<div class="svc-card"><div class="top"><div class="date">${esc(fmtLong(e.date))}</div>
-      <div class="kind">${e.cancelled ? esc(t('cancelledEvent')) : esc(e.name || t(e.kind))}</div></div>
+      <div class="kind">${esc(e.name || t(e.kind))}${e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</div></div>
       ${list.length ? list.map((x, i) => `<div class="s"><b>${i + 1}</b>${esc(x)}</div>`).join('')
                     : `<div class="s" style="color:var(--faint)">—</div>`}</div>`;
   }).join('');
@@ -724,7 +724,7 @@ function eventPicker(target){
         <a href="#/admin/${target==='att'?'attendance':'songs'}/${e.id}" style="flex:1;min-width:0;color:inherit">
           <div style="font-variant-numeric:tabular-nums">${esc(fmtLong(e.date))}</div>
           <div style="font-size:13px;color:${e.cancelled?'var(--red)':'var(--muted)'}">${
-            e.cancelled ? esc(t('cancelledEvent')) : esc(e.name || t(e.kind))}</div></a>
+            esc(e.name || t(e.kind))}${e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</div></a>
         <a class="mini" href="#/admin/${target==='att'?'attendance':'songs'}/${e.id}">${esc(t('edit'))}</a>
         <button class="mini danger" data-del-event="${e.id}">${esc(t('del'))}</button></div>`).join('')}
     </div>
