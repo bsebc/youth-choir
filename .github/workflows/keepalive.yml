@@ -4,8 +4,6 @@ name: Keep Supabase awake
 # This makes one tiny read every day so that never happens. GitHub's scheduler
 # is best-effort and quietly skips runs when it is busy, so daily gives about
 # six missed days of slack before the project could pause.
-# The anon key is public (it is already in index.html), so no repo secrets
-# are needed — nothing here can write to the database.
 
 on:
   schedule:
@@ -21,9 +19,26 @@ jobs:
           SUPABASE_URL: https://cetjvfzgituzeiooxaex.supabase.co
           SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNldGp2ZnpnaXR1emVpb294YWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxODY0ODAsImV4cCI6MjEwMDc2MjQ4MH0.cMannk6niEUPPLBzJRo7Fs2VPWVp7LeNrvWD-DkBJl8
         run: |
+          set -u
+          # A real table read. The REST root (/rest/v1/) answers 401 to the anon
+          # key, which is why the earlier version failed — it was never a sign
+          # that the project was asleep.
           code=$(curl -s -o /dev/null -w "%{http_code}" \
             -H "apikey: $SUPABASE_ANON_KEY" \
             -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
-            "$SUPABASE_URL/rest/v1/")
-          echo "HTTP $code"
-          test "$code" = "200"
+            "$SUPABASE_URL/rest/v1/songs?select=id&limit=1")
+          echo "REST songs -> HTTP $code"
+
+          # Fallback that needs no key at all, in case the table is ever renamed.
+          if [ "$code" = "000" ]; then
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$SUPABASE_URL/auth/v1/health")
+            echo "auth health -> HTTP $code"
+          fi
+
+          # Any HTTP answer means the project is awake and served the request,
+          # which is the whole point. Only a network failure (000) or a server
+          # error (5xx) is a real problem.
+          case "$code" in
+            000|5??) echo "Project did not respond properly."; exit 1 ;;
+            *)       echo "Project is awake."; exit 0 ;;
+          esac
