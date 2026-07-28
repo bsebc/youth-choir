@@ -711,7 +711,9 @@ function songsSummary(){
 /* ---------- admin ---------- */
 function eventPicker(target){
   const kinds = ['rehearsal','morning','evening','other'];
-  const recent = S.events.slice().reverse().slice(0,4);
+  const recent = S.events.slice().reverse()
+    .filter(e => target !== 'songs' || e.kind !== 'rehearsal' || songsFor(e.id).length)
+    .slice(0,4);
   return `<div class="card">
       <div class="step">${esc(t('date'))}</div>
       <input class="field" type="date" id="draft-date" value="${S.draft.date}">
@@ -730,7 +732,7 @@ function eventPicker(target){
     <div class="pad" style="padding-top:0">
       <div class="step" style="margin-bottom:8px">${esc(t('recent'))}</div>
       ${recent.map(e => entryRow(e, target)).join('')}
-      ${S.events.length > recent.length
+      ${S.events.filter(e => target !== 'songs' || e.kind !== 'rehearsal' || songsFor(e.id).length).length > recent.length
         ? `<a class="mini" style="display:flex;justify-content:center" href="#/admin/entries/${target}">${esc(t('olderEntries'))}</a>`
         : ''}
     </div>
@@ -757,18 +759,20 @@ function entryRow(e, target){
    read on a phone however many years the choir has been going. */
 const ENT_PER_PAGE = 25;
 function allEntries(target){
-  const years = [...new Set(S.events.map(e => e.date.slice(0,4)))].sort().reverse();
-  const all = S.events.slice().sort((a,b) => a.date < b.date ? 1 : -1)
+  const scope = S.events.filter(e => target !== 'songs' || e.kind !== 'rehearsal' || songsFor(e.id).length);
+  const years = [...new Set(scope.map(e => e.date.slice(0,4)))].sort().reverse();
+  const all = scope.slice().sort((a,b) => a.date < b.date ? 1 : -1)
     .filter(e => S.entYear === 'all' || e.date.slice(0,4) === S.entYear)
-    .filter(e => S.entType === 'all' ? true
+    .filter(e => target === 'songs' ? true
+      : S.entType === 'all' ? true
       : S.entType === 'services' ? e.kind !== 'rehearsal' : e.kind === 'rehearsal');
   const pages = Math.max(1, Math.ceil(all.length / ENT_PER_PAGE));
   const page = Math.min(S.entPage, pages - 1);
   const rows = all.slice(page * ENT_PER_PAGE, (page + 1) * ENT_PER_PAGE);
   let month = '';
   const controls = `<div class="ctlbar">
-      <div class="seg tiny">${[['all','all'],['services','services'],['rehearsals','rehearsals']].map(([v,l]) =>
-        `<button data-ent-type="${v}" class="${S.entType===v?'on':''}">${esc(t(l))}</button>`).join('')}</div>
+      ${target === 'songs' ? '' : `<div class="seg tiny">${[['all','all'],['services','services'],['rehearsals','rehearsals']].map(([v,l]) =>
+        `<button data-ent-type="${v}" class="${S.entType===v?'on':''}">${esc(t(l))}</button>`).join('')}</div>`}
       <div class="chips">${[['all', t('allYears')], ...years.map(y => [y, y])].map(([v,l]) =>
         `<button data-ent-year="${v}" class="${S.entYear===v?'on':''}">${esc(l)}</button>`).join('')}</div>
     </div>`;
