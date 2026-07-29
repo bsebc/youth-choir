@@ -385,7 +385,7 @@ const S = {
   typeFilter: 'all',            // grid picker
   sumType: 'all',               // summary picker
   entYear: 'all', entType: 'all', entPage: 0,   // all-entries page
-  preset: { grid: '2', sum: '6' },
+  preset: { grid: '2', sum: '12' },
   query: '',
   draft: { date: today(), kind: 'morning', name: '', label: '' },
   pending: null,                  // event being created, not written yet
@@ -403,7 +403,7 @@ function fmtLong(iso){ const [y,m,d] = iso.split('-').map(Number);
 function fmtShort(iso){ const [y,m,d] = iso.split('-');
   return m + '/' + d + '/' + y.slice(2); }   // numeric dates stay mm/dd/yy in both languages
 function fmtPill(iso){ const [y,m,d] = iso.split('-');
-  return MON[S.lang][+m-1] + ' ' + +d + ', ' + y.slice(2); }
+  return MON[S.lang][+m-1] + ' ' + +d + ', ' + y; }
 function monthKey(iso){ const [y,m] = iso.split('-').map(Number); return MON[S.lang][m-1] + ' ' + String(y).slice(2); }
 
 /* ---------- data ---------- */
@@ -682,7 +682,7 @@ function songsGrid(top){
       ev.map(e => `<div class="d svc ${e.cancelled?'cx':''}"><span>${+e.date.slice(8,10)}</span><em>${esc(evLabel(e))}</em></div>`).join('')
     }<div class="tail" style="height:40px;border-bottom:2px solid var(--ink)"></div></div>`;
   const body = songs.map(s => {
-    const st = songStats(s.id);
+    const st = songStats(s.id, S.from, S.to);
     return `<div class="row srow"><div class="name">${esc(s.title)}${s.subtitle?`<span class="sub">${esc(s.subtitle)}</span>`:''}</div>
       <div class="tally">${st.n}</div>${
       ev.map(e => e.cancelled ? `<div class="cell cx">×</div>`
@@ -1484,7 +1484,7 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
 window.addEventListener('online', () => { if (S.toast) { S.toast = ''; render(); } load(true); });
-S.from = shift(2); S.to = today(); S.sumFrom = shift(6); S.sumTo = today();
+S.from = shift(2); S.to = today(); S.sumFrom = shift(12); S.sumTo = today();
 let wasWide = isWide();
 window.addEventListener('resize', () => { if (isWide() !== wasWide) { wasWide = isWide(); render(); } });
 const { data: { session } } = await sb.auth.getSession();
