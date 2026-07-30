@@ -343,7 +343,7 @@ const STR = {
     add:'Add',fullName:'First and last name',voicePart:'Voice part',
     tSingers:'Singers',tPianists:'Pianists',tConductors:'Conductors',
     conductor:'Conductor',pianist:'Pianist',markC:'C',markP:'P',
-    people:'People',lastLed:'Most recent',conducted:'conducted',played:'played',bothRoles:'conducts · plays',
+    people:'People',personCol:'Name',lastLed:'Most recent',conducted:'conducted',played:'played',bothRoles:'conducts · plays',
     ledN:n=>n+'×',noPeopleYet:'Nobody has been credited in this period yet.',theirSongs:'Songs they led',noneSet:'—',credits:'Conductor & pianist',optional:'optional',timesN:n=>n+'×',rankNote:'Ordered by how often each person has done it.',
     noRolesYet:'Add a conductor or pianist under Admin → Members first.',roleNote:'A singer can also conduct or play; add them once and give them the role.',
     confirmDropRole:'Remove this role from this person? They stay on the roster.',
@@ -399,7 +399,7 @@ const STR = {
     add:'Добавить',fullName:'Имя и фамилия',voicePart:'Партия',
     tSingers:'Хористы',tPianists:'Пианисты',tConductors:'Дирижёры',
     conductor:'Дирижёр',pianist:'Пианист',markC:'Д',markP:'П',
-    people:'Кто вёл',lastLed:'Последний раз',conducted:'дирижировал',played:'играл',bothRoles:'дирижирует · играет',
+    people:'Кто вёл',personCol:'Имя',lastLed:'Последний раз',conducted:'дирижировал',played:'играл',bothRoles:'дирижирует · играет',
     ledN:n=>n+'×',noPeopleYet:'В этом периоде записей нет.',theirSongs:'Песни',noneSet:'—',credits:'Дирижёр и пианист',optional:'необязательно',timesN:n=>n+'×',rankNote:'Отсортировано по тому, как часто это делал каждый.',
     noRolesYet:'Сначала добавьте дирижёра или пианиста в «Админ → Состав».',roleNote:'Хорист может также дирижировать или играть — добавьте его один раз и отметьте роль.',
     confirmDropRole:'Убрать эту роль? Человек останется в списке.',
@@ -859,8 +859,8 @@ function songsPeople(){
   if (!rows.length) return seg + `<div class="msg">${esc(t('noPeopleYet'))}</div>`;
   const max = Math.max(1, ...rows.map(r => r.c + r.p));
   return seg + `<div class="li" style="background:#fbfbf9;font-size:12px;color:var(--muted)">
-      <div style="flex:1">${esc(t('singer'))}</div><div style="width:54px;text-align:right">${esc(t('times'))}</div>
-      <div style="width:84px;text-align:right">${esc(t('lastLed'))}</div></div>` +
+      <div style="flex:1">${esc(t('personCol'))}</div><div style="width:54px;text-align:right">${esc(t('times'))}</div>
+      <div style="width:84px;text-align:right">${esc(t('lastLed'))}</div><div class="caret"></div></div>` +
     rows.map(r => {
       const open = S.openPerson === r.person.id, total = r.c + r.p;
       const role = r.c && r.p ? t('bothRoles') : r.c ? t('conductor') : t('pianist');
@@ -891,7 +891,7 @@ function songsSummary(){
   const max = Math.max(1, ...rows.map(r => r.st.n));
   return `<div class="li" style="background:#fbfbf9;font-size:12px;color:var(--muted)">
       <div style="flex:1">${esc(t('song'))}</div><div style="width:54px;text-align:right">${esc(t('times'))}</div>
-      <div style="width:84px;text-align:right">${esc(t('last'))}</div></div>` +
+      <div style="width:84px;text-align:right">${esc(t('last'))}</div><div class="caret"></div></div>` +
     rows.map(({s,st}) => {
       const open = S.openSong === s.id;
       const dates = open ? songDates(s.id) : [];
