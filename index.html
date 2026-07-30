@@ -98,6 +98,12 @@
   .ver{padding:4px 16px 24px;text-align:center;font-size:12px;color:var(--faint);
     font-variant-numeric:tabular-nums;letter-spacing:.04em}
   .sectbar em{font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;color:var(--faint);margin-left:8px}
+  .fold{display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;border:0;
+    border-bottom:1px solid var(--rule);background:var(--paper);text-align:left;font-family:inherit;
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .fold span{flex:1;min-width:0}
+  .fold em{font-style:normal;font-weight:600;text-transform:none;letter-spacing:0;font-size:13px;color:var(--blue)}
+  .fold.open{background:#fff}
   .crow{padding:12px 16px;border-bottom:1px solid var(--rule);background:#fff}
   .crow .ct{display:flex;gap:8px;font-size:15px;line-height:1.25;margin-bottom:8px}
   .crow .ct span{flex:none;min-width:1.3em;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums}
@@ -321,7 +327,7 @@ const STR = {
     byService:'By service',all:'All',services:'Services',rehearsals:'Rehearsals',m3:'3 mo',m6:'6 mo',year:'Year',
     singer:'Singer',song:'Song',times:'Times',last:'Last sung',present:'present',absent:'absent',notListed:'not in choir yet',service:'service',
     sung:'sung at this service',labels:'M — morning service · E — evening service · R — rehearsal',
-    admin:'Admin',songList:'Song list',members:'Members',whoCame:'Who came',absentN:'absent',whatSang:'What we sang',selected:'selected',
+    admin:'Admin',songList:'Song list',songQueue:'Song Queue',allSongs:'All Songs',members:'Members',whoCame:'Who came',absentN:'absent',whatSang:'What we sang',selected:'selected',
     autosave:'Nothing is saved until you press Save.',done:'Done',date:'1 · DATE',event:'2 · EVENT',
     save:'Save',cancel:'Cancel',savedOk:'Saved.',unsavedN:n=>n===1?'1 unsaved change':n+' unsaved changes',
     noChanges:'No changes yet',newEntry:'New entry — not saved yet',
@@ -336,7 +342,7 @@ const STR = {
     cancelledNote:'A cancelled date counts for nobody — it is left out of every attendance percentage.',
     add:'Add',fullName:'First and last name',voicePart:'Voice part',
     tSingers:'Singers',tPianists:'Pianists',tConductors:'Conductors',
-    conductor:'Conductor',pianist:'Pianist',noneSet:'—',credits:'Conductor & pianist',optional:'optional',
+    conductor:'Conductor',pianist:'Pianist',markC:'C',markP:'P',noneSet:'—',credits:'Conductor & pianist',optional:'optional',timesN:n=>n+'×',rankNote:'Ordered by how often each person has done it.',
     noRolesYet:'Add a conductor or pianist under Admin → Members first.',roleNote:'A singer can also conduct or play; add them once and give them the role.',
     confirmDropRole:'Remove this role from this person? They stay on the roster.',
     singerKeepNote:'This person sings in the choir. Use Edit to remove the role instead — deleting them here would remove their attendance too.',
@@ -345,6 +351,7 @@ const STR = {
     loading:'Loading…',noEvents:'No events in this range yet.',noSongs:'No songs recorded yet.',
     exportTitle:'EXPORT',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
     period:'Period',changePeriod:'Change',
+    chooseFrom:'Choose songs',showList:n=>'Show all '+n,hideList:'Hide list',
     order:'Order of songs',orderHint:'Numbered in the order you tap them. Use the arrows to rearrange.',
     tOrder:'Song order for',noOrderYet:'No songs chosen for a service yet',up:'Move up',down:'Move down',
     home:'Home',tSheets:'Choir sheets',tSheetsSub:'Download the notes for each song',
@@ -368,12 +375,12 @@ const STR = {
     deleteSinger:'Delete this singer? Past marks stay in the ledger.',deleteSong:'Delete this song? Past services keep their record.',
     renameSinger:'Name',renameSong:'Title',soprano:'SOPRANO',alto:'ALTO',tenor:'TENOR',bass:'BASS',
     singersN:n=>n+' singers',songsN:n=>n+' songs',sungN:(n,d)=>'sung '+n+'× · last '+(d||'—'),wasPresent:'Present',wasAbsent:'Absent',wasNA:'Not listed',
-    tapHint:'Tap a name: Present → Absent → Not listed.',naNote:'“Not listed” means the singer was not in the choir yet — those rehearsals are left out of their percentage.'},
+    tapHint:'Tap a name to mark them absent.',naNote:'“Not listed” means the singer was not in the choir yet — those rehearsals are left out of their percentage.'},
   ru:{attendance:'Посещаемость',songs:'Песни',signin:'Вход',signout:'Выйти',grid:'Сетка',summary:'Сводка',
     byService:'По служениям',all:'Всё',services:'Служения',rehearsals:'Спевки',m3:'3 мес',m6:'Полгода',year:'Год',
     singer:'Хорист',song:'Песня',times:'Всего',last:'Последний',present:'был',absent:'не был',notListed:'ещё не в хоре',service:'служение',
     sung:'пели в это служение',labels:'Ут — утреннее · Вч — вечернее · Сп — спевка',
-    admin:'Админка',songList:'Список песен',members:'Состав',whoCame:'Кто был',absentN:'отсутствуют',whatSang:'Что пели',selected:'выбрано',
+    admin:'Админка',songList:'Список песен',songQueue:'Песни служения',allSongs:'Все песни',members:'Состав',whoCame:'Кто был',absentN:'отсутствуют',whatSang:'Что пели',selected:'выбрано',
     autosave:'Ничего не сохраняется, пока вы не нажмёте «Сохранить».',done:'Готово',date:'1 · ДАТА',event:'2 · СОБЫТИЕ',
     save:'Сохранить',cancel:'Отмена',savedOk:'Сохранено.',
     unsavedN:n=>n+(n===1?' несохранённое изменение':n<5?' несохранённых изменения':' несохранённых изменений'),
@@ -389,7 +396,7 @@ const STR = {
     cancelledNote:'Отменённая дата не учитывается ни у кого — она исключена из всех процентов.',
     add:'Добавить',fullName:'Имя и фамилия',voicePart:'Партия',
     tSingers:'Хористы',tPianists:'Пианисты',tConductors:'Дирижёры',
-    conductor:'Дирижёр',pianist:'Пианист',noneSet:'—',credits:'Дирижёр и пианист',optional:'необязательно',
+    conductor:'Дирижёр',pianist:'Пианист',markC:'Д',markP:'П',noneSet:'—',credits:'Дирижёр и пианист',optional:'необязательно',timesN:n=>n+'×',rankNote:'Отсортировано по тому, как часто это делал каждый.',
     noRolesYet:'Сначала добавьте дирижёра или пианиста в «Админ → Состав».',roleNote:'Хорист может также дирижировать или играть — добавьте его один раз и отметьте роль.',
     confirmDropRole:'Убрать эту роль? Человек останется в списке.',
     singerKeepNote:'Этот человек поёт в хоре. Уберите роль через «Изм.» — удаление здесь стёрло бы и посещаемость.',
@@ -399,6 +406,7 @@ const STR = {
     exportTitle:'ЭКСПОРТ',exportAtt:'Посещаемость CSV',exportSongs:'История песен CSV',
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
     period:'Период',changePeriod:'Изменить',
+    chooseFrom:'Выбор песен',showList:n=>'Показать все ('+n+')',hideList:'Скрыть список',
     order:'Порядок песнопений',orderHint:'Номера ставятся в порядке нажатия. Стрелками можно поменять местами.',
     tOrder:'Порядок песнопений на',noOrderYet:'Песни ещё не выбраны',up:'Выше',down:'Ниже',
     home:'Главная',tSheets:'Ноты хора',tSheetsSub:'Скачать ноты к каждой песне',
@@ -421,7 +429,7 @@ const STR = {
     deleteSinger:'Удалить хориста? Прошлые отметки останутся в журнале.',deleteSong:'Удалить песню? История служений сохранится.',
     renameSinger:'Имя',renameSong:'Название',soprano:'СОПРАНО',alto:'АЛЬТ',tenor:'ТЕНОР',bass:'БАС',
     singersN:n=>n+' чел.',songsN:n=>n+' песен',sungN:(n,d)=>'спето '+n+' · посл. '+(d||'—'),wasPresent:'Был',wasAbsent:'Не был',wasNA:'Не в составе',
-    tapHint:'Нажимайте на имя: Был → Не был → Не в составе.',naNote:'«Не в составе» — хорист тогда ещё не пел; такие спевки не входят в его процент.'}
+    tapHint:'Нажмите на имя, чтобы отметить отсутствие.',naNote:'«Не в составе» — хорист тогда ещё не пел; такие спевки не входят в его процент.'}
 };
 const MON = { en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
               ru:['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'] };
@@ -431,8 +439,19 @@ const PARTS = ['soprano','alto','tenor','bass'];
 /* One roster: a person has a voice part (or none) and may also carry the
    pianist / conductor flags, so someone who sings AND conducts is entered once. */
 const isSinger = p => PARTS.includes(p.part);
-const pianists = () => S.singers.filter(p => p.is_pianist);
-const conductors = () => S.singers.filter(p => p.is_conductor);
+function creditCounts(col){
+  const n = new Map();
+  S.eventSongs.forEach(x => { const id = x[col]; if (id) n.set(id, (n.get(id) || 0) + 1); });
+  return n;
+}
+function rankedBy(flag, col){
+  const n = creditCounts(col);
+  return S.singers.filter(p => p[flag])
+    .map(p => ({ p, n: n.get(p.id) || 0 }))
+    .sort((a, b) => b.n - a.n || a.p.name.localeCompare(b.p.name, 'ru'));
+}
+const pianists = () => rankedBy('is_pianist', 'pianist_id');
+const conductors = () => rankedBy('is_conductor', 'conductor_id');
 /* "Семенюк Илья" → "Семенюк И." — five Семенюк make first names necessary,
    but the full pair is too long for a pill. */
 function shortName(id){
@@ -443,8 +462,10 @@ function shortName(id){
 }
 function creditPills(row){
   if (!row) return '';
-  const one = (id, mark) => id ? `<span class="who"><i>${mark}</i>${esc(shortName(id))}</span>` : '';
-  return one(row.conductor_id, 'C') + one(row.pianist_id, 'P');
+  const one = (id, mark, full) => id
+    ? `<span class="who" title="${esc(full)}"><i>${esc(mark)}</i>${esc(shortName(id))}</span>` : '';
+  return one(row.conductor_id, t('markC'), t('conductor'))
+       + one(row.pianist_id,   t('markP'), t('pianist'));
 }
 const songRow = (evId, songId) =>
   S.eventSongs.find(x => x.event_id === evId && x.song_id === songId);
@@ -465,6 +486,7 @@ const S = {
   entYear: 'all', entType: 'all', entPage: 0,   // all-entries page
   openSong: null,               // song expanded in the summary
   memTab: 'singers',            // Members sub-tab
+  pickOpen: null,               // song chooser: null = collapse itself at 3 picks
   preset: '6',
   query: '',
   draft: { date: today(), kind: 'morning', name: '', label: '' },
@@ -654,8 +676,8 @@ function adminBar(active){
   const i = (href,key,name) => `<a href="${href}" class="${active===key?'on':''}">${esc(t(name))}</a>`;
   return `<div class="tabbar">
     ${i('#/admin/attendance','att','attendance')}
-    ${i('#/admin/songs','songs','songs')}
-    ${i('#/admin/songlist','list','songList')}
+    ${i('#/admin/songs','songs','songQueue')}
+    ${i('#/admin/songlist','list','allSongs')}
     ${i('#/admin/members','members','members')}
   </div>`;
 }
@@ -996,8 +1018,7 @@ function markAttendance(ev){
           <div class="pill">${esc(st==='absent' ? t('wasAbsent') : st==='na' ? t('wasNA') : t('wasPresent'))}</div></div>`;
       }).join('');
     }).join('') +
-    `<div class="note" style="padding-bottom:0">${esc(t('tapHint'))}</div>
-     <div class="note" style="color:var(--faint)">${esc(t('naNote'))}</div>`) +
+    `<div class="note">${esc(t('tapHint'))}</div>`) +
     saveBar('att');
 }
 /* optional per-song credit. Empty is a legitimate answer, so no default. */
@@ -1006,7 +1027,8 @@ function who(slot, songId, people, label){
   return `<label class="cr"><em>${esc(label)}</em>
     <select data-credit="${slot}:${songId}">
       <option value="">${esc(t('noneSet'))}</option>
-      ${people.map(p => `<option value="${p.id}" ${v===p.id?'selected':''}>${esc(p.name)}</option>`).join('')}
+      ${people.map(({p, n}) => `<option value="${p.id}" ${v===p.id?'selected':''}>${esc(p.name)}${
+        n ? ' · ' + n : ''}</option>`).join('')}
     </select></label>`;
 }
 /* Its own section, so the running order above stays a plain list. */
@@ -1041,26 +1063,33 @@ function orderCard(){
           <button class="mini icon" data-move="down:${id}" ${i === ids.length - 1 ? 'disabled' : ''} aria-label="${esc(t('down'))}">↓</button>
         </div></div>`;
     }).join('') +
-    `<div class="note" style="padding-bottom:0">${esc(t('orderHint'))}</div>`;
+    `<div class="note">${esc(t('orderHint'))}</div>`;
 }
 function markSongs(ev){
   const E = editFor('songs', ev);
   const picked = E.sel.size;
   const list = S.songs.filter(s => s.active !== false &&
     (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
+  /* A 160-song list is a long scroll past the running order, so it folds itself
+     away once three songs are picked. S.pickOpen overrides in both directions. */
+  const open = S.pickOpen === null ? picked < 3 : S.pickOpen;
+  const chooser = `<button class="fold ${open?'open':''}" data-toggle-pick>
+      <span>${esc(t('chooseFrom'))}</span>
+      <em>${open ? esc(t('hideList')) : esc(t('showList')(list.length))} ${open?'▴':'▾'}</em>
+    </button>` +
+    (open ? `<div class="card"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>` +
+      list.map(s => {
+        const on = E.sel.has(s.id);
+        return `<div class="li tap ${on?'on':''}" data-toggle-song="${s.id}" data-event="${ev.id}">
+          <div class="box">${on ? E.sel.get(s.id).pos : ''}</div>
+          <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:1.2">${esc(s.title)}</div>
+          ${s.subtitle?`<div class="sub">${esc(s.subtitle)}</div>`:''}</div>
+          <div style="font-size:14px;color:var(--muted)">${songStats(s.id).n}</div></div>`;
+      }).join('') : '');
   return `<div class="h"><button class="back" data-cancel-marks="songs">‹</button>
       ${esc(fmtLong(ev.date))} <span class="n" style="color:var(--blue)">${picked}</span>
-      <span style="font-size:13px;color:var(--muted)">${esc(t('selected'))}</span></div>
-    <div class="card"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>` +
-    list.map(s => {
-      const on = E.sel.has(s.id);
-      return `<div class="li tap ${on?'on':''}" data-toggle-song="${s.id}" data-event="${ev.id}">
-        <div class="box">${on ? E.sel.get(s.id).pos : ''}</div>
-        <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:1.2">${esc(s.title)}</div>
-        ${s.subtitle?`<div class="sub">${esc(s.subtitle)}</div>`:''}</div>
-        <div style="font-size:14px;color:var(--muted)">${songStats(s.id).n}</div></div>`;
-    }).join('') +
-    orderCard() + creditsCard() +
+      <span style="font-size:13px;color:var(--muted)">${esc(t('selected'))}</span></div>` +
+    chooser + orderCard() + creditsCard() +
     saveBar('songs');
 }
 function manageSongs(){
@@ -1114,7 +1143,8 @@ function manageMembers(){
   }
 
   const role = tab === 'pianists' ? 'is_pianist' : 'is_conductor';
-  const rows = S.singers.filter(s => s[role]);
+  const col  = tab === 'pianists' ? 'pianist_id' : 'conductor_id';
+  const rows = rankedBy(role, col);      // most active first, same order as the dropdowns
   const pool = S.singers.filter(s => !s[role]).sort((a,b) => a.name.localeCompare(b.name, 'ru'));
   return tabs + `<div class="h">${esc(t(tab === 'pianists' ? 'tPianists' : 'tConductors'))}
       <span class="n">${esc(t('peopleN')(rows.length))}</span></div>
@@ -1129,8 +1159,9 @@ function manageMembers(){
         ${pool.map(s => `<option value="${s.id}">${esc(s.name)}${isSinger(s) ? ' · ' + esc(t(s.part)) : ''}</option>`).join('')}
       </select>` : ''}
     </div>
-    <div class="note">${esc(t('roleNote'))}</div>` +
-    (rows.length ? rows.map(s => personRow(s, isSinger(s) ? t(s.part) : t('noVoice'))).join('')
+    <div class="note">${esc(t('roleNote'))} ${esc(t('rankNote'))}</div>` +
+    (rows.length ? rows.map(({p, n}) => personRow(p,
+        [isSinger(p) ? t(p.part) : t('noVoice'), n ? t('timesN')(n) : ''].filter(Boolean).join(' · '))).join('')
                  : `<div class="msg">${esc(t('noEntries'))}</div>`);
 }
 function loginPage(){
@@ -1396,7 +1427,7 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick]');
   if (!el) return;
   const d = el.dataset;
 
@@ -1412,6 +1443,11 @@ document.addEventListener('click', async e => {
     return render();
   }
   if (d.type) { if (d.scope === 'sum') S.sumType = d.type; else S.typeFilter = d.type; return render(); }
+  if (el.hasAttribute('data-toggle-pick')) {
+    const picked = S.edit ? S.edit.sel.size : 0;
+    S.pickOpen = !(S.pickOpen === null ? picked < 3 : S.pickOpen);
+    return render();
+  }
   if (d.songDates) { S.openSong = S.openSong === d.songDates ? null : d.songDates; return render(); }
   if (d.entType) { S.entType = d.entType; S.entPage = 0; return render(); }
   if (d.entYear) { S.entYear = d.entYear; S.entPage = 0; return render(); }
@@ -1433,17 +1469,15 @@ document.addEventListener('click', async e => {
     const row = { date: S.draft.date, kind: S.draft.kind, label, name: S.draft.kind === 'other' ? S.draft.name : null };
     const ev = S.events.find(x => x.date === row.date && x.kind === row.kind && (x.name || '') === (row.name || ''));
     S.pending = ev ? null : row;          // written only when Save is pressed
-    S.edit = null;
+    S.edit = null; S.pickOpen = null; S.query = '';
     location.hash = '#/admin/' + (d.go === 'att' ? 'attendance' : 'songs') + '/' + (ev ? ev.id : 'new');
     return;
   }
 
-  if (d.toggleAbsent && S.edit) {              // present → absent → not listed → present
+  if (d.toggleAbsent && S.edit) {              // present ↔ absent
     S.toast = ''; S.retry = null;
-    const cur = S.edit.sel.get(d.toggleAbsent);
-    if (!cur) S.edit.sel.set(d.toggleAbsent, 'absent');
-    else if (cur === 'absent') S.edit.sel.set(d.toggleAbsent, 'na');
-    else S.edit.sel.delete(d.toggleAbsent);
+    S.edit.sel.has(d.toggleAbsent) ? S.edit.sel.delete(d.toggleAbsent)
+                                   : S.edit.sel.set(d.toggleAbsent, 'absent');
     return render();
   }
   if (d.toggleSong && S.edit) {
