@@ -39,11 +39,17 @@
   .lang button:hover:not(.on){color:#fff}
   .lang button.on{background:var(--gold);color:var(--ink)}
   .gold{height:2px;background:var(--gold)}
-  .nav{display:flex;background:var(--ink);padding:0 8px}
-  .nav a{padding:11px 12px;color:#9aa3bd;font-size:14px;transition:color .16s ease}
-  .nav a:hover{color:#fff}
-  .nav a.on{color:#fff;font-weight:600;border-bottom:3px solid var(--gold)}
-  .nav .right{margin-left:auto}
+  .nav{display:flex;align-items:center;gap:2px;background:var(--ink);padding:7px 8px;
+    overflow-x:auto;overflow-y:visible;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav::-webkit-scrollbar{display:none}
+  .nav a,.nav .navbtn{flex:none;display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 12px;
+    border:0;background:transparent;border-radius:8px;font-family:inherit;font-size:14px;font-weight:500;
+    line-height:1;color:#9aa3bd;white-space:nowrap;transition:background .16s ease,color .16s ease}
+  .nav a:hover,.nav .navbtn:hover{color:#fff;background:rgba(255,255,255,.08)}
+  .nav a.on,.nav .navbtn.on{color:var(--ink);background:var(--gold);font-weight:600}
+  .nav a.on:hover,.nav .navbtn.on:hover{color:var(--ink);background:#d5ae2e}
+  .nav .right{margin-left:auto;position:sticky;right:0;background:var(--ink);box-shadow:-10px 0 10px var(--ink)}
+
   /* tabs + controls */
   .tabs{display:flex;background:#fff;border-bottom:1px solid var(--rule)}
   .tabs a{flex:1;padding:11px 0;text-align:center;font-size:15px;color:var(--muted);border-bottom:3px solid transparent;transition:color .16s ease,border-color .16s ease}
@@ -79,6 +85,29 @@
   .savebar .sb.go{background:var(--blue);border-color:var(--blue);color:#fff}
   .savebar .sb.go:hover{background:#33488f}
   .savebar .sb[disabled]{opacity:.45;cursor:default}
+  .caret{width:20px;flex:none;text-align:right;font-size:12px;color:var(--faint)}
+  .li.on .caret{color:var(--blue)}
+  .drawer{background:#fbfbf9;border-bottom:1px solid var(--rule);padding:4px 16px 12px}
+  .drawer .dh{display:flex;align-items:baseline;gap:8px;padding:10px 0 6px;font-size:12px;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .drawer .dh span{text-transform:none;letter-spacing:0;color:var(--faint)}
+  .drawer .dr{display:flex;align-items:baseline;gap:12px;padding:5px 0;border-top:1px solid #e9eae4}
+  .drawer .dd{width:44%;flex:none;font-size:14px;font-variant-numeric:tabular-nums}
+  .drawer .dk{flex:1;min-width:0;font-size:13px;color:var(--muted)}
+  .drawer .dk.cx{color:var(--red)}
+  .ver{padding:4px 16px 24px;text-align:center;font-size:12px;color:var(--faint);
+    font-variant-numeric:tabular-nums;letter-spacing:.04em}
+  .dpick{position:relative;flex:1;min-width:0;display:block}
+  .dpick span{display:block;border:1px solid var(--rule);border-radius:8px;background:#fbfbf9;
+    padding:10px 11px;font-size:15px;line-height:1.2;color:var(--ink);text-align:center;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:border-color .15s ease,background .15s ease}
+  .dpick:hover span{border-color:#b9bdb2;background:#fff}
+  .dpick input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;
+    -webkit-appearance:none;appearance:none;border:0;padding:0;background:transparent}
+  .dpick:focus-within span{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(58,80,160,.12)}
+  .dates .sep{flex:none;color:var(--faint)}
+  .s b{display:inline-block;min-width:1.3em;margin-right:7px;color:var(--muted);font-weight:600;
+    font-variant-numeric:tabular-nums}
   .pager{display:flex;align-items:center;gap:10px;padding:0 16px 20px}
   .pager .pg{flex:1;text-align:center;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
   a.back{text-decoration:none}
@@ -273,7 +302,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 /* ---------- i18n ---------- */
 const STR = {
   en:{attendance:'Attendance',songs:'Songs',signin:'Sign in',signout:'Sign out',grid:'Grid',summary:'Summary',
-    byService:'By service',all:'All',services:'Services',rehearsals:'Rehearsals',m2:'2 mo',m3:'3 mo',m6:'6 mo',year:'Year',
+    byService:'By service',all:'All',services:'Services',rehearsals:'Rehearsals',m3:'3 mo',m6:'6 mo',year:'Year',
     singer:'Singer',song:'Song',times:'Times',last:'Last sung',present:'present',absent:'absent',notListed:'not in choir yet',service:'service',
     sung:'sung at this service',labels:'M — morning service · E — evening service · R — rehearsal',
     admin:'Admin',songList:'Song list',members:'Members',whoCame:'Who came',absentN:'absent',whatSang:'What we sang',selected:'selected',
@@ -285,6 +314,7 @@ const STR = {
     eventName:'Event name',shortLabel:'Label',labelHint:'The short label shows under the date in the grid — 1–2 letters.',
     markAtt:'Mark attendance →',chooseSongs:'Choose songs →',recent:'RECENT ENTRIES',edit:'Edit',del:'Delete',
     allEntries:'All entries',olderEntries:'Older entries →',entriesN:n=>n+' entries',noEntries:'Nothing recorded yet',
+    songDates:'When it was sung',inRangeN:n=>n+' in this period',closeRow:'Close',
     allYears:'All years',prevPage:'← Newer',nextPage:'Older →',ofPages:(a,b)=>a+' of '+b,showingN:(a,b)=>a+' of '+b,
     cancelled:'cancelled',cancelledEvent:'Cancelled',markCancelled:'Mark as cancelled',unmarkCancelled:'Not cancelled after all',
     cancelledNote:'A cancelled date counts for nobody — it is left out of every attendance percentage.',
@@ -295,14 +325,14 @@ const STR = {
     period:'Period',changePeriod:'Change',
     order:'Order of songs',orderHint:'Numbered in the order you tap them. Use the arrows to rearrange.',
     tOrder:'Song order for',noOrderYet:'No songs chosen for a service yet',up:'Move up',down:'Move down',
-    tSheets:'Sheet music',tSheetsSub:'Download the notes for each song',
+    home:'Home',tSheets:'Choir sheets',tSheetsSub:'Download the notes for each song',
     tPiano:'Piano sheets',tPianoSub:'Accompaniment for each song',piano:'Piano sheets',
     withPiano:n=>n+' with piano sheets',
     adminOnly:'Admin only',adminOnlyShort:'Admin only',makeAdminOnly:'Make admin only',makePublic:'Make public',
     adminOnlyNote:'Admin-only files are hidden from everyone who is not signed in.',opening:'Opening…',
-    sheets:'Sheet music',download:'Open',upload:'Upload PDF',replace:'Replace',removePdf:'Remove',
+    sheets:'Sheet music',navSheets:'Sheets',choirSheets:'Choir sheets',download:'Open',upload:'Upload PDF',replace:'Replace',removePdf:'Remove',
     noPdf:'No file yet',uploading:'Uploading…',pdfOnly:'Please choose a PDF file.',
-    confirmRemovePdf:'Remove the PDF for this song?',withPdf:n=>n+' with sheet music',
+    confirmRemovePdf:'Remove the PDF for this song?',withPdf:n=>n+' with choir sheets',
     sessionLost:'Your sign-in expired. Please sign in again.',
     home:'Home',homeSub:'Youth choir attendance and song ledger',
     tAttGrid:'Attendance',tAttGridSub:'Who was at each rehearsal and service',
@@ -318,7 +348,7 @@ const STR = {
     singersN:n=>n+' singers',songsN:n=>n+' songs',sungN:(n,d)=>'sung '+n+'× · last '+(d||'—'),wasPresent:'Present',wasAbsent:'Absent',wasNA:'Not listed',
     tapHint:'Tap a name: Present → Absent → Not listed.',naNote:'“Not listed” means the singer was not in the choir yet — those rehearsals are left out of their percentage.'},
   ru:{attendance:'Посещаемость',songs:'Песни',signin:'Вход',signout:'Выйти',grid:'Сетка',summary:'Сводка',
-    byService:'По служениям',all:'Всё',services:'Служения',rehearsals:'Спевки',m2:'2 мес',m3:'3 мес',m6:'Полгода',year:'Год',
+    byService:'По служениям',all:'Всё',services:'Служения',rehearsals:'Спевки',m3:'3 мес',m6:'Полгода',year:'Год',
     singer:'Хорист',song:'Песня',times:'Всего',last:'Последний',present:'был',absent:'не был',notListed:'ещё не в хоре',service:'служение',
     sung:'пели в это служение',labels:'Ут — утреннее · Вч — вечернее · Сп — спевка',
     admin:'Админка',songList:'Список песен',members:'Состав',whoCame:'Кто был',absentN:'отсутствуют',whatSang:'Что пели',selected:'выбрано',
@@ -331,6 +361,7 @@ const STR = {
     eventName:'Название события',shortLabel:'Метка',labelHint:'Короткая метка показывается под датой в сетке — 1–2 буквы.',
     markAtt:'Отметить посещаемость →',chooseSongs:'Выбрать песни →',recent:'ПОСЛЕДНИЕ ЗАПИСИ',edit:'Изм.',del:'Удал.',
     allEntries:'Все записи',olderEntries:'Более ранние записи →',entriesN:n=>'записей: '+n,noEntries:'Пока ничего не записано',
+    songDates:'Когда пели',inRangeN:n=>'в этом периоде: '+n,closeRow:'Закрыть',
     allYears:'Все годы',prevPage:'← Новее',nextPage:'Ранее →',ofPages:(a,b)=>a+' из '+b,showingN:(a,b)=>a+' из '+b,
     cancelled:'отменено',cancelledEvent:'Отменено',markCancelled:'Отметить как отменённое',unmarkCancelled:'Отмена не состоялась',
     cancelledNote:'Отменённая дата не учитывается ни у кого — она исключена из всех процентов.',
@@ -342,12 +373,12 @@ const STR = {
     period:'Период',changePeriod:'Изменить',
     order:'Порядок песнопений',orderHint:'Номера ставятся в порядке нажатия. Стрелками можно поменять местами.',
     tOrder:'Порядок песнопений на',noOrderYet:'Песни ещё не выбраны',up:'Выше',down:'Ниже',
-    tSheets:'Ноты',tSheetsSub:'Скачать ноты к каждой песне',
+    home:'Главная',tSheets:'Ноты хора',tSheetsSub:'Скачать ноты к каждой песне',
     tPiano:'Ноты для фортепиано',tPianoSub:'Аккомпанемент к каждой песне',piano:'Фортепиано',
     withPiano:n=>'с фортепиано: '+n,
     adminOnly:'Только для админа',adminOnlyShort:'Только админ',makeAdminOnly:'Скрыть от всех',makePublic:'Открыть всем',
     adminOnlyNote:'Закрытые файлы не видны тем, кто не вошёл в систему.',opening:'Открываем…',
-    sheets:'Ноты',download:'Открыть',upload:'Загрузить PDF',replace:'Заменить',removePdf:'Удалить',
+    sheets:'Ноты',navSheets:'Ноты',choirSheets:'Ноты хора',download:'Открыть',upload:'Загрузить PDF',replace:'Заменить',removePdf:'Удалить',
     noPdf:'Файла нет',uploading:'Загрузка…',pdfOnly:'Выберите файл PDF.',
     confirmRemovePdf:'Удалить ноты этой песни?',withPdf:n=>'с нотами: '+n,
     sessionLost:'Сеанс истёк. Войдите снова.',
@@ -380,12 +411,12 @@ const S = {
   error: '',
   singers: [], songs: [], events: [], absences: [], eventSongs: [],
   uploading: null,
-  from: null, to: null,           // public grid range
-  sumFrom: null, sumTo: null,     // summary range
+  from: null, to: null,           // one range, shared by grid / summary / by service
   typeFilter: 'all',            // grid picker
   sumType: 'all',               // summary picker
   entYear: 'all', entType: 'all', entPage: 0,   // all-entries page
-  preset: { grid: '2', sum: '12' },
+  openSong: null,               // song expanded in the summary
+  preset: '6',
   query: '',
   draft: { date: today(), kind: 'morning', name: '', label: '' },
   pending: null,                  // event being created, not written yet
@@ -397,6 +428,8 @@ const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp
 
 /* ---------- dates ---------- */
 function today(){ return new Date().toISOString().slice(0,10); }
+const EPOCH = '2017-01-01';        // no choir records exist before this
+const VERSION = '3.1';
 function shift(months){ const d = new Date(); d.setMonth(d.getMonth() - months); return d.toISOString().slice(0,10); }
 function fmtLong(iso){ const [y,m,d] = iso.split('-').map(Number);
   return S.lang === 'en' ? MONF.en[m-1] + ' ' + d + ', ' + y : d + ' ' + MONF.ru[m-1] + ' ' + y; }
@@ -547,10 +580,11 @@ function homePage(){
       ${tile('#/attendance/grid','tAttGrid','tAttGridSub',ICON.attGrid)}
       ${tile('#/songs/grid','tSongGrid','tSongGridSub',ICON.songGrid)}
       ${tile('#/sheets','tSheets','tSheetsSub',ICON.sheets)}
-      ${tile('#/piano','tPiano','tPianoSub',ICON.piano)}
+      ${tile('#/sheets/piano','tPiano','tPianoSub',ICON.piano)}
       ${S.session ? tile('#/admin/attendance','tAdmin','tAdminSub',ICON.user,true)
                   : tile('#/login','tSignIn','tSignInSub',ICON.user,true)}
-    </div>`;
+    </div>
+    <div class="ver">v${VERSION}</div>`;
 }
 function publicNav(active){
   const right = S.session
@@ -558,10 +592,12 @@ function publicNav(active){
     : `<a href="#/login" class="right">${esc(t('signin'))}</a>`;
   const adminTab = S.session
     ? `<a href="#/admin/attendance" class="${active==='admin'?'on':''}">${esc(t('admin'))}</a>` : '';
+  const onSheets = active === 'sheets' || active === 'piano';
   return `<div class="nav">
+    <a href="#/home" class="${active==='home'?'on':''}">${esc(t('home'))}</a>
     <a href="#/attendance" class="${active==='att'?'on':''}">${esc(t('attendance'))}</a>
     <a href="#/songs" class="${active==='songs'?'on':''}">${esc(t('songs'))}</a>
-    <a href="#/sheets" class="${active==='sheets'?'on':''}">${esc(t('sheets'))}</a>
+    <a href="#/sheets" class="${onSheets?'on':''}">${esc(t('navSheets'))}</a>
     ${adminTab}${right}
   </div>`;
 }
@@ -575,21 +611,23 @@ function adminBar(active){
   </div>`;
 }
 function rangeCtrl(kind, typeFilter){
-  const from = kind==='sum' ? S.sumFrom : S.from, to = kind==='sum' ? S.sumTo : S.to;
-  const presets = kind==='sum'
-    ? [['3',t('m3')],['6',t('m6')],['12',t('year')],['all',t('all')]]
-    : [['2',t('m2')],['6',t('m6')],['12',t('year')],['all',t('all')]];
+  const from = S.from, to = S.to;
+  const presets = [['3',t('m3')],['6',t('m6')],['12',t('year')],['all',t('all')]];
   const cur = kind==='sum' ? S.sumType : S.typeFilter;
   const seg = typeFilter ? `<div class="seg tiny">${
       [['all','all'],['services','services'],['rehearsals','rehearsals']].map(([v,l]) =>
         `<button data-type="${v}" data-scope="${kind}" class="${cur===v?'on':''}">${esc(t(l))}</button>`).join('')
     }</div>` : '';
   const chips = `<div class="chips">${presets.map(([v,l]) =>
-      `<button data-preset="${v}" data-range="${kind}" class="${S.preset[kind]===v?'on':''}">${esc(l)}</button>`).join('')}</div>`;
+      `<button data-preset="${v}" data-range="${kind}" class="${S.preset===v?'on':''}">${esc(l)}</button>`).join('')}</div>`;
+  const dpick = (v, edge) => `<label class="dpick">
+      <span>${esc(fmtPill(v))}</span>
+      <input type="date" value="${v}" data-range="${kind}" data-edge="${edge}">
+    </label>`;
   const dates = `<div class="dates">
-      <input type="date" value="${from}" data-range="${kind}" data-edge="from">
-      <span>—</span>
-      <input type="date" value="${to}" data-range="${kind}" data-edge="to">
+      ${dpick(from, 'from')}
+      <span class="sep">—</span>
+      ${dpick(to, 'to')}
     </div>`;
 
   // wide screens: everything on one line, no pill
@@ -648,7 +686,7 @@ function attendanceGrid(top){
     <div class="legend endbar" style="padding-top:0">${esc(t('labels'))}</div></div>`;
 }
 function attendanceSummary(){
-  const ev = S.events.filter(hasAtt).filter(e => inRange(e.date, S.sumFrom, S.sumTo))
+  const ev = S.events.filter(hasAtt).filter(e => inRange(e.date, S.from, S.to))
     .filter(e => S.sumType === 'all' ? true
       : S.sumType === 'services' ? e.kind !== 'rehearsal' : e.kind === 'rehearsal');
   if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
@@ -703,19 +741,39 @@ function songsByService(){
                     : `<div class="s" style="color:var(--faint)">—</div>`}</div>`;
   }).join('');
 }
+function songDates(songId){
+  return S.eventSongs.filter(x => x.song_id === songId)
+    .map(x => S.events.find(e => e.id === x.event_id))
+    .filter(e => e && inRange(e.date, S.from, S.to))
+    .sort((a,b) => a.date < b.date ? 1 : -1);
+}
 function songsSummary(){
-  const rows = S.songs.map(s => ({ s, st: songStats(s.id, S.sumFrom, S.sumTo) }))
+  const rows = S.songs.map(s => ({ s, st: songStats(s.id, S.from, S.to) }))
     .filter(r => r.st.n > 0).sort((a,b) => b.st.n - a.st.n);
   if (!rows.length) return `<div class="msg">${esc(t('noSongs'))}</div>`;
   const max = Math.max(1, ...rows.map(r => r.st.n));
   return `<div class="li" style="background:#fbfbf9;font-size:12px;color:var(--muted)">
       <div style="flex:1">${esc(t('song'))}</div><div style="width:54px;text-align:right">${esc(t('times'))}</div>
       <div style="width:84px;text-align:right">${esc(t('last'))}</div></div>` +
-    rows.map(({s,st}) => `<div class="li">
-      <div style="flex:1;min-width:0"><div style="font-size:15px;line-height:1.2">${esc(s.title)}</div>
+    rows.map(({s,st}) => {
+      const open = S.openSong === s.id;
+      const dates = open ? songDates(s.id) : [];
+      return `<div class="li tap ${open?'on':''}" data-song-dates="${s.id}">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:15px;line-height:1.2">${esc(s.title)}${
+          s.subtitle ? ` <span style="color:var(--faint);font-size:13px">${esc(s.subtitle)}</span>` : ''}</div>
         <div class="bar" style="margin-top:5px"><i style="width:${Math.round(st.n/max*100)}%"></i></div></div>
       <div style="width:54px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums">${st.n}</div>
-      <div style="width:84px;text-align:right;font-size:13px;color:var(--muted)">${esc(st.last || '—')}</div></div>`).join('');
+      <div style="width:84px;text-align:right;font-size:13px;color:var(--muted)">${esc(st.last || '—')}</div>
+      <div class="caret ${open?'up':''}">${open ? '▴' : '▾'}</div></div>` +
+      (open ? `<div class="drawer">
+        <div class="dh">${esc(t('songDates'))} <span>${esc(t('inRangeN')(dates.length))}</span></div>
+        ${dates.map(e => `<div class="dr">
+          <div class="dd">${esc(fmtLong(e.date))}</div>
+          <div class="dk ${e.cancelled?'cx':''}">${esc(e.name || t(e.kind))}${
+            e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</div></div>`).join('')}
+      </div>` : '');
+    }).join('');
 }
 
 /* ---------- admin ---------- */
@@ -966,14 +1024,17 @@ function loginPage(){
    'sheets' → songs.pdf_path in the "sheets" bucket
    'piano'  → songs.piano_path in the "piano" bucket */
 const SHEETKIND = {
-  sheets: { col: 'pdf_path',   lock: 'pdf_locked',   bucket: 'sheets', title: 'sheets', count: 'withPdf'   },
+  sheets: { col: 'pdf_path',   lock: 'pdf_locked',   bucket: 'sheets', title: 'choirSheets', count: 'withPdf' },
   piano:  { col: 'piano_path', lock: 'piano_locked', bucket: 'piano',  title: 'piano',  count: 'withPiano' }
 };
 function sheetsPage(kind){
   const K = SHEETKIND[kind];
+  const tabs = `<div class="tabs">
+    <a href="#/sheets" class="${kind==='sheets'?'on':''}">${esc(t('choirSheets'))}</a>
+    <a href="#/sheets/piano" class="${kind==='piano'?'on':''}">${esc(t('piano'))}</a></div>`;
   const list = S.songs.filter(s => !S.query || s.title.toLowerCase().includes(S.query.toLowerCase()));
   const withPdf = S.songs.filter(s => s[K.col]).length;
-  return `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>
+  return tabs + `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>
     <div class="searchrow" style="padding-top:12px"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>` +
     list.map(s => {
       const path = s[K.col], locked = !!s[K.lock];
@@ -1073,8 +1134,8 @@ function render(){
       : 'members');
   }
   else if (r.startsWith('#/login')) { html += publicNav('') + loginPage(); }
+  else if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) { html += publicNav('piano') + sheetsPage('piano'); }
   else if (r.startsWith('#/sheets')) { html += publicNav('sheets') + sheetsPage('sheets'); }
-  else if (r.startsWith('#/piano'))  { html += publicNav('piano')  + sheetsPage('piano'); }
   else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
   else if (r.startsWith('#/songs')) {
     const tab = r.split('/')[2] || 'grid';
@@ -1193,7 +1254,7 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates]');
   if (!el) return;
   const d = el.dataset;
 
@@ -1201,13 +1262,15 @@ document.addEventListener('click', async e => {
 
   if (el.hasAttribute('data-toggle-range')) { S.showRange = !S.showRange; return render(); }
   if (d.preset) {
-    const months = d.preset === 'all' ? 600 : +d.preset;
-    S.preset[d.range] = d.preset;
-    if (d.range === 'sum') { S.sumFrom = shift(months); S.sumTo = today(); }
-    else { S.from = shift(months); S.to = today(); }
+    // "All" starts at the earliest entry rather than centuries back
+    const first = S.events.reduce((m, e) => e.date < m ? e.date : m, today());
+    const start = d.preset === 'all' ? (S.events.length ? first : EPOCH) : shift(+d.preset);
+    S.preset = d.preset;
+    S.from = start; S.to = today();
     return render();
   }
   if (d.type) { if (d.scope === 'sum') S.sumType = d.type; else S.typeFilter = d.type; return render(); }
+  if (d.songDates) { S.openSong = S.openSong === d.songDates ? null : d.songDates; return render(); }
   if (d.entType) { S.entType = d.entType; S.entPage = 0; return render(); }
   if (d.entYear) { S.entYear = d.entYear; S.entPage = 0; return render(); }
   if (d.entPage !== undefined && el.hasAttribute('data-ent-page')) {
@@ -1459,9 +1522,8 @@ document.addEventListener('change', async e => {
   }
   if (el.dataset.range) {
     const v = el.value;
-    S.preset[el.dataset.range] = null;
-    if (el.dataset.range === 'sum') { if (el.dataset.edge === 'from') S.sumFrom = v; else S.sumTo = v; }
-    else { if (el.dataset.edge === 'from') S.from = v; else S.to = v; }
+    S.preset = null;
+    if (el.dataset.edge === 'from') S.from = v; else S.to = v;
     render();
   }
 });
@@ -1484,7 +1546,7 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
 window.addEventListener('online', () => { if (S.toast) { S.toast = ''; render(); } load(true); });
-S.from = shift(2); S.to = today(); S.sumFrom = shift(12); S.sumTo = today();
+S.from = shift(6); S.to = today();
 let wasWide = isWide();
 window.addEventListener('resize', () => { if (isWide() !== wasWide) { wasWide = isWide(); render(); } });
 const { data: { session } } = await sb.auth.getSession();
