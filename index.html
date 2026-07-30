@@ -52,7 +52,7 @@
 
   /* tabs + controls */
   .tabs{display:flex;background:#fff;border-bottom:1px solid var(--rule)}
-  .tabs a{flex:1;padding:11px 0;text-align:center;font-size:15px;color:var(--muted);border-bottom:3px solid transparent;transition:color .16s ease,border-color .16s ease}
+  .tabs a{flex:1;min-width:0;padding:11px 4px;text-align:center;font-size:15px;color:var(--muted);border-bottom:3px solid transparent;transition:color .16s ease,border-color .16s ease}
   .tabs a:hover{color:var(--ink)}
   .tabs a.on{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
   .ctrl{background:#fff;padding:12px 14px 14px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:10px}
@@ -342,7 +342,9 @@ const STR = {
     cancelledNote:'A cancelled date counts for nobody — it is left out of every attendance percentage.',
     add:'Add',fullName:'First and last name',voicePart:'Voice part',
     tSingers:'Singers',tPianists:'Pianists',tConductors:'Conductors',
-    conductor:'Conductor',pianist:'Pianist',markC:'C',markP:'P',noneSet:'—',credits:'Conductor & pianist',optional:'optional',timesN:n=>n+'×',rankNote:'Ordered by how often each person has done it.',
+    conductor:'Conductor',pianist:'Pianist',markC:'C',markP:'P',
+    people:'People',lastLed:'Most recent',conducted:'conducted',played:'played',bothRoles:'conducts · plays',
+    ledN:n=>n+'×',noPeopleYet:'Nobody has been credited in this period yet.',theirSongs:'Songs they led',noneSet:'—',credits:'Conductor & pianist',optional:'optional',timesN:n=>n+'×',rankNote:'Ordered by how often each person has done it.',
     noRolesYet:'Add a conductor or pianist under Admin → Members first.',roleNote:'A singer can also conduct or play; add them once and give them the role.',
     confirmDropRole:'Remove this role from this person? They stay on the roster.',
     singerKeepNote:'This person sings in the choir. Use Edit to remove the role instead — deleting them here would remove their attendance too.',
@@ -396,7 +398,9 @@ const STR = {
     cancelledNote:'Отменённая дата не учитывается ни у кого — она исключена из всех процентов.',
     add:'Добавить',fullName:'Имя и фамилия',voicePart:'Партия',
     tSingers:'Хористы',tPianists:'Пианисты',tConductors:'Дирижёры',
-    conductor:'Дирижёр',pianist:'Пианист',markC:'Д',markP:'П',noneSet:'—',credits:'Дирижёр и пианист',optional:'необязательно',timesN:n=>n+'×',rankNote:'Отсортировано по тому, как часто это делал каждый.',
+    conductor:'Дирижёр',pianist:'Пианист',markC:'Д',markP:'П',
+    people:'Кто вёл',lastLed:'Последний раз',conducted:'дирижировал',played:'играл',bothRoles:'дирижирует · играет',
+    ledN:n=>n+'×',noPeopleYet:'В этом периоде записей нет.',theirSongs:'Песни',noneSet:'—',credits:'Дирижёр и пианист',optional:'необязательно',timesN:n=>n+'×',rankNote:'Отсортировано по тому, как часто это делал каждый.',
     noRolesYet:'Сначала добавьте дирижёра или пианиста в «Админ → Состав».',roleNote:'Хорист может также дирижировать или играть — добавьте его один раз и отметьте роль.',
     confirmDropRole:'Убрать эту роль? Человек останется в списке.',
     singerKeepNote:'Этот человек поёт в хоре. Уберите роль через «Изм.» — удаление здесь стёрло бы и посещаемость.',
@@ -485,6 +489,7 @@ const S = {
   sumType: 'all',               // summary picker
   entYear: 'all', entType: 'all', entPage: 0,   // all-entries page
   openSong: null,               // song expanded in the summary
+  openPerson: null, peopleRole: 'all',          // Songs → People tab
   memTab: 'singers',            // Members sub-tab
   pickOpen: null,               // song chooser: null = collapse itself at 3 picks
   preset: '6',
@@ -818,6 +823,66 @@ function songDates(songId){
     .map(x => S.events.find(e => e.id === x.event_id))
     .filter(e => e && inRange(e.date, S.from, S.to))
     .sort((a,b) => a.date < b.date ? 1 : -1);
+}
+/* Public view of the credits: one row per person, expandable to the songs they
+   led. Counts respect the date range, like every other summary here. */
+function creditRows(){
+  const inSpan = new Map();          // event id -> true, for the current range
+  S.events.forEach(e => { if (inRange(e.date, S.from, S.to)) inSpan.set(e.id, e.date); });
+  const acc = new Map();             // person id -> {c, p, last, songs:Map}
+  const bump = (id, slot, songId, date) => {
+    if (!id) return;
+    if (!acc.has(id)) acc.set(id, { c: 0, p: 0, last: '', songs: new Map() });
+    const a = acc.get(id);
+    a[slot]++;
+    if (date > a.last) a.last = date;
+    a.songs.set(songId, (a.songs.get(songId) || 0) + 1);
+  };
+  S.eventSongs.forEach(x => {
+    const date = inSpan.get(x.event_id);
+    if (!date) return;
+    bump(x.conductor_id, 'c', x.song_id, date);
+    bump(x.pianist_id, 'p', x.song_id, date);
+  });
+  return [...acc.entries()]
+    .map(([id, a]) => ({ person: S.singers.find(s => s.id === id), ...a }))
+    .filter(r => r.person)
+    .filter(r => S.peopleRole === 'all' ? true : S.peopleRole === 'conductors' ? r.c : r.p)
+    .sort((a, b) => (b.c + b.p) - (a.c + a.p) || a.person.name.localeCompare(b.person.name, 'ru'));
+}
+function songsPeople(){
+  const rows = creditRows();
+  const seg = `<div class="ctlbar"><div class="seg tiny">${
+    [['all','all'],['conductors','tConductors'],['pianists','tPianists']].map(([v,l]) =>
+      `<button data-people-role="${v}" class="${S.peopleRole===v?'on':''}">${esc(t(l))}</button>`).join('')
+  }</div></div>`;
+  if (!rows.length) return seg + `<div class="msg">${esc(t('noPeopleYet'))}</div>`;
+  const max = Math.max(1, ...rows.map(r => r.c + r.p));
+  return seg + `<div class="li" style="background:#fbfbf9;font-size:12px;color:var(--muted)">
+      <div style="flex:1">${esc(t('singer'))}</div><div style="width:54px;text-align:right">${esc(t('times'))}</div>
+      <div style="width:84px;text-align:right">${esc(t('lastLed'))}</div></div>` +
+    rows.map(r => {
+      const open = S.openPerson === r.person.id, total = r.c + r.p;
+      const role = r.c && r.p ? t('bothRoles') : r.c ? t('conductor') : t('pianist');
+      const songs = open ? [...r.songs.entries()]
+        .map(([id, n]) => ({ s: S.songs.find(x => x.id === id), n }))
+        .filter(x => x.s).sort((a, b) => b.n - a.n || a.s.title.localeCompare(b.s.title, 'ru')) : [];
+      return `<div class="li tap ${open?'on':''}" data-person="${r.person.id}">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;line-height:1.2">${esc(r.person.name)}</div>
+          <div class="sub" style="font-style:normal">${esc(role)}${
+            r.c && r.p ? ` · ${esc(t('markC'))} ${r.c} · ${esc(t('markP'))} ${r.p}` : ''}</div>
+          <div class="bar" style="margin-top:5px"><i style="width:${Math.round(total/max*100)}%"></i></div></div>
+        <div style="width:54px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums">${total}</div>
+        <div style="width:84px;text-align:right;font-size:13px;color:var(--muted)">${esc(fmtShort(r.last))}</div>
+        <div class="caret ${open?'up':''}">${open ? '▴' : '▾'}</div></div>` +
+      (open ? `<div class="drawer">
+        <div class="dh">${esc(t('theirSongs'))} <span>${esc(t('inRangeN')(songs.length))}</span></div>
+        ${songs.map(x => `<div class="dr">
+          <div class="dd" style="width:auto;flex:1">${esc(x.s.title)}</div>
+          <div class="dk" style="flex:none;text-align:right">${esc(t('ledN')(x.n))}</div></div>`).join('')}
+      </div>` : '');
+    }).join('');
 }
 function songsSummary(){
   const rows = S.songs.map(s => ({ s, st: songStats(s.id, S.from, S.to) }))
@@ -1302,9 +1367,11 @@ function render(){
     const songTabs = `<div class="tabs">
       <a href="#/songs/grid" class="${tab==='grid'?'on':''}">${esc(t('grid'))}</a>
       <a href="#/songs/services" class="${tab==='services'?'on':''}">${esc(t('byService'))}</a>
-      <a href="#/songs/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
+      <a href="#/songs/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a>
+      <a href="#/songs/people" class="${tab==='people'?'on':''}">${esc(t('people'))}</a></div>`;
     html += publicNav('songs');
-    if (tab === 'summary') html += songTabs + rangeCtrl('sum') + songsSummary();
+    if (tab === 'people') html += songTabs + rangeCtrl('sum') + songsPeople();
+    else if (tab === 'summary') html += songTabs + rangeCtrl('sum') + songsSummary();
     else if (tab === 'services') html += songTabs + rangeCtrl('grid') + songsByService();
     else html += songsGrid(songTabs + rangeCtrl('grid')
       + `<div class="searchrow"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}"></div>`);
@@ -1427,7 +1494,7 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role]');
   if (!el) return;
   const d = el.dataset;
 
@@ -1448,6 +1515,8 @@ document.addEventListener('click', async e => {
     S.pickOpen = !(S.pickOpen === null ? picked < 3 : S.pickOpen);
     return render();
   }
+  if (d.peopleRole) { S.peopleRole = d.peopleRole; S.openPerson = null; return render(); }
+  if (d.person) { S.openPerson = S.openPerson === d.person ? null : d.person; return render(); }
   if (d.songDates) { S.openSong = S.openSong === d.songDates ? null : d.songDates; return render(); }
   if (d.entType) { S.entType = d.entType; S.entPage = 0; return render(); }
   if (d.entYear) { S.entYear = d.entYear; S.entPage = 0; return render(); }
