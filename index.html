@@ -234,6 +234,7 @@
   .legend i.na{color:#b3b7ac;background:#f1f2ee}
   .legend i{width:16px;height:16px;border:1px solid var(--rule);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:11px;color:var(--red)}
   /* lists */
+  select.part{padding:7px 6px;font-size:13px;max-width:104px}
   .sectbar{background:var(--ink);color:var(--paper);font-family:'Alice',serif;font-size:13px;letter-spacing:.14em;padding:7px 16px}
   .li{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rule);background:#fff}
   .li.tap{min-height:58px;cursor:pointer;user-select:none;transition:background .14s ease}
@@ -343,6 +344,7 @@ const STR = {
     add:'Add',fullName:'First and last name',voicePart:'Voice part',
     tSingers:'Singers',tPianists:'Pianists',tConductors:'Conductors',
     conductor:'Conductor',pianist:'Pianist',markC:'C',markP:'P',
+    voicePart:'Voice part',partMoved:(n,p)=>n+' → '+p+'. Attendance is unchanged.',
     people:'People',personCol:'Name',lastLed:'Most recent',conducted:'conducted',played:'played',bothRoles:'conducts · plays',
     ledN:n=>n+'×',noPeopleYet:'Nobody has been credited in this period yet.',theirSongs:'Songs they led',noneSet:'—',credits:'Conductor & pianist',optional:'optional',timesN:n=>n+'×',rankNote:'Ordered by how often each person has done it.',
     noRolesYet:'Add a conductor or pianist under Admin → Members first.',roleNote:'A singer can also conduct or play; add them once and give them the role.',
@@ -399,6 +401,7 @@ const STR = {
     add:'Добавить',fullName:'Имя и фамилия',voicePart:'Партия',
     tSingers:'Хористы',tPianists:'Пианисты',tConductors:'Дирижёры',
     conductor:'Дирижёр',pianist:'Пианист',markC:'Д',markP:'П',
+    voicePart:'Партия',partMoved:(n,p)=>n+' → '+p+'. Посещаемость не изменилась.',
     people:'Кто вёл',personCol:'Имя',lastLed:'Последний раз',conducted:'дирижировал',played:'играл',bothRoles:'дирижирует · играет',
     ledN:n=>n+'×',noPeopleYet:'В этом периоде записей нет.',theirSongs:'Песни',noneSet:'—',credits:'Дирижёр и пианист',optional:'необязательно',timesN:n=>n+'×',rankNote:'Отсортировано по тому, как часто это делал каждый.',
     noRolesYet:'Сначала добавьте дирижёра или пианиста в «Админ → Состав».',roleNote:'Хорист может также дирижировать или играть — добавьте его один раз и отметьте роль.',
@@ -1176,10 +1179,13 @@ function manageSongs(){
         <button class="mini danger" data-del-song="${s.id}">${esc(t('del'))}</button></div>`;
     }).join('');
 }
-function personRow(s, note){
+function personRow(s, note, partPicker){
   return `<div class="li"><div style="flex:1;min-width:0">
       <div style="font-size:16px">${esc(s.name)}</div>
       ${note ? `<div class="sub" style="font-style:normal">${esc(note)}</div>` : ''}</div>
+    ${partPicker ? `<select class="mini part" data-set-part="${s.id}" aria-label="${esc(t('voicePart'))}">${
+      PARTS.map(p => `<option value="${p}"${s.part===p?' selected':''}>${esc(t(p))}</option>`).join('')
+    }</select>` : ''}
     <button class="mini" data-edit-singer="${s.id}">${esc(t('edit'))}</button>
     <button class="mini danger" data-del-singer="${s.id}">${esc(t('del'))}</button></div>`;
 }
@@ -1203,7 +1209,7 @@ function manageMembers(){
         if (!inPart.length) return '';
         return `<div class="sectbar">${esc(t(p))}</div>` + inPart.map(s => personRow(s,
           [s.is_conductor ? t('conductor') : '', s.is_pianist ? t('pianist') : '']
-            .filter(Boolean).join(' · '))).join('');
+            .filter(Boolean).join(' · '), true)).join('');
       }).join('');
   }
 
@@ -1767,6 +1773,18 @@ document.addEventListener('click', async e => {
 
 document.addEventListener('change', async e => {
   const el = e.target;
+  if (el.dataset.setPart) {
+    const s = S.singers.find(x => x.id === el.dataset.setPart);
+    const was = s.part, next = el.value;
+    if (!s || was === next) return;
+    if (!await ensureSession()) { el.value = was; return; }
+    s.part = next;                              // optimistic: the row jumps sections at once
+    render();
+    const res = await sb.from('singers').update({ part: next }).eq('id', s.id).select();
+    if (!wrote(res)) { s.part = was; render(); }
+    else okToast(t('partMoved')(s.name, t(next)));
+    return;
+  }
   if (el.dataset.credit && S.edit) {
     const [slot, songId] = el.dataset.credit.split(':');
     const v = S.edit.sel.get(songId);
