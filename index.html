@@ -97,6 +97,22 @@
   .drawer .dk.cx{color:var(--red)}
   .ver{padding:4px 16px 24px;text-align:center;font-size:12px;color:var(--faint);
     font-variant-numeric:tabular-nums;letter-spacing:.04em}
+  .sectbar em{font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;color:var(--faint);margin-left:8px}
+  .crow{padding:12px 16px;border-bottom:1px solid var(--rule);background:#fff}
+  .crow .ct{display:flex;gap:8px;font-size:15px;line-height:1.25;margin-bottom:8px}
+  .crow .ct span{flex:none;min-width:1.3em;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums}
+  .crow .cf{display:flex;gap:8px}
+  .cr{flex:1;min-width:0;display:grid;gap:4px}
+  .cr em{font-style:normal;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+  .cr select{width:100%;min-width:0;border:1px solid var(--rule);border-radius:7px;background:#fff;
+    padding:7px 8px;font-size:13px;color:var(--ink)}
+  .who{display:inline-flex;align-items:center;gap:4px;margin-left:8px;font-size:11px;color:var(--muted);
+    white-space:nowrap;vertical-align:middle}
+  .who i{font-style:normal;font-weight:700;font-size:9px;line-height:1;padding:2px 4px;border-radius:3px;
+    background:var(--paper);border:1px solid var(--rule);color:var(--faint)}
+  .s .st{vertical-align:middle}
+  .drawer .dc{flex:none;text-align:right}
+  .drawer .dc .who{margin-left:6px}
   .dpick{position:relative;flex:1;min-width:0;display:block}
   .dpick span{display:block;border:1px solid var(--rule);border-radius:8px;background:#fbfbf9;
     padding:10px 11px;font-size:15px;line-height:1.2;color:var(--ink);text-align:center;
@@ -318,7 +334,13 @@ const STR = {
     allYears:'All years',prevPage:'← Newer',nextPage:'Older →',ofPages:(a,b)=>a+' of '+b,showingN:(a,b)=>a+' of '+b,
     cancelled:'cancelled',cancelledEvent:'Cancelled',markCancelled:'Mark as cancelled',unmarkCancelled:'Not cancelled after all',
     cancelledNote:'A cancelled date counts for nobody — it is left out of every attendance percentage.',
-    add:'Add',fullName:'First and last name',voicePart:'Voice part',songTitle:'Song title',subtitle:'Subtitle (optional)',
+    add:'Add',fullName:'First and last name',voicePart:'Voice part',
+    tSingers:'Singers',tPianists:'Pianists',tConductors:'Conductors',
+    conductor:'Conductor',pianist:'Pianist',noneSet:'—',credits:'Conductor & pianist',optional:'optional',
+    noRolesYet:'Add a conductor or pianist under Admin → Members first.',roleNote:'A singer can also conduct or play; add them once and give them the role.',
+    confirmDropRole:'Remove this role from this person? They stay on the roster.',
+    singerKeepNote:'This person sings in the choir. Use Edit to remove the role instead — deleting them here would remove their attendance too.',
+    alsoSings:'also sings',noVoice:'Does not sing in the choir',peopleN:n=>n+' people',songTitle:'Song title',subtitle:'Subtitle (optional)',
     search:'Search…',email:'Email',password:'Password',loginNote:'Only the choir director signs in. Everyone else can read the ledger.',
     loading:'Loading…',noEvents:'No events in this range yet.',noSongs:'No songs recorded yet.',
     exportTitle:'EXPORT',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
@@ -365,7 +387,13 @@ const STR = {
     allYears:'Все годы',prevPage:'← Новее',nextPage:'Ранее →',ofPages:(a,b)=>a+' из '+b,showingN:(a,b)=>a+' из '+b,
     cancelled:'отменено',cancelledEvent:'Отменено',markCancelled:'Отметить как отменённое',unmarkCancelled:'Отмена не состоялась',
     cancelledNote:'Отменённая дата не учитывается ни у кого — она исключена из всех процентов.',
-    add:'Добавить',fullName:'Имя и фамилия',voicePart:'Партия',songTitle:'Название песни',subtitle:'Подзаголовок',
+    add:'Добавить',fullName:'Имя и фамилия',voicePart:'Партия',
+    tSingers:'Хористы',tPianists:'Пианисты',tConductors:'Дирижёры',
+    conductor:'Дирижёр',pianist:'Пианист',noneSet:'—',credits:'Дирижёр и пианист',optional:'необязательно',
+    noRolesYet:'Сначала добавьте дирижёра или пианиста в «Админ → Состав».',roleNote:'Хорист может также дирижировать или играть — добавьте его один раз и отметьте роль.',
+    confirmDropRole:'Убрать эту роль? Человек останется в списке.',
+    singerKeepNote:'Этот человек поёт в хоре. Уберите роль через «Изм.» — удаление здесь стёрло бы и посещаемость.',
+    alsoSings:'поёт в хоре',noVoice:'Не поёт в хоре',peopleN:n=>'человек: '+n,songTitle:'Название песни',subtitle:'Подзаголовок',
     search:'Поиск…',email:'Эл. почта',password:'Пароль',loginNote:'Доступ только у регента. Просмотр журнала — без входа.',
     loading:'Загрузка…',noEvents:'В этом периоде событий нет.',noSongs:'Записей пока нет.',
     exportTitle:'ЭКСПОРТ',exportAtt:'Посещаемость CSV',exportSongs:'История песен CSV',
@@ -400,6 +428,26 @@ const MON = { en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','N
 const MONF = { en:['January','February','March','April','May','June','July','August','September','October','November','December'],
                ru:['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'] };
 const PARTS = ['soprano','alto','tenor','bass'];
+/* One roster: a person has a voice part (or none) and may also carry the
+   pianist / conductor flags, so someone who sings AND conducts is entered once. */
+const isSinger = p => PARTS.includes(p.part);
+const pianists = () => S.singers.filter(p => p.is_pianist);
+const conductors = () => S.singers.filter(p => p.is_conductor);
+/* "Семенюк Илья" → "Семенюк И." — five Семенюк make first names necessary,
+   but the full pair is too long for a pill. */
+function shortName(id){
+  const p = S.singers.find(x => x.id === id);
+  if (!p) return '';
+  const bits = p.name.trim().split(/\s+/);
+  return bits.length < 2 ? p.name : bits[0] + ' ' + bits[1][0] + '.';
+}
+function creditPills(row){
+  if (!row) return '';
+  const one = (id, mark) => id ? `<span class="who"><i>${mark}</i>${esc(shortName(id))}</span>` : '';
+  return one(row.conductor_id, 'C') + one(row.pianist_id, 'P');
+}
+const songRow = (evId, songId) =>
+  S.eventSongs.find(x => x.event_id === evId && x.song_id === songId);
 const KIND_LABEL = { en:{rehearsal:'R',morning:'M',evening:'E'}, ru:{rehearsal:'Сп',morning:'Ут',evening:'Вч'} };
 const evLabel = e => e.kind === 'other' ? e.label : KIND_LABEL[S.lang][e.kind];
 
@@ -416,6 +464,7 @@ const S = {
   sumType: 'all',               // summary picker
   entYear: 'all', entType: 'all', entPage: 0,   // all-entries page
   openSong: null,               // song expanded in the summary
+  memTab: 'singers',            // Members sub-tab
   preset: '6',
   query: '',
   draft: { date: today(), kind: 'morning', name: '', label: '' },
@@ -734,10 +783,11 @@ function songsByService(){
   const ev = S.events.filter(e => e.kind !== 'rehearsal' && hasSongs(e) && inRange(e.date, S.from, S.to)).slice().reverse();
   if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
   return ev.map(e => {
-    const list = songsFor(e.id).map(s => s.title);
+    const list = songsFor(e.id);
     return `<div class="svc-card"><div class="top"><div class="date">${esc(fmtLong(e.date))}</div>
       <div class="kind">${esc(e.name || t(e.kind))}${e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</div></div>
-      ${list.length ? list.map((x, i) => `<div class="s"><b>${i + 1}</b>${esc(x)}</div>`).join('')
+      ${list.length ? list.map((s, i) => `<div class="s"><b>${i + 1}</b><span class="st">${esc(s.title)}</span>${
+                        creditPills(songRow(e.id, s.id))}</div>`).join('')
                     : `<div class="s" style="color:var(--faint)">—</div>`}</div>`;
   }).join('');
 }
@@ -771,7 +821,8 @@ function songsSummary(){
         ${dates.map(e => `<div class="dr">
           <div class="dd">${esc(fmtLong(e.date))}</div>
           <div class="dk ${e.cancelled?'cx':''}">${esc(e.name || t(e.kind))}${
-            e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</div></div>`).join('')}
+            e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</div>
+          <div class="dc">${creditPills(songRow(e.id, s.id))}</div></div>`).join('')}
       </div>` : '');
     }).join('');
 }
@@ -872,21 +923,34 @@ function editFor(mode, ev){
     if (ev.id !== 'new') {
       if (mode === 'att') S.absences.filter(a => a.event_id === ev.id)
         .forEach(a => base.set(a.singer_id, a.status === 'not_listed' ? 'na' : 'absent'));
-      else songsFor(ev.id).forEach((s, i) => base.set(s.id, i + 1));
+      else songsFor(ev.id).forEach((s, i) => {
+        const r = songRow(ev.id, s.id) || {};
+        base.set(s.id, { pos: i + 1, c: r.conductor_id || '', p: r.pianist_id || '' });
+      });
     }
     S.edit = { key, mode, evId: ev.id, base, sel: new Map(base),
                wasCancelled: !!ev.cancelled, cancelled: !!ev.cancelled };
   }
   return S.edit;
 }
-const orderedSel = () => [...S.edit.sel.entries()].sort((a,b) => a[1] - b[1]).map(e => e[0]);
-function renumber(){ S.edit.sel = new Map(orderedSel().map((k, i) => [k, i + 1])); }
+/* songs: value is {pos, c, p}; attendance: value is 'absent' | 'na' */
+const selPos = v => (v && typeof v === 'object') ? v.pos : v;
+const orderedSel = () => [...S.edit.sel.entries()].sort((a,b) => selPos(a[1]) - selPos(b[1])).map(e => e[0]);
+function renumber(){
+  const cur = S.edit.sel;
+  S.edit.sel = new Map(orderedSel().map((k, i) => {
+    const v = cur.get(k);
+    return [k, { pos: i + 1, c: (v && v.c) || '', p: (v && v.p) || '' }];
+  }));
+}
+const sameSel = (a, b) => (a && typeof a === 'object' && b && typeof b === 'object')
+  ? (a.pos === b.pos && a.c === b.c && a.p === b.p) : a === b;
 function editDelta(){
   const e = S.edit; if (!e) return { del: [], ins: [], n: 0 };
   const del = [], ins = [];
   new Set([...e.base.keys(), ...e.sel.keys()]).forEach(k => {
     const b = e.base.get(k), s = e.sel.get(k);
-    if (b === s) return;
+    if (sameSel(b, s)) return;
     if (b) del.push(k);          // row exists and must go or change
     if (s) ins.push([k, s]);
   });
@@ -936,6 +1000,33 @@ function markAttendance(ev){
      <div class="note" style="color:var(--faint)">${esc(t('naNote'))}</div>`) +
     saveBar('att');
 }
+/* optional per-song credit. Empty is a legitimate answer, so no default. */
+function who(slot, songId, people, label){
+  const v = (S.edit.sel.get(songId) || {})[slot] || '';
+  return `<label class="cr"><em>${esc(label)}</em>
+    <select data-credit="${slot}:${songId}">
+      <option value="">${esc(t('noneSet'))}</option>
+      ${people.map(p => `<option value="${p.id}" ${v===p.id?'selected':''}>${esc(p.name)}</option>`).join('')}
+    </select></label>`;
+}
+/* Its own section, so the running order above stays a plain list. */
+function creditsCard(){
+  const ids = orderedSel();
+  if (!ids.length) return '';
+  if (!conductors().length && !pianists().length)
+    return `<div class="sectbar">${esc(t('credits'))}<em>${esc(t('optional'))}</em></div>
+      <div class="note">${esc(t('noRolesYet'))}</div>`;
+  return `<div class="sectbar">${esc(t('credits'))}<em>${esc(t('optional'))}</em></div>` +
+    ids.map((id, i) => {
+      const s = S.songs.find(x => x.id === id); if (!s) return '';
+      return `<div class="crow">
+        <div class="ct"><span>${i + 1}</span>${esc(s.title)}</div>
+        <div class="cf">
+          ${who('c', id, conductors(), t('conductor'))}
+          ${who('p', id, pianists(), t('pianist'))}
+        </div></div>`;
+    }).join('');
+}
 function orderCard(){
   const ids = orderedSel();
   if (!ids.length) return '';
@@ -964,12 +1055,12 @@ function markSongs(ev){
     list.map(s => {
       const on = E.sel.has(s.id);
       return `<div class="li tap ${on?'on':''}" data-toggle-song="${s.id}" data-event="${ev.id}">
-        <div class="box">${on ? E.sel.get(s.id) : ''}</div>
+        <div class="box">${on ? E.sel.get(s.id).pos : ''}</div>
         <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:1.2">${esc(s.title)}</div>
         ${s.subtitle?`<div class="sub">${esc(s.subtitle)}</div>`:''}</div>
         <div style="font-size:14px;color:var(--muted)">${songStats(s.id).n}</div></div>`;
     }).join('') +
-    orderCard() +
+    orderCard() + creditsCard() +
     saveBar('songs');
 }
 function manageSongs(){
@@ -991,31 +1082,69 @@ function manageSongs(){
         <button class="mini danger" data-del-song="${s.id}">${esc(t('del'))}</button></div>`;
     }).join('');
 }
+function personRow(s, note){
+  return `<div class="li"><div style="flex:1;min-width:0">
+      <div style="font-size:16px">${esc(s.name)}</div>
+      ${note ? `<div class="sub" style="font-style:normal">${esc(note)}</div>` : ''}</div>
+    <button class="mini" data-edit-singer="${s.id}">${esc(t('edit'))}</button>
+    <button class="mini danger" data-del-singer="${s.id}">${esc(t('del'))}</button></div>`;
+}
 function manageMembers(){
-  return `<div class="h">${esc(t('members'))}<span class="n">${esc(t('singersN')(S.singers.length))}</span></div>
+  const tab = S.memTab;
+  const tabs = `<div class="tabs">${[['singers','tSingers'],['pianists','tPianists'],['conductors','tConductors']]
+    .map(([v,l]) => `<a href="#/admin/members/${v}" class="${tab===v?'on':''}">${esc(t(l))}</a>`).join('')}</div>`;
+
+  if (tab === 'singers') {
+    const rows = S.singers.filter(isSinger);
+    return tabs + `<div class="h">${esc(t('tSingers'))}<span class="n">${esc(t('singersN')(rows.length))}</span></div>
+      <div class="card">
+        <input class="field" id="new-singer-name" placeholder="${esc(t('fullName'))}">
+        <div style="display:flex;gap:8px">
+          <select class="field" id="new-singer-part">${PARTS.map(p => `<option value="${p}">${esc(t(p))}</option>`).join('')}</select>
+          <button class="mini" style="background:var(--blue);color:#fff;border-color:var(--blue);padding:12px 20px" data-add-singer>${esc(t('add'))}</button>
+        </div>
+      </div>` +
+      PARTS.map(p => {
+        const inPart = rows.filter(s => s.part === p);
+        if (!inPart.length) return '';
+        return `<div class="sectbar">${esc(t(p))}</div>` + inPart.map(s => personRow(s,
+          [s.is_conductor ? t('conductor') : '', s.is_pianist ? t('pianist') : '']
+            .filter(Boolean).join(' · '))).join('');
+      }).join('');
+  }
+
+  const role = tab === 'pianists' ? 'is_pianist' : 'is_conductor';
+  const rows = S.singers.filter(s => s[role]);
+  const pool = S.singers.filter(s => !s[role]).sort((a,b) => a.name.localeCompare(b.name, 'ru'));
+  return tabs + `<div class="h">${esc(t(tab === 'pianists' ? 'tPianists' : 'tConductors'))}
+      <span class="n">${esc(t('peopleN')(rows.length))}</span></div>
     <div class="card">
-      <input class="field" id="new-singer-name" placeholder="${esc(t('fullName'))}">
+      <input class="field" id="new-role-name" placeholder="${esc(t('fullName'))}">
       <div style="display:flex;gap:8px">
-        <select class="field" id="new-singer-part">${PARTS.map(p => `<option value="${p}">${esc(t(p))}</option>`).join('')}</select>
-        <button class="mini" style="background:var(--blue);color:#fff;border-color:var(--blue);padding:12px 20px" data-add-singer>${esc(t('add'))}</button>
+        <button class="mini" style="background:var(--blue);color:#fff;border-color:var(--blue);padding:12px 20px"
+          data-add-role="${role}">${esc(t('add'))}</button>
       </div>
-    </div>` +
-    PARTS.map(p => {
-      const rows = S.singers.filter(s => s.part === p);
-      if (!rows.length) return '';
-      return `<div class="sectbar">${esc(t(p))}</div>` + rows.map(s =>
-        `<div class="li"><div style="flex:1;font-size:16px">${esc(s.name)}</div>
-          <button class="mini" data-edit-singer="${s.id}">${esc(t('edit'))}</button>
-          <button class="mini danger" data-del-singer="${s.id}">${esc(t('del'))}</button></div>`).join('');
-    }).join('');
+      ${pool.length ? `<select class="field" data-mark-role="${role}">
+        <option value="">${esc(t('alsoSings'))}…</option>
+        ${pool.map(s => `<option value="${s.id}">${esc(s.name)}${isSinger(s) ? ' · ' + esc(t(s.part)) : ''}</option>`).join('')}
+      </select>` : ''}
+    </div>
+    <div class="note">${esc(t('roleNote'))}</div>` +
+    (rows.length ? rows.map(s => personRow(s, isSinger(s) ? t(s.part) : t('noVoice'))).join('')
+                 : `<div class="msg">${esc(t('noEntries'))}</div>`);
 }
 function loginPage(){
   return `<div class="login">
     <div style="font-family:'Alice',serif;font-size:26px">${esc(t('signin'))}</div>
     ${S.error ? `<div class="err">${esc(S.error)}</div>` : ''}
-    <div><label for="em">${esc(t('email'))}</label><input id="em" type="email" autocomplete="username"></div>
-    <div><label for="pw">${esc(t('password'))}</label><input id="pw" type="password" autocomplete="current-password"></div>
-    <button class="btn" data-login>${esc(t('signin'))}</button>
+    <form id="loginform" method="post" action="#/login" style="display:grid;gap:14px">
+      <div><label for="em">${esc(t('email'))}</label>
+        <input id="em" name="email" type="email" autocomplete="username" inputmode="email"
+               autocapitalize="none" spellcheck="false" required></div>
+      <div><label for="pw">${esc(t('password'))}</label>
+        <input id="pw" name="password" type="password" autocomplete="current-password" required></div>
+      <button class="btn" type="submit" data-login>${esc(t('signin'))}</button>
+    </form>
     <div style="font-size:14px;color:var(--muted);text-align:center">${esc(t('loginNote'))}</div>
   </div>`;
 }
@@ -1125,7 +1254,7 @@ function render(){
     else if (section === 'songs') html += ev ? markSongs(ev) : eventPicker('songs');
     else if (section === 'songlist') html += manageSongs();
     else if (section === 'entries') html += allEntries(id === 'songs' ? 'songs' : 'att');
-    else html += manageMembers();
+    else { S.memTab = ['pianists','conductors'].includes(id) ? id : 'singers'; html += manageMembers(); }
     html += `</div>` + adminBar(
       section === 'attendance' ? 'att'
       : section === 'songs' ? 'songs'
@@ -1196,7 +1325,20 @@ window.addEventListener('resize', queueFit, { passive: true });
 if (window.visualViewport) window.visualViewport.addEventListener('resize', queueFit, { passive: true });
 
 // keep the newest dates in view: jump the grid to its right edge when the page changes
+async function signIn(){
+  const email = document.getElementById('em').value.trim();
+  const password = document.getElementById('pw').value;
+  if (!email || !password) return;
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) { S.error = error.message; return render(); }
+  S.session = data.session; S.error = ''; location.hash = '#/admin/attendance';
+}
 function afterRender(){
+  const lf = document.getElementById('loginform');
+  if (lf && !lf.dataset.wired) {
+    lf.dataset.wired = '1';
+    lf.addEventListener('submit', e => { e.preventDefault(); signIn(); });
+  }
   const sc = document.querySelector('.scroll');
   if (!sc) return;
   fitGrid();
@@ -1254,7 +1396,7 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-login],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role]');
   if (!el) return;
   const d = el.dataset;
 
@@ -1308,7 +1450,7 @@ document.addEventListener('click', async e => {
     S.toast = ''; S.retry = null;
     const sel = S.edit.sel;
     if (sel.has(d.toggleSong)) sel.delete(d.toggleSong);
-    else sel.set(d.toggleSong, sel.size + 1);      // added at the end of the order
+    else sel.set(d.toggleSong, { pos: sel.size + 1, c: '', p: '' });   // added at the end
     renumber(); return render();
   }
   if (d.move && S.edit) {                          // swap with the neighbour
@@ -1316,7 +1458,11 @@ document.addEventListener('click', async e => {
     const ids = orderedSel(), i = ids.indexOf(id), j = dir === 'up' ? i - 1 : i + 1;
     if (i < 0 || j < 0 || j >= ids.length) return;
     ids.splice(j, 0, ids.splice(i, 1)[0]);
-    S.edit.sel = new Map(ids.map((k, n) => [k, n + 1]));
+    const cur = S.edit.sel;
+    S.edit.sel = new Map(ids.map((k, n) => {
+      const v = cur.get(k);
+      return [k, { pos: n + 1, c: (v && v.c) || '', p: (v && v.p) || '' }];
+    }));
     return render();
   }
   if (el.hasAttribute('data-toggle-cancel') && S.edit) {
@@ -1360,7 +1506,8 @@ document.addEventListener('click', async e => {
     const col   = isAtt ? 'singer_id' : 'song_id';
     const row   = (k, v) => isAtt
       ? { event_id: evId, singer_id: k, status: v === 'na' ? 'not_listed' : 'absent' }
-      : { event_id: evId, song_id: k, position: v };
+      : { event_id: evId, song_id: k, position: v.pos,
+          conductor_id: v.c || null, pianist_id: v.p || null };
     const { del, ins } = editDelta();
     if (del.length) {   // delete first: a state change is a delete + insert
       const { error } = await sb.from(table).delete().eq('event_id', evId).in(col, del);
@@ -1463,6 +1610,16 @@ document.addEventListener('click', async e => {
     S.eventSongs = S.eventSongs.filter(x => x.song_id !== d.delSong);
     return render();
   }
+  if (d.addRole) {
+    const el2 = document.getElementById('new-role-name');
+    const name = el2 ? el2.value.trim() : '';
+    if (!name) return;
+    if (!await ensureSession()) return;
+    const { data, error } = await sb.from('singers')
+      .insert({ name, part: null, [d.addRole]: true }).select().single();
+    if (error) return fail(error);
+    S.singers.push(data); return render();
+  }
   if (el.hasAttribute('data-add-singer')) {
     const name = document.getElementById('new-singer-name').value.trim();
     if (!name) return;
@@ -1473,6 +1630,14 @@ document.addEventListener('click', async e => {
   }
   if (d.editSinger) {
     const s = S.singers.find(x => x.id === d.editSinger);
+    if (S.memTab !== 'singers') {                 // on a role tab, Edit removes the role
+      const role = S.memTab === 'pianists' ? 'is_pianist' : 'is_conductor';
+      if (!confirm(t('confirmDropRole'))) return;
+      if (!await ensureSession()) return;
+      const res = await sb.from('singers').update({ [role]: false }).eq('id', s.id).select();
+      if (!wrote(res)) return render();
+      s[role] = false; return render();
+    }
     const name = prompt(t('renameSinger'), s.name); if (name === null) return;
     const clean = name.trim(); if (!clean) return;
     if (!await ensureSession()) return;
@@ -1481,6 +1646,10 @@ document.addEventListener('click', async e => {
     s.name = clean; return render();
   }
   if (d.delSinger) {
+    const person = S.singers.find(x => x.id === d.delSinger);
+    if (S.memTab !== 'singers' && person && isSinger(person)) {
+      alert(t('singerKeepNote')); return;        // they sing; only the role can go
+    }
     if (!confirm(t('deleteSinger'))) return;
     if (!await ensureSession()) return;
     const res = await sb.from('singers').delete().eq('id', d.delSinger).select();
@@ -1490,18 +1659,27 @@ document.addEventListener('click', async e => {
     return render();
   }
 
-  if (el.hasAttribute('data-login')) {
-    const email = document.getElementById('em').value.trim();
-    const password = document.getElementById('pw').value;
-    const { data, error } = await sb.auth.signInWithPassword({ email, password });
-    if (error) { S.error = error.message; return render(); }
-    S.session = data.session; S.error = ''; location.hash = '#/admin/attendance'; return;
-  }
   if (el.hasAttribute('data-signout')) { await sb.auth.signOut(); S.session = null; location.hash = '#/attendance'; return; }
 });
 
 document.addEventListener('change', async e => {
   const el = e.target;
+  if (el.dataset.credit && S.edit) {
+    const [slot, songId] = el.dataset.credit.split(':');
+    const v = S.edit.sel.get(songId);
+    if (v) { S.edit.sel.set(songId, Object.assign({}, v, { [slot]: el.value })); render(); }
+    return;
+  }
+  if (el.dataset.markRole) {                    // give an existing person the role
+    const role = el.dataset.markRole, id = el.value;
+    if (!id) return;
+    if (!await ensureSession()) return;
+    const res = await sb.from('singers').update({ [role]: true }).eq('id', id).select();
+    if (!wrote(res)) return render();
+    const p = S.singers.find(x => x.id === id);
+    if (p) p[role] = true;
+    return render();
+  }
   if (el.dataset.upload) {
     const song = S.songs.find(s => s.id === el.dataset.upload);
     const file = el.files && el.files[0];
