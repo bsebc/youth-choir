@@ -1095,8 +1095,7 @@ function who(slot, songId, people, label){
   return `<label class="cr"><em>${esc(label)}</em>
     <select data-credit="${slot}:${songId}">
       <option value="">${esc(t('noneSet'))}</option>
-      ${people.map(({p, n}) => `<option value="${p.id}" ${v===p.id?'selected':''}>${esc(p.name)}${
-        n ? ' · ' + n : ''}</option>`).join('')}
+      ${people.map(({p}) => `<option value="${p.id}" ${v===p.id?'selected':''}>${esc(p.name)}</option>`).join('')}
     </select></label>`;
 }
 /* Its own section, so the running order above stays a plain list. */
