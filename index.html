@@ -52,9 +52,9 @@
 
   /* tabs + controls */
   .tabs{display:flex;background:#fff;border-bottom:1px solid var(--rule)}
-  .tabs a{flex:1;min-width:0;padding:11px 4px;text-align:center;font-size:15px;color:var(--muted);border-bottom:3px solid transparent;transition:color .16s ease,border-color .16s ease}
+  .tabs a{flex:1;min-width:0;padding:11px 4px;text-align:center;font-size:15px;color:var(--muted);border-bottom:4px solid transparent;transition:color .16s ease,border-color .16s ease}
   .tabs a:hover{color:var(--ink)}
-  .tabs a.on{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+  .tabs a.on{color:var(--ink);font-weight:700;border-bottom-color:var(--ink)}
   .ctrl{background:#fff;padding:12px 14px 14px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:10px}
   .ctlbar{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:10px 12px;background:#fff;border-bottom:1px solid var(--rule)}
   .ctlbar .rangebtn{width:100%;justify-content:space-between}
@@ -103,6 +103,17 @@
   .notespanel .nh{font-family:'Alice',serif;font-size:15px;margin-bottom:8px}
   .notespanel ul{margin:0;padding-left:18px;display:grid;gap:5px}
   .notespanel li{font-size:13px;color:#3c4438;line-height:1.35}
+  .body.adm{background:var(--paper);padding-bottom:18px}
+  .body.adm .h{background:transparent;border-bottom:0;padding:16px 16px 6px}
+  .sec{margin:12px 12px 0;background:#fff;border:1px solid var(--rule);border-radius:14px;box-shadow:0 1px 3px rgba(23,32,58,.06);overflow:hidden}
+  .sec:empty{display:none}
+  .sec > :last-child{border-bottom:0}
+  @media (min-width:900px){ .sec{margin:16px 20px 0} }
+  .addbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border:0;background:#fff;color:var(--blue);font-weight:600;font-size:15px;font-family:inherit;transition:background .15s ease}
+  .addbtn i{font-style:normal;width:22px;height:22px;flex:none;border-radius:50%;background:#f2f4fb;border:1px solid #c6cde6;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1}
+  .addbtn:hover{background:#fbfbf9}
+  .addbtn.open{color:var(--muted)}
+  .addbtn.open i{background:var(--paper);border-color:var(--rule);color:var(--muted)}
   .sectbar em{font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;color:var(--faint);margin-left:8px}
   .fold{display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;border:0;
     border-bottom:1px solid var(--rule);background:var(--paper);text-align:left;font-family:inherit;
@@ -368,7 +379,8 @@ const STR = {
     archive:'Archive',restore:'Restore',archived:'Archived',
     archivedNote:'Archived singers keep all their history in the database but are hidden from the grids and summaries. Restore brings them back.',
     copyLast:'Copy last service',
-    categories:'Categories',catName:'Category name',allCats:'All categories',noCat:'No category',
+    categories:'Categories',addSong:'Add song',addCat:'Add category',addSinger:'Add singer',
+    addPianist:'Add pianist',addConductor:'Add conductor',catName:'Category name',allCats:'All categories',noCat:'No category',
     deleteCat:'Delete this category? Songs and their history stay — only the label goes.',
     people:'People',relNotes:'Release notes',personCol:'Name',lastLed:'Most recent',conducted:'conducted',played:'played',bothRoles:'conducts · plays',
     ledN:n=>n+'×',noPeopleYet:'Nobody has been credited in this period yet.',theirSongs:'Songs they led',noneSet:'—',credits:'Conductor & pianist',optional:'optional',timesN:n=>n+'×',rankNote:'Ordered by how often each person has done it.',
@@ -430,7 +442,8 @@ const STR = {
     archive:'В архив',restore:'Вернуть',archived:'Архив',
     archivedNote:'Архивные хористы сохраняют всю историю в базе, но не показываются в сетках и сводках. «Вернуть» возвращает их.',
     copyLast:'Скопировать прошлое служение',
-    categories:'Категории',catName:'Название категории',allCats:'Все категории',noCat:'Без категории',
+    categories:'Категории',addSong:'Добавить песню',addCat:'Добавить категорию',addSinger:'Добавить хориста',
+    addPianist:'Добавить пианиста',addConductor:'Добавить дирижёра',catName:'Название категории',allCats:'Все категории',noCat:'Без категории',
     deleteCat:'Удалить категорию? Песни и их история останутся — исчезнет только метка.',
     people:'Кто вёл',relNotes:'Что нового',personCol:'Имя',lastLed:'Последний раз',conducted:'дирижировал',played:'играл',bothRoles:'дирижирует · играет',
     ledN:n=>n+'×',noPeopleYet:'В этом периоде записей нет.',theirSongs:'Песни',noneSet:'—',credits:'Дирижёр и пианист',optional:'необязательно',timesN:n=>n+'×',rankNote:'Отсортировано по тому, как часто это делал каждый.',
@@ -527,6 +540,7 @@ const S = {
   editPerson: null, editSongRow: null,   // inline editors
   catFilter: 'all', showCats: false, editCat: null,     // song categories
   showNotes: false,
+  addOpen: null,                // which "+ Add" form is expanded
   pickOpen: null,               // song chooser: null = collapse itself at 3 picks
   preset: '6',
   query: '',
@@ -548,10 +562,11 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 /* ---------- dates ---------- */
 function today(){ return new Date().toISOString().slice(0,10); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '3.4';
+const VERSION = '3.5';
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '3': {
   en: [
+    'A cleaner admin: tiled sections, collapsed “+ Add” forms, clearer tabs',
     'Song categories (Christmas, Easter…) with filters in Songs and Sheets',
     'Conductor & pianist per song, and a public People view',
     'Song order per service, with a home-screen tile',
@@ -565,6 +580,7 @@ const NOTES = { '3': {
     'CSV export follows the selected period'
   ],
   ru: [
+    'Аккуратнее админка: секции-плитки, свёрнутые формы «Добавить», заметнее вкладки',
     'Категории песен (Рождество, Пасха…) с фильтрами в «Песнях» и «Нотах»',
     'Дирижёр и пианист у каждой песни и открытая вкладка «Кто вёл»',
     'Порядок песнопений служения и плитка на главной',
@@ -1002,11 +1018,11 @@ function eventPicker(target){
     ? (e.kind !== 'rehearsal' || hasSongs(e))
     : (hasAtt(e) || !hasSongs(e));
   const recent = S.events.slice().reverse().filter(inScope).slice(0,4);
-  return `<div class="card">
+  return `<div class="sec"><div class="card">
       <div class="step">${esc(t('date'))}</div>
       <input class="field" type="date" id="draft-date" value="${S.draft.date}">
-    </div>
-    <div class="card">
+    </div></div>
+    <div class="sec"><div class="card">
       <div class="step">${esc(t('event'))}</div>
       ${kinds.map(k => `<div class="opt ${S.draft.kind===k?'on':''}" data-kind="${k}">
         <div class="dot"></div><div>${esc(t(k))}</div>
@@ -1015,23 +1031,23 @@ function eventPicker(target){
         <input class="field" id="draft-name" placeholder="${esc(t('eventName'))}" value="${esc(S.draft.name)}">
         <input class="field" id="draft-label" style="width:96px;flex:none;text-align:center" placeholder="${esc(t('shortLabel'))}" value="${esc(S.draft.label)}">
       </div><div style="font-size:12px;color:var(--faint)">${esc(t('labelHint'))}</div>` : ''}
-    </div>
-    <div class="pad"><button class="btn" data-go="${target}">${esc(t(target==='att'?'markAtt':'chooseSongs'))}</button></div>
-    <div class="pad" style="padding-top:0">
+    </div></div>
+    <div class="pad" style="padding:16px 12px 2px"><button class="btn" data-go="${target}">${esc(t(target==='att'?'markAtt':'chooseSongs'))}</button></div>
+    <div class="sec"><div class="pad">
       <div class="step" style="margin-bottom:8px">${esc(t('recent'))}</div>
       ${recent.map(e => entryRow(e, target)).join('')}
       ${S.events.filter(inScope).length > recent.length
         ? `<a class="mini" style="display:flex;justify-content:center" href="#/admin/entries/${target}">${esc(t('olderEntries'))}</a>`
         : ''}
-    </div>
-    <div class="pad" style="padding-top:0">
+    </div></div>
+    <div class="sec"><div class="pad">
       <div class="step" style="margin-bottom:8px">${esc(t('exportTitle'))}
         <span style="font-family:'Golos Text';font-size:12px;letter-spacing:0;color:var(--faint)">${esc(fmtPill(S.from))} – ${esc(fmtPill(S.to))}</span></div>
       <div style="display:flex;gap:8px">
         <button class="xbtn" data-export="att">${esc(t('exportAtt'))}</button>
         <button class="xbtn" data-export="songs">${esc(t('exportSongs'))}</button>
       </div>
-    </div>`;
+    </div></div>`;
 }
 function entryRow(e, target){
   const href = '#/admin/' + (target === 'att' ? 'attendance' : 'songs') + '/' + e.id;
@@ -1155,7 +1171,7 @@ function markAttendance(ev){
       ${esc(fmtLong(ev.date))} <span class="n" style="color:var(--red)">${n}</span>
       <span style="font-size:13px;color:var(--muted)">${esc(t('absentN'))}</span></div>` +
     cancelCard +
-    (E.cancelled ? '' : PARTS.map(p => {
+    (E.cancelled ? '' : `<div class="sec">` + PARTS.map(p => {
       const rows = S.singers.filter(s => s.part === p && s.active !== false);
       if (!rows.length) return '';
       return `<div class="sectbar">${esc(t(p))}</div>` + rows.map(s => {
@@ -1164,7 +1180,7 @@ function markAttendance(ev){
           <div class="nm">${esc(s.name)}</div>
           <div class="pill">${esc(st==='absent' ? t('wasAbsent') : st==='na' ? t('wasNA') : t('wasPresent'))}</div></div>`;
       }).join('');
-    }).join('') +
+    }).join('') + `</div>` +
     `<div class="note">${esc(t('tapHint'))}</div>`) +
     saveBar('att');
 }
@@ -1182,9 +1198,9 @@ function creditsCard(){
   const ids = orderedSel();
   if (!ids.length) return '';
   if (!conductors().length && !pianists().length)
-    return `<div class="sectbar">${esc(t('credits'))}<em>${esc(t('optional'))}</em></div>
-      <div class="note">${esc(t('noRolesYet'))}</div>`;
-  return `<div class="sectbar">${esc(t('credits'))}<em>${esc(t('optional'))}</em></div>` +
+    return `<div class="sec"><div class="sectbar">${esc(t('credits'))}<em>${esc(t('optional'))}</em></div>
+      <div class="note">${esc(t('noRolesYet'))}</div></div>`;
+  return `<div class="sec"><div class="sectbar">${esc(t('credits'))}<em>${esc(t('optional'))}</em></div>` +
     ids.map((id, i) => {
       const s = S.songs.find(x => x.id === id); if (!s) return '';
       return `<div class="crow">
@@ -1193,12 +1209,12 @@ function creditsCard(){
           ${who('c', id, conductors(), t('conductor'))}
           ${who('p', id, pianists(), t('pianist'))}
         </div></div>`;
-    }).join('');
+    }).join('') + `</div>`;
 }
 function orderCard(){
   const ids = orderedSel();
   if (!ids.length) return '';
-  return `<div class="sectbar">${esc(t('order'))}</div>` +
+  return `<div class="sec"><div class="sectbar">${esc(t('order'))}</div>` +
     ids.map((id, i) => {
       const s = S.songs.find(x => x.id === id); if (!s) return '';
       return `<div class="li"><div class="ord">${i + 1}</div>
@@ -1209,7 +1225,7 @@ function orderCard(){
           <button class="mini icon" data-move="down:${id}" ${i === ids.length - 1 ? 'disabled' : ''} aria-label="${esc(t('down'))}">↓</button>
         </div></div>`;
     }).join('') +
-    `<div class="note">${esc(t('orderHint'))}</div>`;
+    `<div class="note">${esc(t('orderHint'))}</div></div>`;
 }
 function markSongs(ev){
   const E = editFor('songs', ev);
@@ -1241,18 +1257,24 @@ function markSongs(ev){
   return `<div class="h"><button class="back" data-cancel-marks="songs">‹</button>
       ${esc(fmtLong(ev.date))} <span class="n" style="color:var(--blue)">${picked}</span>
       <span style="font-size:13px;color:var(--muted)">${esc(t('selected'))}</span></div>` +
-    copyBtn + chooser + orderCard() + creditsCard() +
+    copyBtn + `<div class="sec">` + chooser + `</div>` + orderCard() + creditsCard() +
     saveBar('songs');
+}
+function addFold(key, inner, label){
+  const open = S.addOpen === key;
+  return `<button class="addbtn ${open?'open':''}" data-add-open="${key}">
+      <i>${open ? '–' : '+'}</i>${esc(t(open ? 'cancel' : (label || 'add')))}</button>` +
+    (open ? `<div class="card" style="border-top:1px solid var(--rule)">${inner}</div>` : '');
 }
 function catManager(){
   const open = S.showCats;
   return `<button class="fold ${open?'open':''}" data-toggle-cats>
       <span>${esc(t('categories'))}</span>
       <em>${S.categories.length} ${open?'▴':'▾'}</em></button>` +
-    (open ? `<div class="card" style="flex-direction:row;gap:8px">
+    (open ? addFold('cat', `<div style="display:flex;gap:8px">
         <input class="field" id="new-cat-name" placeholder="${esc(t('catName'))}">
         <button class="mini" style="background:var(--blue);color:#fff;border-color:var(--blue);padding:12px 20px" data-add-cat>${esc(t('add'))}</button>
-      </div>` +
+      </div>`, 'addCat') +
       S.categories.map(c => {
         if (S.editCat === c.id) return `<div class="li" style="background:#f2f4fb">
           <input class="field" id="edit-cat-name" value="${esc(c.name)}">
@@ -1268,14 +1290,12 @@ function catManager(){
 function manageSongs(){
   const list = S.songs.filter(s => !S.query || s.title.toLowerCase().includes(S.query.toLowerCase()));
   return `<div class="h">${esc(t('songList'))}<span class="n">${esc(t('songsN')(S.songs.length))}</span></div>` +
-    catManager() + `<div class="card">
+    `<div class="sec">` + catManager() + `</div><div class="sec">` + addFold('song', `
       <input class="field" id="new-song-title" placeholder="${esc(t('songTitle'))}">
       <div style="display:flex;gap:8px">
         <input class="field" id="new-song-sub" placeholder="${esc(t('subtitle'))}">
         <button class="mini" style="background:var(--blue);color:#fff;border-color:var(--blue);padding:12px 20px" data-add-song>${esc(t('add'))}</button>
-      </div>
-      ${qField()}
-    </div>` +
+      </div>`, 'addSong') + `</div><div class="sec"><div class="card">${qField()}</div></div><div class="sec">` +
     list.map(s => { const st = songStats(s.id);
       if (S.editSongRow === s.id) return `<div class="li" style="flex-wrap:wrap;background:#f2f4fb">
         <input class="field" id="edit-song-title" value="${esc(s.title)}" style="flex:1 1 100%">
@@ -1293,7 +1313,7 @@ function manageSongs(){
         <div style="font-size:16px;line-height:1.2">${esc(s.title)}</div>
         <div class="sub" style="font-style:normal">${esc((catName(s.category_id) ? catName(s.category_id) + ' · ' : '') + (s.subtitle ? s.subtitle + ' · ' : '') + t('sungN')(st.n, st.last))}</div></div>
         <button class="mini" data-edit-song="${s.id}">${esc(t('edit'))}</button></div>`;
-    }).join('');
+    }).join('') + `</div>`;
 }
 function personRow(s, note, partPicker){
   if (S.memTab === 'singers' && S.editPerson === s.id) {
@@ -1325,13 +1345,12 @@ function manageMembers(){
     const rows = S.singers.filter(isSinger);
     const arch = rows.filter(s => s.active === false);
     return tabs + `<div class="h">${esc(t('tSingers'))}<span class="n">${esc(t('singersN')(rows.length - arch.length))}</span></div>
-      <div class="card">
+      <div class="sec">` + addFold('singer', `
         <input class="field" id="new-singer-name" placeholder="${esc(t('fullName'))}">
         <div style="display:flex;gap:8px">
           <select class="field" id="new-singer-part">${PARTS.map(p => `<option value="${p}">${esc(t(p))}</option>`).join('')}</select>
           <button class="mini" style="background:var(--blue);color:#fff;border-color:var(--blue);padding:12px 20px" data-add-singer>${esc(t('add'))}</button>
-        </div>
-      </div>` +
+        </div>`, 'addSinger') + `</div><div class="sec">` +
       PARTS.map(p => {
         const inPart = rows.filter(s => s.part === p && s.active !== false);
         if (!inPart.length) return '';
@@ -1341,7 +1360,7 @@ function manageMembers(){
       }).join('') +
       (arch.length ? `<div class="sectbar">${esc(t('archived'))}<em>${arch.length}</em></div>` +
         arch.map(s => personRow(s, isSinger(s) ? t(s.part) : '', false)).join('') +
-        `<div class="note">${esc(t('archivedNote'))}</div>` : '');
+        `<div class="note">${esc(t('archivedNote'))}</div>` : '') + `</div>`;
   }
 
   const role = tab === 'pianists' ? 'is_pianist' : 'is_conductor';
@@ -1350,21 +1369,21 @@ function manageMembers(){
   const pool = S.singers.filter(s => !s[role]).sort((a,b) => a.name.localeCompare(b.name, 'ru'));
   return tabs + `<div class="h">${esc(t(tab === 'pianists' ? 'tPianists' : 'tConductors'))}
       <span class="n">${esc(t('peopleN')(rows.length))}</span></div>
-    <div class="card">
-      <input class="field" id="new-role-name" placeholder="${esc(t('fullName'))}">
+    <div class="sec">` + addFold('role', `
       <div style="display:flex;gap:8px">
+        <input class="field" id="new-role-name" placeholder="${esc(t('fullName'))}">
         <button class="mini" style="background:var(--blue);color:#fff;border-color:var(--blue);padding:12px 20px"
           data-add-role="${role}">${esc(t('add'))}</button>
       </div>
       ${pool.length ? `<select class="field" data-mark-role="${role}">
         <option value="">${esc(t('alsoSings'))}…</option>
         ${pool.map(s => `<option value="${s.id}">${esc(s.name)}${isSinger(s) ? ' · ' + esc(t(s.part)) : ''}</option>`).join('')}
-      </select>` : ''}
-    </div>
+      </select>` : ''}`, tab === 'pianists' ? 'addPianist' : 'addConductor') + `</div>
     <div class="note">${esc(t('roleNote'))} ${esc(t('rankNote'))}</div>` +
+    `<div class="sec">` +
     (rows.length ? rows.map(({p, n}) => personRow(p,
         [isSinger(p) ? t(p.part) : t('noVoice'), n ? t('timesN')(n) : ''].filter(Boolean).join(' · '))).join('')
-                 : `<div class="msg">${esc(t('noEntries'))}</div>`);
+                 : `<div class="msg">${esc(t('noEntries'))}</div>`) + `</div>`;
 }
 function loginPage(){
   return `<div class="login">
@@ -1485,7 +1504,7 @@ function render(){
     const ev = id === 'new' ? (S.pending ? Object.assign({ id: 'new' }, S.pending) : null)
              : id ? S.events.find(e => e.id === id) : null;
     html += publicNav('admin');
-    html += `<div class="body">`;
+    html += `<div class="body adm">`;
     if (section === 'attendance') html += ev ? markAttendance(ev) : eventPicker('att');
     else if (section === 'songs') html += ev ? markSongs(ev) : eventPicker('songs');
     else if (section === 'songlist') html += manageSongs();
@@ -1643,7 +1662,7 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open]');
   if (!el) return;
   const d = el.dataset;
 
@@ -1953,6 +1972,7 @@ document.addEventListener('click', async e => {
   }
   if (d.gotoSong) { S.openSong = d.gotoSong; location.hash = '#/songs/summary'; return; }
   if (el.hasAttribute('data-notes')) { e.preventDefault(); S.showNotes = !S.showNotes; return render(); }
+  if (d.addOpen) { S.addOpen = S.addOpen === d.addOpen ? null : d.addOpen; return render(); }
   if (el.hasAttribute('data-toggle-cats')) { S.showCats = !S.showCats; return render(); }
   if (el.hasAttribute('data-add-cat')) {
     const inp = document.getElementById('new-cat-name');
@@ -1961,12 +1981,13 @@ document.addEventListener('click', async e => {
     if (!await ensureSession()) return;
     const { data, error } = await sb.from('song_categories').insert({ name }).select().single();
     if (error) return fail(error);
+    if (inp) inp.value = '';
     S.categories.push(data);
     S.categories.sort((a,b) => a.name.localeCompare(b.name, 'ru'));
     return render();
   }
   if (d.editCat) { S.editCat = S.editCat === d.editCat ? null : d.editCat; return render(); }
-  if (el.hasAttribute('data-cancel-cat')) { S.editCat = null; return render(); }
+  if (el.hasAttribute('data-cancel-cat')) { S.editCat = null; S.addOpen = null; return render(); }
   if (d.saveCat) {
     const c = S.categories.find(x => x.id === d.saveCat);
     const inp = document.getElementById('edit-cat-name');
@@ -1975,7 +1996,7 @@ document.addEventListener('click', async e => {
     if (!await ensureSession()) return;
     const res = await sb.from('song_categories').update({ name }).eq('id', c.id).select();
     if (!wrote(res)) return render();
-    c.name = name; S.editCat = null;
+    c.name = name; S.editCat = null; S.addOpen = null;
     S.categories.sort((a,b) => a.name.localeCompare(b.name, 'ru'));
     return render();
   }
@@ -2058,7 +2079,7 @@ document.addEventListener('input', e => {
 window.addEventListener('hashchange', () => {
   S.route = location.hash || '#/home';
   if (!/^#\/admin\/(attendance|songs)\/.+/.test(S.route)) { S.edit = null; S.pending = null; }
-  S.error = ''; S.query = ''; S.editPerson = null; S.editSongRow = null; S.editCat = null;
+  S.error = ''; S.query = ''; S.editPerson = null; S.editSongRow = null; S.editCat = null; S.addOpen = null;
   render();
 });
 
