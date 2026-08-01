@@ -190,7 +190,9 @@
   @media (min-width:900px){ .ctrl{flex-direction:row;align-items:center;flex-wrap:wrap;padding:16px 20px} }
   .dates{display:flex;align-items:center;gap:8px}
   .dates input{flex:1;min-width:0;border:1px solid var(--rule);border-radius:6px;padding:8px 10px;font-size:16px;background:#fbfbf9;font-variant-numeric:tabular-nums}
-  .chips{display:flex;gap:6px}
+  .chips{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+  .chips::-webkit-scrollbar{display:none}
+  .chips button{flex:none}
   .chips button{flex:1;padding:7px 10px;border-radius:999px;font-size:13px;border:1px solid var(--rule);background:var(--paper);color:#3c4438;white-space:nowrap;transition:background .15s ease,border-color .15s ease,color .15s ease}
   .chips button:hover:not(.on){border-color:#b9bdb2;background:#fff}
   .chips button.on{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
