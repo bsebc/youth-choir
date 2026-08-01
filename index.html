@@ -394,6 +394,7 @@ const STR = {
     search:'Search…',email:'Email',password:'Password',loginNote:'Only the choir director signs in. Everyone else can read the ledger.',
     loading:'Loading…',noEvents:'No events in this range yet.',noSongs:'No songs recorded yet.',
     exportTitle:'EXPORT',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
+    backupBtn:'Full backup',backupNote:'Downloads every table — singers, events, attendance, songs, categories — as one JSON file. Sheet PDFs are not included.',backupFail:'Backup failed — try again.',
     period:'Period',changePeriod:'Change',
     chooseFrom:'Choose songs',showList:n=>'Show all '+n,hideList:'Hide list',
     order:'Order of songs',orderHint:'Numbered in the order you tap them. Use the arrows to rearrange.',
@@ -457,6 +458,7 @@ const STR = {
     search:'Поиск…',email:'Эл. почта',password:'Пароль',loginNote:'Доступ только у регента. Просмотр журнала — без входа.',
     loading:'Загрузка…',noEvents:'В этом периоде событий нет.',noSongs:'Записей пока нет.',
     exportTitle:'ЭКСПОРТ',exportAtt:'Посещаемость CSV',exportSongs:'История песен CSV',
+    backupBtn:'Полная копия',backupNote:'Скачивает все таблицы — хористы, события, посещаемость, песни, категории — одним файлом JSON. PDF-ноты не входят.',backupFail:'Не удалось создать копию — попробуйте ещё раз.',
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
     period:'Период',changePeriod:'Изменить',
     chooseFrom:'Выбор песен',showList:n=>'Показать все ('+n+')',hideList:'Скрыть список',
@@ -565,10 +567,13 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 /* ---------- dates ---------- */
 function today(){ return new Date().toISOString().slice(0,10); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '3.5';
+const VERSION = '3.6';
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '3': {
   en: [
+    'One-click full backup of the whole database (admin → Export)',
+    'Sign out no longer overlaps the Admin tab on phones',
+    'Older-entries year pills scroll instead of running off screen',
     'A cleaner admin: tiled sections, collapsed “+ Add” forms, clearer tabs',
     'Song categories (Christmas, Easter…) with filters in Songs and Sheets',
     'Conductor & pianist per song, and a public People view',
@@ -583,6 +588,9 @@ const NOTES = { '3': {
     'CSV export follows the selected period'
   ],
   ru: [
+    'Полная копия базы одним нажатием (админка → Экспорт)',
+    '«Выйти» больше не перекрывает вкладку «Админ» на телефоне',
+    'Годы в «Старых записях» прокручиваются, а не уходят за экран',
     'Аккуратнее админка: секции-плитки, свёрнутые формы «Добавить», заметнее вкладки',
     'Категории песен (Рождество, Пасха…) с фильтрами в «Песнях» и «Нотах»',
     'Дирижёр и пианист у каждой песни и открытая вкладка «Кто вёл»',
@@ -1052,6 +1060,10 @@ function eventPicker(target){
         <button class="xbtn" data-export="att">${esc(t('exportAtt'))}</button>
         <button class="xbtn" data-export="songs">${esc(t('exportSongs'))}</button>
       </div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="xbtn" data-backup ${S.backingUp?'disabled':''}>${esc(S.backingUp ? t('loading') : t('backupBtn'))}</button>
+      </div>
+      <div class="note" style="padding:8px 0 0">${esc(t('backupNote'))}</div>
     </div></div>`;
 }
 function entryRow(e, target){
@@ -1473,6 +1485,32 @@ function download(name, text){
 }
 const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
 
+/* Full-database backup: every table, paged past PostgREST's 1000-row cap. */
+async function fullBackup(){
+  S.backingUp = true; render();
+  try {
+    const dump = { exported_at: new Date().toISOString(), app: document.title, tables: {} };
+    for (const tbl of ['singers','events','songs','song_categories','absences','event_songs']) {
+      const rows = [];
+      for (let fromRow = 0;;) {
+        const { data, error } = await sb.from(tbl).select('*').range(fromRow, fromRow + 999);
+        if (error) throw error;
+        rows.push(...data);
+        if (data.length < 1000) break;
+        fromRow += 1000;
+      }
+      dump.tables[tbl] = rows;
+    }
+    const stamp = new Date().toISOString().slice(0,10);
+    const url = URL.createObjectURL(new Blob([JSON.stringify(dump, null, 1)], { type:'application/json' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = 'choir-backup-' + stamp + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  } catch (e) { S.toast = t('backupFail'); }
+  S.backingUp = false; render();
+}
+
 function exportCSV(kind){
   const ev = S.events.filter(kind === 'att' ? hasAtt : hasSongs)
     .filter(e => inRange(e.date, S.from, S.to))
@@ -1853,6 +1891,7 @@ document.addEventListener('click', async e => {
     return;
   }
   if (d.export) { return exportCSV(d.export); }
+  if (el.hasAttribute('data-backup')) { return fullBackup(); }
   if (el.hasAttribute('data-dismiss')) { S.toast = ''; S.retry = null; return render(); }
   if (el.hasAttribute('data-retry')) { const r = S.retry; S.toast = ''; S.retry = null; render(); return r && r(); }
 
