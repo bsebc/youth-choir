@@ -48,7 +48,8 @@
   .nav a:hover,.nav .navbtn:hover{color:#fff;background:rgba(255,255,255,.08)}
   .nav a.on,.nav .navbtn.on{color:var(--ink);background:var(--gold);font-weight:600}
   .nav a.on:hover,.nav .navbtn.on:hover{color:var(--ink);background:#d5ae2e}
-  .nav .right{margin-left:auto;position:sticky;right:0;background:var(--ink);box-shadow:-10px 0 10px var(--ink)}
+  .nav .right{margin-left:auto}
+  .nav .right.out{display:flex;align-items:center;gap:6px;opacity:.85}
 
   /* tabs + controls */
   .tabs{display:flex;background:#fff;border-bottom:1px solid var(--rule)}
@@ -760,7 +761,9 @@ function homePage(){
 }
 function publicNav(active){
   const right = S.session
-    ? `<a href="#/attendance" class="right" data-signout>${esc(t('signout'))}</a>`
+    ? `<a href="#/attendance" class="right out" data-signout>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        ${esc(t('signout'))}</a>`
     : `<a href="#/login" class="right">${esc(t('signin'))}</a>`;
   const adminTab = S.session
     ? `<a href="#/admin/attendance" class="${active==='admin'?'on':''}">${esc(t('admin'))}</a>` : '';
