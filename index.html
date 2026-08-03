@@ -289,6 +289,7 @@
   .obar .op svg{width:15px;height:15px;flex:none}
 .seatctl{display:flex;gap:8px;padding:12px 16px 0;overflow-x:auto}
   .seatctl .seg{flex:none;margin:0}
+  .seatctl .seg.right{margin-left:auto}
   .seatctl .seg button{white-space:nowrap}
   .stagewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:12px 16px 4px;background:#fff}
   .stage{display:grid;grid-template-columns:max-content max-content;gap:12px;width:max-content;margin:0 auto;justify-content:center}
@@ -328,9 +329,23 @@
   .mdbar .mini.mk{background:#fbeaa0;border-color:#e8d484}
   .doc .docedit{width:100%;min-height:62vh;color:var(--ink);background:#fff;font:14px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap}
   @media (min-width:700px){ .doc{font-size:17px;padding:22px 26px 52px} }
-  .audbar{margin:12px 16px 0;background:var(--ink);color:var(--gold);border-radius:11px;padding:11px 12px;text-align:center;
-    font-size:11px;letter-spacing:.20em;text-transform:uppercase;font-weight:700}
-  .audbar.top{margin:10px 16px 2px}
+  /* the platform itself: rounded back corners, the front tapering in to the
+     two centre steps. Curved ends are SVG; the straight middle stretches. */
+  .stagefig{margin:16px 16px 0;display:flex;flex-direction:column;align-items:center}
+  .stagefig.top{margin:10px 16px 6px;flex-direction:column-reverse}
+  .stagefig .platform{width:100%;display:flex;align-items:stretch;color:var(--ink);
+    filter:drop-shadow(0 8px 16px rgba(23,32,58,.20))}
+  .stagefig .cap{flex:none;width:64px;height:66px;display:block}
+  .stagefig .cap.r{transform:scaleX(-1)}
+  .stagefig.top .cap{transform:scaleY(-1)}
+  .stagefig.top .cap.r{transform:scale(-1,-1)}
+  .stagefig .mid{flex:1;min-width:0;height:66px;background:var(--ink);color:var(--gold);
+    display:flex;align-items:center;justify-content:center;padding-bottom:14px;
+    font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700}
+  .stagefig.top .mid{padding:14px 0 0}
+  .stagefig .stairs{display:grid;gap:3px;justify-items:center;width:min(230px,46%);padding-top:3px}
+  .stagefig.top .stairs{padding:0 0 3px}
+  .stagefig .stairs i{display:block;width:70%;height:9px;border-radius:6px;background:#334271}
   .blkempty{font-size:12px;color:var(--faint);padding:10px 2px 4px}
   .tray{display:flex;flex-wrap:wrap;gap:7px;padding:10px 16px 4px}
   .chipx{padding:9px 13px;border-radius:999px;border:1px solid var(--rule);background:#fff;font-size:13px;color:var(--ink)}
@@ -463,7 +478,7 @@ const STR = {
     rulesLegend:'Select some text, then tap a button. Blank line = new paragraph.',
     mdH:'Heading',mdOl:'1. Numbered',mdUl:'• Bullet',mdSub:'a. Sub-point',mdMark:'Highlight',mdBold:'Bold',mdQuote:'Quote',
     write:'Write',preview:'Preview',
-    allParts:'All parts',frontRow:'Front',backRow:'Back',audienceSide:'Stage · Audience',
+    allParts:'All parts',frontRow:'Front',backRow:'Back',audienceSide:'Stage',
     audienceView:'Audience view',choirView:'Choir view',emptyBlock:'No one seated',
     editSeats:'Edit seating',seatHint:'Tap a singer, then tap a seat. Tapping two singers swaps them.',
     unseat:'Remove from seat',selected2:'Selected',notSeated:'Not seated',
@@ -542,7 +557,7 @@ const STR = {
     rulesLegend:'Выделите текст и нажмите кнопку. Пустая строка — новый абзац.',
     mdH:'Заголовок',mdOl:'1. Нумерация',mdUl:'• Пункт',mdSub:'a. Подпункт',mdMark:'Выделить',mdBold:'Жирный',mdQuote:'Цитата',
     write:'Текст',preview:'Просмотр',
-    allParts:'Все партии',frontRow:'Перед',backRow:'Зад',audienceSide:'Сцена · Зал',
+    allParts:'Все партии',frontRow:'Перед',backRow:'Зад',audienceSide:'Сцена',
     audienceView:'Вид из зала',choirView:'Вид с хора',emptyBlock:'Никого нет',
     editSeats:'Изменить схему',seatHint:'Нажмите на хориста, затем на место. Нажатие на двух хористов меняет их местами.',
     unseat:'Убрать с места',selected2:'Выбран',notSeated:'Без места',
@@ -638,6 +653,7 @@ const S = {
   showNotes: false,
   seatEdit: null, seatSel: null, seatPart: 'all', seatList: false, seatView: 'audience',
   rules: null, rulesEdit: null, rulesPreview: false,
+  stageKey: '', stageLeft: 0,   // sideways scroll of the seating stage
   loginSig: '',                   // what the sign-in screen was last drawn from     // the rules document and its draft while editing   // seating chart: pending moves, selection, block filter
   addOpen: null,                // which "+ Add" form is expanded
   pickOpen: null,               // song chooser: null = collapse itself at 3 picks
@@ -661,7 +677,7 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 /* ---------- dates ---------- */
 function today(){ return new Date().toISOString().slice(0,10); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '3.8.0';
+const VERSION = '3.8.4';
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '3': {
   en: [
@@ -900,22 +916,28 @@ function seatingPage(){
   };
   return `<div class="h">${esc(t('tSeating'))}<span class="n">${roster.length - unseated.length}/${roster.length}</span>
       ${S.session && !editing ? `<button class="mini" data-seat-edit>${esc(t('editSeats'))}</button>` : ''}</div>
-    <div class="seatctl"><div class="seg tiny">
-      <button data-seat-view="audience" class="${flip?'':'on'}">${esc(t('audienceView'))}</button>
-      <button data-seat-view="choir" class="${flip?'on':''}">${esc(t('choirView'))}</button>
-    </div></div>
-    <div class="seatctl"><div class="seg tiny">
-      <button data-seat-part="all" class="${S.seatPart==='all'?'on':''}">${esc(t('allParts'))}</button>
-      ${PARTS.map(p => `<button data-seat-part="${p}" class="${S.seatPart===p?'on':''}">${esc(t(p))}</button>`).join('')}
-    </div></div>
+    <div class="seatctl">
+      <div class="seg tiny">
+        <button data-seat-part="all" class="${S.seatPart==='all'?'on':''}">${esc(t('allParts'))}</button>
+        ${PARTS.map(p => `<button data-seat-part="${p}" class="${S.seatPart===p?'on':''}">${esc(t(p))}</button>`).join('')}
+      </div>
+      <div class="seg tiny right">
+        <button data-seat-view="audience" class="${flip?'':'on'}">${esc(t('audienceView'))}</button>
+        <button data-seat-view="choir" class="${flip?'on':''}">${esc(t('choirView'))}</button>
+      </div>
+    </div>
     ${editing ? `<div class="note">${esc(t('seatHint'))}</div>` : ''}
     ${sel ? `<div class="seatsel"><b style="color:var(--ink)">${esc(sel.name)}</b> · ${esc(t(sel.part))}
       ${editing && seatEff(sel) ? `<button class="mini" data-seat-unseat>${esc(t('unseat'))}</button>` : ''}</div>` : ''}
-    ${flip ? `<div class="audbar top">${esc(t('audienceSide'))}</div>` : ''}
+    ${flip ? `<div class="stagefig top">
+      <div class="platform"><svg class="cap l" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg><div class="mid">${esc(t('audienceSide'))}</div><svg class="cap r" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg></div>
+      <div class="stairs"><i></i></div></div>` : ''}
     <div class="stagewrap"><div class="stage${S.seatPart==='all'?'':' one'}">
       ${rows.map(row => `<div class="stagerow">${row.map((p, i) => block(p, i)).join('')}</div>`).join('')}
     </div></div>
-    ${flip ? '' : `<div class="audbar">${esc(t('audienceSide'))}</div>`}
+    ${flip ? '' : `<div class="stagefig">
+      <div class="platform"><svg class="cap l" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg><div class="mid">${esc(t('audienceSide'))}</div><svg class="cap r" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg></div>
+      <div class="stairs"><i></i></div></div>`}
     ${editing ? (unseated.length ? `<div class="note" style="padding-bottom:0">${esc(t('trayNote'))}</div>
         <div class="tray">${unseated.map(s => `<button class="chipx ${S.seatSel===s.id?'sel':''}" data-tray="${s.id}">${esc(s.name)}</button>`).join('')}</div>` : '')
       : (unseated.length ? `<div class="note">${esc(t('notSeated'))}: <b style="color:var(--ink)">${unseated.length}</b>
@@ -2024,6 +2046,25 @@ function toastHTML(){
    change the page height and re-trigger this through the viewport listener. */
 let fitPending = false;
 function fitGrid(){
+  /* Tapping a chair re-renders the stage, so put the sideways scroll back where
+     the reader had it instead of snapping to the far left. */
+  const st = document.querySelector('.stagewrap');
+  if (st) {
+    const skey = S.seatPart + '|' + S.seatView;
+    if (S.stageKey !== skey) {
+      /* Open on the aisle between the two block columns — the real middle of the
+         stage — rather than the far left or the midpoint of unequal blocks. */
+      S.stageKey = skey;
+      const al = st.querySelector('.blk.al');
+      const aisle = al ? al.getBoundingClientRect().right - st.getBoundingClientRect().left + st.scrollLeft + 6
+                       : st.scrollWidth / 2;
+      const max = st.scrollWidth - st.clientWidth;
+      S.stageLeft = Math.min(max, Math.max(0, Math.round(aisle - st.clientWidth / 2)));
+      st.scrollLeft = S.stageLeft;
+    }
+    else if (S.stageLeft) st.scrollLeft = S.stageLeft;
+    st.addEventListener('scroll', () => { S.stageLeft = st.scrollLeft; }, { passive: true });
+  }
   const sc = document.querySelector('.scroll');
   if (!sc) return;
   const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
@@ -2059,6 +2100,25 @@ function afterRender(){
   if (lf && !lf.dataset.wired) {
     lf.dataset.wired = '1';
     lf.addEventListener('submit', e => { e.preventDefault(); signIn(); });
+  }
+  /* Tapping a chair re-renders the stage, so put the sideways scroll back where
+     the reader had it instead of snapping to the far left. */
+  const st = document.querySelector('.stagewrap');
+  if (st) {
+    const skey = S.seatPart + '|' + S.seatView;
+    if (S.stageKey !== skey) {
+      /* Open on the aisle between the two block columns — the real middle of the
+         stage — rather than the far left or the midpoint of unequal blocks. */
+      S.stageKey = skey;
+      const al = st.querySelector('.blk.al');
+      const aisle = al ? al.getBoundingClientRect().right - st.getBoundingClientRect().left + st.scrollLeft + 6
+                       : st.scrollWidth / 2;
+      const max = st.scrollWidth - st.clientWidth;
+      S.stageLeft = Math.min(max, Math.max(0, Math.round(aisle - st.clientWidth / 2)));
+      st.scrollLeft = S.stageLeft;
+    }
+    else if (S.stageLeft) st.scrollLeft = S.stageLeft;
+    st.addEventListener('scroll', () => { S.stageLeft = st.scrollLeft; }, { passive: true });
   }
   const sc = document.querySelector('.scroll');
   if (!sc) return;
