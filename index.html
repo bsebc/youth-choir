@@ -287,6 +287,41 @@
   .obar .op{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;background:var(--ink);
     color:var(--paper);font-size:13px;font-weight:600}
   .obar .op svg{width:15px;height:15px;flex:none}
+.seatctl{display:flex;gap:8px;padding:12px 16px 0;overflow-x:auto}
+  .seatctl .seg{flex:none;margin:0}
+  .seatctl .seg button{white-space:nowrap}
+  .stagewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:12px 16px 4px;background:#fff}
+  .stage{display:grid;grid-template-columns:max-content max-content;gap:12px;width:max-content;margin:0 auto;justify-content:center}
+  .stage.one{grid-template-columns:max-content}
+  .stagerow{display:contents}
+  .blk.al{justify-self:end}
+  .blk.ar{justify-self:start}
+  .blk{border:1px solid var(--rule);border-radius:14px;padding:10px 11px;background:#fbfbf9}
+  .blkh{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.10em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+  .blkh b{color:var(--blue);letter-spacing:0}
+  .blk.soprano{border-color:#e2d4a8}
+  .blk.alto{border-color:#cfd6ea}
+  .blk.tenor{border-color:#d3ddd0}
+  .blk.bass{border-color:#c4c8d4}
+  .seatrow{display:grid;gap:5px;margin-top:6px;--sw:66px;--gw:42px}
+  .rlab.r{padding-right:0;padding-left:5px;justify-content:flex-end}
+  .rlab{padding-right:5px;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center}
+  .seat{overflow-wrap:anywhere;height:52px;border-radius:9px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-size:11px;
+    line-height:1.2;padding:4px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;
+    transition:box-shadow .12s ease,border-color .12s ease}
+  .seat[disabled]{opacity:1;cursor:default}
+  .seat.empty{background:#f5f6f2;border-style:dashed;border-color:#dfe2da}
+  .seat:not([disabled]):hover{border-color:var(--blue)}
+  .seat.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);background:#fffbef}
+  .audbar{margin:12px 16px 0;background:var(--ink);color:var(--gold);border-radius:11px;padding:11px 12px;text-align:center;
+    font-size:11px;letter-spacing:.20em;text-transform:uppercase;font-weight:700}
+  .audbar.top{margin:10px 16px 2px}
+  .blkempty{font-size:12px;color:var(--faint);padding:10px 2px 4px}
+  .tray{display:flex;flex-wrap:wrap;gap:7px;padding:10px 16px 4px}
+  .chipx{padding:9px 13px;border-radius:999px;border:1px solid var(--rule);background:#fff;font-size:13px;color:var(--ink)}
+  .chipx.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);background:#fffbef}
+  .seatsel{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:2px 16px 6px;font-size:13px;color:var(--muted)}
+  @media (max-width:700px){ .seatrow{--sw:58px;--gw:34px} .seat{height:48px;font-size:10px} }
   .obar .oclear{font-size:13px;color:var(--blue);text-decoration:underline;text-underline-offset:2px}
   .mini.locked{gap:5px}
   .li.off{background:#f7e9e6}
@@ -405,6 +440,13 @@ const STR = {
     search:'Search…',email:'Email',password:'Password',loginNote:'Only the choir director signs in. Everyone else can read the ledger.',
     loading:'Loading…',noEvents:'No events in this range yet.',noSongs:'No songs recorded yet.',
     exportTitle:'EXPORT',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
+    tSeating:'Seating chart',tSeatingSub:'Where everyone sits',
+    allParts:'All parts',frontRow:'Front',backRow:'Back',audienceSide:'Stage · Audience',
+    audienceView:'Audience view',choirView:'Choir view',emptyBlock:'No one seated',
+    editSeats:'Edit seating',seatHint:'Tap a singer, then tap a seat. Tapping two singers swaps them.',
+    unseat:'Remove from seat',selected2:'Selected',notSeated:'Not seated',
+    seatsMovedN:n=>n+(n===1?' seat change':' seat changes'),seatsSaved:'Seating saved',
+    trayNote:'Still without a seat — tap a name, then tap a chair.',showNames:'Show names',hide:'Hide',
     viewSheets:'View sheets',orderOnly:'Sheets for this service',showAllSheets:'Show all songs',
     backupBtn:'Full backup',backupNote:'Downloads every table — singers, events, attendance, songs, categories — as one JSON file. Sheet PDFs are not included.',backupFail:'Backup failed — try again.',
     period:'Period',changePeriod:'Change',
@@ -470,6 +512,13 @@ const STR = {
     search:'Поиск…',email:'Эл. почта',password:'Пароль',loginNote:'Доступ только у регента. Просмотр журнала — без входа.',
     loading:'Загрузка…',noEvents:'В этом периоде событий нет.',noSongs:'Записей пока нет.',
     exportTitle:'ЭКСПОРТ',exportAtt:'Посещаемость CSV',exportSongs:'История песен CSV',
+    tSeating:'Схема мест',tSeatingSub:'Кто где сидит',
+    allParts:'Все партии',frontRow:'Перед',backRow:'Зад',audienceSide:'Сцена · Зал',
+    audienceView:'Вид из зала',choirView:'Вид с хора',emptyBlock:'Никого нет',
+    editSeats:'Изменить схему',seatHint:'Нажмите на хориста, затем на место. Нажатие на двух хористов меняет их местами.',
+    unseat:'Убрать с места',selected2:'Выбран',notSeated:'Без места',
+    seatsMovedN:n=>'изменений: '+n,seatsSaved:'Схема сохранена',
+    trayNote:'Ещё без места — нажмите имя, затем место.',showNames:'Показать имена',hide:'Скрыть',
     viewSheets:'Смотреть ноты',orderOnly:'Ноты для этого служения',showAllSheets:'Показать все песни',
     backupBtn:'Полная копия',backupNote:'Скачивает все таблицы — хористы, события, посещаемость, песни, категории — одним файлом JSON. PDF-ноты не входят.',backupFail:'Не удалось создать копию — попробуйте ещё раз.',
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
@@ -558,6 +607,7 @@ const S = {
   editPerson: null, editSongRow: null,   // inline editors
   catFilter: 'all', showCats: false, editCat: null,     // song categories
   showNotes: false,
+  seatEdit: null, seatSel: null, seatPart: 'all', seatList: false, seatView: 'audience',   // seating chart: pending moves, selection, block filter
   addOpen: null,                // which "+ Add" form is expanded
   pickOpen: null,               // song chooser: null = collapse itself at 3 picks
   preset: '6',
@@ -715,6 +765,155 @@ function songStats(id, from, to){
   return { n: rows.length, last: dates.length ? fmtShort(dates[dates.length-1]) : '' };
 }
 
+
+/* ---------- seating chart ---------- */
+const SEATCOLS = 9;      // the usual width of a block; blocks grow past it when needed
+const SEATMAX = 16;      // hard ceiling, so a stray tap can't create a mile-wide stage
+/* The stage as the audience sees it: tenor and bass behind, soprano and alto in front. */
+const SEATBLOCKS = [['tenor','bass'],['soprano','alto']];
+const seatOf = s => (s.seat_block && s.seat_row && s.seat_col) ? { b:s.seat_block, r:+s.seat_row, c:+s.seat_col } : null;
+const seatEff = s => (S.seatEdit && S.seatEdit.has(s.id)) ? S.seatEdit.get(s.id) : seatOf(s);
+const seatRoster = () => S.singers.filter(s => isSinger(s) && s.active !== false);
+const seatKey = x => x ? x.b + ':' + x.r + ':' + x.c : '';
+/* Blocks are only as wide as they need to be: in view mode nothing empty trails
+   off the end, and while editing there is always one spare column to grow into. */
+function blockCols(p, map, editing){
+  let used = 0;
+  for (let r = 1; r <= 2; r++) for (let c = 1; c <= SEATMAX; c++) if (map.get(p + ':' + r + ':' + c)) used = c > used ? c : used;
+  return editing ? Math.min(Math.max(used + 1, SEATCOLS), SEATMAX) : used;
+}
+function seatMap(){
+  const m = new Map();
+  seatRoster().forEach(s => { const st = seatEff(s); if (st) m.set(seatKey(st), s); });
+  return m;
+}
+/* Chairs are small, so a seat shows a shortened name — but never an ambiguous one:
+   the given name grows one letter at a time until it is unique among namesakes. */
+function seatNames(){
+  const out = new Map(), bySurname = new Map();
+  seatRoster().forEach(s => {
+    const p = String(s.name).trim().split(/\s+/);
+    const rec = { id: s.id, sur: p[0], given: p.slice(1).join(' ') };
+    if (!bySurname.has(rec.sur)) bySurname.set(rec.sur, []);
+    bySurname.get(rec.sur).push(rec);
+  });
+  bySurname.forEach(list => list.forEach(x => {
+    if (!x.given) return out.set(x.id, x.sur);
+    let n = 1;
+    while (n < x.given.length && list.some(y => y !== x && y.given.slice(0, n) === x.given.slice(0, n))) n++;
+    out.set(x.id, x.sur + ' ' + x.given.slice(0, n) + (n < x.given.length ? '.' : ''));
+  }));
+  return out;
+}
+function seatPlace(id, target){
+  const map = seatMap(), from = seatEff(S.singers.find(s => s.id === id));
+  const sitting = target ? map.get(seatKey(target)) : null;
+  if (sitting && sitting.id !== id) S.seatEdit.set(sitting.id, from || null);   // swap, don't overwrite
+  S.seatEdit.set(id, target);
+  S.seatSel = null;
+}
+function seatDelta(){
+  const out = [];
+  if (!S.seatEdit) return out;
+  S.seatEdit.forEach((v, id) => {
+    const s = S.singers.find(x => x.id === id);
+    if (s && seatKey(seatOf(s)) !== seatKey(v)) out.push({ s, v });
+  });
+  return out;
+}
+function seatingPage(){
+  const editing = !!S.seatEdit && !!S.session;
+  const map = seatMap(), roster = seatRoster();
+  const unseated = roster.filter(s => !seatEff(s));
+  const sel = S.seatSel ? roster.find(s => s.id === S.seatSel) : null;
+  /* Choir view is the same stage seen from the singers' side — a 180° turn,
+     so blocks, rows and columns all reverse together. */
+  const flip = S.seatView === 'choir';
+  let rows = S.seatPart === 'all' ? SEATBLOCKS.map(r => r.slice()) : [[S.seatPart]];
+  if (flip) rows = rows.slice().reverse().map(r => r.reverse());
+  const label = seatNames();
+  const block = (p, i) => {
+    const inBlock = roster.filter(s => { const st = seatEff(s); return st && st.b === p; }).length;
+    const cols = blockCols(p, map, editing);
+    const aisle = i === 0 ? ' al' : ' ar';
+    if (!cols) return `<div class="blk ${p}${aisle}"><div class="blkh">${esc(t(p))}<b>0</b></div>
+      <div class="blkempty">${esc(t('emptyBlock'))}</div></div>`;
+    /* Chair 1 of every block sits beside the centre aisle, so tenor and soprano
+       grow outward to the left and bass and alto to the right. The row label
+       always rides the outer edge, where nothing has to move for it. */
+    const order = Array.from({length:cols}, (_,i) => i + 1);
+    const left = p === 'tenor' || p === 'soprano';
+    let colOrder = left ? order.slice().reverse() : order.slice();
+    let gutterFirst = left;
+    if (flip) { colOrder = colOrder.slice().reverse(); gutterFirst = !gutterFirst; }
+    const gut = r => `<div class="rlab${gutterFirst?'':' r'}">${esc(r === 1 ? t('frontRow') : t('backRow'))}</div>`;
+    const chairs = (flip ? [1,2] : [2,1]).map(r => `<div class="seatrow" style="grid-template-columns:${
+        gutterFirst ? 'var(--gw) repeat('+cols+',var(--sw))' : 'repeat('+cols+',var(--sw)) var(--gw)'}">
+        ${gutterFirst ? gut(r) : ''}
+        ${colOrder.map(c => {
+          const who = map.get(p + ':' + r + ':' + c), on = who && S.seatSel === who.id;
+          return `<button class="seat ${who?'':'empty'} ${on?'sel':''}" data-seat="${p}:${r}:${c}"${
+            who?` title="${esc(who.name)}" aria-label="${esc(who.name)}"`:''}>${who?esc(label.get(who.id) || who.name):''}</button>`;
+        }).join('')}
+        ${gutterFirst ? '' : gut(r)}
+      </div>`).join('');
+    return `<div class="blk ${p}${aisle}"><div class="blkh">${esc(t(p))}<b>${inBlock}</b></div>${chairs}</div>`;
+  };
+  return `<div class="h">${esc(t('tSeating'))}<span class="n">${roster.length - unseated.length}/${roster.length}</span>
+      ${S.session && !editing ? `<button class="mini" data-seat-edit>${esc(t('editSeats'))}</button>` : ''}</div>
+    <div class="seatctl"><div class="seg tiny">
+      <button data-seat-view="audience" class="${flip?'':'on'}">${esc(t('audienceView'))}</button>
+      <button data-seat-view="choir" class="${flip?'on':''}">${esc(t('choirView'))}</button>
+    </div></div>
+    <div class="seatctl"><div class="seg tiny">
+      <button data-seat-part="all" class="${S.seatPart==='all'?'on':''}">${esc(t('allParts'))}</button>
+      ${PARTS.map(p => `<button data-seat-part="${p}" class="${S.seatPart===p?'on':''}">${esc(t(p))}</button>`).join('')}
+    </div></div>
+    ${editing ? `<div class="note">${esc(t('seatHint'))}</div>` : ''}
+    ${sel ? `<div class="seatsel"><b style="color:var(--ink)">${esc(sel.name)}</b> · ${esc(t(sel.part))}
+      ${editing && seatEff(sel) ? `<button class="mini" data-seat-unseat>${esc(t('unseat'))}</button>` : ''}</div>` : ''}
+    ${flip ? `<div class="audbar top">${esc(t('audienceSide'))}</div>` : ''}
+    <div class="stagewrap"><div class="stage${S.seatPart==='all'?'':' one'}">
+      ${rows.map(row => `<div class="stagerow">${row.map((p, i) => block(p, i)).join('')}</div>`).join('')}
+    </div></div>
+    ${flip ? '' : `<div class="audbar">${esc(t('audienceSide'))}</div>`}
+    ${editing ? (unseated.length ? `<div class="note" style="padding-bottom:0">${esc(t('trayNote'))}</div>
+        <div class="tray">${unseated.map(s => `<button class="chipx ${S.seatSel===s.id?'sel':''}" data-tray="${s.id}">${esc(s.name)}</button>`).join('')}</div>` : '')
+      : (unseated.length ? `<div class="note">${esc(t('notSeated'))}: <b style="color:var(--ink)">${unseated.length}</b>
+          <button class="mini" style="margin-left:8px" data-seat-list>${esc(S.seatList ? t('hide') : t('showNames'))}</button>
+          ${S.seatList ? `<div style="padding-top:8px">${esc(unseated.map(s => s.name).join(', '))}</div>` : ''}</div>` : '')}
+    ${editing ? seatSaveBar() : ''}`;
+}
+function seatSaveBar(){
+  const n = seatDelta().length;
+  return `<div class="savebar">
+      <div class="st ${n?'live':''}">${esc(n ? t('seatsMovedN')(n) : t('noChanges'))}</div>
+      <button class="sb ghost" data-seat-cancel>${esc(t('cancel'))}</button>
+      <button class="sb go" data-seat-save ${n?'':'disabled'}>${esc(t('save'))}</button>
+    </div>`;
+}
+async function saveSeats(){
+  const rows = seatDelta();
+  if (!rows.length || !await ensureSession()) return;
+  const EMPTY = { seat_block: null, seat_row: null, seat_col: null };
+  /* A chair may hold only one person, so vacate every chair involved before
+     filling any of them — otherwise a simple swap collides with the singer who
+     is still sitting there. If a later write fails the pending moves stay on
+     screen and Save can be pressed again: the chairs are already empty. */
+  const clear = await sb.from('singers').update(EMPTY).in('id', rows.map(r => r.s.id)).select();
+  if (!wrote(clear)) return render();
+  rows.forEach(({ s }) => Object.assign(s, EMPTY));
+  for (const { s, v } of rows) {
+    if (!v) continue;
+    const patch = { seat_block: v.b, seat_row: v.r, seat_col: v.c };
+    const res = await sb.from('singers').update(patch).eq('id', s.id).select();
+    if (!wrote(res)) return render();
+    Object.assign(s, patch);
+  }
+  S.seatEdit = null; S.seatSel = null;
+  okToast(t('seatsSaved')); render();
+}
+
 /* ---------- chrome ---------- */
 function mast(){
   return `<div class="mast">
@@ -732,6 +931,12 @@ function homePage(){
   const ICON = {
     attGrid: `<div class="ic-grid">${['','on','','','','','on','','','','','on'].slice(0,9)
         .map(c => `<span class="${c}"></span>`).join('')}</div>`,
+    seat: `<svg class="ic-note" viewBox="0 0 34 34" aria-hidden="true">
+        <g fill="none" stroke="#c9cdc4" stroke-width="1.7">
+          <rect x="3.5" y="7" width="8" height="7" rx="2.2"></rect><rect x="13" y="7" width="8" height="7" rx="2.2"></rect><rect x="22.5" y="7" width="8" height="7" rx="2.2"></rect>
+          <rect x="3.5" y="20" width="8" height="7" rx="2.2"></rect><rect x="22.5" y="20" width="8" height="7" rx="2.2"></rect>
+        </g>
+        <rect x="13" y="20" width="8" height="7" rx="2.2" fill="var(--blue)"></rect></svg>`,
     attSum:  `<div class="ic-bars"><span style="width:100%"></span><span style="width:72%"></span><span style="width:45%"></span></div>`,
     songGrid:`<svg class="ic-note" viewBox="0 0 34 34" aria-hidden="true">
         <g stroke="#c9cdc4" stroke-width="1.6" stroke-linecap="round">
@@ -775,6 +980,7 @@ function homePage(){
       ${orderTile}
       ${tile('#/attendance/grid','tAttGrid','tAttGridSub',ICON.attGrid)}
       ${tile('#/songs/grid','tSongGrid','tSongGridSub',ICON.songGrid)}
+      ${tile('#/seating','tSeating','tSeatingSub',ICON.seat)}
       ${tile('#/sheets','tSheets','tSheetsSub',ICON.sheets)}
       ${tile('#/sheets/piano','tPiano','tPianoSub',ICON.piano)}
       ${S.session ? tile('#/admin/attendance','tAdmin','tAdminSub',ICON.user,true)
@@ -1593,6 +1799,7 @@ function render(){
   else if (r.startsWith('#/login')) { html += publicNav('') + loginPage(); }
   else if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) { html += publicNav('piano') + sheetsPage('piano'); }
   else if (r.startsWith('#/sheets')) { html += publicNav('sheets') + sheetsPage('sheets'); }
+  else if (r.startsWith('#/seating')) { html += publicNav('seating') + seatingPage(); }
   else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
   else if (r.startsWith('#/songs')) {
     const tab = r.split('/')[2] || 'grid';
@@ -1735,7 +1942,7 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view]');
   if (!el) return;
   const d = el.dataset;
 
@@ -1919,6 +2126,22 @@ document.addEventListener('click', async e => {
     song[K.col] = null; render();
     await sb.storage.from(K.bucket).remove([path]);
     return;
+  }
+  if (el.hasAttribute('data-seat-list')) { S.seatList = !S.seatList; return render(); }
+  if (d.seatView) { S.seatView = d.seatView; return render(); }
+  if (d.seatPart) { S.seatPart = d.seatPart; return render(); }
+  if (el.hasAttribute('data-seat-edit')) { S.seatEdit = new Map(); S.seatSel = null; return render(); }
+  if (el.hasAttribute('data-seat-cancel')) { S.seatEdit = null; S.seatSel = null; return render(); }
+  if (el.hasAttribute('data-seat-unseat')) { if (S.seatSel) seatPlace(S.seatSel, null); return render(); }
+  if (el.hasAttribute('data-seat-save')) { return saveSeats(); }
+  if (d.tray) { S.seatSel = S.seatSel === d.tray ? null : d.tray; return render(); }
+  if (d.seat) {
+    const [b, r, c] = d.seat.split(':');
+    const who = seatMap().get(d.seat);
+    if (!S.seatEdit) { S.seatSel = who && S.seatSel !== who.id ? who.id : null; return render(); }  // view: name the person
+    if (S.seatSel) { if (who && who.id === S.seatSel) S.seatSel = null; else seatPlace(S.seatSel, { b, r:+r, c:+c }); }
+    else if (who) S.seatSel = who.id;
+    return render();
   }
   if (d.export) { return exportCSV(d.export); }
   if (el.hasAttribute('data-backup')) { return fullBackup(); }
@@ -2153,6 +2376,7 @@ document.addEventListener('input', e => {
 window.addEventListener('hashchange', () => {
   S.route = location.hash || '#/home';
   if (!/^#\/admin\/(attendance|songs)\/.+/.test(S.route)) { S.edit = null; S.pending = null; }
+  if (!S.route.startsWith('#/seating')) { S.seatEdit = null; S.seatSel = null; }
   S.error = ''; S.query = ''; S.editPerson = null; S.editSongRow = null; S.editCat = null; S.addOpen = null;
   render();
 });
