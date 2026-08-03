@@ -277,6 +277,17 @@
   .tile.order .olist li{font-size:15px;line-height:1.25;color:#e7e9ee}
   .tile.order .olist li::marker{color:var(--gold);font-weight:700;font-size:13px}
   .tile.order .ts{color:#a6afc7}
+  .tile.order .ofill{display:flex;flex-direction:column;gap:12px;color:inherit}
+  .ofoot{display:flex;margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.16)}
+  .obtn{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;font-size:14px;font-weight:600;
+    color:var(--ink);background:var(--gold);transition:filter .15s ease}
+  .obtn:hover{filter:brightness(1.07)}
+  .obtn svg{width:17px;height:17px}
+  .obar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px 0}
+  .obar .op{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;background:var(--ink);
+    color:var(--paper);font-size:13px;font-weight:600}
+  .obar .op svg{width:15px;height:15px;flex:none}
+  .obar .oclear{font-size:13px;color:var(--blue);text-decoration:underline;text-underline-offset:2px}
   .mini.locked{gap:5px}
   .li.off{background:#f7e9e6}
   .li.na{background:#f4f5f1}
@@ -394,6 +405,7 @@ const STR = {
     search:'Search…',email:'Email',password:'Password',loginNote:'Only the choir director signs in. Everyone else can read the ledger.',
     loading:'Loading…',noEvents:'No events in this range yet.',noSongs:'No songs recorded yet.',
     exportTitle:'EXPORT',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
+    viewSheets:'View sheets',orderOnly:'Sheets for this service',showAllSheets:'Show all songs',
     backupBtn:'Full backup',backupNote:'Downloads every table — singers, events, attendance, songs, categories — as one JSON file. Sheet PDFs are not included.',backupFail:'Backup failed — try again.',
     period:'Period',changePeriod:'Change',
     chooseFrom:'Choose songs',showList:n=>'Show all '+n,hideList:'Hide list',
@@ -458,6 +470,7 @@ const STR = {
     search:'Поиск…',email:'Эл. почта',password:'Пароль',loginNote:'Доступ только у регента. Просмотр журнала — без входа.',
     loading:'Загрузка…',noEvents:'В этом периоде событий нет.',noSongs:'Записей пока нет.',
     exportTitle:'ЭКСПОРТ',exportAtt:'Посещаемость CSV',exportSongs:'История песен CSV',
+    viewSheets:'Смотреть ноты',orderOnly:'Ноты для этого служения',showAllSheets:'Показать все песни',
     backupBtn:'Полная копия',backupNote:'Скачивает все таблицы — хористы, события, посещаемость, песни, категории — одним файлом JSON. PDF-ноты не входят.',backupFail:'Не удалось создать копию — попробуйте ещё раз.',
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
     period:'Период',changePeriod:'Изменить',
@@ -567,10 +580,11 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 /* ---------- dates ---------- */
 function today(){ return new Date().toISOString().slice(0,10); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '3.6';
+const VERSION = '3.7';
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '3': {
   en: [
+    '“View sheets” on the song-order tile — opens just that service’s PDFs',
     'One-click full backup of the whole database (admin → Export)',
     'Sign out no longer overlaps the Admin tab on phones',
     'Older-entries year pills scroll instead of running off screen',
@@ -588,6 +602,7 @@ const NOTES = { '3': {
     'CSV export follows the selected period'
   ],
   ru: [
+    '«Смотреть ноты» на плитке порядка песен — только ноты этого служения',
     'Полная копия базы одним нажатием (админка → Экспорт)',
     '«Выйти» больше не перекрывает вкладку «Админ» на телефоне',
     'Годы в «Старых записях» прокручиваются, а не уходят за экран',
@@ -742,7 +757,8 @@ function homePage(){
       <div class="ic">${icon}</div>
       <div><div class="tt">${esc(t(title))}</div><div class="ts">${esc(t(sub))}</div></div></a>`;
   const svc = latestService();
-  const orderTile = `<a class="tile order" href="#/songs/services">
+  const orderTile = `<div class="tile order">
+      <a class="ofill" href="#/songs/services">
       <div class="oh"><div>
         <div class="tt">${esc(t('tOrder'))}</div>
         <div class="od">${svc ? esc(fmtLong(svc.date)) : ''}</div>
@@ -750,7 +766,10 @@ function homePage(){
       </div><div class="ic">${ICON.songSvc}</div></div>
       ${svc ? `<ol class="olist">${songsFor(svc.id).map(s =>
             `<li>${esc(s.title)}${creditPills(songRow(svc.id, s.id))}</li>`).join('')}</ol>`
-            : `<div class="ts">${esc(t('noOrderYet'))}</div>`}</a>`;
+            : `<div class="ts">${esc(t('noOrderYet'))}</div>`}</a>
+      ${svc && songsFor(svc.id).length ? `<div class="ofoot">
+        <a class="obtn" href="#/sheets/order-${svc.id}">${ICON.sheets}${esc(t('viewSheets'))}</a>
+      </div>` : ''}</div>`;
   return `<div class="hero">${esc(t('homeSub'))}</div>
     <div class="tiles">
       ${orderTile}
@@ -1427,13 +1446,24 @@ const SHEETKIND = {
 };
 function sheetsPage(kind){
   const K = SHEETKIND[kind];
+  /* An order- suffix in the route narrows the page to one service's songs, so the
+     director can open just tonight's PDFs. The suffix rides along across the tabs. */
+  const ordId = (S.route.match(/order-([^/?&]+)/) || [])[1] || null;
+  const ordEv = ordId ? S.events.find(e => String(e.id) === ordId) : null;
+  const ordIds = ordEv ? songsFor(ordEv.id).map(s => s.id) : null;
+  const sfx = ordEv ? '/order-' + ordEv.id : '';
   const tabs = `<div class="tabs">
-    <a href="#/sheets" class="${kind==='sheets'?'on':''}">${esc(t('choirSheets'))}</a>
-    <a href="#/sheets/piano" class="${kind==='piano'?'on':''}">${esc(t('piano'))}</a></div>`;
-  const list = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) &&
+    <a href="#/sheets${sfx}" class="${kind==='sheets'?'on':''}">${esc(t('choirSheets'))}</a>
+    <a href="#/sheets/piano${sfx}" class="${kind==='piano'?'on':''}">${esc(t('piano'))}</a></div>`;
+  const bar = ordEv ? `<div class="obar">
+      <span class="op"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"></path><circle cx="6" cy="18" r="3"></circle><circle cx="16" cy="16" r="3"></circle></svg>${esc(t('orderOnly'))} · ${esc(fmtLong(ordEv.date))}</span>
+      <a class="oclear" href="#/sheets${kind==='piano'?'/piano':''}">${esc(t('showAllSheets'))}</a>
+    </div>` : '';
+  let list = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) &&
     (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
+  if (ordIds) list = ordIds.map(id => list.find(s => s.id === id)).filter(Boolean);
   const withPdf = S.songs.filter(s => s[K.col]).length;
-  return tabs + `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>
+  return tabs + bar + `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>
     <div class="searchrow" style="padding-top:12px;display:flex;gap:8px">${qField()}${catSelect()}</div>` +
     list.map(s => {
       const path = s[K.col], locked = !!s[K.lock];
