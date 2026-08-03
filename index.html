@@ -302,14 +302,20 @@
   .stage.one{grid-template-columns:max-content}
   .stagerow{display:contents}
   .blk.al{justify-self:end}
+  .blk.al .blkh{justify-content:flex-end}   /* the aisle side is what stays on screen */
   .blk.ar{justify-self:start}
   .blk{border:1px solid var(--rule);border-radius:14px;padding:10px 11px;background:#fbfbf9}
   .blkh{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.10em;text-transform:uppercase;font-weight:700;color:var(--muted)}
   .blkh b{color:var(--blue);letter-spacing:0}
-  .blk.soprano{border-color:#e2d4a8}
-  .blk.alto{border-color:#cfd6ea}
-  .blk.tenor{border-color:#d3ddd0}
-  .blk.bass{border-color:#c4c8d4}
+  /* each part keeps its own tint, strong enough to tell the blocks apart */
+  .blk.soprano{border-color:#d9c47f;background:#fdf7e7}
+  .blk.soprano .blkh{color:#8a6d16}
+  .blk.alto{border-color:#b6c1e2;background:#f2f5fd}
+  .blk.alto .blkh{color:#3b5199}
+  .blk.tenor{border-color:#bccdb8;background:#f2f7f1}
+  .blk.tenor .blkh{color:#4a6b46}
+  .blk.bass{border-color:#b9bfd0;background:#f3f4f8}
+  .blk.bass .blkh{color:#4a5570}
   .seatrow{display:grid;gap:5px;margin-top:6px;--sw:66px;--gw:42px}
   .rlab.r{padding-right:0;padding-left:5px;justify-content:flex-end}
   .rlab{padding-right:5px;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center}
