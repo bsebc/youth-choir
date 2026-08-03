@@ -290,6 +290,12 @@
 .seatctl{display:flex;gap:8px;padding:12px 16px 0;overflow-x:auto}
   .seatctl .seg{flex:none;margin:0}
   .seatctl .seg.right{margin-left:auto}
+  /* on a phone there is no room beside the part pills, so it sits underneath */
+  @media (max-width:700px){
+    .seatctl{flex-wrap:wrap;overflow-x:visible;gap:8px}
+    .seatctl .seg{max-width:100%;overflow-x:auto}
+    .seatctl .seg.right{margin-left:0;flex-basis:100%}
+  }
   .seatctl .seg button{white-space:nowrap}
   .stagewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:12px 16px 4px;background:#fff}
   .stage{display:grid;grid-template-columns:max-content max-content;gap:12px;width:max-content;margin:0 auto;justify-content:center}
