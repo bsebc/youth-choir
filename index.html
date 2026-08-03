@@ -368,12 +368,13 @@
   @media (max-width:700px){ .seatrow{--sw:58px;--gw:34px} .seat{height:48px;font-size:10px} }
   .obar .oclear{font-size:13px;color:var(--blue);text-decoration:underline;text-underline-offset:2px}
   .mini.locked{gap:5px}
+  .mini.sheet,.mini.trash{display:inline-flex;align-items:center;gap:5px}
   .mini.play{display:inline-flex;align-items:center;gap:5px;color:var(--blue);border-color:#c2ccea;background:#f4f7ff}
   .mini.play:hover{background:#e9eefc}
   .mini.go{background:var(--blue);border-color:var(--blue);color:#fff}
   .li.audiorow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#fbfbf9}
   .li.audiorow .field{flex:1;min-width:200px}
-  @media (max-width:520px){ .mini.play span{display:none} }
+  @media (max-width:520px){ .mini.play span,.mini.sheet span,.mini.trash span{display:none} }
   .li.off{background:#f7e9e6}
   .li.na{background:#f4f5f1}
   .li.tap:hover.na{background:#eceee7}
@@ -1865,6 +1866,8 @@ const SHEETKIND = {
   sheets: { col: 'pdf_path',   lock: 'pdf_locked',   bucket: 'sheets', title: 'choirSheets', count: 'withPdf' },
   piano:  { col: 'piano_path', lock: 'piano_locked', bucket: 'piano',  title: 'piano',  count: 'withPiano' }
 };
+const TRASHSVG = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"></path><path d="M9 7V4.6h6V7"></path><path d="M6.4 7l1 12.4A1.6 1.6 0 0 0 9 21h6a1.6 1.6 0 0 0 1.6-1.6L17.6 7"></path><path d="M10.2 11v6"></path><path d="M13.8 11v6"></path></svg>';
+const SHEETSVG = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 9h16"></path><path d="M4 13h7"></path><circle cx="9" cy="18.5" r="2.6" fill="currentColor" stroke="none"></circle><path d="M11.6 18V9.5" stroke-width="2.1"></path></svg>';
 const PLAYSVG = '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"></path></svg>';
 const NOTESVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"></path><circle cx="6" cy="18" r="3"></circle><circle cx="16" cy="16" r="3"></circle></svg>';
 function sheetsPage(kind){
@@ -1903,7 +1906,8 @@ function sheetsPage(kind){
       const dl = !path ? ''
         : locked && !S.session
           ? `<span class="mini locked">${lockSVG(true)}${esc(t('adminOnlyShort'))}</span>`
-          : `<button class="mini" data-open="${kind}:${s.id}">${esc(t('download'))}</button>`;
+          : `<button class="mini sheet" data-open="${kind}:${s.id}" title="${esc(t('download'))}"
+              aria-label="${esc(t('download'))}">${SHEETSVG}<span>${esc(t('download'))}</span></button>`;
       const admin = S.session ? `
         ${path ? '' : `<label class="mini" for="up-${kind}-${s.id}">${esc(t('upload'))}
           <input id="up-${kind}-${s.id}" type="file" accept="application/pdf,.pdf"
@@ -1913,7 +1917,8 @@ function sheetsPage(kind){
             title="${esc(locked ? t('makePublic') : t('makeAdminOnly'))}"
             aria-label="${esc(locked ? t('makePublic') : t('makeAdminOnly'))}">${
             locked ? lockSVG(true) : lockSVG(false)}</button>
-          <button class="mini danger" data-del-pdf="${s.id}" data-sheet-kind="${kind}">${esc(t('removePdf'))}</button>` : ''}` : '';
+          <button class="mini danger trash" data-del-pdf="${s.id}" data-sheet-kind="${kind}"
+            title="${esc(t('removePdf'))}" aria-label="${esc(t('removePdf'))}">${TRASHSVG}<span>${esc(t('removePdf'))}</span></button>` : ''}` : '';
       /* one recording link per song: a play button for everyone, a quiet note
          button for the director. Text only where there is room for it. */
       const listen = s.audio_url
