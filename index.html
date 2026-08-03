@@ -53,7 +53,9 @@
 
   /* tabs + controls */
   .tabs{display:flex;background:#fff;border-bottom:1px solid var(--rule)}
-  .tabs a{flex:1;min-width:0;padding:11px 4px;text-align:center;font-size:15px;color:var(--muted);border-bottom:4px solid transparent;transition:color .16s ease,border-color .16s ease}
+  /* a two-line label (Russian) must not push its neighbours to the top */
+  .tabs a{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;padding:11px 4px;text-align:center;
+    font-size:15px;line-height:1.2;color:var(--muted);border-bottom:4px solid transparent;transition:color .16s ease,border-color .16s ease}
   .tabs a:hover{color:var(--ink)}
   .tabs a.on{color:var(--ink);font-weight:700;border-bottom-color:var(--ink)}
   .ctrl{background:#fff;padding:12px 14px 14px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:10px}
@@ -680,7 +682,7 @@ const S = {
   loginSig: '',                   // what the sign-in screen was last drawn from     // the rules document and its draft while editing   // seating chart: pending moves, selection, block filter
   addOpen: null,                // which "+ Add" form is expanded
   pickOpen: null,               // song chooser: null = collapse itself at 3 picks
-  preset: '6',
+  preset: '6', rangeSet: false,   // rangeSet: the reader picked a period themselves
   query: '',
   draft: { date: today(), kind: 'morning', name: '', label: '' },
   pending: null,                  // event being created, not written yet
@@ -1191,12 +1193,12 @@ function homePage(){
   return `<div class="hero">${esc(t('homeSub'))}</div>
     <div class="tiles">
       ${orderTile}
+      ${tile('#/sheets','tSheets','tSheetsSub',ICON.sheets)}
       ${tile('#/attendance/grid','tAttGrid','tAttGridSub',ICON.attGrid)}
-      ${tile('#/songs/grid','tSongGrid','tSongGridSub',ICON.songGrid)}
+      ${tile('#/songs/summary','tSongGrid','tSongGridSub',ICON.songGrid)}
+      ${tile('#/sheets/piano','tPiano','tPianoSub',ICON.piano)}
       ${tile('#/seating','tSeating','tSeatingSub',ICON.seat)}
       ${tile('#/rules','tRules','tRulesSub',ICON.rules)}
-      ${tile('#/sheets','tSheets','tSheetsSub',ICON.sheets)}
-      ${tile('#/sheets/piano','tPiano','tPianoSub',ICON.piano)}
       ${S.session ? tile('#/admin/attendance','tAdmin','tAdminSub',ICON.user,true)
                   : tile('#/login','tSignIn','tSignInSub',ICON.user,true)}
     </div>
@@ -1853,7 +1855,6 @@ function loginPage(){
         <input id="pw" name="password" type="password" autocomplete="current-password" required></div>
       <button class="btn" type="submit" data-login>${esc(t('signin'))}</button>
     </form>
-    <div style="font-size:14px;color:var(--muted);text-align:center">${esc(t('loginNote'))}</div>
   </div>`;
 }
 
@@ -1935,8 +1936,7 @@ function sheetsPage(kind){
           </div>
         </div>`;
     }).join('') +
-    (S.session ? `<div class="note">${esc(t('adminOnlyNote'))}</div>`
-               : `<div class="note">${esc(t('loginNote'))}</div>`);
+    (S.session ? `<div class="note">${esc(t('adminOnlyNote'))}</div>` : '');
 }
 /* 'locked/' is the prefix the storage policy refuses to serve to guests */
 function lockSVG(shut){
@@ -2051,7 +2051,8 @@ function render(){
   else if (r.startsWith('#/seating')) { html += publicNav('seating') + seatingPage(); }
   else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
   else if (r.startsWith('#/songs')) {
-    const tab = r.split('/')[2] || 'grid';
+    if (!S.rangeSet && S.preset !== '12') { S.preset = '12'; S.from = shift(12); S.to = today(); }
+    const tab = r.split('/')[2] || 'summary';      // song history opens on the summary
     const songTabs = `<div class="tabs">
       <a href="#/songs/grid" class="${tab==='grid'?'on':''}">${esc(t('bySong'))}</a>
       <a href="#/songs/services" class="${tab==='services'?'on':''}">${esc(t('byService'))}</a>
@@ -2245,7 +2246,7 @@ document.addEventListener('click', async e => {
     // "All" starts at the earliest entry rather than centuries back
     const first = S.events.reduce((m, e) => e.date < m ? e.date : m, today());
     const start = d.preset === 'all' ? (S.events.length ? first : EPOCH) : shift(+d.preset);
-    S.preset = d.preset;
+    S.preset = d.preset; S.rangeSet = true;
     S.from = start; S.to = today();
     return render();
   }
@@ -2590,7 +2591,16 @@ document.addEventListener('click', async e => {
     return;
   }
   if (d.gotoSong) { S.openSong = d.gotoSong; location.hash = '#/songs/summary'; return; }
-  if (el.hasAttribute('data-notes')) { e.preventDefault(); S.showNotes = !S.showNotes; return render(); }
+  if (el.hasAttribute('data-notes')) {
+    e.preventDefault();
+    S.showNotes = !S.showNotes;
+    render();
+    if (S.showNotes) {                       // bring the panel into view, it sits below the fold
+      const p = document.querySelector('.notespanel');
+      if (p) window.scrollTo({ top: window.scrollY + p.getBoundingClientRect().bottom - window.innerHeight + 24, behavior: 'smooth' });
+    }
+    return;
+  }
   if (d.addOpen) { S.addOpen = S.addOpen === d.addOpen ? null : d.addOpen; return render(); }
   if (el.hasAttribute('data-toggle-cats')) { S.showCats = !S.showCats; return render(); }
   if (el.hasAttribute('data-add-cat')) {
@@ -2683,7 +2693,7 @@ document.addEventListener('change', async e => {
   }
   if (el.dataset.range) {
     const v = el.value;
-    S.preset = null;
+    S.preset = null; S.rangeSet = true;
     if (el.dataset.edge === 'from') S.from = v; else S.to = v;
     render();
   }
