@@ -313,6 +313,21 @@
   .seat.empty{background:#f5f6f2;border-style:dashed;border-color:#dfe2da}
   .seat:not([disabled]):hover{border-color:var(--blue)}
   .seat.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);background:#fffbef}
+  .doc{background:#fff;padding:18px 16px 44px;max-width:760px;margin:0 auto;font-size:16px;line-height:1.62;color:#2a3140}
+  .doc h3{font-family:'Alice',serif;font-size:20px;color:var(--ink);margin:30px 0 10px;padding-bottom:7px;border-bottom:1px solid var(--rule)}
+  .doc h3:first-child{margin-top:4px}
+  .doc p{margin:0 0 13px;text-wrap:pretty}
+  .doc ol,.doc ul{margin:0 0 16px;padding-left:26px;display:grid;gap:10px}
+  .doc li{text-wrap:pretty}
+  .doc li::marker{color:var(--blue);font-weight:700}
+  .doc li.sub{list-style:none;counter-increment:list-item 0;margin-left:4px;font-size:15px;color:#3c4438}
+  .doc mark{background:#fbeaa0;color:inherit;padding:1px 3px;border-radius:3px}
+  .doc blockquote{margin:0 0 15px;padding:11px 15px;border-left:3px solid var(--gold);background:#fbfbf9;font-style:italic;color:#3c4438}
+  .mdbar{display:flex;flex-wrap:wrap;gap:6px;padding:0 0 10px}
+  .mdbar .mini{font-size:13px}
+  .mdbar .mini.mk{background:#fbeaa0;border-color:#e8d484}
+  .doc .docedit{width:100%;min-height:62vh;color:var(--ink);background:#fff;font:14px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap}
+  @media (min-width:700px){ .doc{font-size:17px;padding:22px 26px 52px} }
   .audbar{margin:12px 16px 0;background:var(--ink);color:var(--gold);border-radius:11px;padding:11px 12px;text-align:center;
     font-size:11px;letter-spacing:.20em;text-transform:uppercase;font-weight:700}
   .audbar.top{margin:10px 16px 2px}
@@ -441,6 +456,13 @@ const STR = {
     loading:'Loading…',noEvents:'No events in this range yet.',noSongs:'No songs recorded yet.',
     exportTitle:'EXPORT',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
     tSeating:'Seating chart',tSeatingSub:'Where everyone sits',
+    tRules:'Choir rules',tRulesSub:'How we serve together',rulesEmpty:'The rules have not been written yet.',
+    rulesUpdated:d=>'Updated '+d,editRules:'Edit',rulesSaved:'Rules saved',
+    rulesLang:l=>'Editing the '+l+' text — switch the language above to edit the other one.',
+    english:'English',russian:'Russian',
+    rulesLegend:'Select some text, then tap a button. Blank line = new paragraph.',
+    mdH:'Heading',mdOl:'1. Numbered',mdUl:'• Bullet',mdSub:'a. Sub-point',mdMark:'Highlight',mdBold:'Bold',mdQuote:'Quote',
+    write:'Write',preview:'Preview',
     allParts:'All parts',frontRow:'Front',backRow:'Back',audienceSide:'Stage · Audience',
     audienceView:'Audience view',choirView:'Choir view',emptyBlock:'No one seated',
     editSeats:'Edit seating',seatHint:'Tap a singer, then tap a seat. Tapping two singers swaps them.',
@@ -513,6 +535,13 @@ const STR = {
     loading:'Загрузка…',noEvents:'В этом периоде событий нет.',noSongs:'Записей пока нет.',
     exportTitle:'ЭКСПОРТ',exportAtt:'Посещаемость CSV',exportSongs:'История песен CSV',
     tSeating:'Схема мест',tSeatingSub:'Кто где сидит',
+    tRules:'Правила хора',tRulesSub:'Как мы служим вместе',rulesEmpty:'Правила ещё не написаны.',
+    rulesUpdated:d=>'Обновлено '+d,editRules:'Изменить',rulesSaved:'Правила сохранены',
+    rulesLang:l=>'Редактируется '+l+' текст — переключите язык выше, чтобы изменить другой.',
+    english:'английский',russian:'русский',
+    rulesLegend:'Выделите текст и нажмите кнопку. Пустая строка — новый абзац.',
+    mdH:'Заголовок',mdOl:'1. Нумерация',mdUl:'• Пункт',mdSub:'a. Подпункт',mdMark:'Выделить',mdBold:'Жирный',mdQuote:'Цитата',
+    write:'Текст',preview:'Просмотр',
     allParts:'Все партии',frontRow:'Перед',backRow:'Зад',audienceSide:'Сцена · Зал',
     audienceView:'Вид из зала',choirView:'Вид с хора',emptyBlock:'Никого нет',
     editSeats:'Изменить схему',seatHint:'Нажмите на хориста, затем на место. Нажатие на двух хористов меняет их местами.',
@@ -607,7 +636,9 @@ const S = {
   editPerson: null, editSongRow: null,   // inline editors
   catFilter: 'all', showCats: false, editCat: null,     // song categories
   showNotes: false,
-  seatEdit: null, seatSel: null, seatPart: 'all', seatList: false, seatView: 'audience',   // seating chart: pending moves, selection, block filter
+  seatEdit: null, seatSel: null, seatPart: 'all', seatList: false, seatView: 'audience',
+  rules: null, rulesEdit: null, rulesPreview: false,
+  loginSig: '',                   // what the sign-in screen was last drawn from     // the rules document and its draft while editing   // seating chart: pending moves, selection, block filter
   addOpen: null,                // which "+ Add" form is expanded
   pickOpen: null,               // song chooser: null = collapse itself at 3 picks
   preset: '6',
@@ -630,10 +661,13 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 /* ---------- dates ---------- */
 function today(){ return new Date().toISOString().slice(0,10); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '3.7';
+const VERSION = '3.8.0';
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '3': {
   en: [
+    'Seating chart: the stage as the audience or the choir sees it, editable by the director',
+    'Choir rules page, in English and Russian, with a plain-language editor',
+    'Sign-in now works with iPhone/iPad saved passwords in the home-screen app',
     '“View sheets” on the song-order tile — opens just that service’s PDFs',
     'One-click full backup of the whole database (admin → Export)',
     'Sign out no longer overlaps the Admin tab on phones',
@@ -652,6 +686,9 @@ const NOTES = { '3': {
     'CSV export follows the selected period'
   ],
   ru: [
+    'Схема мест: сцена так, как её видит зал или сам хор; регент может менять',
+    'Страница правил хора на русском и английском, с простым редактором',
+    'Вход поддерживает сохранённые пароли iPhone/iPad в приложении с домашнего экрана',
     '«Смотреть ноты» на плитке порядка песен — только ноты этого служения',
     'Полная копия базы одним нажатием (админка → Экспорт)',
     '«Выйти» больше не перекрывает вкладку «Админ» на телефоне',
@@ -698,19 +735,21 @@ async function selectAll(table, order){
 }
 async function load(silent){
   if (!silent) { S.loading = true; render(); }
-  const [si, so, ev, ab, es, sc] = await Promise.all([
+  const [si, so, ev, ab, es, sc, doc] = await Promise.all([
     selectAll('singers', ['part','sort_order','name']),
     selectAll('songs', ['title','id']),
     selectAll('events', ['date','id']),
     selectAll('absences', ['event_id','singer_id']),
     selectAll('event_songs', ['event_id','position','song_id']),
-    selectAll('song_categories', ['name'])
+    selectAll('song_categories', ['name']),
+    sb.from('documents').select('*').eq('key','rules').maybeSingle()
   ]);
   const err = [si,so,ev,ab,es].find(r => r.error);
   S.error = err ? err.error.message : '';
   S.singers = si.data || []; S.songs = so.data || []; S.events = ev.data || [];
   S.absences = ab.data || []; S.eventSongs = es.data || [];
   S.categories = sc.error ? [] : (sc.data || []);
+  S.rules = doc.error ? null : doc.data;
   S.loading = false; render();
 }
 
@@ -914,6 +953,121 @@ async function saveSeats(){
   okToast(t('seatsSaved')); render();
 }
 
+/* ---------- choir rules ---------- */
+/* The director keeps this as plain text, so the page understands a handful of
+   marks: # heading, - / 1. lists, an indented "a." sub-point, ==highlight==
+   (the yellow marker of the printed copy), **bold** and > for a quotation. */
+function rulesBody(src){
+  const inline = s => esc(s).replace(/==([^=]+)==/g, '<mark>$1</mark>').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+  const out = [];
+  let list = null;
+  const close = () => { if (list) { out.push('</' + list + '>'); list = null; } };
+  const open = kind => { if (list !== kind) { close(); out.push('<' + kind + '>'); list = kind; } };
+  String(src || '').split(/\r?\n/).forEach(raw => {
+    const line = raw.trim();
+    if (!line) { close(); return; }
+    let m;
+    if ((m = line.match(/^#+\s+(.+)/)))      { close(); out.push('<h3>' + inline(m[1]) + '</h3>'); return; }
+    if ((m = line.match(/^>\s*(.+)/)))       { close(); out.push('<blockquote>' + inline(m[1]) + '</blockquote>'); return; }
+    if ((m = line.match(/^(\d+)\.\s+(.+)/))) { open('ol'); out.push('<li>' + inline(m[2]) + '</li>'); return; }
+    if (/^\s{2,}/.test(raw) && (m = line.match(/^([a-zа-я])[.)]\s+(.+)/i))) {
+      if (!list) open('ul');
+      out.push('<li class="sub">' + inline(m[1] + '. ' + m[2]) + '</li>'); return;
+    }
+    if ((m = line.match(/^[-*•]\s+(.+)/)))   { open('ul'); out.push('<li>' + inline(m[1]) + '</li>'); return; }
+    close(); out.push('<p>' + inline(line) + '</p>');
+  });
+  close();
+  return out.join('');
+}
+function rulesPage(){
+  const doc = S.rules, body = doc ? (S.lang === 'ru' ? doc.body_ru : doc.body_en) : '';
+  const draft = S.rulesEdit ? (S.rulesEdit[S.lang] || '') : '';
+  const editing = S.rulesEdit !== null && S.session;
+  const when = doc && doc.updated_at ? fmtLong(doc.updated_at.slice(0,10)) : '';
+  if (editing) return `<div class="h">${esc(t('tRules'))}
+      <span class="n" style="font-size:13px;color:var(--muted);font-weight:400">${esc(t('rulesLang')(t(S.lang === 'ru' ? 'russian' : 'english')))}</span></div>
+    <div class="tabs">
+      <a href="#/rules" data-rules-tab="write" class="${S.rulesPreview?'':'on'}">${esc(t('write'))}</a>
+      <a href="#/rules" data-rules-tab="preview" class="${S.rulesPreview?'on':''}">${esc(t('preview'))}</a>
+    </div>
+    ${S.rulesPreview ? `<div class="doc">${draft.trim() ? rulesBody(draft) : ''}</div>`
+    : `<div class="doc" style="max-width:900px">
+      <div class="mdbar">
+        <button class="mini" data-md="h">${esc(t('mdH'))}</button>
+        <button class="mini" data-md="ol">${esc(t('mdOl'))}</button>
+        <button class="mini" data-md="ul">${esc(t('mdUl'))}</button>
+        <button class="mini" data-md="sub">${esc(t('mdSub'))}</button>
+        <button class="mini mk" data-md="mark">${esc(t('mdMark'))}</button>
+        <button class="mini" data-md="bold"><b>${esc(t('mdBold'))}</b></button>
+        <button class="mini" data-md="quote">${esc(t('mdQuote'))}</button>
+      </div>
+      <textarea class="field docedit" id="rules-edit">${esc(draft)}</textarea>
+      <div class="note" style="padding:8px 0 0">${esc(t('rulesLegend'))}</div>
+    </div>`}
+    <div class="savebar">
+      <div class="st live">${esc(t(S.lang === 'ru' ? 'russian' : 'english'))}</div>
+      <button class="sb ghost" data-rules-cancel>${esc(t('cancel'))}</button>
+      <button class="sb go" data-rules-save>${esc(t('save'))}</button>
+    </div>`;
+  return `<div class="h">${esc(t('tRules'))}
+      ${when ? `<span class="n" style="font-size:13px;color:var(--muted);font-weight:400">${esc(t('rulesUpdated')(when))}</span>` : '<span class="n"></span>'}
+      ${S.session ? `<button class="mini" data-rules-edit>${esc(t('editRules'))}</button>` : ''}</div>
+    <div class="doc">${body.trim() ? rulesBody(body) : `<p style="color:var(--muted)">${esc(t('rulesEmpty'))}</p>`}</div>`;
+}
+const MDLINE = { h: '# ', ol: '1. ', ul: '- ', sub: '  a. ', quote: '> ' };
+function applyMd(kind){
+  const box = document.getElementById('rules-edit');
+  if (!box) return;
+  const v = box.value, a = box.selectionStart, b = box.selectionEnd;
+  if (kind === 'mark' || kind === 'bold') {
+    const tag = kind === 'mark' ? '==' : '**';
+    const sel = v.slice(a, b) || (kind === 'mark' ? t('mdMark') : t('mdBold'));
+    box.value = v.slice(0, a) + tag + sel + tag + v.slice(b);
+    box.setSelectionRange(a + tag.length, a + tag.length + sel.length);
+  } else {
+    const pre = MDLINE[kind];
+    /* Numbered and lettered lists run past their first item, so the "is it
+       already applied?" test has to match any number or letter, not "1." / "a.". */
+    const has = kind === 'ol' ? /^\s*\d+[.)]\s+/ : kind === 'sub' ? /^\s*[a-zа-я][.)]\s+/i : null;
+    const LETTERS = S.lang === 'ru' ? 'абвгдежзик' : 'abcdefghij';
+    let start = v.lastIndexOf('\n', a - 1) + 1;
+    let end = v.indexOf('\n', b); if (end === -1) end = v.length;
+    const lines = v.slice(start, end).split('\n');
+    const off = lines.every(l => !l.trim() || (has ? has.test(l) : l.startsWith(pre)));   // tap again to remove
+    let n = 0;
+    const next = lines.map(l => {
+      if (!l.trim()) return l;
+      const bare = l.replace(/^(\s*)(#+\s+|[-*•]\s+|\d+[.)]\s+|[a-zа-я][.)]\s+|>\s*)?/i, '');
+      if (off) return bare;
+      const mark = kind === 'ol' ? (n + 1) + '. '
+                 : kind === 'sub' ? '  ' + (LETTERS[n] || LETTERS[LETTERS.length-1]) + '. '
+                 : pre;
+      n++;
+      return mark + bare;
+    }).join('\n');
+    box.value = v.slice(0, start) + next + v.slice(end);
+    box.setSelectionRange(start, start + next.length);
+  }
+  if (S.rulesEdit) S.rulesEdit[S.lang] = box.value;
+  box.focus();
+}
+async function saveRules(){
+  const box = document.getElementById('rules-edit');    // absent while previewing
+  if (!S.rulesEdit || !await ensureSession()) return;
+  if (box) S.rulesEdit[S.lang] = box.value;              // whatever is on screen right now
+  const patch = { key: 'rules', updated_at: new Date().toISOString() };
+  /* Only languages the director actually changed are written, so editing the
+     English text can never overwrite the Russian one. */
+  if (S.rulesEdit.en !== ((S.rules && S.rules.body_en) || '')) patch.body_en = S.rulesEdit.en;
+  if (S.rulesEdit.ru !== ((S.rules && S.rules.body_ru) || '')) patch.body_ru = S.rulesEdit.ru;
+  if (patch.body_en === undefined && patch.body_ru === undefined) { S.rulesEdit = null; return render(); }
+  const res = await sb.from('documents').upsert(patch, { onConflict: 'key' }).select();
+  if (!wrote(res)) return render();
+  S.rules = res.data[0]; S.rulesEdit = null; S.rulesPreview = false;
+  okToast(t('rulesSaved')); render();
+}
+
 /* ---------- chrome ---------- */
 function mast(){
   return `<div class="mast">
@@ -937,6 +1091,13 @@ function homePage(){
           <rect x="3.5" y="20" width="8" height="7" rx="2.2"></rect><rect x="22.5" y="20" width="8" height="7" rx="2.2"></rect>
         </g>
         <rect x="13" y="20" width="8" height="7" rx="2.2" fill="var(--blue)"></rect></svg>`,
+    rules: `<svg class="ic-note" viewBox="0 0 34 34" aria-hidden="true">
+        <g fill="none" stroke="#c9cdc4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="6" width="8" height="8" rx="2.4"></rect><rect x="3" y="20" width="8" height="8" rx="2.4"></rect>
+          <path d="M16 10h15"></path><path d="M16 24h15"></path>
+        </g>
+        <path d="M4.8 10.2 6.6 12 9.4 8.4" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M4.8 24.2 6.6 26 9.4 22.4" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`,
     attSum:  `<div class="ic-bars"><span style="width:100%"></span><span style="width:72%"></span><span style="width:45%"></span></div>`,
     songGrid:`<svg class="ic-note" viewBox="0 0 34 34" aria-hidden="true">
         <g stroke="#c9cdc4" stroke-width="1.6" stroke-linecap="round">
@@ -981,6 +1142,7 @@ function homePage(){
       ${tile('#/attendance/grid','tAttGrid','tAttGridSub',ICON.attGrid)}
       ${tile('#/songs/grid','tSongGrid','tSongGridSub',ICON.songGrid)}
       ${tile('#/seating','tSeating','tSeatingSub',ICON.seat)}
+      ${tile('#/rules','tRules','tRulesSub',ICON.rules)}
       ${tile('#/sheets','tSheets','tSheetsSub',ICON.sheets)}
       ${tile('#/sheets/piano','tPiano','tPianoSub',ICON.piano)}
       ${S.session ? tile('#/admin/attendance','tAdmin','tAdminSub',ICON.user,true)
@@ -1631,7 +1793,7 @@ function loginPage(){
   return `<div class="login">
     <div style="font-family:'Alice',serif;font-size:26px">${esc(t('signin'))}</div>
     ${S.error ? `<div class="err">${esc(S.error)}</div>` : ''}
-    <form id="loginform" method="post" action="#/login" style="display:grid;gap:14px">
+    <form id="loginform" method="post" action="#/login" autocomplete="on" style="display:grid;gap:14px">
       <div><label for="em">${esc(t('email'))}</label>
         <input id="em" name="email" type="email" autocomplete="username" inputmode="email"
                autocapitalize="none" spellcheck="false" required></div>
@@ -1771,9 +1933,18 @@ function exportCSV(kind){
 /* ---------- render ---------- */
 function render(){
   const r = S.route;
+  const onLogin = r.startsWith('#/login');
+  /* iOS AutoFill gives up silently if the password field it is filling is
+     replaced, and this app re-renders whole screens. So once the sign-in form is
+     on screen, leave those exact nodes alone unless something visible changed. */
+  if (onLogin && document.getElementById('loginform')) {
+    const sig = S.lang + '|' + (S.error || '') + '|' + (S.session ? '1' : '0');
+    if (sig === S.loginSig) return;
+    S.loginSig = sig;
+  }
   let html = mast();
 
-  if (S.loading) { document.getElementById('app').innerHTML = html
+  if (S.loading && !onLogin) { document.getElementById('app').innerHTML = html
     + `<div class="skel" aria-label="${esc(t('loading'))}">` + '<div class="sk"></div>'.repeat(7) + `</div>`; return; }
 
   if (r.startsWith('#/admin')) {
@@ -1796,9 +1967,13 @@ function render(){
       : section === 'entries' ? (id === 'songs' ? 'songs' : 'att')
       : 'members');
   }
-  else if (r.startsWith('#/login')) { html += publicNav('') + loginPage(); }
+  else if (onLogin) {
+    S.loginSig = S.lang + '|' + (S.error || '') + '|' + (S.session ? '1' : '0');
+    html += publicNav('') + loginPage();
+  }
   else if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) { html += publicNav('piano') + sheetsPage('piano'); }
   else if (r.startsWith('#/sheets')) { html += publicNav('sheets') + sheetsPage('sheets'); }
+  else if (r.startsWith('#/rules')) { html += publicNav('rules') + rulesPage(); }
   else if (r.startsWith('#/seating')) { html += publicNav('seating') + seatingPage(); }
   else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
   else if (r.startsWith('#/songs')) {
@@ -1825,7 +2000,7 @@ function render(){
     else html += attendanceGrid(attTabs + rangeCtrl('grid', true));
   }
   const keep = {};
-  ['edit-name','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name'].forEach(id => {
+  ['edit-name','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name','em','pw'].forEach(id => {
     const n = document.getElementById(id);
     if (n) keep[id] = { v: n.value, f: n === document.activeElement, p: n.selectionStart };
   });
@@ -1941,8 +2116,11 @@ function fail(error, retry){
 }
 
 /* ---------- events ---------- */
+document.addEventListener('input', e => {
+  if (e.target && e.target.id === 'rules-edit' && S.rulesEdit) S.rulesEdit[S.lang] = e.target.value;
+});
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab]');
   if (!el) return;
   const d = el.dataset;
 
@@ -2128,6 +2306,14 @@ document.addEventListener('click', async e => {
     return;
   }
   if (el.hasAttribute('data-seat-list')) { S.seatList = !S.seatList; return render(); }
+  if (el.hasAttribute('data-rules-edit')) {
+    S.rulesEdit = { en: (S.rules && S.rules.body_en) || '', ru: (S.rules && S.rules.body_ru) || '' };
+    return render();
+  }
+  if (d.md) { e.preventDefault(); return applyMd(d.md); }
+  if (d.rulesTab) { e.preventDefault(); S.rulesPreview = d.rulesTab === 'preview'; return render(); }
+  if (el.hasAttribute('data-rules-cancel')) { S.rulesEdit = null; S.rulesPreview = false; return render(); }
+  if (el.hasAttribute('data-rules-save')) { return saveRules(); }
   if (d.seatView) { S.seatView = d.seatView; return render(); }
   if (d.seatPart) { S.seatPart = d.seatPart; return render(); }
   if (el.hasAttribute('data-seat-edit')) { S.seatEdit = new Map(); S.seatSel = null; return render(); }
@@ -2377,6 +2563,7 @@ window.addEventListener('hashchange', () => {
   S.route = location.hash || '#/home';
   if (!/^#\/admin\/(attendance|songs)\/.+/.test(S.route)) { S.edit = null; S.pending = null; }
   if (!S.route.startsWith('#/seating')) { S.seatEdit = null; S.seatSel = null; }
+  if (!S.route.startsWith('#/rules')) { S.rulesEdit = null; S.rulesPreview = false; }
   S.error = ''; S.query = ''; S.editPerson = null; S.editSongRow = null; S.editCat = null; S.addOpen = null;
   render();
 });
