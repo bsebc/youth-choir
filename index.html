@@ -62,10 +62,10 @@
   .ctlbar .rangebtn{width:100%;justify-content:space-between}
   .ctlbar .seg.tiny{margin-left:0}
   .ctlbar .seg.tiny button{flex:1}
-  .ctlbar.wide{flex-direction:row;align-items:center;gap:16px;padding:12px 20px;flex-wrap:wrap}
+  .ctlbar.wide{flex-direction:row;align-items:center;gap:14px;padding:8px 20px;flex-wrap:wrap}
   .ctlbar.wide .chips{flex:none}
   .ctlbar.wide .chips button{padding:7px 16px}
-  .ctlbar.wide .dates{flex:none;width:340px}
+  .ctlbar.wide .dates{flex:none;width:300px}
   .ctlbar.wide .seg.tiny{margin-left:auto}
   .ctlbar.wide .rangebtn{width:auto}
   .rangebtn.open{border-color:var(--ink);background:#fff}
@@ -87,7 +87,9 @@
   .savebar .sb.go{background:var(--blue);border-color:var(--blue);color:#fff}
   .savebar .sb.go:hover{background:#33488f}
   .savebar .sb[disabled]{opacity:.45;cursor:default}
-  .caret{width:20px;flex:none;text-align:right;font-size:12px;color:var(--faint)}
+  .caret{width:20px;flex:none;display:flex;align-items:center;justify-content:flex-end;color:var(--faint)}
+  .caret svg{transition:transform .16s ease}
+  .caret.up svg{transform:rotate(180deg)}
   .li.on .caret{color:var(--blue)}
   .drawer{background:#fbfbf9;border-bottom:1px solid var(--rule);padding:4px 16px 12px}
   .drawer .dh{display:flex;align-items:baseline;gap:8px;padding:10px 0 6px;font-size:12px;
@@ -212,8 +214,8 @@
   .hday .d em{font-size:10px;font-style:normal;color:var(--muted);line-height:1}
   .hday .d.svc em{color:var(--blue)}
   .sect{display:flex;min-width:100%;position:sticky;top:66px;z-index:4}
-  .sect .lbl{width:calc(var(--nameW) + var(--tallyW));flex:none;position:sticky;left:0;z-index:3;background:var(--ink);color:var(--paper);height:28px;display:flex;align-items:center;padding:0 10px;font-family:'Alice',serif;font-size:12px;letter-spacing:.16em}
-  .sect .fill{flex:1 0 auto;height:28px;background:var(--ink);color:#7c86a3;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;font-size:11px}
+  .sect .lbl{width:calc(var(--nameW) + var(--tallyW));flex:none;position:sticky;left:0;z-index:3;background:var(--paper);color:var(--ink);border-left:3px solid var(--gold);border-bottom:1px solid var(--rule);height:28px;display:flex;align-items:center;padding:0 10px;font-family:'Alice',serif;font-size:12px;letter-spacing:.16em}
+  .sect .fill{flex:1 0 auto;height:28px;background:var(--paper);color:var(--muted);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:flex-end;padding:0 10px;font-size:11px}
   .name{width:var(--nameW);flex:none;height:var(--cell);position:sticky;left:0;z-index:2;background:#fff;display:flex;align-items:center;padding:0 8px;font-size:14px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .tally{width:var(--tallyW);flex:none;height:var(--cell);position:sticky;left:var(--nameW);z-index:2;background:#fbfbf9;display:flex;align-items:center;justify-content:center;font-size:14px;font-variant-numeric:tabular-nums;color:#3c4438;border-right:2px solid var(--ink);border-bottom:1px solid var(--rule)}
   .tally.ok{color:var(--green)}
@@ -226,6 +228,7 @@
   .hday .d.cx{color:var(--faint);background:#f0f1ed}
   .hday .d.cx em{color:#b3b7ac}
   .legend i.cx{background:repeating-linear-gradient(135deg,#eceee8 0 4px,#f6f7f3 4px 8px);border-color:var(--rule)}
+  .cell .ab{font-style:normal;font-family:'Golos Text',system-ui,sans-serif;font-size:12px;font-weight:600;color:#b3564a}
   .cell .sq{width:14px;height:14px;background:var(--ink)}
   .tail{flex:1 0 auto;background:#fff;border-bottom:1px solid var(--rule)}
   .srow .name,.srow .tally,.srow .cell{height:48px}
@@ -236,10 +239,12 @@
   .legend{padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:11px;color:var(--muted);line-height:1.2}
   @media (min-width:900px){ .legend{padding:12px 14px;gap:14px;font-size:12px} }
   .legend i.na{color:#b3b7ac;background:#f1f2ee}
-  .legend i{width:16px;height:16px;border:1px solid var(--rule);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:11px;color:var(--red)}
+  .legend i{width:16px;height:16px;border:1px solid var(--rule);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-weight:600;font-size:11px;color:#b3564a}
   /* lists */
   select.part{padding:7px 6px;font-size:13px;max-width:104px}
-  .sectbar{background:var(--ink);color:var(--paper);font-family:'Alice',serif;font-size:13px;letter-spacing:.14em;padding:7px 16px}
+  .sectbar{display:flex;align-items:baseline;background:#fbfbf9;color:var(--ink);font-size:11px;font-weight:700;
+    letter-spacing:.14em;padding:12px 16px 7px;border-bottom:1px solid var(--rule)}
+  .sectbar::before{content:'';width:14px;height:3px;border-radius:2px;background:var(--gold);margin-right:8px;align-self:center}
   .li{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rule);background:#fff}
   .li.tap{min-height:58px;cursor:pointer;user-select:none;transition:background .14s ease}
   .li.tap:hover{background:#fbfbf9}
@@ -303,7 +308,7 @@
   .seatrow{display:grid;gap:5px;margin-top:6px;--sw:66px;--gw:42px}
   .rlab.r{padding-right:0;padding-left:5px;justify-content:flex-end}
   .rlab{padding-right:5px;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center}
-  .seat{overflow-wrap:anywhere;height:52px;border-radius:9px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-size:11px;
+  .seat{overflow-wrap:break-word;hyphens:auto;height:52px;border-radius:9px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-size:11px;
     line-height:1.2;padding:4px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;
     transition:box-shadow .12s ease,border-color .12s ease}
   .seat[disabled]{opacity:1;cursor:default}
@@ -327,21 +332,18 @@
   @media (min-width:700px){ .doc{font-size:17px;padding:22px 26px 52px} }
   /* the platform itself: rounded back corners, the front tapering in to the
      two centre steps. Curved ends are SVG; the straight middle stretches. */
-  .stagefig{margin:16px 16px 0;display:flex;flex-direction:column;align-items:center}
-  .stagefig.top{margin:10px 16px 6px;flex-direction:column-reverse}
-  .stagefig .platform{width:100%;display:flex;align-items:stretch;color:var(--ink);
-    filter:drop-shadow(0 8px 16px rgba(23,32,58,.20))}
-  .stagefig .cap{flex:none;width:64px;height:66px;display:block}
+  .stagefig{margin:0 16px;display:flex;flex-direction:column;align-items:stretch}
+  .stagefig.top{margin-top:12px;margin-bottom:8px}
+  .stagefig:not(.top){margin-top:2px}
+  .stagefig .platform{width:100%;display:flex;align-items:stretch;color:#e9ebe5}
+  .stagefig .cap{flex:none;width:46px;height:44px;display:block}
   .stagefig .cap.r{transform:scaleX(-1)}
   .stagefig.top .cap{transform:scaleY(-1)}
   .stagefig.top .cap.r{transform:scale(-1,-1)}
-  .stagefig .mid{flex:1;min-width:0;height:66px;background:var(--ink);color:var(--gold);
-    display:flex;align-items:center;justify-content:center;padding-bottom:14px;
-    font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700}
-  .stagefig.top .mid{padding:14px 0 0}
-  .stagefig .stairs{display:grid;gap:3px;justify-items:center;width:min(230px,46%);padding-top:3px}
-  .stagefig.top .stairs{padding:0 0 3px}
-  .stagefig .stairs i{display:block;width:70%;height:9px;border-radius:6px;background:#334271}
+  .stagefig .mid{flex:1;min-width:0;height:44px;background:#e9ebe5;color:var(--muted);
+    display:flex;align-items:center;justify-content:center;padding-bottom:8px;
+    font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700}
+  .stagefig.top .mid{padding:8px 0 0}
   .blkempty{font-size:12px;color:var(--faint);padding:10px 2px 4px}
   .tray{display:flex;flex-wrap:wrap;gap:7px;padding:10px 16px 4px}
   .chipx{padding:9px 13px;border-radius:999px;border:1px solid var(--rule);background:#fff;font-size:13px;color:var(--ink)}
@@ -366,8 +368,8 @@
   .li.off .nm{color:var(--red);font-weight:600}
   .pill{margin-left:auto;font-size:14px;font-weight:600;padding:7px 14px;border-radius:999px;background:var(--paper);color:var(--muted);min-width:86px;text-align:center}
   .li.off .pill{background:var(--red);color:#fff}
-  .bar{flex:1;height:8px;background:var(--paper);border-radius:4px;overflow:hidden}
-  .bar i{display:block;height:100%;background:var(--blue)}
+  .bar{flex:1;height:5px;background:var(--paper);border-radius:4px;overflow:hidden}
+  .bar i{display:block;height:100%;background:#9aa7d2}
   .pct{width:52px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
   .box{width:26px;height:26px;flex:none;border-radius:5px;border:1px solid #b9bdb2;background:#fff;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
   .li.on .box{background:var(--blue);border-color:var(--blue)}
@@ -400,7 +402,11 @@
   .svc-card .date{font-family:'Alice',serif;font-size:17px}
   .svc-card .kind{font-size:12px;color:var(--blue);border:1px solid #c6cde6;background:#f2f4fb;border-radius:999px;padding:3px 9px}
   .svc-card .s{font-size:15px;color:#3c4438;padding-left:14px;border-left:2px solid var(--rule)}
-  .login{padding:44px 26px;display:flex;flex-direction:column;gap:16px;max-width:420px;margin:0 auto;width:100%}
+  .login{padding:32px 24px 28px;display:flex;flex-direction:column;gap:16px;max-width:400px;margin:40px auto;
+    width:calc(100% - 32px);background:#fff;border:1px solid var(--rule);border-radius:18px;
+    box-shadow:0 18px 44px -20px rgba(23,32,58,.30)}
+  .login .lt{font-family:'Alice',serif;font-size:25px;text-align:center}
+  .login .lt::after{content:'';display:block;width:34px;height:2px;background:var(--gold);margin:12px auto 0}
   .login label{font-family:'Alice',serif;font-size:14px;color:#3c4438;letter-spacing:.06em}
   .login input{width:100%;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px 13px;font-size:16px}
   .toast.ok{background:var(--green)}
@@ -691,10 +697,11 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 /* ---------- dates ---------- */
 function today(){ return new Date().toISOString().slice(0,10); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '3.10.0';
+const VERSION = '3.11.0';
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '3': {
   en: [
+    'Lighter section headers, quieter charts, a tidier sign-in screen',
     'A cleaner look: one pill style for every switch, matching tile icons, a lighter header',
     'A recording link per song — a Listen button on the sheets page',
     'Seating chart: the stage as the audience or the choir sees it, editable by the director',
@@ -718,6 +725,7 @@ const NOTES = { '3': {
     'CSV export follows the selected period'
   ],
   ru: [
+    'Светлее заголовки партий, спокойнее графики, аккуратнее вход',
     'Аккуратнее вид: одинаковые переключатели, единые иконки, компактнее шапка',
     'Ссылка на запись для каждой песни — кнопка «Слушать» на странице нот',
     'Схема мест: сцена так, как её видит зал или сам хор; регент может менять',
@@ -925,7 +933,7 @@ function seatingPage(){
         ${gutterFirst ? gut(r) : ''}
         ${colOrder.map(c => {
           const who = map.get(p + ':' + r + ':' + c), on = who && S.seatSel === who.id;
-          return `<button class="seat ${who?'':'empty'} ${on?'sel':''}" data-seat="${p}:${r}:${c}"${
+          return `<button class="seat ${who?'':'empty'} ${on?'sel':''}" lang="ru" data-seat="${p}:${r}:${c}"${
             who?` title="${esc(who.name)}" aria-label="${esc(who.name)}"`:''}>${who?esc(label.get(who.id) || who.name):''}</button>`;
         }).join('')}
         ${gutterFirst ? '' : gut(r)}
@@ -947,15 +955,11 @@ function seatingPage(){
     ${editing ? `<div class="note">${esc(t('seatHint'))}</div>` : ''}
     ${sel ? `<div class="seatsel"><b style="color:var(--ink)">${esc(sel.name)}</b> · ${esc(t(sel.part))}
       ${editing && seatEff(sel) ? `<button class="mini" data-seat-unseat>${esc(t('unseat'))}</button>` : ''}</div>` : ''}
-    ${flip ? `<div class="stagefig top">
-      <div class="platform"><svg class="cap l" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg><div class="mid">${esc(t('audienceSide'))}</div><svg class="cap r" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg></div>
-      <div class="stairs"><i></i></div></div>` : ''}
+    ${flip ? `<div class="stagefig top"><div class="platform"><svg class="cap l" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg><div class="mid">${esc(t('audienceSide'))}</div><svg class="cap r" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg></div></div>` : ''}
     <div class="stagewrap"><div class="stage${S.seatPart==='all'?'':' one'}">
       ${rows.map(row => `<div class="stagerow">${row.map((p, i) => block(p, i)).join('')}</div>`).join('')}
     </div></div>
-    ${flip ? '' : `<div class="stagefig">
-      <div class="platform"><svg class="cap l" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg><div class="mid">${esc(t('audienceSide'))}</div><svg class="cap r" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg></div>
-      <div class="stairs"><i></i></div></div>`}
+    ${flip ? '' : `<div class="stagefig"><div class="platform"><svg class="cap l" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg><div class="mid">${esc(t('audienceSide'))}</div><svg class="cap r" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg></div></div>`}
     ${editing ? (unseated.length ? `<div class="note" style="padding-bottom:0">${esc(t('trayNote'))}</div>
         <div class="tray">${unseated.map(s => `<button class="chipx ${S.seatSel===s.id?'sel':''}" data-tray="${s.id}">${esc(s.name)}</button>`).join('')}</div>` : '')
       : (unseated.length ? `<div class="note">${esc(t('notSeated'))}: <b style="color:var(--ink)">${unseated.length}</b>
@@ -1295,7 +1299,7 @@ function attendanceGrid(top){
           if (e.cancelled) return `<div class="cell cx">×</div>`;
           const st = attStatus(e.id, s.id);
           return `<div class="cell ${e.kind!=='rehearsal'?'svc':''} ${st==='na'?'na':''}">${
-            st==='absent' ? esc(S.lang==='en'?'A':'Н') : st==='na' ? '–' : ''}</div>`; }).join('');
+            st==='absent' ? '<i class="ab">' + esc(S.lang==='en'?'A':'Н') + '</i>' : st==='na' ? '–' : ''}</div>`; }).join('');
         const c = attCount(ev, s.id);
         return `<div class="row"><div class="name">${esc(s.name)}</div>
           <div class="tally ${c.pct===null?'':c.pct>=50?'ok':c.pct>=10?'mid':'low'}">${c.of ? c.came + '/' + c.of : '—'}</div>${cells}<div class="tail"></div></div>`;
@@ -1429,7 +1433,7 @@ function songsPeople(){
           <div class="bar" style="margin-top:5px"><i style="width:${Math.round(total/max*100)}%"></i></div></div>
         <div style="width:54px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums">${total}</div>
         <div style="width:84px;text-align:right;font-size:13px;color:var(--muted)">${esc(fmtShort(r.last))}</div>
-        <div class="caret ${open?'up':''}">${open ? '▴' : '▾'}</div></div>` +
+        <div class="caret ${open?'up':''}">${CHEVSVG}</div></div>` +
       (open ? `<div class="drawer">
         <div class="dh">${esc(t('theirSongs'))} <span>${esc(t('inRangeN')(songs.length))}</span></div>
         ${songs.map(x => `<div class="dr" data-goto-song="${x.s.id}">
@@ -1457,7 +1461,7 @@ function songsSummary(){
         <div class="bar" style="margin-top:5px"><i style="width:${Math.round(st.n/max*100)}%"></i></div></div>
       <div style="width:54px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums">${st.n}</div>
       <div style="width:84px;text-align:right;font-size:13px;color:var(--muted)">${esc(st.last || '—')}</div>
-      <div class="caret ${open?'up':''}">${open ? '▴' : '▾'}</div></div>` +
+      <div class="caret ${open?'up':''}">${CHEVSVG}</div></div>` +
       (open ? `<div class="drawer">
         <div class="dh">${esc(t('songDates'))} <span>${esc(t('inRangeN')(dates.length))}</span></div>
         ${dates.map(e => `<div class="dr">
@@ -1849,7 +1853,7 @@ function manageMembers(){
 }
 function loginPage(){
   return `<div class="login">
-    <div style="font-family:'Alice',serif;font-size:26px">${esc(t('signin'))}</div>
+    <div class="lt">${esc(t('signin'))}</div>
     ${S.error ? `<div class="err">${esc(S.error)}</div>` : ''}
     <form id="loginform" method="post" action="#/login" autocomplete="on" style="display:grid;gap:14px">
       <div><label for="em">${esc(t('email'))}</label>
@@ -1870,6 +1874,7 @@ const SHEETKIND = {
   piano:  { col: 'piano_path', lock: 'piano_locked', bucket: 'piano',  title: 'piano',  count: 'withPiano' }
 };
 const TRASHSVG = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"></path><path d="M9 7V4.6h6V7"></path><path d="M6.4 7l1 12.4A1.6 1.6 0 0 0 9 21h6a1.6 1.6 0 0 0 1.6-1.6L17.6 7"></path><path d="M10.2 11v6"></path><path d="M13.8 11v6"></path></svg>';
+const CHEVSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9.5l6 6 6-6"></path></svg>';
 const SHEETSVG = '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">' +
   '<g stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity=".55">' +
   '<path d="M2.5 6h19"></path><path d="M2.5 9h19"></path><path d="M2.5 12h19"></path><path d="M2.5 15h19"></path><path d="M2.5 18h19"></path></g>' +
@@ -1897,8 +1902,9 @@ function sheetsPage(kind){
     (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
   if (ordIds) list = ordIds.map(id => list.find(s => s.id === id)).filter(Boolean);
   const withPdf = S.songs.filter(s => s[K.col]).length;
-  return tabs + bar + `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>
-    <div class="searchrow" style="padding-top:12px;display:flex;gap:8px">${qField()}${catSelect()}</div>` +
+  /* Narrowed to one service's songs, the header and search/category row are noise. */
+  return tabs + bar + (ordEv ? '' : `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>
+    <div class="searchrow" style="padding-top:12px;display:flex;gap:8px">${qField()}${catSelect()}</div>`) +
     list.map(s => {
       const path = s[K.col], locked = !!s[K.lock];
       const busy = S.uploading === kind + ':' + s.id;
