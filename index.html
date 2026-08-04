@@ -800,7 +800,15 @@ async function load(silent){
    the choir yet — excluded from their percentage). No row at all = present. */
 function attStatus(e,s){
   const a = S.absences.find(x => x.event_id === e && x.singer_id === s);
-  return !a ? 'present' : a.status === 'not_listed' ? 'na' : 'absent';
+  if (a) return a.status === 'not_listed' ? 'na' : 'absent';
+  /* No row normally means present — but not for events before the singer joined:
+     a brand-new member must not inherit perfect attendance for the past. */
+  const sg = S.singers.find(x => x.id === s);
+  if (sg && sg.joined_on) {
+    const evt = S.events.find(x => x.id === e);
+    if (evt && evt.date < sg.joined_on) return 'na';
+  }
+  return 'present';
 }
 const isAbsent = (e,s) => attStatus(e,s) === 'absent';
 /* present / total, counting only events the singer was actually in the choir for */
@@ -1328,7 +1336,7 @@ function attendanceSummary(){
     return `<div class="sectbar">${esc(t(p))}</div>` + rows.map(s => {
       const c = attCount(ev, s.id), pct = c.pct;
       if (pct === null) return `<div class="li"><div style="width:44%;font-size:15px;color:var(--faint)">${esc(s.name)}</div>
-        <div class="bar"></div><div class="cnt"></div><div class="pct" style="color:var(--faint)">—</div></div>`;
+        <div class="bar"></div><div class="cnt">0/0</div><div class="pct" style="color:var(--faint)">—</div></div>`;
       return `<div class="li"><div style="width:44%;font-size:15px">${esc(s.name)}</div>
         <div class="bar"><i style="width:${pct}%;background:${pct>=50?'var(--green)':pct>=10?'var(--gold)':'var(--red)'}"></i></div>
         <div class="cnt">${c.came}/${c.of}</div>
