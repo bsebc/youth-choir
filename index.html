@@ -215,6 +215,10 @@
   .hday .d.svc em{color:var(--blue)}
   .sect{display:flex;min-width:100%;position:sticky;top:66px;z-index:4}
   .sect .lbl{width:calc(var(--nameW) + var(--tallyW));flex:none;position:sticky;left:0;z-index:3;background:var(--paper);color:var(--ink);border-left:3px solid var(--gold);border-bottom:1px solid var(--rule);height:28px;display:flex;align-items:center;padding:0 10px;font-family:'Alice',serif;font-size:12px;letter-spacing:.16em}
+  .sect.soprano .lbl{border-left-color:#d4a92c}
+  .sect.alto .lbl{border-left-color:#4d68b6}
+  .sect.tenor .lbl{border-left-color:#5c8a55}
+  .sect.bass .lbl{border-left-color:#5a678c}
   .sect .fill{flex:1 0 auto;height:28px;background:var(--paper);color:var(--muted);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:flex-end;padding:0 10px;font-size:11px}
   .name{width:var(--nameW);flex:none;height:var(--cell);position:sticky;left:0;z-index:2;background:#fff;display:flex;align-items:center;padding:0 8px;font-size:14px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .tally{width:var(--tallyW);flex:none;height:var(--cell);position:sticky;left:var(--nameW);z-index:2;background:#fbfbf9;display:flex;align-items:center;justify-content:center;font-size:14px;font-variant-numeric:tabular-nums;color:#3c4438;border-right:2px solid var(--ink);border-bottom:1px solid var(--rule)}
@@ -241,10 +245,19 @@
   .legend i.na{color:#b3b7ac;background:#f1f2ee}
   .legend i{width:16px;height:16px;border:1px solid var(--rule);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-weight:600;font-size:11px;color:#b3564a}
   /* lists */
-  select.part{padding:7px 6px;font-size:13px;max-width:104px}
+  select.part{font-size:13px;max-width:118px}
   .sectbar{display:flex;align-items:baseline;background:#fbfbf9;color:var(--ink);font-size:11px;font-weight:700;
     letter-spacing:.14em;padding:12px 16px 7px;border-bottom:1px solid var(--rule)}
   .sectbar::before{content:'';width:14px;height:3px;border-radius:2px;background:var(--gold);margin-right:8px;align-self:center}
+  /* voice parts wear the seating-chart colours */
+  .sectbar.soprano{background:#fdf7e7;color:#8a6d16;border-bottom-color:#e9dcae}
+  .sectbar.soprano::before{background:#d9c47f}
+  .sectbar.alto{background:#f2f5fd;color:#3b5199;border-bottom-color:#cfd8ee}
+  .sectbar.alto::before{background:#b6c1e2}
+  .sectbar.tenor{background:#f2f7f1;color:#4a6b46;border-bottom-color:#d3e0d0}
+  .sectbar.tenor::before{background:#bccdb8}
+  .sectbar.bass{background:#f3f4f8;color:#4a5570;border-bottom-color:#d5d9e4}
+  .sectbar.bass::before{background:#b9bfd0}
   .li{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rule);background:#fff}
   .li.tap{min-height:58px;cursor:pointer;user-select:none;transition:background .14s ease}
   .li.tap:hover{background:#fbfbf9}
@@ -376,7 +389,13 @@
   .li.on{background:#f2f4fb}
   .mini{border:1px solid var(--rule);border-radius:999px;padding:8px 13px;font-size:14px;line-height:1.25;color:var(--blue);font-weight:600;background:#fff;height:38px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center}
   .mini.danger{border-color:#e2cdc8;color:var(--red)}
+  select.mini.part{-webkit-appearance:none;appearance:none;padding:0 24px 0 10px;line-height:36px;text-align:left;
+    background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="14" viewBox="0 0 10 14"><path d="M1.5 5.2 5 1.7l3.5 3.5M1.5 8.8 5 12.3 8.5 8.8" fill="none" stroke="%236b7280" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 8px center}
   .acts{display:flex;gap:8px;flex:none;align-items:center}
+  .step.fold{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+  .step.fold .chev{margin-left:auto;width:9px;height:9px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);
+    transform:rotate(45deg);transition:transform .15s ease;flex:none}
+  .step.fold .chev.up{transform:rotate(225deg)}
   label.mini{cursor:pointer}
   .btn{display:block;width:100%;background:var(--ink);color:#fff;text-align:center;font-size:17px;font-weight:600;padding:15px 0;border-radius:8px;border:0}
   .btn.ghost{background:#fff;color:var(--blue);border:1px solid var(--blue)}
@@ -484,7 +503,8 @@ const STR = {
     alsoSings:'also sings',noVoice:'Does not sing in the choir',peopleN:n=>n+' people',songTitle:'Song title',subtitle:'Subtitle (optional)',
     search:'Search…',email:'Email',password:'Password',loginNote:'Only the choir director signs in. Everyone else can read the ledger.',
     loading:'Loading…',noEvents:'No events in this range yet.',noSongs:'No songs recorded yet.',
-    exportTitle:'EXPORT',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
+    exportTitle:'EXPORT',exp6:'6 months',exp12:'1 year',expAll:'All time',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
+    removeRole:'Remove role',joinedOn:'In the choir since',joinedNote:'Events before this date don\u2019t count toward attendance. Blank = since the beginning.',
     tSeating:'Seating chart',tSeatingSub:'Where everyone sits',
     listen:'Listen',openLink:'Open link',audioLink:'Recording link',audioAdd:'Add a recording link',audioSaved:'Link saved',
     audioRemove:'Remove link',audioHint:'Paste a YouTube, Drive or Dropbox link.',
@@ -565,7 +585,8 @@ const STR = {
     alsoSings:'поёт в хоре',noVoice:'Не поёт в хоре',peopleN:n=>'человек: '+n,songTitle:'Название песни',subtitle:'Подзаголовок',
     search:'Поиск…',email:'Эл. почта',password:'Пароль',loginNote:'Доступ только у регента. Просмотр журнала — без входа.',
     loading:'Загрузка…',noEvents:'В этом периоде событий нет.',noSongs:'Записей пока нет.',
-    exportTitle:'ЭКСПОРТ',exportAtt:'Посещаемость CSV',exportSongs:'История песен CSV',
+    exportTitle:'ЭКСПОРТ',exp6:'6 месяцев',exp12:'1 год',expAll:'Всё время',exportAtt:'Посещаемость CSV',exportSongs:'История песен CSV',
+    removeRole:'Убрать роль',joinedOn:'В хоре с',joinedNote:'События до этой даты не входят в посещаемость. Пусто — с самого начала.',
     tSeating:'Схема мест',tSeatingSub:'Кто где сидит',
     listen:'Слушать',openLink:'Открыть ссылку',audioLink:'Ссылка на запись',audioAdd:'Добавить ссылку на запись',audioSaved:'Ссылка сохранена',
     audioRemove:'Убрать ссылку',audioHint:'Вставьте ссылку YouTube, Drive или Dropbox.',
@@ -676,6 +697,8 @@ const S = {
   stageKey: '', stageLeft: 0,   // sideways scroll of the seating stage
   loginSig: '',                   // what the sign-in screen was last drawn from     // the rules document and its draft while editing   // seating chart: pending moves, selection, block filter
   addOpen: null,                // which "+ Add" form is expanded
+  exportOpen: false,            // the Export card starts folded
+  exportPreset: '12',           // export period: '6' | '12' | 'all'
   pickOpen: null,               // song chooser: null = collapse itself at 3 picks
   preset: '6', rangeSet: false,   // rangeSet: the reader picked a period themselves
   query: '',
@@ -1301,7 +1324,7 @@ function attendanceGrid(top){
   const body = PARTS.map(p => {
     const rows = S.singers.filter(s => s.part === p && s.active !== false);
     if (!rows.length) return '';
-    return `<div class="sect"><div class="lbl">${esc(t(p))}</div><div class="fill">${esc(t('singersN')(rows.length))}</div></div>` +
+    return `<div class="sect ${p}"><div class="lbl">${esc(t(p))}</div><div class="fill">${esc(t('singersN')(rows.length))}</div></div>` +
       rows.map(s => {
         const cells = ev.map(e => {
           if (e.cancelled) return `<div class="cell cx">×</div>`;
@@ -1510,9 +1533,13 @@ function eventPicker(target){
         ? `<a class="mini" style="display:flex;justify-content:center" href="#/admin/entries/${target}">${esc(t('olderEntries'))}</a>`
         : ''}
     </div></div>
-    <div class="sec"><div class="pad">
-      <div class="step" style="margin-bottom:8px">${esc(t('exportTitle'))}
-        <span style="font-family:'Golos Text';font-size:12px;letter-spacing:0;color:var(--faint)">${esc(fmtPill(S.from))} – ${esc(fmtPill(S.to))}</span></div>
+    <div class="sec"><div class="pad" style="${S.exportOpen?'':'padding-bottom:14px'}">
+      <button class="step fold" data-export-toggle aria-expanded="${S.exportOpen?'true':'false'}" style="margin-bottom:${S.exportOpen?'8px':'0'}">${esc(t('exportTitle'))}
+        <i class="chev${S.exportOpen?' up':''}"></i></button>
+      ${S.exportOpen ? `<div class="chips" style="padding:0 0 10px">
+        ${[['6','exp6'],['12','exp12'],['all','expAll']].map(([v,l]) =>
+          `<button class="${S.exportPreset===v?'on':''}" data-export-preset="${v}">${esc(t(l))}</button>`).join('')}
+      </div>
       <div style="display:flex;gap:8px">
         <button class="xbtn" data-export="att">${esc(t('exportAtt'))}</button>
         <button class="xbtn" data-export="songs">${esc(t('exportSongs'))}</button>
@@ -1520,7 +1547,7 @@ function eventPicker(target){
       <div style="display:flex;gap:8px;margin-top:8px">
         <button class="xbtn" data-backup ${S.backingUp?'disabled':''}>${esc(S.backingUp ? t('loading') : t('backupBtn'))}</button>
       </div>
-      <div class="note" style="padding:8px 0 0">${esc(t('backupNote'))}</div>
+      <div class="note" style="padding:8px 0 0">${esc(t('backupNote'))}</div>` : ''}
     </div></div>`;
 }
 function entryRow(e, target){
@@ -1790,15 +1817,20 @@ function manageSongs(){
     }).join('') + `</div>`;
 }
 function personRow(s, note, partPicker){
-  if (S.memTab === 'singers' && S.editPerson === s.id) {
+  if (S.editPerson === s.id) {
+    const onSingers = S.memTab === 'singers';
     const archived = s.active === false;
     return `<div class="li" style="flex-wrap:wrap;background:#f2f4fb">
       <input class="field" id="edit-name" value="${esc(s.name)}" style="flex:1 1 100%">
+      ${onSingers ? `<label style="flex:1 1 100%;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)">${esc(t('joinedOn'))}
+        <input class="field" id="edit-joined" type="date" value="${esc(s.joined_on || '')}" style="flex:1;max-width:190px"></label>
+      <div class="sub" style="flex:1 1 100%;font-style:normal;color:var(--faint)">${esc(t('joinedNote'))}</div>` : ''}
       <div class="acts" style="flex-wrap:wrap;flex:1 1 100%;justify-content:flex-end">
         <button class="mini" style="background:var(--blue);color:#fff;border-color:var(--blue)" data-save-person="${s.id}">${esc(t('save'))}</button>
         <button class="mini" data-cancel-person>${esc(t('cancel'))}</button>
-        <button class="mini" data-archive-singer="${s.id}">${esc(archived ? t('restore') : t('archive'))}</button>
-        <button class="mini danger" data-del-singer="${s.id}">${esc(t('del'))}</button>
+        ${onSingers ? `<button class="mini" data-archive-singer="${s.id}">${esc(archived ? t('restore') : t('archive'))}</button>
+        <button class="mini danger" data-del-singer="${s.id}">${esc(t('del'))}</button>`
+        : `<button class="mini danger" data-drop-role="${s.id}">${esc(t('removeRole'))}</button>`}
       </div></div>`;
   }
   return `<div class="li ${s.active === false ? 'na' : ''}"><div style="flex:1;min-width:0">
@@ -1828,7 +1860,7 @@ function manageMembers(){
       PARTS.map(p => {
         const inPart = rows.filter(s => s.part === p && s.active !== false);
         if (!inPart.length) return '';
-        return `<div class="sectbar">${esc(t(p))}</div>` + inPart.map(s => personRow(s,
+        return `<div class="sectbar ${p}">${esc(t(p))}<em>${inPart.length}</em></div>` + inPart.map(s => personRow(s,
           [s.is_conductor ? t('conductor') : '', s.is_pianist ? t('pianist') : '']
             .filter(Boolean).join(' · '), true)).join('');
       }).join('') +
@@ -2012,8 +2044,9 @@ async function fullBackup(){
 }
 
 function exportCSV(kind){
+  const xf = S.exportPreset === 'all' ? EPOCH : shift(+S.exportPreset);   // export has its own period
   const ev = S.events.filter(kind === 'att' ? hasAtt : hasSongs)
-    .filter(e => inRange(e.date, S.from, S.to))
+    .filter(e => inRange(e.date, xf, today()))
     .slice().sort((a,b) => a.date < b.date ? -1 : 1);
   if (kind === 'att') {
     const head = ['singer','part', ...ev.map(e => e.date + ' ' + evLabel(e))];
@@ -2103,7 +2136,7 @@ function render(){
     else html += attendanceGrid(attTabs + rangeCtrl('grid', true));
   }
   const keep = {};
-  ['edit-name','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name','em','pw'].forEach(id => {
+  ['edit-name','edit-joined','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name','em','pw'].forEach(id => {
     const n = document.getElementById(id);
     if (n) keep[id] = { v: n.value, f: n === document.activeElement, p: n.selectionStart };
   });
@@ -2268,7 +2301,7 @@ document.addEventListener('input', e => {
   if (e.target.id.startsWith('audio-') && S.audioEdit) S.audioDraft = e.target.value;   // survives any re-render
 });
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel]');
+  const el = e.target.closest('[data-lang],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel]');
   if (!el) return;
   const d = el.dataset;
 
@@ -2544,17 +2577,17 @@ document.addEventListener('click', async e => {
     S.singers.push(data); return render();
   }
   if (d.editSinger) {
-    const s = S.singers.find(x => x.id === d.editSinger);
-    if (S.memTab !== 'singers') {                 // on a role tab, Edit removes the role
-      const role = S.memTab === 'pianists' ? 'is_pianist' : 'is_conductor';
-      if (!confirm(t('confirmDropRole'))) return;
-      if (!await ensureSession()) return;
-      const res = await sb.from('singers').update({ [role]: false }).eq('id', s.id).select();
-      if (!wrote(res)) return render();
-      s[role] = false; return render();
-    }
-    S.editPerson = S.editPerson === s.id ? null : s.id;
+    S.editPerson = S.editPerson === d.editSinger ? null : d.editSinger;
     return render();
+  }
+  if (d.dropRole) {
+    const s = S.singers.find(x => x.id === d.dropRole);
+    const role = S.memTab === 'pianists' ? 'is_pianist' : 'is_conductor';
+    if (!s || !confirm(t('confirmDropRole'))) return;
+    if (!await ensureSession()) return;
+    const res = await sb.from('singers').update({ [role]: false }).eq('id', s.id).select();
+    if (!wrote(res)) return render();
+    s[role] = false; S.editPerson = null; return render();
   }
   if (d.delSinger) {
     const person = S.singers.find(x => x.id === d.delSinger);
@@ -2581,9 +2614,14 @@ document.addEventListener('click', async e => {
     const clean = inp ? inp.value.trim() : '';
     if (!s || !clean) return;
     if (!await ensureSession()) return;
-    const res = await sb.from('singers').update({ name: clean }).eq('id', s.id).select();
+    const jd = document.getElementById('edit-joined');   // absent on the role tabs
+    const patch = { name: clean };
+    if (jd) patch.joined_on = jd.value || null;
+    const res = await sb.from('singers').update(patch).eq('id', s.id).select();
     if (!wrote(res)) return render();
-    s.name = clean; S.editPerson = null; return render();
+    s.name = clean;
+    if (jd) s.joined_on = patch.joined_on;
+    S.editPerson = null; return render();
   }
   if (el.hasAttribute('data-cancel-person')) { S.editPerson = null; return render(); }
   if (d.archiveSinger) {
@@ -2634,6 +2672,8 @@ document.addEventListener('click', async e => {
     }
     return;
   }
+  if (el.hasAttribute('data-export-toggle')) { S.exportOpen = !S.exportOpen; return render(); }
+  if (d.exportPreset) { S.exportPreset = d.exportPreset; return render(); }
   if (d.addOpen) { S.addOpen = S.addOpen === d.addOpen ? null : d.addOpen; return render(); }
   if (el.hasAttribute('data-toggle-cats')) { S.showCats = !S.showCats; return render(); }
   if (el.hasAttribute('data-add-cat')) {
