@@ -725,10 +725,13 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '3.11.0';
+const VERSION = '3.11.1';
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '3': {
   en: [
+    'Dates now follow your local clock — no more jumping to tomorrow late at night',
+    'An entry\u2019s date can be changed while editing it (pencil next to the date)',
+    'New singers no longer show perfect attendance before their first event',
     'Lighter section headers, quieter charts, a tidier sign-in screen',
     'A cleaner look: one pill style for every switch, matching tile icons, a lighter header',
     'A recording link per song — a Listen button on the sheets page',
@@ -753,6 +756,9 @@ const NOTES = { '3': {
     'CSV export follows the selected period'
   ],
   ru: [
+    'Даты идут по местному времени — поздним вечером число больше не прыгает на завтра',
+    'Дату записи можно изменить при редактировании (карандаш рядом с датой)',
+    'Новые хористы больше не показывают полную посещаемость до первого события',
     'Светлее заголовки партий, спокойнее графики, аккуратнее вход',
     'Аккуратнее вид: одинаковые переключатели, единые иконки, компактнее шапка',
     'Ссылка на запись для каждой песни — кнопка «Слушать» на странице нот',
