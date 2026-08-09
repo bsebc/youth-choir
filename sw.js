@@ -3,10 +3,11 @@
    - Supabase reads: try the network, fall back to the last successful response
    - writes are never cached — they need a connection                      */
 
-const SHELL = 'bsebc-youth-shell-v1';
-const DATA  = 'bsebc-youth-data-v1';
-const SHELL_FILES = ['./', './index.html', './favicon.svg', './apple-touch-icon.png',
-                     './icon-192.png', './icon-512.png', './site.webmanifest'];
+const SHELL = 'bsebc-youth-shell-v2';
+const DATA  = 'bsebc-youth-data-v2';
+const ICON_V = '?v=3135';
+const SHELL_FILES = ['./', './index.html', './favicon.svg' + ICON_V, './apple-touch-icon.png' + ICON_V,
+                     './icon-192.png' + ICON_V, './icon-512.png' + ICON_V, './site.webmanifest'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(SHELL).then(c => c.addAll(SHELL_FILES)).then(() => self.skipWaiting()));

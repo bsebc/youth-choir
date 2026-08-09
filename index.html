@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BSEBC Youth Choir</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="favicon.svg?v=3135" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=3135">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#17203a">
 <meta name="mobile-web-app-capable" content="yes">
@@ -847,7 +847,7 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '3.13.0';
+const VERSION = '3.13.5';
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '3': {
@@ -1295,7 +1295,7 @@ async function saveRules(){
 function mast(){
   return `<div class="mast">
     <a href="#/home" class="mbrand" style="display:flex;align-items:center;gap:11px;color:inherit;min-width:0">
-      <svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path><rect x="27" y="103" width="66" height="6" rx="3" fill="#c9a227"></rect></svg>
+      <svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(0 6.5)"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path></g></svg>
       <div class="brand">Youth Choir</div>
     </a>
     <div class="lang">
@@ -1325,7 +1325,7 @@ function drawerNav(){
   return `<div class="scrim${S.menuOpen?' on':''}" data-menu-x></div>
   <nav class="drawer${S.menuOpen?' on':''}" aria-label="Menu">
     <div class="dhead">
-      <svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path><rect x="27" y="103" width="66" height="6" rx="3" fill="#c9a227"></rect></svg>
+      <svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(0 6.5)"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path></g></svg>
       <div class="t">Youth Choir</div>
       <div class="lang dlang">
         <button data-lang="en" class="${S.lang==='en'?'on':''}">EN</button>
@@ -2085,7 +2085,7 @@ function manageMembers(){
 }
 function loginPage(){
   return `<div class="loginwrap"><div class="login">
-    <div class="lhead"><div class="lmark"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path><rect x="27" y="103" width="66" height="6" rx="3" fill="#c9a227"></rect></svg></div>
+    <div class="lhead"><div class="lmark"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(0 6.5)"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path></g></svg></div>
       <div class="lt">${esc(t('signin'))}</div></div>
     ${S.error ? `<div class="err">${esc(S.error)}</div>` : ''}
     <form id="loginform" method="post" action="#/login" autocomplete="on" style="display:grid;gap:14px">
