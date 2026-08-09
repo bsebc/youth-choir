@@ -26,8 +26,12 @@ Supabase project: `https://cetjvfzgituzeiooxaex.supabase.co`
 3. **Publish** — upload the contents of this folder to the repo root of a
    *separate* GitHub repository, then Settings → Pages → Deploy from a branch →
    `main` → `/ (root)`. Live at `https://<user>.github.io/<repo>/`.
-4. **Keepalive** — in that repo, Settings → Secrets and variables → Actions, add
-   `SUPABASE_URL` and `SUPABASE_ANON_KEY` (the values at the top of `index.html`).
+4. **Keepalive** — nothing to configure. `.github/workflows/keepalive.yml` pings
+   the API every Monday and Thursday so the free-tier project never pauses; it
+   starts running as soon as the file is in the repo. Check it under the repo's
+   **Actions** tab ("Keep Supabase awake" → *Run workflow* to test it by hand).
+   GitHub disables scheduled workflows after 60 days with no repo activity — if
+   that happens, Actions shows a banner with an *Enable* button.
 
 Do not put the two sites in the same repository folder: both register a service
 worker at their own scope, and one would cache over the other.

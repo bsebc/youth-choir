@@ -1,10 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
 <rect width="120" height="120" fill="#17203a"></rect>
-<rect x="56.5" y="12" width="7" height="46" fill="#c9a227"></rect>
-<rect x="44" y="24" width="32" height="7" fill="#c9a227"></rect>
-<path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path>
-<path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path>
-<path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path>
-<ellipse cx="79" cy="79" rx="7" ry="5.5" fill="#17203a"></ellipse>
-<rect x="84" y="60" width="3.5" height="19" fill="#17203a"></rect>
+<rect x="56.5" y="14" width="7" height="43" fill="#c9a227"></rect>
+<rect x="44" y="26" width="32" height="7" fill="#c9a227"></rect>
+<path d="M16 47 L60 59 L60 97 L16 85 Z" fill="#eff0ec"></path>
+<path d="M104 47 L60 59 L60 97 L104 85 Z" fill="#eff0ec"></path>
+<path d="M60 59 L60 97" stroke="#17203a" stroke-width="2.5"></path>
+<rect x="27" y="103" width="66" height="6" rx="3" fill="#c9a227"></rect>
 </svg>
