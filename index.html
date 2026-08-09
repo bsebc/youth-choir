@@ -91,14 +91,14 @@
   .caret svg{transition:transform .16s ease}
   .caret.up svg{transform:rotate(180deg)}
   .li.on .caret{color:var(--blue)}
-  .drawer{background:#fbfbf9;border-bottom:1px solid var(--rule);padding:4px 16px 12px}
-  .drawer .dh{display:flex;align-items:baseline;gap:8px;padding:10px 0 6px;font-size:12px;
+  .subrow{background:#fbfbf9;border-bottom:1px solid var(--rule);padding:4px 16px 12px}
+  .subrow .dh{display:flex;align-items:baseline;gap:8px;padding:10px 0 6px;font-size:12px;
     letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .drawer .dh span{text-transform:none;letter-spacing:0;color:var(--faint)}
-  .drawer .dr{display:flex;align-items:baseline;gap:12px;padding:5px 0;border-top:1px solid #e9eae4}
-  .drawer .dd{width:44%;flex:none;font-size:14px;font-variant-numeric:tabular-nums}
-  .drawer .dk{flex:1;min-width:0;font-size:13px;color:var(--muted)}
-  .drawer .dk.cx{color:var(--red)}
+  .subrow .dh span{text-transform:none;letter-spacing:0;color:var(--faint)}
+  .subrow .dr{display:flex;align-items:baseline;gap:12px;padding:5px 0;border-top:1px solid #e9eae4}
+  .subrow .dd{width:44%;flex:none;font-size:14px;font-variant-numeric:tabular-nums}
+  .subrow .dk{flex:1;min-width:0;font-size:13px;color:var(--muted)}
+  .subrow .dk.cx{color:var(--red)}
   .ver{padding:4px 16px 24px;text-align:center;font-size:12px;color:var(--faint);
     font-variant-numeric:tabular-nums;letter-spacing:.04em}
   .ver a{color:var(--faint);text-decoration:underline;text-underline-offset:2px}
@@ -138,8 +138,8 @@
   .who i{font-style:normal;font-weight:700;font-size:9px;line-height:1;padding:2px 4px;border-radius:3px;
     background:var(--paper);border:1px solid var(--rule);color:var(--faint)}
   .s .st{vertical-align:middle}
-  .drawer .dc{flex:none;text-align:right}
-  .drawer .dc .who{margin-left:6px}
+  .subrow .dc{flex:none;text-align:right}
+  .subrow .dc .who{margin-left:6px}
   .dpick{position:relative;flex:1;min-width:0;display:block}
   .dpick span{display:block;border:1px solid var(--rule);border-radius:8px;background:#fbfbf9;
     padding:10px 11px;font-size:15px;line-height:1.2;color:var(--ink);text-align:center;
@@ -425,13 +425,27 @@
   .svc-card .date{font-family:'Alice',serif;font-size:17px}
   .svc-card .kind{font-size:12px;color:var(--blue);border:1px solid #c6cde6;background:#f2f4fb;border-radius:999px;padding:3px 9px}
   .svc-card .s{font-size:15px;color:#3c4438;padding-left:14px;border-left:2px solid var(--rule)}
-  .login{padding:32px 24px 28px;display:flex;flex-direction:column;gap:16px;max-width:400px;margin:40px auto;
-    width:calc(100% - 32px);background:#fff;border:1px solid var(--rule);border-radius:18px;
-    box-shadow:0 18px 44px -20px rgba(23,32,58,.30)}
-  .login .lt{font-family:'Alice',serif;font-size:25px;text-align:center}
-  .login .lt::after{content:'';display:block;width:34px;height:2px;background:var(--gold);margin:12px auto 0}
-  .login label{font-family:'Alice',serif;font-size:14px;color:#3c4438;letter-spacing:.06em}
-  .login input{width:100%;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px 13px;font-size:16px}
+  .loginwrap{display:flex;justify-content:center;padding:6vh 16px 40px}
+  .login{position:relative;padding:30px 26px 28px;display:flex;flex-direction:column;gap:18px;
+    width:min(410px,100%);border-radius:22px;
+    background:rgba(255,255,255,.82);backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);
+    border:1px solid rgba(255,255,255,.9);box-shadow:0 30px 70px -34px rgba(23,32,58,.5),0 2px 0 rgba(255,255,255,.7) inset;
+    animation:loginin .4s cubic-bezier(.2,.8,.3,1)}
+  @keyframes loginin{from{opacity:0;transform:translateY(14px) scale(.985)}}
+  .login .lhead{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+  .login .lmark{width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:18px;
+    background:linear-gradient(165deg,#26325e,#172038)}
+  .login .lmark .logo{filter:none;width:30px;height:30px}
+  .login .lt{font-family:'Alice',serif;font-size:24px;line-height:1.15}
+  .login label{display:block;margin-bottom:7px;font-size:12.5px;font-weight:600;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--muted)}
+  .login input{width:100%;background:rgba(247,248,251,.9);border:1px solid var(--rule);border-radius:12px;
+    padding:14px 14px;font-size:16px;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
+  .login input:focus{outline:0;background:#fff;border-color:var(--blue);box-shadow:0 0 0 4px rgba(44,62,143,.13)}
+  .login .btn{background:linear-gradient(165deg,#3b4f9e,#2c3e8f);border-radius:13px;font-size:16px;
+    box-shadow:0 12px 26px -12px rgba(44,62,143,.75)}
+  .login .btn:hover{background:linear-gradient(165deg,#44599f,#334694)}
+  .login .err{border-radius:12px}
   .toast.ok{background:rgba(63,125,78,.92)}
   .toast{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:20;
     max-width:520px;margin-inline:auto;border-radius:16px;background:rgba(158,59,46,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;display:flex;
@@ -483,13 +497,29 @@
   .drawer .it{display:flex;align-items:center;gap:13px;padding:12px;margin:1px 0;border-radius:11px;
     color:#9aa3bd;font-size:15px;font-weight:500;transition:background .15s ease,color .15s ease}
   .drawer .it svg{width:20px;height:20px;flex:none}
+  .drawer .it .ic-note{width:24px;height:24px;margin:-2px}
+  .drawer .it .ic-note *{stroke-width:2.2}
+  .drawer .it .ic-note [stroke]{stroke:currentColor}
+  .drawer .it .ic-note [fill="#fff"]{fill:none}
+  .drawer .it .ic-note [stroke="var(--blue)"],.drawer .it .ic-note [stroke="var(--red)"],
+  .drawer .it .ic-note [stroke="var(--gold)"]{stroke:var(--gold)}
+  .drawer .it .ic-note [fill="var(--blue)"],.drawer .it .ic-note [fill="var(--red)"],
+  .drawer .it .ic-note [fill="var(--gold)"]{fill:var(--gold)}
+  .drawer .it .ic-note [fill="var(--ink)"]{fill:var(--gold)}
+  .drawer .it .ic-note [data-badge]{fill:none !important}
+  .drawer .it .ic-note [data-play]{transform:translate(24.4px,23.6px) scale(1.75) translate(-24.4px,-23.6px)}
+  .drawer .it.on .ic-note [stroke="var(--blue)"],.drawer .it.on .ic-note [stroke="var(--red)"],
+  .drawer .it.on .ic-note [stroke="var(--gold)"]{stroke:var(--ink)}
+  .drawer .it.on .ic-note [fill="var(--blue)"],.drawer .it.on .ic-note [fill="var(--red)"],
+  .drawer .it.on .ic-note [fill="var(--ink)"],.drawer .it.on .ic-note [fill="var(--gold)"]{fill:var(--ink)}
   .drawer .it:hover{background:rgba(255,255,255,.08);color:#fff}
   .drawer .it.on{background:var(--gold);color:var(--ink);font-weight:600}
   .drawer.on .it{animation:itin .28s backwards}
   @keyframes itin{from{opacity:0;transform:translateX(14px)}}
   .drawer.on .it:nth-child(3){animation-delay:.03s}.drawer.on .it:nth-child(4){animation-delay:.06s}
   .drawer.on .it:nth-child(5){animation-delay:.09s}.drawer.on .it:nth-child(6){animation-delay:.12s}
-  .drawer.on .it:nth-child(7){animation-delay:.15s}
+  .drawer.on .it:nth-child(7){animation-delay:.15s}.drawer.on .it:nth-child(8){animation-delay:.18s}
+  .drawer .it{font-size:14.5px;padding:11px 12px}
   .drawer .grow{flex:1;min-height:14px}
   .drawer .dfoot{border-top:1px solid rgba(255,255,255,.12);padding-top:8px}
   .sb:active,.mini:active,.chips button:active,.seg button:active,.menubtn:active,.drawer .it:active,.lang button:active,.tile:active .ic{transform:scale(.96)}
@@ -498,30 +528,30 @@
   /* faint aurora in the brand's own tints */
   .wrap{background-color:#fff;background-image:
     radial-gradient(640px 380px at 8% -120px,rgba(44,62,143,.08),transparent 62%),
-    radial-gradient(560px 360px at 96% 60px,rgba(201,162,39,.08),transparent 60%),
+    radial-gradient(560px 360px at 96% 60px,rgba(70,100,205,.08),transparent 60%),
     radial-gradient(620px 420px at 50% 760px,rgba(44,62,143,.05),transparent 62%)}
   .hero,.tiles{background:transparent}
   /* quiet glow on the things that matter */
   .logo{filter:drop-shadow(0 0 6px rgba(201,162,39,.35))}
-  .tile.order:hover{box-shadow:0 16px 40px -14px rgba(201,162,39,.42)}
+  .tile.order:hover{box-shadow:0 16px 40px -14px rgba(44,62,143,.45)}
   .drawer .it.on{box-shadow:0 4px 18px -4px rgba(201,162,39,.5)}
   .savebar .sb.go{box-shadow:0 6px 18px -8px rgba(44,62,143,.55)}
   .mini.go{box-shadow:0 5px 14px -7px rgba(44,62,143,.5)}
   /* soft aurora on the big navy surfaces */
   .mast{background-image:
-    radial-gradient(320px 150px at 94% -35%,rgba(201,162,39,.17),transparent 60%),
+    radial-gradient(320px 150px at 94% -35%,rgba(96,132,235,.24),transparent 60%),
     radial-gradient(340px 170px at 2% 135%,rgba(90,115,220,.24),transparent 62%)}
   .tile.dark,.tile.order{background-image:
-    radial-gradient(320px 200px at 92% -12%,rgba(201,162,39,.15),transparent 60%),
+    radial-gradient(320px 200px at 92% -12%,rgba(96,132,235,.22),transparent 60%),
     radial-gradient(300px 220px at -6% 110%,rgba(90,115,220,.20),transparent 62%)}
   /* the order tile gets the full northern sky */
   .tile.order{background-image:
-    radial-gradient(440px 240px at 97% -30%,rgba(224,181,63,.30),transparent 60%),
+    radial-gradient(440px 240px at 97% -30%,rgba(86,150,245,.30),transparent 60%),
     radial-gradient(280px 190px at 68% 118%,rgba(96,122,230,.34),transparent 62%),
     radial-gradient(380px 270px at -14% 122%,rgba(64,160,255,.26),transparent 62%),
     radial-gradient(260px 190px at 14% -28%,rgba(129,96,226,.22),transparent 62%)}
   .drawer::before{content:'';position:absolute;inset:0;pointer-events:none;background:
-    radial-gradient(260px 220px at 90% 2%,rgba(201,162,39,.13),transparent 62%),
+    radial-gradient(260px 220px at 90% 2%,rgba(96,132,235,.20),transparent 62%),
     radial-gradient(280px 260px at 4% 104%,rgba(90,115,220,.18),transparent 62%)}
   .drawer > *{position:relative}
   /* active pills carry the brand blue */
@@ -817,11 +847,14 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '3.12.0';
+const VERSION = '3.12.2';
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '3': {
   en: [
+    'The menu now lists every page, with the same icons as the dashboard tiles',
+    'A refreshed sign-in screen',
+    'Fixed: rows in Summary and Who led open again',
     'The menu now slides out from the side — tap the button in the top corner',
     'On iPad and desktop the menu stays open as a sidebar, and pages use the full width',
     'Frosted-glass menu and bars, gentler button feedback, soft page transitions',
@@ -852,6 +885,9 @@ const NOTES = { '3': {
     'CSV export follows the selected period'
   ],
   ru: [
+    'В меню теперь все разделы — с теми же значками, что и плитки на главной',
+    'Обновлённый экран входа',
+    'Исправлено: строки в «Сводке» и «Кто вёл» снова раскрываются',
     'Меню теперь выдвигается сбоку — кнопка в правом верхнем углу',
     'На iPad и компьютере меню закреплено сбоку, а страницы используют всю ширину',
     'Полупрозрачное меню и панели, мягкие переходы между страницами',
@@ -1282,13 +1318,13 @@ const NAVIC = {
 };
 function drawerNav(){
   const r = S.route || '#/home';
-  const on = p => r.startsWith(p) ? ' on' : '';
-  const it = (href, key, ic, label) => `<a class="it${on(key)}" href="${href}">${NAVIC[ic]}<span>${esc(label)}</span></a>`;
+  const it = (href, on, ic, label) => `<a class="it${on?' on':''}" href="${href}">${ic}<span>${esc(label)}</span></a>`;
+  const piano = r.startsWith('#/sheets/piano');
   return `<div class="scrim${S.menuOpen?' on':''}" data-menu-x></div>
   <nav class="drawer${S.menuOpen?' on':''}" aria-label="Menu">
     <div class="dhead">
       <svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="56.5" y="12" width="7" height="46" fill="#c9a227"></rect><rect x="44" y="24" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path><ellipse cx="79" cy="79" rx="7" ry="5.5" fill="#17203a"></ellipse><rect x="84" y="60" width="3.5" height="19" fill="#17203a"></rect></svg>
-      <div class="t">BSEBC<br>Youth Choir</div>
+      <div class="t">Youth Choir</div>
       <div class="lang dlang">
         <button data-lang="en" class="${S.lang==='en'?'on':''}">EN</button>
         <button data-lang="ru" class="${S.lang==='ru'?'on':''}">RU</button>
@@ -1297,29 +1333,29 @@ function drawerNav(){
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"></path></svg>
       </button>
     </div>
-    ${it('#/home','#/home','home',t('home'))}
-    ${it('#/attendance','#/attendance','att',t('attendance'))}
-    ${it('#/songs','#/songs','hist',t('songs'))}
-    ${it('#/sheets','#/sheets','sheets',t('navSheets'))}
-    ${it('#/seating','#/seating','seat',t('tSeating'))}
-    ${it('#/rules','#/rules','rules',t('tRules'))}
+    ${it('#/home', r.startsWith('#/home'), NAVIC.home, t('home'))}
+    ${it('#/sheets', r.startsWith('#/sheets') && !piano, ICON.sheets, t('tSheets'))}
+    ${it('#/attendance/grid', r.startsWith('#/attendance'), ICON.attGrid, t('tAttGrid'))}
+    ${it('#/songs/summary', r.startsWith('#/songs'), ICON.songGrid, t('tSongGrid'))}
+    ${it('#/sheets/piano', piano, ICON.piano, t('tPiano'))}
+    ${it('#/seating', r.startsWith('#/seating'), ICON.seat, t('tSeating'))}
+    ${it('#/rules', r.startsWith('#/rules'), ICON.rules, t('tRules'))}
     <div class="grow"></div>
     <div class="dfoot">
-      ${S.session ? it('#/admin/attendance','#/admin','admin',t('admin')) : ''}
+      ${S.session ? it('#/admin/attendance', r.startsWith('#/admin'), NAVIC.admin, t('admin')) : ''}
       ${S.session
         ? `<a class="it" href="#/home" data-signout>${NAVIC.out}<span>${esc(t('signout'))}</span></a>`
-        : it('#/login','#/login','login',t('signin'))}
+        : it('#/login', r.startsWith('#/login'), NAVIC.login, t('signin'))}
       <div class="vv">v${VERSION}</div>
     </div>
   </nav>`;
 }
-function homePage(){
-  const ICON = {
+const ICON = {
     attGrid: `<svg class="ic-note" viewBox="0 0 34 34" aria-hidden="true">
         <rect x="3" y="6" width="28" height="25" rx="3.5" fill="none" stroke="#c9cdc4" stroke-width="1.8"></rect>
         <g stroke="#c9cdc4" stroke-width="1.8" stroke-linecap="round"><path d="M3 13.5h28"></path><path d="M10 3.5v5"></path><path d="M24 3.5v5"></path></g>
-        <path d="M9.5 21.6 12 24l4.4-5.2" fill="none" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
-        <path d="M21.5 19.5l5 5m0-5-5 5" fill="none" stroke="var(--red)" stroke-width="2.2" stroke-linecap="round"></path></svg>`,
+        <path d="M8.4 21.9 10.9 24.4l4.4-5.2" fill="none" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M20.2 19.6l4.8 4.8m0-4.8-4.8 4.8" fill="none" stroke="var(--red)" stroke-width="2.2" stroke-linecap="round"></path></svg>`,
     seat: `<svg class="ic-note" viewBox="0 0 34 34" aria-hidden="true">
         <g fill="none" stroke="#c9cdc4" stroke-width="1.7">
           <rect x="3.5" y="7" width="8" height="7" rx="2.2"></rect><rect x="13" y="7" width="8" height="7" rx="2.2"></rect><rect x="22.5" y="7" width="8" height="7" rx="2.2"></rect>
@@ -1340,9 +1376,11 @@ function homePage(){
           <path d="M4 25h9" stroke="#c9cdc4"></path></g></svg>`,
     songGrid:`<svg class="ic-note" viewBox="0 0 34 34" aria-hidden="true">
         <path d="M17 4.5a12.5 12.5 0 1 1-9.6 4.5" fill="none" stroke="#c9cdc4" stroke-width="2.1" stroke-linecap="round"></path>
-        <ellipse cx="14.4" cy="22.2" rx="4.1" ry="3.2" transform="rotate(-20 14.4 22.2)" fill="var(--blue)"></ellipse>
-        <path d="M18.1 20.8V11" stroke="var(--blue)" stroke-width="2.3" stroke-linecap="round"></path>
-        <path d="M18.1 11c3 .7 4.7 1.9 5.2 3.9" stroke="var(--gold)" stroke-width="2.3" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(0.4 -1.3)">
+          <ellipse cx="14.4" cy="22.2" rx="4.1" ry="3.2" transform="rotate(-20 14.4 22.2)" fill="var(--blue)"></ellipse>
+          <path d="M18.1 20.8V11" stroke="var(--blue)" stroke-width="2.3" stroke-linecap="round"></path>
+          <path d="M18.1 11c3 .7 4.7 1.9 5.2 3.9" stroke="var(--gold)" stroke-width="2.3" stroke-linecap="round" fill="none"></path>
+        </g>
       </svg>`,
     songSvc: `<svg class="ic-note" viewBox="0 0 34 34" aria-hidden="true">
         <g fill="var(--gold)"><circle cx="5" cy="9" r="2.2"></circle><circle cx="5" cy="17" r="2.2"></circle><circle cx="5" cy="25" r="2.2"></circle></g>
@@ -1356,8 +1394,8 @@ function homePage(){
         <g stroke="#c9cdc4" stroke-width="1.3" stroke-linecap="round"><path d="M8.5 10h12"></path><path d="M8.5 14h12"></path><path d="M8.5 18h7"></path></g>
         <ellipse cx="12.6" cy="23.4" rx="3.4" ry="2.7" transform="rotate(-20 12.6 23.4)" fill="var(--blue)"></ellipse>
         <path d="M15.7 22.2v-7.7" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"></path>
-        <circle cx="25.8" cy="24.6" r="6.6" fill="var(--gold)"></circle>
-        <path d="M23.8 21.7v5.8l4.7-2.9z" fill="var(--ink)"></path>
+        <circle cx="25.8" cy="24.6" r="6.6" fill="var(--gold)" data-badge="1"></circle>
+        <path d="M23.8 21.7v5.8l4.7-2.9z" fill="var(--ink)" data-play="1"></path>
       </svg>`,
     piano:   `<svg class="ic-note" viewBox="0 0 34 34" aria-hidden="true">
         <rect x="3" y="9" width="28" height="17" rx="2" fill="#fff" stroke="#c9cdc4" stroke-width="1.6"></rect>
@@ -1369,7 +1407,8 @@ function homePage(){
     user:    `<svg class="ic-note" viewBox="0 0 34 34" aria-hidden="true">
         <circle cx="17" cy="12" r="5.6" fill="none" stroke="var(--gold)" stroke-width="2.2"></circle>
         <path d="M6.5 29.5c1.6-6 5.6-9 10.5-9s8.9 3 10.5 9" fill="none" stroke="var(--gold)" stroke-width="2.2" stroke-linecap="round"></path></svg>`
-  };
+};
+function homePage(){
   const tile = (href, title, sub, icon, dark) => `<a class="tile ${dark?'dark':''}" href="${href}">
       <div class="ic">${icon}</div>
       <div><div class="tt">${esc(t(title))}</div><div class="ts">${esc(t(sub))}</div></div></a>`;
@@ -1606,7 +1645,7 @@ function songsPeople(){
         <div style="width:54px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums">${total}</div>
         <div style="width:84px;text-align:right;font-size:13px;color:var(--muted)">${esc(fmtShort(r.last))}</div>
         <div class="caret ${open?'up':''}">${CHEVSVG}</div></div>` +
-      (open ? `<div class="drawer">
+      (open ? `<div class="subrow">
         <div class="dh">${esc(t('theirSongs'))} <span>${esc(t('inRangeN')(songs.length))}</span></div>
         ${songs.map(x => `<div class="dr" data-goto-song="${x.s.id}">
           <div class="dd" style="width:auto;flex:1">${esc(x.s.title)}</div>
@@ -1634,7 +1673,7 @@ function songsSummary(){
       <div style="width:54px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums">${st.n}</div>
       <div style="width:84px;text-align:right;font-size:13px;color:var(--muted)">${esc(st.last || '—')}</div>
       <div class="caret ${open?'up':''}">${CHEVSVG}</div></div>` +
-      (open ? `<div class="drawer">
+      (open ? `<div class="subrow">
         <div class="dh">${esc(t('songDates'))} <span>${esc(t('inRangeN')(dates.length))}</span></div>
         ${dates.map(e => `<div class="dr">
           <div class="dd">${esc(fmtLong(e.date))}</div>
@@ -2043,8 +2082,9 @@ function manageMembers(){
                  : `<div class="msg">${esc(t('noEntries'))}</div>`) + `</div>`;
 }
 function loginPage(){
-  return `<div class="login">
-    <div class="lt">${esc(t('signin'))}</div>
+  return `<div class="loginwrap"><div class="login">
+    <div class="lhead"><div class="lmark"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><rect x="56.5" y="12" width="7" height="46" fill="#c9a227"></rect><rect x="44" y="24" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path><ellipse cx="79" cy="79" rx="7" ry="5.5" fill="#17203a"></ellipse><rect x="84" y="60" width="3.5" height="19" fill="#17203a"></rect></svg></div>
+      <div class="lt">${esc(t('signin'))}</div></div>
     ${S.error ? `<div class="err">${esc(S.error)}</div>` : ''}
     <form id="loginform" method="post" action="#/login" autocomplete="on" style="display:grid;gap:14px">
       <div><label for="em">${esc(t('email'))}</label>
@@ -2054,7 +2094,7 @@ function loginPage(){
         <input id="pw" name="password" type="password" autocomplete="current-password" required></div>
       <button class="btn" type="submit" data-login>${esc(t('signin'))}</button>
     </form>
-  </div>`;
+  </div></div>`;
 }
 
 /* Sheet music and piano sheets are the same page over two different files:
@@ -2224,7 +2264,7 @@ function render(){
      replaced, and this app re-renders whole screens. So once the sign-in form is
      on screen, leave those exact nodes alone unless something visible changed. */
   if (onLogin && document.getElementById('loginform')) {
-    const sig = S.lang + '|' + (S.error || '') + '|' + (S.session ? '1' : '0');
+    const sig = S.lang + '|' + (S.error || '') + '|' + (S.session ? '1' : '0') + '|' + (S.menuOpen ? '1' : '0');
     if (sig === S.loginSig) return;
     S.loginSig = sig;
   }
@@ -2254,7 +2294,7 @@ function render(){
       : 'members');
   }
   else if (onLogin) {
-    S.loginSig = S.lang + '|' + (S.error || '') + '|' + (S.session ? '1' : '0');
+    S.loginSig = S.lang + '|' + (S.error || '') + '|' + (S.session ? '1' : '0') + '|' + (S.menuOpen ? '1' : '0');
     html += publicNav('') + loginPage();
   }
   else if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) { html += publicNav('piano') + sheetsPage('piano'); }
