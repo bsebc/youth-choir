@@ -574,7 +574,10 @@
       border-left:0;border-right:1px solid rgba(201,162,39,.45);box-shadow:14px 0 40px -32px rgba(0,0,0,.55)}
     .drawer.on,.drawer.on .it{animation:none}
     body.mlock{overflow:auto}
-    .wrap{max-width:1560px;margin:0 auto 0 272px}
+    body{background:#f7f7f4}
+    .wrap{max-width:1560px;margin:0;
+      margin-left:calc(272px + max(0px,(100vw - 272px - 1560px)/2));
+      border-left:1px solid var(--rule);border-right:1px solid var(--rule)}
     .toast{left:calc(272px + 12px)}
   }
   @media (min-width:1400px){ .tiles{grid-template-columns:repeat(4,1fr)} }
@@ -847,7 +850,7 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '3.13.5';
+const VERSION = '3.13.6';
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '3': {
