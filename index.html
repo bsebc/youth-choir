@@ -482,7 +482,7 @@
   .scrim.on{opacity:1;pointer-events:auto;animation:scrimin .22s ease}
   @keyframes scrimin{from{opacity:0}}
   .drawer{position:fixed;top:0;right:0;bottom:0;z-index:41;width:min(300px,84vw);display:flex;flex-direction:column;
-    background:rgba(23,32,58,.90);backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);
+    background:var(--ink);
     color:#fff;visibility:hidden;transform:translateX(105%);overflow-y:auto;
     border-left:1px solid rgba(201,162,39,.45);box-shadow:-24px 0 60px -28px rgba(0,0,0,.75);
     padding:calc(12px + env(safe-area-inset-top)) 12px calc(14px + env(safe-area-inset-bottom))}
@@ -502,10 +502,10 @@
   .drawer .it .ic-note [stroke]{stroke:currentColor}
   .drawer .it .ic-note [fill="#fff"]{fill:none}
   .drawer .it .ic-note [stroke="var(--blue)"],.drawer .it .ic-note [stroke="var(--red)"],
-  .drawer .it .ic-note [stroke="var(--gold)"]{stroke:var(--gold)}
+  .drawer .it .ic-note [stroke="var(--gold)"]{stroke:#8fa3d6}
   .drawer .it .ic-note [fill="var(--blue)"],.drawer .it .ic-note [fill="var(--red)"],
-  .drawer .it .ic-note [fill="var(--gold)"]{fill:var(--gold)}
-  .drawer .it .ic-note [fill="var(--ink)"]{fill:var(--gold)}
+  .drawer .it .ic-note [fill="var(--gold)"]{fill:#8fa3d6}
+  .drawer .it .ic-note [fill="var(--ink)"]{fill:#8fa3d6}
   .drawer .it .ic-note [data-badge]{fill:none !important}
   .drawer .it .ic-note [data-play]{transform:translate(24.4px,23.6px) scale(1.75) translate(-24.4px,-23.6px)}
   .drawer .it.on .ic-note [stroke="var(--blue)"],.drawer .it.on .ic-note [stroke="var(--red)"],
@@ -649,7 +649,7 @@ const STR = {
     unseat:'Remove from seat',selected2:'Selected',notSeated:'Not seated',
     seatsMovedN:n=>n+(n===1?' seat change':' seat changes'),seatsSaved:'Seating saved',
     trayNote:'Still without a seat — tap a name, then tap a chair.',showNames:'Show names',hide:'Hide',
-    viewSheets:'Sheets & recordings',orderOnly:'Sheets for this service',showAllSheets:'Show all songs',
+    viewSheets:'View/Listen',orderOnly:'Sheets for this service',showAllSheets:'Show all songs',
     backupBtn:'Full backup',backupNote:'Downloads every table — singers, events, attendance, songs, categories — as one JSON file. Sheet PDFs are not included.',backupFail:'Backup failed — try again.',
     period:'Period',changePeriod:'Change',
     chooseFrom:'Choose songs',showList:n=>'Show all '+n,hideList:'Hide list',
@@ -731,7 +731,7 @@ const STR = {
     unseat:'Убрать с места',selected2:'Выбран',notSeated:'Без места',
     seatsMovedN:n=>'изменений: '+n,seatsSaved:'Схема сохранена',
     trayNote:'Ещё без места — нажмите имя, затем место.',showNames:'Показать имена',hide:'Скрыть',
-    viewSheets:'Ноты и записи',orderOnly:'Ноты для этого служения',showAllSheets:'Показать все песни',
+    viewSheets:'Смотреть/Слушать',orderOnly:'Ноты для этого служения',showAllSheets:'Показать все песни',
     backupBtn:'Полная копия',backupNote:'Скачивает все таблицы — хористы, события, посещаемость, песни, категории — одним файлом JSON. PDF-ноты не входят.',backupFail:'Не удалось создать копию — попробуйте ещё раз.',
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
     period:'Период',changePeriod:'Изменить',
@@ -850,7 +850,7 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '3.13.6';
+const VERSION = '3.13.8';
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '3': {
