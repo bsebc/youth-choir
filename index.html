@@ -724,7 +724,7 @@
   @media (max-width:999px){ .menubtn{display:none} }
   .lang{border:0;background:rgba(255,255,255,.10);border-radius:var(--r-pill);padding:3px;overflow:visible}
   .lang button{border-radius:var(--r-pill);padding:4px 11px;color:var(--chrome-text);letter-spacing:.01em;font-weight:600}
-  .lang button.on{background:var(--glass-hi);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .lang button.on{background:var(--gold);color:var(--on-gold);box-shadow:0 1px 3px rgba(0,0,0,.25)}
   /* 2. on phones the admin/sign-in tile spans the whole row */
   @media (max-width:699px){ .tiles .tile.dark{grid-column:1 / -1;flex-direction:row;align-items:center;gap:14px} }
   /* ---- iOS layer, part 2: grouped lists, tinted buttons, glass bars ---- */
@@ -845,6 +845,13 @@
     .dock a.on,.dock button.on{color:var(--blue-text)}
     .dock a.on span,.dock button.on span{font-weight:700}
     .dock a:active,.dock button:active{opacity:.55}
+    /* the highlight is draggable: press it and slide sideways to pick a tab.
+       pan-y keeps vertical page scrolling working through the bar. */
+    .dock{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+    .dock.dragging a:active,.dock.dragging button:active{opacity:1}
+    .dock.dragging a,.dock.dragging button{transition:color .12s ease}
+    .dock.dragging .dpill{background:linear-gradient(180deg,rgba(var(--blue-rgb),.24),rgba(var(--blue-rgb),.15));
+      box-shadow:0 6px 16px -8px rgba(var(--blue-rgb),.55)}
     .dock span{position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
     .wrap{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
     .wrap:has(.scroll){padding-bottom:0}
@@ -1140,11 +1147,12 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '4.0.1';
+const VERSION = '4.1.0';
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '4': {
   en: [
+    'Slide the highlight on the bottom bar to switch pages, or just tap',
     'A light/dark button next to EN/RU, plus Light · Auto · Dark in the side menu',
     'Full dark mode: cards, grids, menus and forms all redrawn for it',
     'One consistent navy and gold across the site instead of many near-matching shades',
@@ -1162,6 +1170,7 @@ const NOTES = { '4': {
     'Fixed: rows in Summary and Who led open again'
   ],
   ru: [
+    'На нижней панели можно перетащить выделение на другой раздел, или просто нажать',
     'Кнопка «день/ночь» рядом с EN/RU и переключатель День · Авто · Ночь в меню',
     'Полноценная ночная тема: карточки, сетки, меню и формы',
     'Единые тёмно-синий и золотой по всему сайту вместо множества похожих оттенков',
@@ -1620,6 +1629,7 @@ function syncDock(){
     more.classList.toggle('on', !!S.menuOpen);
     more.setAttribute('aria-expanded', S.menuOpen ? 'true' : 'false');
   }
+  wireDockDrag(dk);
   moveDockPill();
 }
 function moveDockPill(){
@@ -1638,6 +1648,80 @@ function moveDockPill(){
   pill.style.transform = 'translate(' + (box.left - d.left) + 'px,' + (box.top - d.top) + 'px)';
   pill.style.opacity = '1';
   if (fresh) requestAnimationFrame(() => { pill.style.transition = ''; });
+}
+/* iOS-style draggable highlight: press the lit tab and slide. The pill tracks the
+   finger, the tab under it lights up live, and the release commits that tab. */
+let dockNoClick = false;
+function wireDockDrag(dk){
+  if (dk.dataset.drag) return;
+  dk.dataset.drag = '1';
+  let st = null;
+  const items = () => [...dk.querySelectorAll('[data-tab],[data-menu]')];
+  const pillOf = () => dk.querySelector('.dpill');
+  dk.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const from = e.target.closest && e.target.closest('[data-tab],[data-menu]');
+    const pill = pillOf();
+    /* only the highlight itself is a handle, and only when it is on screen */
+    if (!from || !from.classList.contains('on') || !pill || pill.style.opacity !== '1') return;
+    const list = items();
+    st = { id: e.pointerId, x0: e.clientX, y0: e.clientY, moved: false,
+           list, from: list.indexOf(from), target: list.indexOf(from) };
+  });
+  dk.addEventListener('pointermove', e => {
+    if (!st || e.pointerId !== st.id) return;
+    const dx = e.clientX - st.x0, dy = e.clientY - st.y0;
+    if (!st.moved) {
+      /* let a vertical swipe scroll the page instead of grabbing the pill */
+      if (Math.abs(dx) < 6 || Math.abs(dx) <= Math.abs(dy)) return;
+      st.moved = true;
+      dk.classList.add('dragging');
+      try { dk.setPointerCapture(st.id); } catch (_) {}
+    }
+    e.preventDefault();
+    const pill = pillOf();
+    if (!pill) return;
+    const d = dk.getBoundingClientRect();
+    const first = st.list[0].getBoundingClientRect();
+    const last = st.list[st.list.length - 1].getBoundingClientRect();
+    const half = first.width / 2;
+    const x = Math.max(first.left + half, Math.min(last.left + half, e.clientX));
+    pill.style.transition = 'none';
+    pill.style.transform = 'translate(' + (x - half - d.left) + 'px,' + (first.top - d.top) + 'px)';
+    let best = st.target, bd = Infinity;
+    st.list.forEach((it, i) => {
+      const b = it.getBoundingClientRect();
+      const dist = Math.abs(b.left + b.width / 2 - x);
+      if (dist < bd) { bd = dist; best = i; }
+    });
+    if (best !== st.target) {
+      st.target = best;
+      st.list.forEach((it, i) => it.classList.toggle('on', i === best));
+    }
+  });
+  const end = e => {
+    if (!st || (e.pointerId != null && e.pointerId !== st.id)) return;
+    const s = st; st = null;
+    dk.classList.remove('dragging');
+    try { dk.releasePointerCapture(s.id); } catch (_) {}
+    if (!s.moved) return;
+    const pill = pillOf();
+    if (pill) pill.style.transition = '';
+    moveDockPill();                     // snap onto the tab the finger landed on
+    dockNoClick = true;                 // the drag must not also fire a tap
+    setTimeout(() => { dockNoClick = false; }, 400);
+    if (s.target === s.from) return;
+    const el = s.list[s.target];
+    if (el.hasAttribute('data-menu')) { S.menuOpen = true; return render(); }
+    const href = el.getAttribute('href');
+    if (href) location.hash = href;
+  };
+  dk.addEventListener('pointerup', end);
+  dk.addEventListener('pointercancel', end);
+  dk.addEventListener('click', e => {
+    if (!dockNoClick) return;
+    e.preventDefault(); e.stopPropagation();
+  }, true);
 }
 /* Every segmented switcher gets the dock's treatment: the selected pill is a
    single thumb element that slides to the new choice. Like the dock's pill it
