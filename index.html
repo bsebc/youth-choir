@@ -112,7 +112,7 @@
   ::selection{background:var(--selection-bg);color:var(--ink)}
   html{scrollbar-color:var(--line-strong) transparent}
   input,select{font:inherit;color:var(--ink)}
-  .wrap{max-width:1200px;margin:0 auto;background:var(--surface);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+  .wrap{max-width:1200px;margin:0 auto;background:var(--surface);min-height:100vh;min-height:100lvh;display:flex;flex-direction:column}
   /* masthead */
   .mast{background:var(--chrome);border-bottom:2px solid var(--gold);padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top));padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right));display:flex;align-items:center;gap:11px}
   .logo{width:32px;height:32px;flex:none;display:block}
@@ -844,6 +844,9 @@
     .dock span{position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
     .wrap{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
     .wrap:has(.scroll){padding-bottom:0}
+    /* clear the dock, plus however much of the screen Safari's toolbar covers
+       right now (0 in a standalone web app, where lvh and dvh are equal) */
+    .scroll{padding-bottom:calc(var(--dockpad,0px) + 100lvh - 100dvh)}
     .tabs.admtabs a{font-size:var(--fs-12-5);padding:8px 4px;letter-spacing:-.2px}
     .toast{bottom:calc(84px + env(safe-area-inset-bottom))}
     .savebar{bottom:calc(70px + env(safe-area-inset-bottom))}
@@ -2874,14 +2877,18 @@ function fitGrid(){
   /* the glass dock floats over the grid, as on every other page — so the grid runs
      to the bottom edge and carries the dock's height as inner padding instead, which
      still lets the last row scroll clear of it. */
-  sc.style.paddingBottom = dockH ? dockH + 'px' : '';
-  const off = Math.round(docTop + below + 2);
+  sc.style.setProperty('--dockpad', dockH ? dockH + 'px' : '0px');
+  const off = Math.round(docTop + below);
   const sig = off + '|' + dockH;
   if (sc.dataset.fit === sig) return;                  // already right: don't touch it
   sc.dataset.fit = sig;
-  /* Cap the grid with dvh, the same unit .wrap uses for its full-screen height. */
-  sc.style.maxHeight = Math.max(220, vh - off) + 'px';        // fallback if dvh is unsupported
-  sc.style.maxHeight = 'calc(100dvh - ' + off + 'px)';
+  /* The grid fills the LARGE viewport (lvh) because that is the box a fixed
+     element — the dock — is positioned against in iOS Safari. dvh stops above
+     Safari's bottom toolbar, which is why the grid ended early there. The rows
+     that fall behind the toolbar and the dock are cleared by padding instead
+     (see --dockpad), so everything stays reachable by scrolling. */
+  sc.style.maxHeight = Math.max(220, vh - off) + 'px';        // fallback if lvh is unsupported
+  sc.style.maxHeight = 'calc(100lvh - ' + off + 'px)';
 }
 function queueFit(){
   if (fitPending) return;
