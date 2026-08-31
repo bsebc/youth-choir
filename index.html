@@ -40,7 +40,7 @@
     --shadow-rgb:23,32,58; --glow:92,120,210; --gold-glow:201,162,39;
     --glass:rgba(255,255,255,.78); --glass-2:rgba(255,255,255,.72); --glass-3:rgba(255,255,255,.82);
     --glass-hi:rgba(255,255,255,.9); --glass-seat:rgba(255,255,255,.92); --glass-in:rgba(247,248,251,.9);
-    --scrim:rgba(10,14,28,.34); --dock-glass-a:rgba(255,255,255,.66); --dock-glass-b:rgba(240,243,250,.46); --dock-sheen:rgba(255,255,255,.55); --dock-edge:rgba(255,255,255,.45); --dock-top:rgba(255,255,255,.9);
+    --scrim:rgba(10,14,28,.34); --dock-glass-a:#fff; --dock-glass-b:#f2f4f9; --dock-sheen:rgba(255,255,255,.55); --dock-edge:rgba(255,255,255,.45); --dock-top:rgba(255,255,255,.9);
     /* -- z bands: 0-7 grid machinery (values load-bearing), 20-41 overlays -- */
     --z-col:2; --z-colhead:3; --z-sect:4; --z-head:5; --z-top:6; --z-bar:7;
     --z-float:20; --z-dock:38; --z-scrim:40; --z-drawer:41;
@@ -79,7 +79,7 @@
     --glass:rgba(48,55,82,.86); --glass-2:rgba(48,55,82,.80); --glass-3:rgba(48,55,82,.90);
     --glass-hi:rgba(70,79,112,.92); --glass-seat:rgba(58,66,96,.94); --glass-in:rgba(38,44,68,.92);
     --drawer-bg:rgba(52,60,90,.92); --scrim:rgba(6,8,16,.62);
-    --dock-glass-a:rgba(58,66,96,.82); --dock-glass-b:rgba(46,53,78,.72); --dock-sheen:rgba(255,255,255,.07); --dock-edge:rgba(255,255,255,.10); --dock-top:rgba(255,255,255,.12);
+    --dock-glass-a:#3a4260; --dock-glass-b:#2e3550; --dock-sheen:rgba(255,255,255,.07); --dock-edge:rgba(255,255,255,.10); --dock-top:rgba(255,255,255,.12);
     --placeholder:#7c85a2; --disabled-ink:#6f7891; --focus:#8fa6e8; --selection-bg:#35406b; --skel:#3a4260;
   }
   @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
@@ -98,7 +98,7 @@
     --glass:rgba(48,55,82,.86); --glass-2:rgba(48,55,82,.80); --glass-3:rgba(48,55,82,.90);
     --glass-hi:rgba(70,79,112,.92); --glass-seat:rgba(58,66,96,.94); --glass-in:rgba(38,44,68,.92);
     --drawer-bg:rgba(52,60,90,.92); --scrim:rgba(6,8,16,.62);
-    --dock-glass-a:rgba(58,66,96,.82); --dock-glass-b:rgba(46,53,78,.72); --dock-sheen:rgba(255,255,255,.07); --dock-edge:rgba(255,255,255,.10); --dock-top:rgba(255,255,255,.12);
+    --dock-glass-a:#3a4260; --dock-glass-b:#2e3550; --dock-sheen:rgba(255,255,255,.07); --dock-edge:rgba(255,255,255,.10); --dock-top:rgba(255,255,255,.12);
     --placeholder:#7c85a2; --disabled-ink:#6f7891; --focus:#8fa6e8; --selection-bg:#35406b; --skel:#3a4260;
   } }
   @media (min-width:900px){ :root{ --nameW:220px; --tallyW:62px; --cell:40px; --songW:280px; } }
@@ -963,7 +963,7 @@ const STR = {
     tSongGrid:'Song history',tSongGridSub:'What was sung, service by service',
     tSongSvc:'By service',tSongSvcSub:'A list of every service and its songs',
     tSongSum:'Song summary',tSongSumSub:'How often each song is sung',
-    tAdmin:'Admin',tAdminSub:'Attendance, songs, members, sheets and more',
+    tAdmin:'Admin',tAdminSub:'Manage attendance, songs, members, sheets and more',
     tSignIn:'Sign in',tSignInSub:'For the choir director',
     deleteEvent:'Delete this event and everything recorded for it?',notSaved:'Not saved',retry:'Retry',offline:'Offline — showing the last loaded data.',
     deleteSinger:'Delete this singer? Past marks stay in the ledger.',deleteSong:'Delete this song? Past services keep their record.',
@@ -1047,7 +1047,7 @@ const STR = {
     tSongGrid:'История песен',tSongGridSub:'Что пели на каждом служении',
     tSongSvc:'По служениям',tSongSvcSub:'Список служений и их песнопений',
     tSongSum:'Сводка песен',tSongSumSub:'Как часто поют каждую песню',
-    tAdmin:'Админка',tAdminSub:'Посещаемость, песни, хористы, ноты и другое',
+    tAdmin:'Админка',tAdminSub:'Управление: посещаемость, песни, хористы, ноты и другое',
     tSignIn:'Вход',tSignInSub:'Для регента',
     deleteEvent:'Удалить это событие и все его записи?',notSaved:'Не сохранено',retry:'Повторить',offline:'Нет сети — показаны последние загруженные данные.',
     deleteSinger:'Удалить хориста? Прошлые отметки останутся в журнале.',deleteSong:'Удалить песню? История служений сохранится.',
