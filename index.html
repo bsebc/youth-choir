@@ -112,7 +112,7 @@
   ::selection{background:var(--selection-bg);color:var(--ink)}
   html{scrollbar-color:var(--line-strong) transparent}
   input,select{font:inherit;color:var(--ink)}
-  .wrap{max-width:1200px;margin:0 auto;background:var(--surface);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+  .wrap{max-width:1200px;margin:0 auto;background:var(--surface);min-height:100vh;min-height:100lvh;display:flex;flex-direction:column}
   /* masthead */
   .mast{background:var(--chrome);border-bottom:2px solid var(--gold);padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top));padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right));display:flex;align-items:center;gap:11px}
   .logo{width:32px;height:32px;flex:none;display:block}
@@ -2880,12 +2880,13 @@ function fitGrid(){
   const sig = off + '|' + dockH;
   if (sc.dataset.fit === sig) return;                  // already right: don't touch it
   sc.dataset.fit = sig;
-  /* Cap the grid with dvh, the same unit .wrap uses for its full-screen height.
-     visualViewport.height stops above iOS Safari's bottom toolbar while the fixed
-     dock is placed against the layout viewport, so measuring it left the grid
-     ending short of the screen — the strip that cut off under the tab bar. */
-  sc.style.maxHeight = Math.max(220, vh - off) + 'px';        // fallback if dvh is unsupported
-  sc.style.maxHeight = 'calc(100dvh - ' + off + 'px)';
+  /* Cap the grid with lvh — the LARGE viewport, which is what a position:fixed
+     element (the dock) is placed against in iOS Safari. dvh stops above Safari's
+     bottom toolbar, so the page ended there: the grid cut off under the tab bar
+     and the navy body background showed through below .wrap. Standalone (web app)
+     has no toolbar, so lvh and dvh are equal there and nothing changes. */
+  sc.style.maxHeight = Math.max(220, vh - off) + 'px';        // fallback if lvh is unsupported
+  sc.style.maxHeight = 'calc(100lvh - ' + off + 'px)';
 }
 function queueFit(){
   if (fitPending) return;
