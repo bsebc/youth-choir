@@ -821,7 +821,6 @@
     .dock{position:fixed;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));
       z-index:var(--z-dock);display:flex;gap:2px;padding:5px 6px;border-radius:var(--r-pill);isolation:isolate;
       background:linear-gradient(180deg,var(--dock-glass-a),var(--dock-glass-b));
-      -webkit-backdrop-filter:saturate(200%) blur(34px);backdrop-filter:saturate(200%) blur(34px);
       box-shadow:0 1px 0 var(--dock-top) inset,0 -1px 1px var(--dock-edge) inset,
                  0 0 0 .5px var(--ring-dock),0 2px 4px -2px rgba(var(--shadow-rgb),.10),
                  0 16px 36px -12px rgba(var(--shadow-rgb),.30)}
@@ -2881,15 +2880,21 @@ function fitGrid(){
   /* the phone dock is fixed and lives outside .scroll's parent, so the sibling
      loop above never sees it — take its height off the top explicitly. */
   const dk = document.querySelector('.dock');
-  const dockH = dk && getComputedStyle(dk).display !== 'none'
-    ? (window.innerHeight - dk.getBoundingClientRect().top) + 8 : 0;
+  const dockH = dk && getComputedStyle(dk).display !== 'none' ? dk.offsetHeight + 22 : 0;
   /* the glass dock floats over the grid, as on every other page — so the grid runs
      to the bottom edge and carries the dock's height as inner padding instead, which
      still lets the last row scroll clear of it. */
   sc.style.paddingBottom = dockH ? dockH + 'px' : '';
-  const room = Math.max(220, vh - docTop - below - 2);
-  if (Math.abs(parseFloat(sc.style.maxHeight) - room) < 1) return;   // already right: don't touch it
-  sc.style.maxHeight = room + 'px';
+  const off = Math.round(docTop + below + 2);
+  const sig = off + '|' + dockH;
+  if (sc.dataset.fit === sig) return;                  // already right: don't touch it
+  sc.dataset.fit = sig;
+  /* Cap the grid with dvh, the same unit .wrap uses for its full-screen height.
+     visualViewport.height stops above iOS Safari's bottom toolbar while the fixed
+     dock is placed against the layout viewport, so measuring it left the grid
+     ending short of the screen — the strip that cut off under the tab bar. */
+  sc.style.maxHeight = Math.max(220, vh - off) + 'px';        // fallback if dvh is unsupported
+  sc.style.maxHeight = 'calc(100dvh - ' + off + 'px)';
 }
 function queueFit(){
   if (fitPending) return;
