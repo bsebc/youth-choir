@@ -4,6 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BSEBC Youth Choir</title>
+<meta name="description" content="Song orders, attendance and sheet music · Песнопения, посещаемость и ноты">
+<!-- Link preview card. A static site returns the same HTML for every URL, so these
+     describe the site as a whole; the Share buttons put the page name in the message. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BSEBC Youth Choir">
+<meta property="og:title" content="BSEBC Youth Choir">
+<meta property="og:description" content="Song orders, attendance and sheet music · Песнопения, посещаемость и ноты">
+<meta property="og:url" content="https://youthchoir.bsebc.com/">
+<meta property="og:image" content="https://youthchoir.bsebc.com/og.png?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="BSEBC Youth Choir">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg?v=3135" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3135">
 <link rel="manifest" href="site.webmanifest">
@@ -866,10 +881,20 @@
   .seg,.chips button,.pill,.opt,.mini:not(select),.chipx,.savebar .sb{border-color:var(--line-strong)}
   /* Share buttons: they borrow their colour from whatever surface they sit on,
      so the same markup works on the navy order tile and on a plain header. */
-  .obar button.oclear{display:inline-flex;align-items:center;gap:5px;padding:0;border:0;
-    background:transparent;font-family:inherit;font-weight:400}
-  .obar button.oclear svg{width:15px;height:15px;flex:none}
+  /* the service chip owns the left of the bar; its two actions group at the right
+     as proper pills, so they read as controls rather than stray links */
+  .obar .oacts{display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap}
+  .obar .oacts .mini{text-decoration:none}
+  /* on a phone the chip already fills the row, so the actions stack under it as a
+     full-width pair instead of hugging the right edge with dead space beside them */
+  @media (max-width:700px){
+    .obar{gap:8px}
+    .obar .op{width:100%}
+    .obar .oacts{width:100%;margin-left:0}
+    .obar .oacts .mini{flex:1;display:inline-flex;align-items:center;justify-content:center}
+  }
   .mini.shr{display:inline-flex;align-items:center;gap:5px}
+  .mini.shr svg{width:15px;height:15px;flex:none}
   .ofoot{align-items:center;gap:10px}
   .ofoot .oshare{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 15px;
     border-radius:var(--r-pill);border:1px solid currentColor;background:transparent;color:inherit;
@@ -2660,8 +2685,10 @@ function sheetsPage(kind){
     <a href="#/sheets/piano${sfx}" class="${kind==='piano'?'on':''}">${esc(t('piano'))}</a></div>`;
   const bar = ordEv ? `<div class="obar">
       <span class="op"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"></path><circle cx="6" cy="18" r="3"></circle><circle cx="16" cy="16" r="3"></circle></svg>${esc(t('orderOnly'))} · ${esc(fmtLong(ordEv.date))}</span>
-      <a class="oclear" href="#/sheets${kind==='piano'?'/piano':''}">${esc(t('showAllSheets'))}</a>
-      <button class="oclear" data-share-order="${ordEv.id}">${SHARESVG}${esc(t('shareBtn'))}</button>
+      <span class="oacts">
+        <a class="mini" href="#/sheets${kind==='piano'?'/piano':''}">${esc(t('showAllSheets'))}</a>
+        <button class="mini shr" data-share-order="${ordEv.id}">${SHARESVG}${esc(t('shareBtn'))}</button>
+      </span>
     </div>` : '';
   let list = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) &&
     (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
