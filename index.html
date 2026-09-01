@@ -885,6 +885,12 @@
      as proper pills, so they read as controls rather than stray links */
   .obar .oacts{display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap}
   .obar .oacts .mini{text-decoration:none}
+  /* secondary actions: outlined rather than filled, so they sit behind the chip */
+  .obar .oacts .mini{background:transparent;border-color:var(--rule);color:var(--muted);
+    font-weight:500;height:34px;padding:0 13px;font-size:var(--fs-13)}
+  .obar .oacts .mini:hover{border-color:var(--line-strong);color:var(--ink)}
+  .obar .oacts .mini svg{opacity:.75}
+  .obar.ofootbar{padding-top:14px}
   /* on a phone the chip already fills the row, so the actions stack under it as a
      full-width pair instead of hugging the right edge with dead space beside them */
   @media (max-width:700px){
@@ -1176,11 +1182,14 @@ const qField = () => `<span class="qwrap"><input class="field" id="q" placeholde
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '4.1.1';
+const VERSION = '4.2.0';
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '4': {
   en: [
+    'Share buttons on the song order, sheet list and seating chart — they copy a titled link, ready to paste into a chat',
+    'Shared links now show a preview card with the choir logo instead of a bare address',
+    'Songs are numbered in singing order when you open the sheets for one service',
     'Slide the highlight on the bottom bar to switch pages, or just tap',
     'A light/dark button next to EN/RU, plus Light · Auto · Dark in the side menu',
     'Full dark mode: cards, grids, menus and forms all redrawn for it',
@@ -1199,6 +1208,9 @@ const NOTES = { '4': {
     'Fixed: rows in Summary and Who led open again'
   ],
   ru: [
+    'Кнопки «Поделиться» на порядке песнопений, списке нот и схеме рассадки — копируют ссылку с подписью, готовую для чата',
+    'Ссылки теперь показывают карточку со знаком хора вместо голого адреса',
+    'Песни пронумерованы по порядку пения, когда открыты ноты одного служения',
     'На нижней панели можно перетащить выделение на другой раздел, или просто нажать',
     'Кнопка «день/ночь» рядом с EN/RU и переключатель День · Авто · Ночь в меню',
     'Полноценная ночная тема: карточки, сетки, меню и формы',
@@ -2685,11 +2697,13 @@ function sheetsPage(kind){
     <a href="#/sheets/piano${sfx}" class="${kind==='piano'?'on':''}">${esc(t('piano'))}</a></div>`;
   const bar = ordEv ? `<div class="obar">
       <span class="op"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"></path><circle cx="6" cy="18" r="3"></circle><circle cx="16" cy="16" r="3"></circle></svg>${esc(t('orderOnly'))} · ${esc(fmtLong(ordEv.date))}</span>
-      <span class="oacts">
-        <a class="mini" href="#/sheets${kind==='piano'?'/piano':''}">${esc(t('showAllSheets'))}</a>
-        <button class="mini shr" data-share-order="${ordEv.id}">${SHARESVG}${esc(t('shareBtn'))}</button>
-      </span>
     </div>` : '';
+  /* the two actions belong after the order, not competing with it — you read the
+     songs first, then decide to share them or widen back to the whole library */
+  const foot = ordEv ? `<div class="obar ofootbar"><span class="oacts">
+      <a class="mini" href="#/sheets${kind==='piano'?'/piano':''}">${esc(t('showAllSheets'))}</a>
+      <button class="mini shr" data-share-order="${ordEv.id}">${SHARESVG}${esc(t('shareBtn'))}</button>
+    </span></div>` : '';
   let list = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) &&
     (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
   if (ordIds) list = ordIds.map(id => list.find(s => s.id === id)).filter(Boolean);
@@ -2697,10 +2711,12 @@ function sheetsPage(kind){
   /* Narrowed to one service's songs, the header and search/category row are noise. */
   return tabs + bar + (ordEv ? '' : `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>
     <div class="searchrow" style="padding-top:12px;display:flex;gap:8px">${qField()}${catSelect()}</div>`) +
-    list.map(s => {
+    list.map((s, i) => {
       const path = s[K.col], locked = !!s[K.lock];
       const busy = S.uploading === kind + ':' + s.id;
-      const left = `<div style="flex:1;min-width:0">
+      /* narrowed to one service, the list IS the running order — so number it.
+         The full song list has no order to speak of and stays unnumbered. */
+      const left = (ordEv ? `<span class="ord">${i + 1}</span>` : '') + `<div style="flex:1;min-width:0">
           <div style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}</div>
           ${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}
           ${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}
@@ -2747,7 +2763,7 @@ function sheetsPage(kind){
             <button class="mini go" data-audio-save="${s.id}">${esc(t('save'))}</button>
           </div>
         </div>`;
-    }).join('') +
+    }).join('') + foot +
     (S.session ? `<div class="note">${esc(t('adminOnlyNote'))}</div>` : '');
 }
 /* 'locked/' is the prefix the storage policy refuses to serve to guests */
