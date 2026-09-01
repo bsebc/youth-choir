@@ -891,6 +891,8 @@
   .obar .oacts .mini:hover{border-color:var(--line-strong);color:var(--ink)}
   .obar .oacts .mini svg{opacity:.75}
   .obar.ofootbar{padding-top:14px}
+  /* .h aligns on the text baseline, which leaves a button with no text sitting high */
+  .h .mini{align-self:center}
   /* on a phone the chip already fills the row, so the actions stack under it as a
      full-width pair instead of hugging the right edge with dead space beside them */
   @media (max-width:700px){
@@ -1429,7 +1431,6 @@ function seatingPage(){
     return `<div class="blk ${p}${aisle}"><div class="blkh">${esc(t(p))}<b>${inBlock}</b></div>${chairs}</div>`;
   };
   return `<div class="h">${esc(t('tSeating'))}<span class="n">${roster.length - unseated.length}/${roster.length}</span>
-      ${editing ? '' : `<button class="mini shr" data-share-seating>${SHARESVG}${esc(t('shareBtn'))}</button>`}
       ${S.session && !editing ? `<button class="mini" data-seat-edit>${esc(t('editSeats'))}</button>` : ''}</div>
     <div class="seatctl">
       <div class="seg tiny">
@@ -3098,7 +3099,7 @@ document.addEventListener('input', e => {
   if (e.target.id.startsWith('audio-') && S.audioEdit) S.audioDraft = e.target.value;   // survives any re-render
 });
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-share-seating],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel]');
+  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel]');
   if (!el) return;
   const d = el.dataset;
 
@@ -3343,9 +3344,6 @@ document.addEventListener('click', async e => {
     /* tOrder already ends in a preposition ("Song order for" / "…на"), so the
        service runs straight on from it — no dash. */
     return copyShare(t('tOrder') + ' ' + shareWhen(ev) + '\n' + pageURL('#/sheets/order-' + ev.id));
-  }
-  if (el.hasAttribute('data-share-seating')) {
-    return copyShare(t('tSeating') + '\n' + pageURL('#/seating'));
   }
   if (d.export) { return exportCSV(d.export); }
   if (el.hasAttribute('data-backup')) { return fullBackup(); }
