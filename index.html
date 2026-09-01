@@ -387,7 +387,7 @@
   .obtn:hover{filter:brightness(1.07)}
   .obtn svg{width:17px;height:17px}
   .obar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px 14px}
-  .obar .op{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:var(--r-pill);background:var(--op-bg);
+  .obar .op{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:7px 13px;border-radius:var(--r-pill);background:var(--op-bg);
     color:var(--on-chrome);font-size:var(--fs-13);font-weight:600;line-height:1.15}
   .obar .op svg{width:15px;height:15px;flex:none}
 .seatctl{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;justify-content:center}
@@ -977,7 +977,7 @@ const STR = {
     unseat:'Remove from seat',selected2:'Selected',notSeated:'Not seated',
     seatsMovedN:n=>n+(n===1?' seat change':' seat changes'),seatsSaved:'Seating saved',
     trayNote:'Still without a seat — tap a name, then tap a chair.',showNames:'Show names',hide:'Hide',
-    viewSheets:'View & Listen',orderOnly:'Sheets for this service',showAllSheets:'Show all songs',shareBtn:'Share',copied:'Copied — paste it into the chat',
+    viewSheets:'View & Listen',orderOnly:'Songs for this service',showAllSheets:'Show all songs',shareBtn:'Share',copied:'Copied — paste it into the chat',
     backupBtn:'Full backup',backupNote:'Downloads every table — singers, events, attendance, songs, categories — as one JSON file. Sheet PDFs are not included.',backupFail:'Backup failed — try again.',
     period:'Period',changePeriod:'Change',
     chooseFrom:'Choose songs',showList:n=>'Show all '+n,hideList:'Hide list',
@@ -1061,7 +1061,7 @@ const STR = {
     unseat:'Убрать с места',selected2:'Выбран',notSeated:'Без места',
     seatsMovedN:n=>'изменений: '+n,seatsSaved:'Схема сохранена',
     trayNote:'Ещё без места — нажмите имя, затем место.',showNames:'Показать имена',hide:'Скрыть',
-    viewSheets:'Смотреть и слушать',orderOnly:'Ноты для этого служения',showAllSheets:'Показать все песни',shareBtn:'Поделиться',copied:'Скопировано — вставьте в чат',
+    viewSheets:'Смотреть и слушать',orderOnly:'Песни для этого служения',showAllSheets:'Показать все песни',shareBtn:'Поделиться',copied:'Скопировано — вставьте в чат',
     backupBtn:'Полная копия',backupNote:'Скачивает все таблицы — хористы, события, посещаемость, песни, категории — одним файлом JSON. PDF-ноты не входят.',backupFail:'Не удалось создать копию — попробуйте ещё раз.',
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
     period:'Период',changePeriod:'Изменить',
