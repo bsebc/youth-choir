@@ -864,6 +864,18 @@
   .sect .lbl,.sect .fill{border-bottom-color:var(--grid-line)}
   .field,.dates input,.cr select,select.part,textarea.field,.login input,.dpick span{border-color:var(--line-strong)}
   .seg,.chips button,.pill,.opt,.mini:not(select),.chipx,.savebar .sb{border-color:var(--line-strong)}
+  /* Share buttons: they borrow their colour from whatever surface they sit on,
+     so the same markup works on the navy order tile and on a plain header. */
+  .obar button.oclear{display:inline-flex;align-items:center;gap:5px;padding:0;border:0;
+    background:transparent;font-family:inherit;font-weight:400}
+  .obar button.oclear svg{width:15px;height:15px;flex:none}
+  .mini.shr{display:inline-flex;align-items:center;gap:5px}
+  .ofoot{align-items:center;gap:10px}
+  .ofoot .oshare{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 15px;
+    border-radius:var(--r-pill);border:1px solid currentColor;background:transparent;color:inherit;
+    font-family:inherit;font-size:var(--fs-13);font-weight:600;opacity:.8;transition:opacity .15s ease}
+  .ofoot .oshare:hover{opacity:1}
+  .ofoot .oshare svg{width:15px;height:15px;flex:none}
 </style>
 </head>
 <body>
@@ -934,7 +946,7 @@ const STR = {
     unseat:'Remove from seat',selected2:'Selected',notSeated:'Not seated',
     seatsMovedN:n=>n+(n===1?' seat change':' seat changes'),seatsSaved:'Seating saved',
     trayNote:'Still without a seat — tap a name, then tap a chair.',showNames:'Show names',hide:'Hide',
-    viewSheets:'View & Listen',orderOnly:'Sheets for this service',showAllSheets:'Show all songs',
+    viewSheets:'View & Listen',orderOnly:'Sheets for this service',showAllSheets:'Show all songs',shareBtn:'Share',copied:'Copied — paste it into the chat',
     backupBtn:'Full backup',backupNote:'Downloads every table — singers, events, attendance, songs, categories — as one JSON file. Sheet PDFs are not included.',backupFail:'Backup failed — try again.',
     period:'Period',changePeriod:'Change',
     chooseFrom:'Choose songs',showList:n=>'Show all '+n,hideList:'Hide list',
@@ -1018,7 +1030,7 @@ const STR = {
     unseat:'Убрать с места',selected2:'Выбран',notSeated:'Без места',
     seatsMovedN:n=>'изменений: '+n,seatsSaved:'Схема сохранена',
     trayNote:'Ещё без места — нажмите имя, затем место.',showNames:'Показать имена',hide:'Скрыть',
-    viewSheets:'Смотреть и слушать',orderOnly:'Ноты для этого служения',showAllSheets:'Показать все песни',
+    viewSheets:'Смотреть и слушать',orderOnly:'Ноты для этого служения',showAllSheets:'Показать все песни',shareBtn:'Поделиться',copied:'Скопировано — вставьте в чат',
     backupBtn:'Полная копия',backupNote:'Скачивает все таблицы — хористы, события, посещаемость, песни, категории — одним файлом JSON. PDF-ноты не входят.',backupFail:'Не удалось создать копию — попробуйте ещё раз.',
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
     period:'Период',changePeriod:'Изменить',
@@ -1380,6 +1392,7 @@ function seatingPage(){
     return `<div class="blk ${p}${aisle}"><div class="blkh">${esc(t(p))}<b>${inBlock}</b></div>${chairs}</div>`;
   };
   return `<div class="h">${esc(t('tSeating'))}<span class="n">${roster.length - unseated.length}/${roster.length}</span>
+      ${editing ? '' : `<button class="mini shr" data-share-seating>${SHARESVG}${esc(t('shareBtn'))}</button>`}
       ${S.session && !editing ? `<button class="mini" data-seat-edit>${esc(t('editSeats'))}</button>` : ''}</div>
     <div class="seatctl">
       <div class="seg tiny">
@@ -1905,13 +1918,14 @@ function homePage(){
       <div class="oh"><div>
         <div class="tt">${esc(t('tOrder'))}</div>
         <div class="od">${svc ? esc(fmtLong(svc.date)) : ''}</div>
-        ${svc ? `<div class="ok">${esc(svc.name || t(svc.kind))}</div>` : ''}
+        ${svc ? `<div class="ok">${esc(svc.name || kindWord(svc))}</div>` : ''}
       </div><div class="ic">${TILEICON.songSvc}</div></div>
       ${svc ? `<ol class="olist">${songsFor(svc.id).map(s =>
             `<li>${esc(s.title)}${creditPills(songRow(svc.id, s.id))}</li>`).join('')}</ol>`
             : `<div class="ts">${esc(t('noOrderYet'))}</div>`}</a>
       ${svc && songsFor(svc.id).length ? `<div class="ofoot">
         <a class="obtn" href="#/sheets/order-${svc.id}">${esc(t('viewSheets'))}</a>
+        <button class="oshare" data-share-order="${svc.id}">${SHARESVG}${esc(t('shareBtn'))}</button>
       </div>` : ''}</div>`;
   return `<div class="tiles">
       ${orderTile}
@@ -2599,6 +2613,40 @@ const SHEETSVG = '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="t
   '<path d="M10.9 4.6c3 .7 4.6 1.9 5 4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg>';
 const PLAYSVG = '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><polygon points="7 4 20 12 7 20"></polygon></svg>';
 const NOTESVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>';
+/* Chat apps build their link preview from the page they fetch, and a static site
+   returns the same HTML for every URL — so the preview can never name the page.
+   Instead the Share button copies a labelled message: a human-readable line in the
+   current language, then the link. Pasting into Viber shows the label above the card. */
+const MONSH = { en:['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'],
+  ru:['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'] };
+function ordinal(n){ const s = ['th','st','nd','rd'], v = n % 100; return n + (s[(v-20)%10] || s[v] || s[0]); }
+function fmtShareDate(iso){ const [y,m,d] = iso.split('-').map(Number);
+  return S.lang === 'en' ? MONSH.en[m-1] + ' ' + ordinal(d) : d + ' ' + MONSH.ru[m-1]; }
+/* The share line reads as a heading, so Russian wants the plain nouns
+   (Воскресенье Вечер) rather than the adjectival form the UI uses elsewhere. */
+const SHKIND = { ru:{ morning:'Воскресенье Утро', evening:'Воскресенье Вечер' } };
+function kindWord(ev){ const map = SHKIND[S.lang] || {}; return map[ev.kind] || t(ev.kind); }
+function shareWhen(ev){
+  const kind = ev.kind === 'other' ? (ev.name || ev.label || t('other')) : kindWord(ev);
+  return kind + ', ' + fmtShareDate(ev.date);
+}
+function pageURL(hash){ return location.origin + location.pathname + hash; }
+function legacyCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.setAttribute('readonly', '');
+  ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+  document.body.appendChild(ta);
+  ta.select(); ta.setSelectionRange(0, text.length);
+  try { document.execCommand('copy'); } catch (_) {}
+  ta.remove();
+}
+function copyShare(text){
+  const done = () => { okToast(t('copied')); render(); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, () => { legacyCopy(text); done(); });
+  } else { legacyCopy(text); done(); }
+}
+const SHARESVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>';
 function sheetsPage(kind){
   const K = SHEETKIND[kind];
   /* An order- suffix in the route narrows the page to one service's songs, so the
@@ -2613,6 +2661,7 @@ function sheetsPage(kind){
   const bar = ordEv ? `<div class="obar">
       <span class="op"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"></path><circle cx="6" cy="18" r="3"></circle><circle cx="16" cy="16" r="3"></circle></svg>${esc(t('orderOnly'))} · ${esc(fmtLong(ordEv.date))}</span>
       <a class="oclear" href="#/sheets${kind==='piano'?'/piano':''}">${esc(t('showAllSheets'))}</a>
+      <button class="oclear" data-share-order="${ordEv.id}">${SHARESVG}${esc(t('shareBtn'))}</button>
     </div>` : '';
   let list = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) &&
     (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
@@ -3006,7 +3055,7 @@ document.addEventListener('input', e => {
   if (e.target.id.startsWith('audio-') && S.audioEdit) S.audioDraft = e.target.value;   // survives any re-render
 });
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel]');
+  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-share-seating],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel]');
   if (!el) return;
   const d = el.dataset;
 
@@ -3245,6 +3294,16 @@ document.addEventListener('click', async e => {
   }
   if (el.hasAttribute('data-menu')) { S.menuOpen = !S.menuOpen; document.body.classList.toggle('mlock', S.menuOpen); return render(); }
   if (el.hasAttribute('data-menu-x')) { S.menuOpen = false; document.body.classList.remove('mlock'); return render(); }
+  if (d.shareOrder) {
+    const ev = S.events.find(x => String(x.id) === d.shareOrder);
+    if (!ev) return;
+    /* tOrder already ends in a preposition ("Song order for" / "…на"), so the
+       service runs straight on from it — no dash. */
+    return copyShare(t('tOrder') + ' ' + shareWhen(ev) + '\n' + pageURL('#/sheets/order-' + ev.id));
+  }
+  if (el.hasAttribute('data-share-seating')) {
+    return copyShare(t('tSeating') + '\n' + pageURL('#/seating'));
+  }
   if (d.export) { return exportCSV(d.export); }
   if (el.hasAttribute('data-backup')) { return fullBackup(); }
   if (el.hasAttribute('data-dismiss')) { S.toast = ''; S.retry = null; return render(); }
