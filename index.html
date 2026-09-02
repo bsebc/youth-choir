@@ -12,13 +12,9 @@
 <meta property="og:title" content="BSEBC Youth Choir">
 <meta property="og:description" content="Song orders, attendance and sheet music · Песнопения, посещаемость и ноты">
 <meta property="og:url" content="https://youthchoir.bsebc.com/">
-<meta property="og:image" content="https://youthchoir.bsebc.com/og.png?v=1">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="BSEBC Youth Choir">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="ru_RU">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <link rel="icon" href="favicon.svg?v=3135" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3135">
 <link rel="manifest" href="site.webmanifest">
@@ -1133,12 +1129,16 @@ const songRow = (evId, songId) =>
 const KIND_LABEL = { en:{rehearsal:'R',morning:'M',evening:'E'}, ru:{rehearsal:'Сп',morning:'Ут',evening:'Вч'} };
 const evLabel = e => e.kind === 'other' ? e.label : KIND_LABEL[S.lang][e.kind];
 
+function normRouteBoot(h){
+  const m = (h || '').match(/^#\/o\/([^/?&]+)$/);
+  return m ? '#/sheets/order-' + m[1] : (h || '#/home');
+}
 const S = {
   lang: localStorage.getItem('bsebc-youth-lang') || 'en',
   theme: localStorage.getItem('bsebc-youth-theme') || 'auto',
   session: null,
   menuOpen: false,
-  route: location.hash || '#/home',
+  route: normRouteBoot(location.hash),
   loading: true,
   error: '',
   singers: [], songs: [], events: [], absences: [], eventSongs: [], categories: [],
@@ -1310,6 +1310,24 @@ function songsFor(evId){
   return S.eventSongs.filter(x => x.event_id === evId)
     .slice().sort((a,b) => (a.position ?? 9999) - (b.position ?? 9999))
     .map(x => S.songs.find(s => s.id === x.song_id)).filter(Boolean);
+}
+/* Order links carry only the first 8 characters of the event's id: a full uuid
+   made the shared message unwieldy. Nothing about the stored data changes — the
+   token is resolved back to the event here, exact match first, then by prefix, so
+   every full-length link already sitting in a chat keeps working. */
+function shortId(id){ return String(id).slice(0, 8); }
+function findEvent(token){
+  if (!token) return null;
+  const exact = S.events.find(e => String(e.id) === token);
+  if (exact) return exact;
+  const hits = S.events.filter(e => String(e.id).startsWith(token));
+  return hits.length === 1 ? hits[0] : null;
+}
+/* '#/o/<token>' is the short form used in shared links; it is rewritten to the
+   real route on the way in, so routing and every page stay untouched. */
+function normRoute(h){
+  const m = (h || '').match(/^#\/o\/([^/?&]+)$/);
+  return m ? '#/sheets/order-' + m[1] : (h || '#/home');
 }
 /* newest service that has songs — what the home tile shows */
 function latestService(){
@@ -1962,7 +1980,7 @@ function homePage(){
             `<li>${esc(s.title)}${creditPills(songRow(svc.id, s.id))}</li>`).join('')}</ol>`
             : `<div class="ts">${esc(t('noOrderYet'))}</div>`}</a>
       ${svc && songsFor(svc.id).length ? `<div class="ofoot">
-        <a class="obtn" href="#/sheets/order-${svc.id}">${esc(t('viewSheets'))}</a>
+        <a class="obtn" href="#/sheets/order-${shortId(svc.id)}">${esc(t('viewSheets'))}</a>
         <button class="oshare" data-share-order="${svc.id}">${SHARESVG}${esc(t('shareBtn'))}</button>
       </div>` : ''}</div>`;
   return `<div class="tiles">
@@ -2690,9 +2708,9 @@ function sheetsPage(kind){
   /* An order- suffix in the route narrows the page to one service's songs, so the
      director can open just tonight's PDFs. The suffix rides along across the tabs. */
   const ordId = (S.route.match(/order-([^/?&]+)/) || [])[1] || null;
-  const ordEv = ordId ? S.events.find(e => String(e.id) === ordId) : null;
+  const ordEv = ordId ? findEvent(ordId) : null;
   const ordIds = ordEv ? songsFor(ordEv.id).map(s => s.id) : null;
-  const sfx = ordEv ? '/order-' + ordEv.id : '';
+  const sfx = ordEv ? '/order-' + shortId(ordEv.id) : '';
   const tabs = `<div class="tabs">
     <a href="#/sheets${sfx}" class="${kind==='sheets'?'on':''}">${esc(t('choirSheets'))}</a>
     <a href="#/sheets/piano${sfx}" class="${kind==='piano'?'on':''}">${esc(t('piano'))}</a></div>`;
@@ -3349,7 +3367,7 @@ document.addEventListener('click', async e => {
     const lines = songsFor(ev.id).map((s, i) => (i + 1) + '. *' + s.title + '*');
     return copyShare(t('tOrder') + ' ' + shareWhen(ev) + '\n\n'
       + (lines.length ? lines.join('\n') + '\n\n' : '')
-      + t('listenHere') + '\n' + pageURL('#/sheets/order-' + ev.id));
+      + t('listenHere') + '\n' + pageURL('#/o/' + shortId(ev.id)));
   }
   if (d.export) { return exportCSV(d.export); }
   if (el.hasAttribute('data-backup')) { return fullBackup(); }
@@ -3636,7 +3654,7 @@ window.addEventListener('hashchange', () => {
   });
 });
 window.addEventListener('hashchange', () => {
-  S.route = location.hash || '#/home';
+  S.route = normRoute(location.hash);
   S.menuOpen = false;
   document.body.classList.remove('mlock');
   if (!/^#\/admin\/(attendance|songs)\/.+/.test(S.route)) { S.edit = null; S.pending = null; }
