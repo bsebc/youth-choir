@@ -847,7 +847,12 @@
     .dock a:active,.dock button:active{opacity:.55}
     /* the highlight is draggable: press it and slide sideways to pick a tab.
        pan-y keeps vertical page scrolling working through the bar. */
-    .dock{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+    /* touch-action does NOT inherit, so the tabs themselves must declare it too:
+       with them left at auto the browser was free to claim a touch that started on
+       a tab for panning and fire pointercancel, which killed the drag once the page
+       had somewhere to scroll. */
+    .dock,.dock *{touch-action:pan-y}
+    .dock{user-select:none;-webkit-user-select:none}
     .dock.dragging a:active,.dock.dragging button:active{opacity:1}
     .dock.dragging a,.dock.dragging button{transition:color .12s ease}
     .dock.dragging .dpill{background:linear-gradient(180deg,rgba(var(--blue-rgb),.24),rgba(var(--blue-rgb),.15));
@@ -1735,6 +1740,9 @@ function wireDockDrag(host){
     const list = items();
     st = { id: e.pointerId, x0: e.clientX, y0: e.clientY, moved: false,
            list, from: list.indexOf(from), target: list.indexOf(from) };
+    /* capture straight away: the moves then arrive here even if the browser
+       retargets or the tab under the finger is re-rendered mid-gesture */
+    try { host.setPointerCapture(e.pointerId); } catch (_) {}
   });
   host.addEventListener('pointermove', e => {
     if (!st || e.pointerId !== st.id) return;
@@ -1744,7 +1752,7 @@ function wireDockDrag(host){
       if (Math.abs(dx) < 6 || Math.abs(dx) <= Math.abs(dy)) return;
       st.moved = true;
       const dkEl = dockOf();
-      if (dkEl) { dkEl.classList.add('dragging'); try { dkEl.setPointerCapture(st.id); } catch (_) {} }
+      if (dkEl) dkEl.classList.add('dragging');
     }
     e.preventDefault();
     const pill = pillOf(), dk = dockOf();
@@ -1771,7 +1779,8 @@ function wireDockDrag(host){
     if (!st || (e.pointerId != null && e.pointerId !== st.id)) return;
     const s = st; st = null;
     const dk = dockOf();
-    if (dk) { dk.classList.remove('dragging'); try { dk.releasePointerCapture(s.id); } catch (_) {} }
+    if (dk) dk.classList.remove('dragging');
+    try { host.releasePointerCapture(s.id); } catch (_) {}
     if (!s.moved) return;
     const pill = pillOf();
     if (pill) pill.style.transition = '';
