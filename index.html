@@ -1690,7 +1690,7 @@ function syncDock(){
     more.classList.toggle('on', !!S.menuOpen);
     more.setAttribute('aria-expanded', S.menuOpen ? 'true' : 'false');
   }
-  wireDockDrag(dk);
+  wireDockDrag(host);
   moveDockPill();
 }
 function moveDockPill(){
@@ -1702,46 +1702,53 @@ function moveDockPill(){
   const box = on && on.getBoundingClientRect();
   if (!box || !box.width) { pill.style.opacity = '0'; return; }
   const d = dk.getBoundingClientRect();
-  const fresh = pill.style.opacity !== '1';          // don't animate in from the corner
+  const fresh = !pill.dataset.set;                   // don't animate in from the corner
   if (fresh) pill.style.transition = 'none';
   pill.style.width = box.width + 'px';
   pill.style.height = box.height + 'px';
   pill.style.transform = 'translate(' + (box.left - d.left) + 'px,' + (box.top - d.top) + 'px)';
   pill.style.opacity = '1';
+  pill.dataset.set = '1';
   if (fresh) requestAnimationFrame(() => { pill.style.transition = ''; });
 }
 /* iOS-style draggable highlight: press the lit tab and slide. The pill tracks the
    finger, the tab under it lights up live, and the release commits that tab. */
 let dockNoClick = false;
-function wireDockDrag(dk){
-  if (dk.dataset.drag) return;
-  dk.dataset.drag = '1';
+/* Bound to the HOST, which is created once and never replaced — binding to .dock
+   itself meant any rebuild (or a first render where the bar was not yet laid out)
+   could leave the page with an unwired dock until the next navigation. */
+function wireDockDrag(host){
+  if (host.dataset.drag) return;
+  host.dataset.drag = '1';
   let st = null;
-  const items = () => [...dk.querySelectorAll('[data-tab],[data-menu]')];
-  const pillOf = () => dk.querySelector('.dpill');
-  dk.addEventListener('pointerdown', e => {
+  const dockOf = () => host.querySelector('.dock');
+  const items = () => [...host.querySelectorAll('[data-tab],[data-menu]')];
+  const pillOf = () => host.querySelector('.dpill');
+  host.addEventListener('pointerdown', e => {
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     const from = e.target.closest && e.target.closest('[data-tab],[data-menu]');
     const pill = pillOf();
-    /* only the highlight itself is a handle, and only when it is on screen */
-    if (!from || !from.classList.contains('on') || !pill || pill.style.opacity !== '1') return;
+    if (!from || !from.classList.contains('on') || !pill) return;
+    /* the handle is the highlight, so it must actually be on screen — measured,
+       not inferred from an inline style that a skipped layout pass may never set */
+    if (!pill.getBoundingClientRect().width) return;
     const list = items();
     st = { id: e.pointerId, x0: e.clientX, y0: e.clientY, moved: false,
            list, from: list.indexOf(from), target: list.indexOf(from) };
   });
-  dk.addEventListener('pointermove', e => {
+  host.addEventListener('pointermove', e => {
     if (!st || e.pointerId !== st.id) return;
     const dx = e.clientX - st.x0, dy = e.clientY - st.y0;
     if (!st.moved) {
       /* let a vertical swipe scroll the page instead of grabbing the pill */
       if (Math.abs(dx) < 6 || Math.abs(dx) <= Math.abs(dy)) return;
       st.moved = true;
-      dk.classList.add('dragging');
-      try { dk.setPointerCapture(st.id); } catch (_) {}
+      const dkEl = dockOf();
+      if (dkEl) { dkEl.classList.add('dragging'); try { dkEl.setPointerCapture(st.id); } catch (_) {} }
     }
     e.preventDefault();
-    const pill = pillOf();
-    if (!pill) return;
+    const pill = pillOf(), dk = dockOf();
+    if (!pill || !dk) return;
     const d = dk.getBoundingClientRect();
     const first = st.list[0].getBoundingClientRect();
     const last = st.list[st.list.length - 1].getBoundingClientRect();
@@ -1763,8 +1770,8 @@ function wireDockDrag(dk){
   const end = e => {
     if (!st || (e.pointerId != null && e.pointerId !== st.id)) return;
     const s = st; st = null;
-    dk.classList.remove('dragging');
-    try { dk.releasePointerCapture(s.id); } catch (_) {}
+    const dk = dockOf();
+    if (dk) { dk.classList.remove('dragging'); try { dk.releasePointerCapture(s.id); } catch (_) {} }
     if (!s.moved) return;
     const pill = pillOf();
     if (pill) pill.style.transition = '';
@@ -1777,9 +1784,9 @@ function wireDockDrag(dk){
     const href = el.getAttribute('href');
     if (href) location.hash = href;
   };
-  dk.addEventListener('pointerup', end);
-  dk.addEventListener('pointercancel', end);
-  dk.addEventListener('click', e => {
+  host.addEventListener('pointerup', end);
+  host.addEventListener('pointercancel', end);
+  host.addEventListener('click', e => {
     if (!dockNoClick) return;
     e.preventDefault(); e.stopPropagation();
   }, true);
@@ -1853,6 +1860,11 @@ function syncThumbs(){
   });
 }
 window.addEventListener('resize', () => { moveDockPill(); syncThumbs(); });
+/* A first measurement taken before the bar was laid out used to stick until the
+   next navigation; these let it correct itself instead. */
+window.addEventListener('load', () => { moveDockPill(); syncThumbs(); });
+window.addEventListener('orientationchange', () => setTimeout(() => { moveDockPill(); syncThumbs(); }, 120));
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { moveDockPill(); syncThumbs(); });
 function effTheme(){
   if (S.theme === 'dark' || S.theme === 'light') return S.theme;
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
