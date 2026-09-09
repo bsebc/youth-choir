@@ -892,6 +892,24 @@
   .obar .oacts .mini:hover{border-color:var(--line-strong);color:var(--ink)}
   .obar .oacts .mini svg{opacity:.75}
   .obar.ofootbar{padding-top:14px}
+  /* usage analytics: its own small vocabulary, nothing shared with other pages */
+  .ustats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:12px 16px 2px}
+  @media (min-width:700px){ .ustats{grid-template-columns:repeat(4,1fr)} }
+  .ustat{background:var(--card);border:1px solid var(--card-line);border-radius:var(--r-lg);padding:12px 14px}
+  .ustat b{display:block;font-size:var(--fs-24);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.05;letter-spacing:-.5px}
+  .ustat span{display:block;margin-top:4px;font-size:var(--fs-11);color:var(--muted)}
+  .uchart{display:flex;align-items:flex-end;gap:3px;height:108px;padding:14px 16px 0}
+  .uchart i{flex:1;min-width:2px;min-height:2px;background:var(--blue-tint);border-radius:3px 3px 0 0}
+  .uchart i.hi{background:var(--gold)}
+  .uaxis{display:flex;justify-content:space-between;padding:7px 16px 14px;font-size:var(--fs-11);color:var(--faint);font-variant-numeric:tabular-nums}
+  .ubar{height:5px;border-radius:var(--r-pill);background:var(--blue-tint);margin-top:6px;overflow:hidden}
+  .ubar em{display:block;height:100%;background:var(--blue);border-radius:var(--r-pill)}
+  .usplit{display:flex;height:9px;border-radius:var(--r-pill);overflow:hidden;margin:2px 16px 10px}
+  .ukey{display:flex;gap:14px;padding:0 16px 14px;font-size:var(--fs-12);color:var(--muted)}
+  .ukey b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+  .ukey i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px}
+  .urow{display:flex;align-items:baseline;gap:10px}
+  .urow .un{font-size:var(--fs-13);color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
   /* .h aligns on the text baseline, which leaves a button with no text sitting high */
   .h .mini{align-self:center}
   /* on a phone the chip already fills the row, so the actions stack under it as a
@@ -980,7 +998,18 @@ const STR = {
     unseat:'Remove from seat',selected2:'Selected',notSeated:'Not seated',
     seatsMovedN:n=>n+(n===1?' seat change':' seat changes'),seatsSaved:'Seating saved',
     trayNote:'Still without a seat — tap a name, then tap a chair.',showNames:'Show names',hide:'Hide',
-    viewSheets:'View & Listen',orderOnly:'Songs for this service',showAllSheets:'Show all songs',shareBtn:'Share',listenHere:'View/Listen here:',copied:'Copied — paste it into the chat',
+    viewSheets:'View & Listen',orderOnly:'Songs for this service',showAllSheets:'Show all songs',shareBtn:'Share',
+    agoToday:'today',agoYesterday:'yesterday',agoDays:n=>n+' days ago',
+    agoWeeks:n=>n===1?'a week ago':n+' weeks ago',lastSungAgo:s=>'last sung '+s,
+    tUsage:'Usage',tUsageSub:'How the site gets used',
+    uAdminOnly:'Sign in to see this page.',
+    uSetup:'The usage table is not set up yet. Run supabase/usage_log.sql in the Supabase SQL editor, then reload this page.',
+    uDevices:'Devices',uOrders:'Order opens',uActivity:'Activity',
+    uTopSongs:'Most opened songs',uTopServices:'Most viewed services',
+    uLang:'Language',uRecent:'Recent activity',uPerDay:'by day',uPerWeek:'by week',
+    u7:'7 days',u30:'30 days',u90:'90 days',uAll:'All time',
+    kOrder:'Song order',kSheet:'Sheet music',kAudio:'Recording',
+    uNow:'just now',uMin:n=>n+' min ago',uHr:n=>n+' h ago',uDay:n=>n+' d ago',listenHere:'View/Listen here:',copied:'Copied — paste it into the chat',
     backupBtn:'Full backup',backupNote:'Downloads every table — singers, events, attendance, songs, categories — as one JSON file. Sheet PDFs are not included.',backupFail:'Backup failed — try again.',
     period:'Period',changePeriod:'Change',
     chooseFrom:'Choose songs',showList:n=>'Show all '+n,hideList:'Hide list',
@@ -1064,7 +1093,20 @@ const STR = {
     unseat:'Убрать с места',selected2:'Выбран',notSeated:'Без места',
     seatsMovedN:n=>'изменений: '+n,seatsSaved:'Схема сохранена',
     trayNote:'Ещё без места — нажмите имя, затем место.',showNames:'Показать имена',hide:'Скрыть',
-    viewSheets:'Смотреть и слушать',orderOnly:'Песни для этого служения',showAllSheets:'Показать все песни',shareBtn:'Поделиться',listenHere:'Смотреть/слушать здесь:',copied:'Скопировано — вставьте в чат',
+    viewSheets:'Смотреть и слушать',orderOnly:'Песни для этого служения',showAllSheets:'Показать все песни',shareBtn:'Поделиться',
+    agoToday:'сегодня',agoYesterday:'вчера',agoDays:n=>n+' дн. назад',
+    agoWeeks:n=>{const m=n%10,h=n%100;
+      const w=(m===1&&h!==11)?'неделю':((m>=2&&m<=4)&&!(h>=12&&h<=14))?'недели':'недель';
+      return n+' '+w+' назад';},lastSungAgo:s=>'пели '+s,
+    tUsage:'Статистика',tUsageSub:'Как пользуются сайтом',
+    uAdminOnly:'Войдите, чтобы увидеть эту страницу.',
+    uSetup:'Таблица статистики ещё не создана. Выполните supabase/usage_log.sql в SQL-редакторе Supabase и обновите страницу.',
+    uDevices:'Устройств',uOrders:'Открытий порядка',uActivity:'Активность',
+    uTopSongs:'Чаще всего открывали ноты',uTopServices:'Чаще всего смотрели служения',
+    uLang:'Язык',uRecent:'Последние действия',uPerDay:'по дням',uPerWeek:'по неделям',
+    u7:'7 дней',u30:'30 дней',u90:'90 дней',uAll:'За всё время',
+    kOrder:'Порядок песнопений',kSheet:'Ноты',kAudio:'Запись',
+    uNow:'только что',uMin:n=>n+' мин назад',uHr:n=>n+' ч назад',uDay:n=>n+' дн. назад',listenHere:'Смотреть/слушать здесь:',copied:'Скопировано — вставьте в чат',
     backupBtn:'Полная копия',backupNote:'Скачивает все таблицы — хористы, события, посещаемость, песни, категории — одним файлом JSON. PDF-ноты не входят.',backupFail:'Не удалось создать копию — попробуйте ещё раз.',
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
     period:'Период',changePeriod:'Изменить',
@@ -1165,6 +1207,8 @@ const S = {
   loginSig: '',                   // what the sign-in screen was last drawn from     // the rules document and its draft while editing   // seating chart: pending moves, selection, block filter
   addOpen: null,                // which "+ Add" form is expanded
   exportOpen: false,            // the Export card starts folded
+  usageOpen: false, usage: null, // the usage log, fetched only when opened
+  usageFor: null, usagePeriod: 30, usageErr: '', usageLoading: false,
   recentOpen: false,            // the Recent entries card starts folded
   exportPreset: '12',           // export period: '6' | '12' | 'all'
   pickOpen: null,               // song chooser: null = collapse itself at 3 picks
@@ -1280,6 +1324,8 @@ async function load(silent){
   S.categories = sc.error ? [] : (sc.data || []);
   S.rules = doc.error ? null : doc.data;
   S.loading = false; render();
+  prefetchSheets();
+  trackRoute();
 }
 
 /* Three states per singer per event. Only the exceptions are stored:
@@ -1321,6 +1367,205 @@ function songsFor(evId){
    token is resolved back to the event here, exact match first, then by prefix, so
    every full-length link already sitting in a chat keeps working. */
 function shortId(id){ return String(id).slice(0, 8); }
+/* When was this song last sung before a given date, ignoring one event (the one
+   being planned) — used to warn the director about repeating something too soon. */
+function lastSungBefore(songId, beforeIso, exceptEvId){
+  let best = null;
+  for (const x of S.eventSongs) {
+    if (x.song_id !== songId || (exceptEvId && x.event_id === exceptEvId)) continue;
+    const e = S.events.find(y => y.id === x.event_id);
+    if (!e || e.cancelled) continue;
+    if (beforeIso && e.date > beforeIso) continue;
+    if (!best || e.date > best) best = e.date;
+  }
+  return best;
+}
+function agoText(iso, refIso){
+  const days = Math.round((Date.parse(refIso || today()) - Date.parse(iso)) / 86400000);
+  if (days <= 0) return t('agoToday');
+  if (days === 1) return t('agoYesterday');
+  if (days < 7) return t('agoDays')(days);
+  return t('agoWeeks')(Math.round(days / 7));
+}
+/* ---------- offline sheets ----------
+   PDFs are served through short-lived signed URLs, so the service worker cannot
+   match them by address. Instead the file is stored under a stable synthetic key
+   as soon as it is fetched, and opened from there when there is no signal. */
+/* ---------- anonymous usage log ----------
+   Counts only: which order pages get opened, which sheets get downloaded, which
+   recordings get played. One random per-device id from localStorage, no names and
+   no accounts. The director's own taps are not counted, and only a signed-in
+   director can read the table back (see supabase/usage_log.sql). */
+const seenViews = new Set();
+function visitorId(){
+  try {
+    let v = localStorage.getItem('bsebc-vid');
+    if (!v) { v = Math.random().toString(36).slice(2) + Date.now().toString(36);
+      localStorage.setItem('bsebc-vid', v); }
+    return v;
+  } catch (_) { return null; }
+}
+function track(kind, ref){
+  if (S.session) return;
+  try { sb.from('usage_log').insert({ kind, ref: ref || null, lang: S.lang, vid: visitorId() })
+    .then(() => {}, () => {}); } catch (_) {}
+}
+function trackRoute(){
+  const m = S.route.match(/order-([^/?&]+)/);
+  if (!m || seenViews.has(m[1])) return;
+  seenViews.add(m[1]);
+  track('order', m[1]);
+}
+async function loadUsage(){
+  if (S.usageLoading) return;
+  S.usageLoading = true;
+  const want = S.usagePeriod;
+  let q = sb.from('usage_log').select('kind,ref,vid,lang,at').order('at', { ascending: false }).limit(20000);
+  if (want !== 'all') q = q.gte('at', new Date(Date.now() - want * 86400000).toISOString());
+  const r = await q;
+  S.usageLoading = false;
+  S.usageErr = r.error ? r.error.message : '';
+  S.usage = r.error ? [] : (r.data || []);
+  S.usageFor = want;
+  render();
+}
+/* One column per day, or per week once the window is longer than six weeks. */
+function usageBuckets(u){
+  const days = S.usagePeriod === 'all' ? 84 : S.usagePeriod;
+  const step = days <= 45 ? 1 : 7;
+  const n = Math.ceil(days / step);
+  const span = step * 86400000;
+  const end = Date.parse(today()) + 86400000;
+  const arr = Array.from({ length: n }, (_, i) => ({ n: 0, at: end - (n - i) * span }));
+  u.forEach(x => {
+    const i = Math.floor((Date.parse(x.at) - arr[0].at) / span);
+    if (i >= 0 && i < n) arr[i].n++;
+  });
+  return { arr, step };
+}
+function usagePage(){
+  const head = `<div class="h">${esc(t('tUsage'))}<span class="n">${esc(t('tUsageSub'))}</span></div>`;
+  const note = msg => head + `<div class="sec"><div class="pad"><div class="note">${esc(msg)}</div></div></div>`;
+  if (!S.session) return note(t('uAdminOnly'));
+  const chips = `<div class="chips">${[[7,'u7'],[30,'u30'],[90,'u90'],['all','uAll']].map(([v,l]) =>
+      `<button data-uperiod="${v}" class="${String(S.usagePeriod)===String(v)?'on':''}">${esc(t(l))}</button>`).join('')}</div>`;
+  const wrap = body => head + chips + body;
+  if (S.usageErr) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uSetup'))}</div></div></div>`);
+  if (!S.usage) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uLoading'))}</div></div></div>`);
+  const u = S.usage;
+  if (!u.length) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uNone'))}</div></div></div>`);
+  const n = k => u.filter(x => x.kind === k).length;
+  const stats = `<div class="ustats">${[
+      [new Set(u.map(x => x.vid).filter(Boolean)).size, 'uDevices'],
+      [n('order'), 'uOrders'], [n('sheet'), 'uSheets'], [n('audio'), 'uListens']
+    ].map(([v, l]) => `<div class="ustat"><b>${v}</b><span>${esc(t(l))}</span></div>`).join('')}</div>`;
+  const { arr, step } = usageBuckets(u);
+  const max = Math.max(1, ...arr.map(b => b.n));
+  const chart = `<div class="sec">
+      <div class="step" style="padding:14px 16px 0">${esc(t('uActivity'))}</div>
+      <div class="uchart">${arr.map(b =>
+        `<i class="${b.n === max && b.n ? 'hi' : ''}" style="height:${Math.round(b.n / max * 100)}%"></i>`).join('')}</div>
+      <div class="uaxis"><span>${esc(fmtShort(localISO(new Date(arr[0].at))))}</span>
+        <span>${esc(t(step === 1 ? 'uPerDay' : 'uPerWeek'))}</span>
+        <span>${esc(fmtShort(today()))}</span></div>
+    </div>`;
+  const rank = (rows, label) => rows.length ? `<div class="sec">
+      <div class="step" style="padding:14px 16px 6px">${esc(label)}</div>
+      ${rows.map(([name, c]) => `<div class="li"><div style="flex:1;min-width:0">
+        <div class="urow"><div style="flex:1;min-width:0;font-size:var(--fs-15)">${esc(name)}</div>
+          <div class="un">${c}</div></div>
+        <div class="ubar"><em style="width:${Math.round(c / rows[0][1] * 100)}%"></em></div>
+      </div></div>`).join('')}
+    </div>` : '';
+  const tally = (pred, name) => {
+    const m = {};
+    u.filter(pred).forEach(x => { if (x.ref) m[x.ref] = (m[x.ref] || 0) + 1; });
+    return Object.entries(m).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([id, c]) => [name(id), c]);
+  };
+  const songRank = tally(x => x.kind !== 'order', id => (S.songs.find(y => y.id === id) || {}).title || '—');
+  const svcRank = tally(x => x.kind === 'order', id => {
+    const e = findEvent(id);
+    return e ? (e.name || kindWord(e)) + ' · ' + fmtShort(e.date) : '—';
+  });
+  const ru = u.filter(x => x.lang === 'ru').length, en = u.filter(x => x.lang === 'en').length;
+  const both = Math.max(1, ru + en);
+  const lang = (ru + en) ? `<div class="sec">
+      <div class="step" style="padding:14px 16px 8px">${esc(t('uLang'))}</div>
+      <div class="usplit"><span style="width:${Math.round(en / both * 100)}%;background:var(--blue)"></span><span style="flex:1;background:var(--gold)"></span></div>
+      <div class="ukey"><span><i style="background:var(--blue)"></i>EN <b>${en}</b></span>
+        <span><i style="background:var(--gold)"></i>RU <b>${ru}</b></span></div>
+    </div>` : '';
+  const kindName = k => t(k === 'order' ? 'kOrder' : k === 'sheet' ? 'kSheet' : 'kAudio');
+  const refName = x => {
+    if (x.kind === 'order') { const e = findEvent(x.ref); return e ? fmtShort(e.date) : '—'; }
+    return (S.songs.find(y => y.id === x.ref) || {}).title || '—';
+  };
+  const recent = `<div class="sec">
+      <div class="step" style="padding:14px 16px 6px">${esc(t('uRecent'))}</div>
+      ${u.slice(0, 12).map(x => `<div class="li"><div style="flex:1;min-width:0">
+        <div style="font-size:var(--fs-15)">${esc(refName(x))}</div>
+        <div class="sub" style="font-style:normal">${esc(kindName(x.kind))}</div></div>
+        <div class="un">${esc(agoShort(x.at))}</div></div>`).join('')}
+    </div>`;
+  return wrap(stats + chart + rank(songRank, t('uTopSongs')) + rank(svcRank, t('uTopServices')) + lang + recent);
+}
+const SHEETCACHE = 'bsebc-sheets-v1';
+function sheetKey(kind, id){ return './offline-sheet/' + kind + '/' + id; }
+async function cacheSheet(kind, song){
+  const K = SHEETKIND[kind];
+  if (!K || !song || !song[K.col] || !window.caches) return false;
+  try {
+    const { data, error } = await sb.storage.from(K.bucket).createSignedUrl(song[K.col], 3600);
+    if (error || !data) return false;
+    const res = await fetch(data.signedUrl);
+    if (!res.ok) return false;
+    (await caches.open(SHEETCACHE)).put(sheetKey(kind, song.id), res.clone());
+    return true;
+  } catch (_) { return false; }
+}
+async function cachedSheet(kind, id){
+  try { return window.caches ? await caches.match(sheetKey(kind, id)) : null; } catch (_) { return null; }
+}
+let prefetching = false;
+/* Only a service's own order is pre-fetched: a handful of files people will
+   actually need in a building with no signal, not the whole library. */
+async function prefetchSheets(){
+  if (prefetching || !window.caches || !S.songs.length) return;
+  const ordId = (S.route.match(/order-([^/?&]+)/) || [])[1];
+  if (!ordId) return;
+  const nc = navigator.connection;
+  if (nc && (nc.saveData || /2g/.test(nc.effectiveType || ''))) return;
+  const ev = findEvent(ordId);
+  if (!ev) return;
+  const kind = S.route.includes('/piano') ? 'piano' : 'sheets';
+  const K = SHEETKIND[kind];
+  const list = songsFor(ev.id).filter(s => s[K.col] && (!s[K.lock] || S.session));
+  prefetching = true;
+  try {
+    for (const s of list) {
+      if (await cachedSheet(kind, s.id)) continue;
+      await cacheSheet(kind, s);
+    }
+  } catch (_) {}
+  prefetching = false;
+}
+const CHARTICON = `<svg class="ic-tile" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="3" y="5" width="28" height="24" rx="3" fill="var(--surface)" stroke="var(--tile-line)" stroke-width="1.6"></rect>
+        <path d="M7.5 24.5h19" stroke="var(--tile-line)" stroke-width="1.4" stroke-linecap="round"></path>
+        <rect x="9.4" y="16.5" width="4.4" height="8" rx="1.3" fill="var(--blue)"></rect>
+        <rect x="15.1" y="11.5" width="4.4" height="13" rx="1.3" fill="var(--gold)"></rect>
+        <rect x="20.8" y="19" width="4.4" height="5.5" rx="1.3" fill="var(--blue)"></rect>
+      </svg>`;
+/* A paper copy for the piano stand. Built on demand, printed, thrown away — the
+   screen layout is never involved, so nothing about it can shift. */
+function agoShort(iso){
+  const mins = Math.round((Date.now() - Date.parse(iso)) / 60000);
+  if (mins < 1) return t('uNow');
+  if (mins < 60) return t('uMin')(mins);
+  const hrs = Math.round(mins / 60);
+  if (hrs < 24) return t('uHr')(hrs);
+  return t('uDay')(Math.round(hrs / 24));
+}
 function findEvent(token){
   if (!token) return null;
   const exact = S.events.find(e => String(e.id) === token);
@@ -2012,6 +2257,7 @@ function homePage(){
       ${tile('#/sheets/piano','tPiano','tPianoSub',TILEICON.piano)}
       ${tile('#/seating','tSeating','tSeatingSub',TILEICON.seat)}
       ${tile('#/rules','tRules','tRulesSub',TILEICON.rules)}
+      ${S.session ? tile('#/usage','tUsage','tUsageSub',CHARTICON) : ''}
       ${S.session ? tile('#/admin/attendance','tAdmin','tAdminSub',TILEICON.user,true)
                   : tile('#/login','tSignIn','tSignInSub',TILEICON.user,true)}
     </div>
@@ -2502,6 +2748,13 @@ function markSongs(ev){
   /* A 160-song list is a long scroll past the running order, so it folds itself
      away once three songs are picked. S.pickOpen overrides in both directions. */
   const open = S.pickOpen === null ? picked < 3 : S.pickOpen;
+  /* a quiet note on anything sung within the last six weeks, so the same song
+     does not come round again a fortnight later without the director noticing */
+  const recent = {};
+  list.forEach(s => {
+    const w = lastSungBefore(s.id, ev.date, ev.id);
+    if (w && Math.round((Date.parse(ev.date) - Date.parse(w)) / 86400000) <= 42) recent[s.id] = agoText(w, ev.date);
+  });
   const chooser = `<button class="fold ${open?'open':''}" data-toggle-pick>
       <span>${esc(t('chooseFrom'))}</span>
       <em>${open ? esc(t('hideList')) : esc(t('showList')(list.length))} ${open?'▴':'▾'}</em>
@@ -2512,7 +2765,8 @@ function markSongs(ev){
         return `<div class="li tap ${on?'on':''}" data-toggle-song="${s.id}" data-event="${ev.id}">
           <div class="box">${on ? E.sel.get(s.id).pos : ''}</div>
           <div style="flex:1;min-width:0"><div style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}</div>
-          ${s.subtitle?`<div class="sub">${esc(s.subtitle)}</div>`:''}</div>
+          ${s.subtitle?`<div class="sub">${esc(s.subtitle)}</div>`:''}
+          ${recent[s.id]?`<div class="sub" style="font-style:normal;color:var(--gold-text)">${esc(t('lastSungAgo')(recent[s.id]))}</div>`:''}</div>
           <div style="font-size:var(--fs-14);color:var(--muted)">${songStats(s.id).n}</div></div>`;
       }).join('') : '');
   const prev = picked ? null : S.events
@@ -2559,8 +2813,12 @@ function manageSongs(){
   return `<div class="h">${esc(t('songList'))}<span class="n">${esc(t('songsN')(S.songs.length))}</span></div>` +
     `<div class="sec">` + catManager() + `</div><div class="sec">` + addFold('song', `
       <input class="field" id="new-song-title" placeholder="${esc(t('songTitle'))}">
+      <input class="field" id="new-song-sub" placeholder="${esc(t('subtitle'))}">
       <div style="display:flex;gap:8px">
-        <input class="field" id="new-song-sub" placeholder="${esc(t('subtitle'))}">
+        ${S.categories.length ? `<select class="field" id="new-song-cat" style="flex:1;min-width:0">
+          <option value="">${esc(t('noCat'))}</option>
+          ${S.categories.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}
+        </select>` : '<div style="flex:1"></div>'}
         <button class="mini" style="background:var(--blue);color:var(--white);border-color:var(--blue-text);padding:12px 20px" data-add-song>${esc(t('add'))}</button>
       </div>`, 'addSong') + `</div><div class="sec"><div class="card">${qField()}</div></div><div class="sec">` +
     list.map(s => { const st = songStats(s.id);
@@ -2784,7 +3042,7 @@ function sheetsPage(kind){
       /* one recording link per song: a play button for everyone, a quiet note
          button for the director. Text only where there is room for it. */
       const listen = s.audio_url && !S.session
-        ? `<a class="mini play" href="${esc(s.audio_url)}" target="_blank" rel="noopener">${PLAYSVG}<span>${esc(t('listen'))}</span></a>`
+        ? `<a class="mini play" href="${esc(s.audio_url)}" data-song="${s.id}" target="_blank" rel="noopener">${PLAYSVG}<span>${esc(t('listen'))}</span></a>`
         : '';
       const audioBtn = S.session
         ? `<button class="mini icon ${s.audio_url?'on':''}" data-audio-edit="${s.id}"
@@ -2916,6 +3174,10 @@ function render(){
   }
   else if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) { html += publicNav('piano') + sheetsPage('piano'); }
   else if (r.startsWith('#/sheets')) { html += publicNav('sheets') + sheetsPage('sheets'); }
+  else if (r.startsWith('#/usage')) {
+    if (S.session && !S.usageLoading && (S.usage === null || String(S.usageFor) !== String(S.usagePeriod))) loadUsage();
+    html += publicNav('usage') + usagePage();
+  }
   else if (r.startsWith('#/rules')) { html += publicNav('rules') + rulesPage(); }
   else if (r.startsWith('#/seating')) { html += publicNav('seating') + seatingPage(); }
   else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
@@ -3137,8 +3399,14 @@ document.addEventListener('input', e => {
   if (e.target.id === 'rules-edit' && S.rulesEdit) S.rulesEdit[S.lang] = e.target.value;
   if (e.target.id.startsWith('audio-') && S.audioEdit) S.audioDraft = e.target.value;   // survives any re-render
 });
+/* recordings are plain links, so they are counted here rather than in the
+   delegated handler below */
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a.mini.play');
+  if (a && a.dataset.song) track('audio', a.dataset.song);
+}, true);
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel]');
+  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel]');
   if (!el) return;
   const d = el.dataset;
 
@@ -3295,9 +3563,23 @@ document.addEventListener('click', async e => {
     const song = S.songs.find(s => s.id === id);
     if (!song || !song[K.col]) return;
     const w = window.open('', '_blank');          // opened before the await, or the popup blocker eats it
+    /* offline, or the signing call failed: fall back to the stored copy */
+    const fromCache = async () => {
+      const hit = await cachedSheet(kind, id);
+      if (!hit) return false;
+      const url = URL.createObjectURL(await hit.blob());
+      if (w) w.location = url; else location.href = url;
+      return true;
+    };
+    track('sheet', id);
+    if (!navigator.onLine && await fromCache()) return;
     const { data, error } = await sb.storage.from(K.bucket).createSignedUrl(song[K.col], 3600);
-    if (error || !data) { if (w) w.close(); return fail(error || new Error('signing failed')); }
+    if (error || !data) {
+      if (await fromCache()) return;
+      if (w) w.close(); return fail(error || new Error('signing failed'));
+    }
     if (w) w.location = data.signedUrl; else location.href = data.signedUrl;
+    cacheSheet(kind, song);                        // keep it for the next time there is no signal
     return;
   }
   if (d.lock) {
@@ -3400,7 +3682,9 @@ document.addEventListener('click', async e => {
     if (!title) return;
     if (!await ensureSession()) return;
     const subtitle = document.getElementById('new-song-sub').value.trim() || null;
-    const { data, error } = await sb.from('songs').insert({ title, subtitle }).select().single();
+    const catEl = document.getElementById('new-song-cat');
+    const category_id = catEl && catEl.value ? catEl.value : null;
+    const { data, error } = await sb.from('songs').insert({ title, subtitle, category_id }).select().single();
     if (error) return fail(error);
     S.songs.push(data); S.songs.sort((a,b) => a.title.localeCompare(b.title)); return render();
   }
@@ -3532,6 +3816,11 @@ document.addEventListener('click', async e => {
   }
   if (el.hasAttribute('data-export-toggle')) { S.exportOpen = !S.exportOpen; return render(); }
   if (el.hasAttribute('data-recent-toggle')) { S.recentOpen = !S.recentOpen; return render(); }
+  if (d.uperiod) {
+    S.usagePeriod = d.uperiod === 'all' ? 'all' : Number(d.uperiod);
+    S.usage = null;
+    return render();
+  }
   if (d.exportPreset) { S.exportPreset = d.exportPreset; return render(); }
   if (d.addOpen) { S.addOpen = S.addOpen === d.addOpen ? null : d.addOpen; return render(); }
   if (el.hasAttribute('data-toggle-cats')) { S.showCats = !S.showCats; return render(); }
@@ -3676,6 +3965,8 @@ window.addEventListener('hashchange', () => {
 });
 window.addEventListener('hashchange', () => {
   S.route = normRoute(location.hash);
+  prefetchSheets();
+  trackRoute();
   S.menuOpen = false;
   document.body.classList.remove('mlock');
   if (!/^#\/admin\/(attendance|songs)\/.+/.test(S.route)) { S.edit = null; S.pending = null; }
