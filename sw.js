@@ -5,6 +5,7 @@
 
 const SHELL = 'bsebc-youth-shell-v2';
 const DATA  = 'bsebc-youth-data-v2';
+const SHEETS = 'bsebc-sheets-v1';   // sheet PDFs stored by the page for offline use
 const ICON_V = '?v=3135';
 const SHELL_FILES = ['./', './index.html', './favicon.svg' + ICON_V, './apple-touch-icon.png' + ICON_V,
                      './icon-192.png' + ICON_V, './icon-512.png' + ICON_V, './site.webmanifest'];
@@ -15,7 +16,7 @@ self.addEventListener('install', e => {
 
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
-    .then(keys => Promise.all(keys.filter(k => k !== SHELL && k !== DATA).map(k => caches.delete(k))))
+    .then(keys => Promise.all(keys.filter(k => k !== SHELL && k !== DATA && k !== SHEETS).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
 
