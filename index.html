@@ -474,7 +474,56 @@
   .mini.go{background:var(--chrome);border-color:var(--ink);color:var(--white)}
   .li.audiorow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--surface-2)}
   .li.audiorow .field{flex:1;min-width:200px}
-  @media (max-width:520px){ .mini.play span,.mini.sheet span,.mini.trash span{display:none} }
+  @media (max-width:520px){ .mini.play span,.mini.sheet span,.mini.trash span,.mini.lyr span{display:none} }
+  .mini.lyr{display:inline-flex;align-items:center;gap:5px}
+  /* the song-book number: present on every row, loud on none */
+  .pvn{font-size:var(--fs-11);font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap;margin-left:7px;letter-spacing:.02em}
+  .tile.order .olist .pvn{color:var(--chrome-text)}
+  /* admin actions for one song, opened from the row's own button */
+  .admstrip{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;padding:10px 16px 12px;background:var(--blue-wash);border-bottom:1px solid var(--rule)}
+  .admstrip .mini span{display:inline}
+  .admstrip .mini,.admstrip .mini.trash,.admstrip .mini.icon{width:auto;padding:8px 13px;display:inline-flex;align-items:center;gap:6px}
+  .lyrhd{padding:14px 16px 16px;background:var(--surface);border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:12px}
+  .lyrtop{display:flex;align-items:center;flex-wrap:wrap;gap:10px 12px}
+  .lyrtop .acts{margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+  .lyrtitle{display:flex;align-items:flex-end;gap:14px}
+  .lyrtitle .lyrwho{flex:1;min-width:0}
+  .pvbig{flex:none;font-variant-numeric:tabular-nums;font-weight:700;font-size:var(--fs-20);color:var(--gold-text);line-height:1.05}
+  .pvbig span{font-size:var(--fs-13);font-weight:600;color:var(--faint);margin-right:2px}
+  .lyrhd .tl{font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-20);line-height:1.15;text-wrap:pretty}
+  .lyrhd .mt{font-size:var(--fs-13);color:var(--muted);font-variant-numeric:tabular-nums}
+  .lyrhd .acts{flex-wrap:wrap}
+  .lyrhd .acts .mini{display:inline-flex;align-items:center;gap:6px}
+  .lyrblk{padding:15px 16px;border-bottom:1px solid var(--rule);background:var(--surface)}
+  .lyrblk .bl{font-size:var(--fs-11);letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--gold-text);margin-bottom:5px}
+  .lyrblk .tx{font-size:var(--fs-17);line-height:1.62;white-space:pre-line;text-wrap:pretty;max-width:36em;color:var(--text-2)}
+  /* lyrics live in one readable column, cards on paper, on any screen width */
+  .lyrbg{background:var(--paper);flex:1;display:flex;flex-direction:column}
+  .lyrpage{max-width:760px;width:100%;margin:0 auto;flex:1;display:flex;flex-direction:column;padding-bottom:10px}
+  .lyrpage .h{background:transparent;border-bottom:0;padding:16px 16px 4px}
+  .lyrpage .h .n{font-weight:500;font-size:var(--fs-13);color:var(--muted);letter-spacing:0}
+  .lyrback{display:inline-flex;align-items:center;gap:3px;align-self:flex-start;padding:2px 2px 2px 0;margin:-2px 0;
+    font-size:var(--fs-13-5);font-weight:600;color:var(--blue-text);text-decoration:none}
+  .lyrback svg{width:16px;height:16px;flex:none;margin-left:-4px}
+  .lyrback:hover{color:var(--blue-hover)}
+  .lyrpage .savebar{margin-top:auto}
+  /* one block of the song being worded */
+  .lyrb{display:flex;flex-direction:column;gap:9px;padding:12px 14px;border-bottom:1px solid var(--rule);background:var(--surface)}
+  .lyrbh{display:flex;align-items:center;gap:9px}
+  .lyrbh .bnum{font-size:var(--fs-14);font-weight:700;color:var(--faint);font-variant-numeric:tabular-nums}
+  .lyrbh select.part{flex:none}
+  .lyrbh .bkacts{display:flex;gap:6px;margin-left:auto}
+  .lyrbh .bkacts .mini{width:34px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+  .lyrb textarea,.pastebox textarea{width:100%;min-width:0;resize:none;overflow:hidden;border:1px solid var(--rule);border-radius:var(--r-md);
+    padding:10px 12px;font-family:inherit;font-size:var(--fs-16);line-height:1.55;background:var(--surface-2);color:var(--ink)}
+  .lyrb textarea{min-height:74px}
+  .pastebox textarea{min-height:150px;font-size:var(--fs-15)}
+  .lyrb textarea:focus,.pastebox textarea:focus{outline:0;border-color:var(--blue-text);background:var(--surface);box-shadow:0 0 0 3px rgba(var(--blue-rgb),.12)}
+  .addblk{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 14px;background:var(--paper-2);border-bottom:1px solid var(--rule)}
+  .addblk .albl{font-size:var(--fs-11-5);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-right:2px}
+  .pastebox{display:flex;flex-direction:column;gap:10px}
+  .pvrow{display:flex;align-items:center;gap:13px}
+  .pvrow .field{width:104px;flex:none;text-align:center;font-variant-numeric:tabular-nums;font-weight:600}
   .li.off{background:var(--red-wash)}
   .li.na{background:var(--paper-2)}
   .li.tap:hover.na{background:var(--paper)}
@@ -1018,6 +1067,22 @@ const STR = {
     tSheets:'Choir music',tSheetsSub:'Sheet music and recordings, song by song',
     tPiano:'Piano sheets',tPianoSub:'Accompaniment for each song',piano:'Piano sheets',
     withPiano:n=>n+' with piano sheets',
+    tLyrics:'Lyrics',tLyricsSub:'The words as we sing them, ready to copy',
+    lyrWith:n=>n+' with lyrics',noLyricsYet:'No lyrics yet',needsLyrics:'Needs lyrics',
+    lyrAll:'All lyrics',lyrEmpty:'No lyrics have been added for this song yet.',
+    lyrView:'Text',copyLyrics:'Copy text',lyrCopied:'Text copied.',
+    editLyrics:'Edit text',addLyrics:'Add text',lyrSaved:'Text saved.',
+    bkVerse:'Verse',bkChorus:'Chorus',bkBridge:'Bridge',bkEnd:'Ending',
+    dupBlock:'Duplicate',delBlockQ:'Delete this block?',
+    pvLabel:'№ in Песнь возрождения',pvShort:'Song book №',
+    pvHint:'Digits only. Leave it empty if the song is not in the book.',
+    lyrPaste:'Paste a whole text',
+    lyrPasteHint:'Paste the words with a blank line between verses. They are split into blocks you can then label.',
+    lyrSplit:'Split into blocks',lyrSplitN:n=>n+' blocks added',
+    searchPv:'Search by title or №',adminActs:'More',
+    pvSection:'Song book number',lyrSection:'Lyrics',lyrAddBlock:'Add a block',blkType:'Block type',
+    lyrBlocksN:n=>n===1?'1 block':n+' blocks',
+    lyrNoBlocks:'No blocks yet. Add a verse, or paste the whole text at once.',
     adminOnly:'Admin only',adminOnlyShort:'Admin only',makeAdminOnly:'Make admin only',makePublic:'Make public',
     adminOnlyNote:'Admin-only files are hidden from everyone who is not signed in.',opening:'Opening…',
     sheets:'Sheet music',navSheets:'Sheets',choirSheets:'Choir music',download:'Open',upload:'Upload PDF',replace:'Replace',removePdf:'Remove',
@@ -1116,6 +1181,22 @@ const STR = {
     tSheets:'Музыка хора',tSheetsSub:'Ноты и записи к каждой песне',
     tPiano:'Ноты для фортепиано',tPianoSub:'Аккомпанемент к каждой песне',piano:'Фортепиано',
     withPiano:n=>'с фортепиано: '+n,
+    tLyrics:'Тексты песен',tLyricsSub:'Слова так, как мы их поём — готово к копированию',
+    lyrWith:n=>'с текстом: '+n,noLyricsYet:'Текста пока нет',needsLyrics:'Без текста',
+    lyrAll:'Все тексты',lyrEmpty:'Для этой песни текст ещё не добавлен.',
+    lyrView:'Текст',copyLyrics:'Копировать текст',lyrCopied:'Текст скопирован.',
+    editLyrics:'Изменить текст',addLyrics:'Добавить текст',lyrSaved:'Текст сохранён.',
+    bkVerse:'Куплет',bkChorus:'Припев',bkBridge:'Бридж',bkEnd:'Концовка',
+    dupBlock:'Дублировать',delBlockQ:'Удалить этот блок?',
+    pvLabel:'№ в «Песни возрождения»',pvShort:'№ в сборнике',
+    pvHint:'Только цифры. Оставьте пустым, если песни нет в сборнике.',
+    lyrPaste:'Вставить весь текст',
+    lyrPasteHint:'Вставьте слова, оставив пустую строку между куплетами. Текст разделится на блоки, которые можно подписать.',
+    lyrSplit:'Разделить на блоки',lyrSplitN:n=>'добавлено блоков: '+n,
+    searchPv:'Поиск по названию или №',adminActs:'Ещё',
+    pvSection:'Номер в сборнике',lyrSection:'Текст песни',lyrAddBlock:'Добавить блок',blkType:'Тип блока',
+    lyrBlocksN:n=>'блоков: '+n,
+    lyrNoBlocks:'Блоков ещё нет. Добавьте куплет или вставьте весь текст сразу.',
     adminOnly:'Только для админа',adminOnlyShort:'Только админ',makeAdminOnly:'Скрыть от всех',makePublic:'Открыть всем',
     adminOnlyNote:'Закрытые файлы не видны тем, кто не вошёл в систему.',opening:'Открываем…',
     sheets:'Ноты',navSheets:'Ноты',choirSheets:'Музыка хора',download:'Открыть',upload:'Загрузить PDF',replace:'Заменить',removePdf:'Удалить',
@@ -1203,6 +1284,10 @@ const S = {
   seatEdit: null, seatSel: null, seatPart: 'all', seatList: false, seatView: 'audience',
   rules: null, rulesEdit: null, rulesPreview: false,
   audioEdit: null, audioDraft: '',   // song whose recording link is being edited, and the typed value
+  lyrFor: null, lyrDraft: null, lyrPv: '', lyrWas: '',   // song being worded, its blocks, its № and the saved shape
+  lyrPasteOpen: false, lyrPasteTxt: '',   // the paste-a-whole-text importer
+  lyrMissing: false,              // lyrics index: show only the songs still without words
+  admRow: null,                   // song whose admin strip is open on the music page
   stageKey: '', stageLeft: 0,   // sideways scroll of the seating stage
   loginSig: '',                   // what the sign-in screen was last drawn from     // the rules document and its draft while editing   // seating chart: pending moves, selection, block filter
   addOpen: null,                // which "+ Add" form is expanded
@@ -1226,18 +1311,37 @@ const catSelect = () => S.categories.length ? `<select class="field" style="widt
   <option value="all">${esc(t('allCats'))}</option>${
   S.categories.map(c => `<option value="${c.id}"${S.catFilter===c.id?' selected':''}>${esc(c.name)}</option>`).join('')}</select>` : '';
 const catBar = () => S.categories.length ? `<div class="ctlbar" style="flex-direction:row">${catSelect()}</div>` : '';
-const qField = () => `<span class="qwrap"><input class="field" id="q" placeholder="${esc(t('search'))}" value="${esc(S.query)}">${
+const qField = (ph) => `<span class="qwrap"><input class="field" id="q" placeholder="${esc(t(ph || 'search'))}" value="${esc(S.query)}">${
   S.query ? `<button class="qx" data-clear-q aria-label="clear">×</button>` : ''}</span>`;
+/* A song is found by its title or by its Песнь возрождения number: the projector
+   operator looks songs up by number on the fly, so digits typed into the search
+   box are matched against the № as well. */
+function songMatch(s, q){
+  const qs = String(q || '').trim().toLowerCase();
+  if (!qs) return true;
+  if (s.title.toLowerCase().includes(qs)) return true;
+  const digits = qs.replace(/\D/g, '');
+  return !!digits && s.pv_number != null && String(s.pv_number).includes(digits);
+}
+const pvTag = s => s.pv_number ? `<span class="pvn">№${esc(s.pv_number)}</span>` : '';
+const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 
 /* ---------- dates ---------- */
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '4.2.0';
+const VERSION = '4.3.2';
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '4': {
   en: [
+    'Lyrics: a new tile and page with the words to every song, in verse and chorus blocks, with a Copy text button for the projector',
+    'The lyrics editor is laid out in cards down one column, with the song book number, the blocks, and a sticky Save bar',
+    'Copied lyrics now name the chorus, bridge and ending, so whoever is projecting can see what comes back',
+    'On Choir music, tapping anywhere on a song row opens its director tools, right under the button that opened them',
+    'The Песнь возрождения number is shown quietly beside each song, and the search box finds songs by that number',
+    'Director tools for a song moved off its row into a panel that opens under it, so titles are no longer squeezed on a phone',
+    'A song can be filed under a category the moment you add it',
     'Share buttons on the song order, sheet list and seating chart — they copy a titled link, ready to paste into a chat',
     'Shared links now show a preview card with the choir logo instead of a bare address',
     'Songs are numbered in singing order when you open the sheets for one service',
@@ -1259,6 +1363,13 @@ const NOTES = { '4': {
     'Fixed: rows in Summary and Who led open again'
   ],
   ru: [
+    'Тексты песен: новая плитка и страница со словами каждой песни по куплетам и припевам, с кнопкой «Копировать текст» для проектора',
+    'Редактор текста собран в карточки одной колонкой: номер в сборнике, блоки и закреплённая кнопка «Сохранить»',
+    'В скопированном тексте подписаны припев, бридж и концовка — видно, что повторяется',
+    'В «Музыке хора» нажатие на строку песни открывает инструменты регента прямо под кнопкой',
+    'Номер из «Песни возрождения» тихо стоит рядом с каждой песней, и поиск находит песни по этому номеру',
+    'Инструменты регента для песни убраны со строки в панель, которая открывается под ней — названия больше не сжимаются на телефоне',
+    'Категорию песни можно выбрать сразу при добавлении',
     'Кнопки «Поделиться» на порядке песнопений, списке нот и схеме рассадки — копируют ссылку с подписью, готовую для чата',
     'Ссылки теперь показывают карточку со знаком хора вместо голого адреса',
     'Песни пронумерованы по порядку пения, когда открыты ноты одного служения',
@@ -2142,6 +2253,7 @@ function drawerNav(){
     </div>
     ${it('#/home', r.startsWith('#/home'), NAVIC.home, t('home'))}
     ${it('#/sheets', r.startsWith('#/sheets') && !piano, ICON.sheets, t('tSheets'))}
+    ${it('#/lyrics', r.startsWith('#/lyrics'), ICON.lyrics, t('tLyrics'))}
     ${it('#/attendance/grid', r.startsWith('#/attendance'), ICON.attGrid, t('tAttGrid'))}
     ${it('#/songs/summary', r.startsWith('#/songs'), ICON.songGrid, t('tSongGrid'))}
     ${it('#/sheets/piano', piano, ICON.piano, t('tPiano'))}
@@ -2161,6 +2273,7 @@ function drawerNav(){
   </nav>`;
 }
 const ICON = {
+  lyrics: `<svg class="ic-note" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.2 17.4c0-3.2.9-5.8 2.6-7.9C8.6 7.3 10.8 6 13.4 5.5l.5 2.1c-1.6.4-2.9 1.2-3.8 2.3-.7.8-1.1 1.7-1.3 2.7h2.3c.7 0 1.2.5 1.2 1.2v3.6c0 .7-.5 1.2-1.2 1.2H5.4c-.7 0-1.2-.5-1.2-1.2z"></path><path d="M14 17.4c0-3.2.9-5.8 2.6-7.9 1.8-2.2 4-3.5 6.6-4l.5 2.1c-1.6.4-2.9 1.2-3.8 2.3-.7.8-1.1 1.7-1.3 2.7h2.3c.7 0 1.2.5 1.2 1.2v3.6c0 .7-.5 1.2-1.2 1.2h-5.7c-.7 0-1.2-.5-1.2-1.2z"></path></svg>`,
   attGrid: `<svg class="ic-note" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M3 10h18"></path><path d="m9 16 2 2 4-4"></path></svg>`,
   seat: `<svg class="ic-note" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>`,
   rules: `<svg class="ic-note" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>`,
@@ -2226,6 +2339,11 @@ const TILEICON = {
           <rect x="15" y="9" width="4" height="10" rx="1"></rect>
           <rect x="22" y="9" width="4" height="10" rx="1"></rect></g>
       </svg>`,
+    lyrics:  `<svg class="ic-tile" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="5" y="3.5" width="24" height="27" rx="3" fill="var(--surface)" stroke="var(--tile-line)" stroke-width="1.6"></rect>
+        <path d="M9.5 10h9" stroke="var(--gold)" stroke-width="2.6" stroke-linecap="round"></path>
+        <g stroke="var(--tile-line)" stroke-width="1.5" stroke-linecap="round"><path d="M9.5 15h15"></path><path d="M9.5 19h15"></path><path d="M9.5 27h9"></path></g>
+        <path d="M9.5 23h13" stroke="var(--blue)" stroke-width="1.6" stroke-linecap="round"></path></svg>`,
     user:    `<svg class="ic-tile" viewBox="0 0 34 34" aria-hidden="true">
         <circle cx="17" cy="12" r="5.6" fill="none" stroke="var(--blue-text)" stroke-width="2.2"></circle>
         <path d="M6.5 29.5c1.6-6 5.6-9 10.5-9s8.9 3 10.5 9" fill="none" stroke="var(--blue-text)" stroke-width="2.2" stroke-linecap="round"></path></svg>`
@@ -2243,7 +2361,7 @@ function homePage(){
         ${svc ? `<div class="ok">${esc(svc.name || kindWord(svc))}</div>` : ''}
       </div><div class="ic">${TILEICON.songSvc}</div></div>
       ${svc ? `<ol class="olist">${songsFor(svc.id).map(s =>
-            `<li>${esc(s.title)}${creditPills(songRow(svc.id, s.id))}</li>`).join('')}</ol>`
+            `<li>${esc(s.title)}${pvTag(s)}${creditPills(songRow(svc.id, s.id))}</li>`).join('')}</ol>`
             : `<div class="ts">${esc(t('noOrderYet'))}</div>`}</a>
       ${svc && songsFor(svc.id).length ? `<div class="ofoot">
         <a class="obtn" href="#/sheets/order-${shortId(svc.id)}">${esc(t('viewSheets'))}</a>
@@ -2252,6 +2370,7 @@ function homePage(){
   return `<div class="tiles">
       ${orderTile}
       ${tile('#/sheets','tSheets','tSheetsSub',TILEICON.sheets)}
+      ${tile('#/lyrics','tLyrics','tLyricsSub',TILEICON.lyrics)}
       ${tile('#/attendance/grid','tAttGrid','tAttGridSub',TILEICON.attGrid)}
       ${tile('#/songs/summary','tSongGrid','tSongGridSub',TILEICON.songGrid)}
       ${tile('#/sheets/piano','tPiano','tPianoSub',TILEICON.piano)}
@@ -2809,11 +2928,15 @@ function catManager(){
       }).join('') : '');
 }
 function manageSongs(){
-  const list = S.songs.filter(s => !S.query || s.title.toLowerCase().includes(S.query.toLowerCase()));
+  const list = S.songs.filter(s => songMatch(s, S.query));
   return `<div class="h">${esc(t('songList'))}<span class="n">${esc(t('songsN')(S.songs.length))}</span></div>` +
     `<div class="sec">` + catManager() + `</div><div class="sec">` + addFold('song', `
       <input class="field" id="new-song-title" placeholder="${esc(t('songTitle'))}">
-      <input class="field" id="new-song-sub" placeholder="${esc(t('subtitle'))}">
+      <div style="display:flex;gap:8px">
+        <input class="field" id="new-song-sub" placeholder="${esc(t('subtitle'))}" style="flex:1;min-width:0">
+        <input class="field" id="new-song-pv" inputmode="numeric" placeholder="№"
+               title="${esc(t('pvLabel'))}" style="width:84px;flex:none;text-align:center">
+      </div>
       <div style="display:flex;gap:8px">
         ${S.categories.length ? `<select class="field" id="new-song-cat" style="flex:1;min-width:0">
           <option value="">${esc(t('noCat'))}</option>
@@ -2825,6 +2948,8 @@ function manageSongs(){
       if (S.editSongRow === s.id) return `<div class="li" style="flex-wrap:wrap;background:var(--blue-wash)">
         <input class="field" id="edit-song-title" value="${esc(s.title)}" style="flex:1 1 100%">
         <input class="field" id="edit-song-sub" value="${esc(s.subtitle || '')}" placeholder="${esc(t('subtitle'))}" style="flex:1 1 100%">
+        <input class="field" id="edit-song-pv" inputmode="numeric" value="${esc(s.pv_number == null ? '' : s.pv_number)}"
+               placeholder="${esc(t('pvShort'))}" style="flex:1 1 100%">
         ${S.categories.length ? `<select class="field" id="edit-song-cat" style="flex:1 1 100%">
           <option value="">${esc(t('noCat'))}</option>
           ${S.categories.map(c => `<option value="${c.id}"${s.category_id===c.id?' selected':''}>${esc(c.name)}</option>`).join('')}
@@ -2835,7 +2960,7 @@ function manageSongs(){
           <button class="mini danger" data-del-song="${s.id}">${esc(t('del'))}</button>
         </div></div>`;
       return `<div class="li"><div style="flex:1;min-width:0">
-        <div style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}</div>
+        <div style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}${pvTag(s)}</div>
         <div class="sub" style="font-style:normal">${esc((catName(s.category_id) ? catName(s.category_id) + ' · ' : '') + (s.subtitle ? s.subtitle + ' · ' : '') + t('sungN')(st.n, st.last))}</div></div>
         <button class="mini" data-edit-song="${s.id}">${esc(t('edit'))}</button></div>`;
     }).join('') + `</div>`;
@@ -2975,8 +3100,8 @@ function legacyCopy(text){
   try { document.execCommand('copy'); } catch (_) {}
   ta.remove();
 }
-function copyShare(text){
-  const done = () => { okToast(t('copied')); render(); };
+function copyShare(text, msg){
+  const done = () => { okToast(msg || t('copied')); render(); };
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(done, () => { legacyCopy(text); done(); });
   } else { legacyCopy(text); done(); }
@@ -3002,20 +3127,19 @@ function sheetsPage(kind){
       <a class="mini" href="#/sheets${kind==='piano'?'/piano':''}">${esc(t('showAllSheets'))}</a>
       <button class="mini shr" data-share-order="${ordEv.id}">${SHARESVG}${esc(t('shareBtn'))}</button>
     </span></div>` : '';
-  let list = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) &&
-    (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
+  let list = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) && songMatch(s, S.query));
   if (ordIds) list = ordIds.map(id => list.find(s => s.id === id)).filter(Boolean);
   const withPdf = S.songs.filter(s => s[K.col]).length;
   /* Narrowed to one service's songs, the header and search/category row are noise. */
   return tabs + bar + (ordEv ? '' : `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>
-    <div class="searchrow" style="padding-top:12px;display:flex;gap:8px">${qField()}${catSelect()}</div>`) +
+    <div class="searchrow" style="padding-top:12px;display:flex;gap:8px">${qField('searchPv')}${catSelect()}</div>`) +
     list.map((s, i) => {
       const path = s[K.col], locked = !!s[K.lock];
       const busy = S.uploading === kind + ':' + s.id;
       /* narrowed to one service, the list IS the running order — so number it.
          The full song list has no order to speak of and stays unnumbered. */
       const left = (ordEv ? `<span class="ord">${i + 1}</span>` : '') + `<div style="flex:1;min-width:0">
-          <div style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}</div>
+          <div style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}${pvTag(s)}</div>
           ${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}
           ${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}
           ${locked ? `<div class="sub" style="font-style:normal;color:var(--gold)">${esc(t('adminOnly'))}</div>` : ''}
@@ -3028,28 +3152,35 @@ function sheetsPage(kind){
           ? `<span class="mini locked">${lockSVG(true)}${esc(t('adminOnlyShort'))}</span>`
           : `<button class="mini sheet" data-open="${kind}:${s.id}" title="${esc(t('download'))}"
               aria-label="${esc(t('download'))}">${SHEETSVG}<span>${esc(t('download'))}</span></button>`;
-      const admin = S.session ? `
+      /* Every admin action for a song lives in a strip that opens under its row.
+         Inline, five buttons next to a title either wrapped or ate the title on a
+         phone; here they have room for their own labels. */
+      const admin = S.session ? `<div class="admstrip">
         ${path ? '' : `<label class="mini" for="up-${kind}-${s.id}">${esc(t('upload'))}
           <input id="up-${kind}-${s.id}" type="file" accept="application/pdf,.pdf"
                  data-upload="${s.id}" data-sheet-kind="${kind}" style="display:none">
         </label>`}
-        ${path ? `<button class="mini icon ${locked?'on':''}" data-lock="${kind}:${s.id}"
-            title="${esc(locked ? t('makePublic') : t('makeAdminOnly'))}"
-            aria-label="${esc(locked ? t('makePublic') : t('makeAdminOnly'))}">${
-            locked ? lockSVG(true) : lockSVG(false)}</button>
-          <button class="mini danger trash" data-del-pdf="${s.id}" data-sheet-kind="${kind}"
-            title="${esc(t('removePdf'))}" aria-label="${esc(t('removePdf'))}">${TRASHSVG}<span>${esc(t('removePdf'))}</span></button>` : ''}` : '';
-      /* one recording link per song: a play button for everyone, a quiet note
-         button for the director. Text only where there is room for it. */
-      const listen = s.audio_url && !S.session
+        ${path ? `<button class="mini ${locked?'on':''}" data-lock="${kind}:${s.id}">${
+            locked ? lockSVG(true) : lockSVG(false)}<span>${esc(locked ? t('makePublic') : t('makeAdminOnly'))}</span></button>
+          <button class="mini danger trash" data-del-pdf="${s.id}" data-sheet-kind="${kind}">${TRASHSVG}<span>${esc(t('removePdf'))}</span></button>` : ''}
+        <button class="mini ${s.audio_url?'on':''}" data-audio-edit="${s.id}">${NOTESVG}<span>${esc(s.audio_url ? t('audioLink') : t('audioAdd'))}</span></button>
+        <a class="mini" href="#/lyrics/${shortId(s.id)}" data-lyr-edit="${s.id}">${LYRSVG}<span>${esc(hasLyrics(s) ? t('editLyrics') : t('addLyrics'))}</span></a>
+      </div>` : '';
+      /* one recording link per song, and the words for whoever is projecting them */
+      const listen = s.audio_url
         ? `<a class="mini play" href="${esc(s.audio_url)}" data-song="${s.id}" target="_blank" rel="noopener">${PLAYSVG}<span>${esc(t('listen'))}</span></a>`
         : '';
-      const audioBtn = S.session
-        ? `<button class="mini icon ${s.audio_url?'on':''}" data-audio-edit="${s.id}"
-            title="${esc(s.audio_url ? t('audioLink') : t('audioAdd'))}"
-            aria-label="${esc(s.audio_url ? t('audioLink') : t('audioAdd'))}">${NOTESVG}</button>`
+      const lyr = hasLyrics(s)
+        ? `<a class="mini lyr" href="#/lyrics/${shortId(s.id)}" title="${esc(t('lyrView'))}" aria-label="${esc(t('lyrView'))}">${LYRSVG}<span>${esc(t('lyrView'))}</span></a>`
         : '';
-      const row = `<div class="li">${left}<div class="acts">${listen}${dl}${audioBtn}${admin}</div></div>`;
+      const more = S.session
+        ? `<button class="mini icon ${S.admRow===s.id?'on':''}" data-adm-row="${s.id}"
+            title="${esc(t('adminActs'))}" aria-label="${esc(t('adminActs'))}">${MORESVG}</button>`
+        : '';
+      /* signed in, the whole row is the handle for its own tools — no travelling
+         back to the left edge to open them */
+      const row = `<div class="li${S.session ? ' tap' : ''}"${S.session ? ` data-adm-row="${s.id}"` : ''}>${left}<div class="acts">${listen}${dl}${lyr}${more}</div></div>`
+        + (S.admRow === s.id ? admin : '');
       if (S.audioEdit !== s.id) return row;
       return row + `<div class="li audiorow">
           <input class="field" id="audio-${s.id}" type="url" inputmode="url" spellcheck="false"
@@ -3069,6 +3200,154 @@ function lockSVG(shut){
   return `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect>${shut ? '<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>' : '<path d="M7 11V7a5 5 0 0 1 9.9-1"></path>'}</svg>`;
 }
 const sheetPath = (locked, songId) => (locked ? 'locked/' : '') + songId + '/' + Date.now() + '.pdf';
+
+/* ---------- lyrics ---------- */
+/* One song's words, kept on the song row as [{t,x}] — t is v|c|b|e, x the lines.
+   The list is in singing order, so two verses, a chorus, and a different chorus at
+   the end are simply five blocks: what is stored is what is shown and copied. */
+const BLK = { v:'bkVerse', c:'bkChorus', b:'bkBridge', e:'bkEnd' };
+const BLKS = [['v','bkVerse'],['c','bkChorus'],['b','bkBridge'],['e','bkEnd']];
+const LYRSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M4.2 17.4c0-3.2.9-5.8 2.6-7.9C8.6 7.3 10.8 6 13.4 5.5l.5 2.1c-1.6.4-2.9 1.2-3.8 2.3-.7.8-1.1 1.7-1.3 2.7h2.3c.7 0 1.2.5 1.2 1.2v3.6c0 .7-.5 1.2-1.2 1.2H5.4c-.7 0-1.2-.5-1.2-1.2z"></path><path d="M14 17.4c0-3.2.9-5.8 2.6-7.9 1.8-2.2 4-3.5 6.6-4l.5 2.1c-1.6.4-2.9 1.2-3.8 2.3-.7.8-1.1 1.7-1.3 2.7h2.3c.7 0 1.2.5 1.2 1.2v3.6c0 .7-.5 1.2-1.2 1.2h-5.7c-.7 0-1.2-.5-1.2-1.2z"></path></svg>';
+const MORESVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.9"></circle><circle cx="12" cy="12" r="1.9"></circle><circle cx="19" cy="12" r="1.9"></circle></svg>';
+const COPYSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3H6a2 2 0 0 0-2 2v8a2.5 2.5 0 0 0 2.5 2.5"></path></svg>';
+const DUPSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 4H6a2 2 0 0 0-2 2v10"></path></svg>';
+const ARRSVG = up => '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+  + (up ? '<path d="m6 14 6-6 6 6"></path>' : '<path d="m6 10 6 6 6-6"></path>') + '</svg>';
+const autoGrow = el => { if (!el) return; el.style.height = 'auto'; el.style.height = (el.scrollHeight + 2) + 'px'; };
+/* A type is numbered only when the song has two or more blocks of it that differ:
+   a single chorus needs no number, and a repeat keeps the number it already had. */
+function blockIdx(blocks){
+  const seen = {}, out = [];
+  blocks.forEach(b => {
+    const list = seen[b.t] || (seen[b.t] = []);
+    const txt = String(b.x || '').trim();
+    let i = list.indexOf(txt);
+    if (i < 0) { list.push(txt); i = list.length - 1; }
+    out.push({ k: b.t, n: i + 1 });
+  });
+  return out.map(o => ({ k: o.k, n: o.n, many: (seen[o.k] || []).length > 1 }));
+}
+const blockLabels = blocks => blockIdx(blocks).map(o => t(BLK[o.k] || 'bkVerse') + (o.many ? ' ' + o.n : ''));
+/* the number a block carries within its own type — blank when it is the only one */
+const blockNums = blocks => blockIdx(blocks).map(o => o.many ? String(o.n) : '');
+function songByToken(tok){
+  if (!tok) return null;
+  return S.songs.find(s => String(s.id) === tok) || S.songs.find(s => shortId(s.id) === tok) || null;
+}
+function startLyrDraft(id){
+  const s = S.songs.find(x => x.id === id);
+  const blocks = Array.isArray(s && s.lyrics) ? s.lyrics.map(b => ({ t: BLK[b.t] ? b.t : 'v', x: String(b.x || '') })) : [];
+  S.lyrDraft = blocks.length ? blocks : [{ t:'v', x:'' }];
+  S.lyrPv = s && s.pv_number != null ? String(s.pv_number) : '';
+  S.lyrWas = JSON.stringify([S.lyrDraft, S.lyrPv]);
+  S.lyrPasteOpen = false; S.lyrPasteTxt = '';
+}
+const lyrDirty = () => JSON.stringify([S.lyrDraft, S.lyrPv]) !== S.lyrWas;
+function lyricsRoute(){
+  const song = songByToken(S.route.split('/')[2]);
+  if (!song) return lyricsIndex();
+  if (S.session && S.lyrFor === song.id) return lyricsEditor(song);
+  return lyricsView(song);
+}
+function lyricsIndex(){
+  const withL = S.songs.filter(hasLyrics).length;
+  let list = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) && songMatch(s, S.query));
+  if (S.lyrMissing) list = list.filter(s => !hasLyrics(s));
+  return `<div class="h">${esc(t('tLyrics'))}<span class="n">${esc(t('lyrWith')(withL + '/' + S.songs.length))}</span></div>
+    <div class="searchrow" style="padding-top:12px;display:flex;gap:8px">${qField('searchPv')}${catSelect()}</div>
+    ${S.session ? `<div class="chips" style="margin:12px 12px 0">
+      <button data-lyr-missing="0" class="${S.lyrMissing?'':'on'}">${esc(t('all'))}</button>
+      <button data-lyr-missing="1" class="${S.lyrMissing?'on':''}">${esc(t('needsLyrics'))}</button></div>` : ''}
+    ${list.length ? list.map(s => `<a class="li tap" href="#/lyrics/${shortId(s.id)}">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:var(--fs-16);line-height:1.2;color:var(--ink)">${esc(s.title)}${pvTag(s)}</div>
+        ${hasLyrics(s) ? (s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : '')
+          : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noLyricsYet'))}</div>`}
+      </div>
+      ${hasLyrics(s) ? `<span class="mini">${esc(t('lyrView'))}</span>`
+        : S.session ? `<span class="mini">${esc(t('addLyrics'))}</span>` : ''}
+    </a>`).join('') : `<div class="msg">${esc(t('noSongs'))}</div>`}`;
+}
+function lyricsView(song){
+  const blocks = Array.isArray(song.lyrics) ? song.lyrics : [];
+  const labels = blockLabels(blocks);
+  const meta = [song.subtitle || '', catName(song.category_id)].filter(Boolean).join(' · ');
+  /* the toolbar owns the top edge and the № the right, so the card reads across
+     its whole width instead of stacking everything against the left margin */
+  const head = `<div class="sec"><div class="lyrhd">
+      <div class="lyrtop">
+        <a class="lyrback" href="#/lyrics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>${esc(t('lyrAll'))}</a>
+        <div class="acts">
+          ${blocks.length ? `<button class="mini go" data-lyr-copy="${song.id}">${COPYSVG}<span>${esc(t('copyLyrics'))}</span></button>` : ''}
+          ${S.session ? `<button class="mini" data-lyr-edit="${song.id}">${esc(blocks.length ? t('editLyrics') : t('addLyrics'))}</button>` : ''}
+        </div>
+      </div>
+      <div class="lyrtitle">
+        <div class="lyrwho">
+          <div class="tl">${esc(song.title)}</div>
+          ${meta ? `<div class="mt">${esc(meta)}</div>` : ''}
+        </div>
+        ${song.pv_number ? `<div class="pvbig"><span>№</span>${esc(song.pv_number)}</div>` : ''}
+      </div></div></div>`;
+  const body = blocks.length
+    ? `<div class="sec">${blocks.map((b, i) => `<div class="lyrblk">
+        <div class="bl">${esc(labels[i])}</div>
+        <div class="tx">${esc(b.x)}</div></div>`).join('')}</div>`
+    : `<div class="msg">${esc(t('lyrEmpty'))}</div>`;
+  return `<div class="lyrbg"><div class="lyrpage">${head}${body}</div></div>`;
+}
+/* The editor is three cards down one column: which number the song carries in the
+   book, its blocks in singing order, and the paste-a-whole-text shortcut. Save and
+   Cancel ride the same sticky bar the attendance and song editors use. */
+function lyricsEditor(song){
+  const D = S.lyrDraft || [];
+  const labels = blockLabels(D), nums = blockNums(D);
+  const head = `<div class="h">${esc(song.title)}<span class="n">${esc(t('editLyrics'))}</span></div>`;
+  const numberCard = `<div class="sec">
+      <div class="fold"><span>${esc(t('pvSection'))}</span></div>
+      <div class="card"><div class="pvrow">
+        <input class="field" id="lyr-pv" inputmode="numeric" value="${esc(S.lyrPv)}" placeholder="412"
+               aria-label="${esc(t('pvLabel'))}">
+        <div class="sub" style="font-style:normal;flex:1;min-width:0">${esc(t('pvHint'))}</div>
+      </div></div>
+    </div>`;
+  const blocks = D.map((b, i) => `<div class="lyrb">
+      <div class="lyrbh">
+        <select class="mini part" data-blk-t="${i}" aria-label="${esc(t('blkType'))}">${
+          BLKS.map(([v,l]) => `<option value="${v}"${b.t===v?' selected':''}>${esc(t(l))}</option>`).join('')}</select>
+        ${nums[i] ? `<span class="bnum">${esc(nums[i])}</span>` : ''}
+        <div class="bkacts">
+          <button class="mini" data-blk-up="${i}"${i ? '' : ' disabled'} title="${esc(t('up'))}" aria-label="${esc(t('up'))}">${ARRSVG(true)}</button>
+          <button class="mini" data-blk-down="${i}"${i < D.length - 1 ? '' : ' disabled'} title="${esc(t('down'))}" aria-label="${esc(t('down'))}">${ARRSVG(false)}</button>
+          <button class="mini" data-blk-dup="${i}" title="${esc(t('dupBlock'))}" aria-label="${esc(t('dupBlock'))}">${DUPSVG}</button>
+          <button class="mini danger" data-blk-del="${i}" title="${esc(t('del'))}" aria-label="${esc(t('del'))}">${TRASHSVG}</button>
+        </div>
+      </div>
+      <textarea class="lyrta" id="lyr-t-${i}" data-lyr-i="${i}" rows="3" placeholder="${esc(labels[i] || '')}">${esc(b.x)}</textarea>
+    </div>`).join('');
+  const textCard = `<div class="sec">
+      <div class="fold"><span>${esc(t('lyrSection'))}</span>
+        <em style="margin-left:auto;font-style:normal;font-weight:600;color:var(--faint)">${D.length}</em></div>
+      ${blocks || `<div class="msg">${esc(t('lyrNoBlocks'))}</div>`}
+      <div class="addblk"><span class="albl">${esc(t('lyrAddBlock'))}</span>${
+        BLKS.map(([v,l]) => `<button class="mini" data-blk-add="${v}">+ ${esc(t(l))}</button>`).join('')}</div>
+    </div>`;
+  const pasteCard = `<div class="sec">
+      <button class="addbtn ${S.lyrPasteOpen?'open':''}" data-lyr-paste="${S.lyrPasteOpen?'0':'1'}">
+        <i>${S.lyrPasteOpen ? '–' : '+'}</i>${esc(S.lyrPasteOpen ? t('cancel') : t('lyrPaste'))}</button>
+      ${S.lyrPasteOpen ? `<div class="card" style="border-top:1px solid var(--rule)"><div class="pastebox">
+        <div class="sub" style="font-style:normal">${esc(t('lyrPasteHint'))}</div>
+        <textarea class="lyrta" id="lyr-paste" rows="6">${esc(S.lyrPasteTxt)}</textarea>
+        <div class="acts"><button class="mini go" data-lyr-split>${esc(t('lyrSplit'))}</button></div>
+      </div></div>` : ''}
+    </div>`;
+  const bar = `<div class="savebar">
+      <div class="st">${esc(t('lyrBlocksN')(D.length))}</div>
+      <button class="sb ghost" data-lyr-cancel>${esc(t('cancel'))}</button>
+      <button class="sb go" data-lyr-save="${song.id}">${esc(t('save'))}</button>
+    </div>`;
+  return `<div class="lyrbg"><div class="lyrpage">${head}${numberCard}${textCard}${pasteCard}${bar}</div></div>`;
+}
 
 /* ---------- CSV export ---------- */
 function download(name, text){
@@ -3174,6 +3453,7 @@ function render(){
   }
   else if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) { html += publicNav('piano') + sheetsPage('piano'); }
   else if (r.startsWith('#/sheets')) { html += publicNav('sheets') + sheetsPage('sheets'); }
+  else if (r.startsWith('#/lyrics')) { html += publicNav('lyrics') + lyricsRoute(); }
   else if (r.startsWith('#/usage')) {
     if (S.session && !S.usageLoading && (S.usage === null || String(S.usageFor) !== String(S.usagePeriod))) loadUsage();
     html += publicNav('usage') + usagePage();
@@ -3207,7 +3487,7 @@ function render(){
     else html += attendanceGrid(attTabs + rangeCtrl('grid', true));
   }
   const keep = {};
-  ['edit-name','edit-joined','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name','em','pw'].forEach(id => {
+  ['edit-name','edit-joined','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name','edit-song-pv','em','pw'].forEach(id => {
     const n = document.getElementById(id);
     if (n) keep[id] = { v: n.value, f: n === document.activeElement, p: n.selectionStart };
   });
@@ -3302,6 +3582,7 @@ async function signIn(){
   S.session = data.session; S.error = ''; location.hash = '#/admin/attendance';
 }
 function afterRender(){
+  document.querySelectorAll('textarea.lyrta').forEach(autoGrow);
   /* Place the switcher thumbs before this frame paints: waiting a frame showed the
      plain CSS pill at the new spot first, which is the flash. */
   syncThumbs();
@@ -3397,6 +3678,10 @@ document.addEventListener('change', e => {
 document.addEventListener('input', e => {
   if (!e.target || !e.target.id) return;
   if (e.target.id === 'rules-edit' && S.rulesEdit) S.rulesEdit[S.lang] = e.target.value;
+  if (e.target.id === 'lyr-pv') S.lyrPv = e.target.value;
+  if (e.target.id === 'lyr-paste') { S.lyrPasteTxt = e.target.value; autoGrow(e.target); }
+  const lyi = e.target.id.match(/^lyr-t-(\d+)$/);
+  if (lyi && S.lyrDraft && S.lyrDraft[+lyi[1]]) { S.lyrDraft[+lyi[1]].x = e.target.value; autoGrow(e.target); }
   if (e.target.id.startsWith('audio-') && S.audioEdit) S.audioDraft = e.target.value;   // survives any re-render
 });
 /* recordings are plain links, so they are counted here rather than in the
@@ -3406,7 +3691,7 @@ document.addEventListener('click', e => {
   if (a && a.dataset.song) track('audio', a.dataset.song);
 }, true);
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel]');
+  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -3672,6 +3957,94 @@ document.addEventListener('click', async e => {
       + (lines.length ? lines.join('\n') + '\n\n' : '')
       + t('listenHere') + '\n' + pageURL('#/o/' + shortId(ev.id)));
   }
+  if (d.admRow) { S.admRow = S.admRow === d.admRow ? null : d.admRow; S.audioEdit = null; return render(); }
+  if (d.lyrMissing) { S.lyrMissing = d.lyrMissing === '1'; return render(); }
+  if (d.lyrEdit) {
+    startLyrDraft(d.lyrEdit); S.lyrFor = d.lyrEdit; S.admRow = null;
+    if (el.tagName === 'A') return;      // the link changes the hash, which redraws
+    return render();
+  }
+  if (el.hasAttribute('data-lyr-cancel')) {
+    if (lyrDirty() && !confirm(t('discardQ'))) return;
+    S.lyrFor = null; S.lyrDraft = null; return render();
+  }
+  if (d.lyrCopy) {
+    const song = S.songs.find(x => x.id === d.lyrCopy);
+    if (!song || !hasLyrics(song)) return;
+    /* One blank line between blocks, because SoftProjector cuts slides on it.
+       Verses run bare — their order says what they are — but a chorus, bridge or
+       ending is named on its own line, so the operator can see what comes back. */
+    const labels = blockLabels(song.lyrics);
+    return copyShare(song.lyrics.map((bl, i) => {
+      const body = String(bl.x || '').trim();
+      return bl.t === 'v' ? body : labels[i] + ':\n' + body;
+    }).join('\n\n'), t('lyrCopied'));
+  }
+  if (d.lyrSave) {
+    const box = document.getElementById('lyr-pv');
+    if (box) S.lyrPv = box.value;
+    if (!await ensureSession()) return;
+    const blocks = (S.lyrDraft || []).map(b => ({ t: b.t, x: String(b.x || '').trim() })).filter(b => b.x);
+    const digits = String(S.lyrPv || '').replace(/\D/g, '');
+    const pv = digits ? +digits : null;
+    const res = await sb.from('songs').update({ lyrics: blocks.length ? blocks : null, pv_number: pv })
+      .eq('id', d.lyrSave).select();
+    if (!wrote(res)) return render();
+    const song = S.songs.find(x => x.id === d.lyrSave);
+    if (song) { song.lyrics = blocks.length ? blocks : null; song.pv_number = pv; }
+    S.lyrFor = null; S.lyrDraft = null; okToast(t('lyrSaved'));
+    return render();
+  }
+  if (d.blkAdd) { S.lyrDraft = (S.lyrDraft || []).concat([{ t: d.blkAdd, x: '' }]); return render(); }
+  if (d.blkUp || d.blkDown) {
+    const L = S.lyrDraft || [], i = +(d.blkUp || d.blkDown), j = d.blkUp ? i - 1 : i + 1;
+    if (!L[i] || !L[j]) return;
+    const swap = L[i]; L[i] = L[j]; L[j] = swap;
+    return render();
+  }
+  if (d.blkDup) {
+    const L = S.lyrDraft || [], i = +d.blkDup;
+    if (!L[i]) return;
+    L.splice(i + 1, 0, { t: L[i].t, x: L[i].x });
+    return render();
+  }
+  if (d.blkDel) {
+    const L = S.lyrDraft || [], i = +d.blkDel;
+    if (!L[i]) return;
+    if (String(L[i].x).trim() && !confirm(t('delBlockQ'))) return;
+    L.splice(i, 1);
+    if (!L.length) L.push({ t:'v', x:'' });
+    return render();
+  }
+  if (d.lyrPaste) { S.lyrPasteOpen = d.lyrPaste === '1'; if (!S.lyrPasteOpen) S.lyrPasteTxt = ''; return render(); }
+  if (el.hasAttribute('data-lyr-split')) {
+    const box = document.getElementById('lyr-paste');
+    const chunks = String((box ? box.value : S.lyrPasteTxt) || '').replace(/\r/g, '')
+      .split(/\n\s*\n+/).map(x => x.trim()).filter(Boolean);
+    const made = [];
+    chunks.forEach(c => {
+      const first = c.split('\n')[0].trim();
+      const m = first.match(/^(припев|хор|chorus|refrain|куплет|verse|бридж|bridge|концовка|ending|coda)[\s.:)\-–—0-9]*$/i);
+      let ty = 'v', body = c;
+      if (m) {
+        const w = m[1].toLowerCase();
+        ty = /припев|хор|chorus|refrain/.test(w) ? 'c'
+           : /бридж|bridge/.test(w) ? 'b'
+           : /концовка|ending|coda/.test(w) ? 'e' : 'v';
+        body = c.split('\n').slice(1).join('\n').trim();
+      }
+      if (!body) return;
+      /* the same words coming round again is a chorus, labelled or not */
+      const twin = made.find(x => x.x === body);
+      if (!m && twin) { if (twin.t === 'v') twin.t = 'c'; ty = twin.t; }
+      made.push({ t: ty, x: body });
+    });
+    if (!made.length) return;
+    S.lyrDraft = (S.lyrDraft || []).filter(b => String(b.x || '').trim()).concat(made);
+    S.lyrPasteOpen = false; S.lyrPasteTxt = '';
+    okToast(t('lyrSplitN')(made.length));
+    return render();
+  }
   if (d.export) { return exportCSV(d.export); }
   if (el.hasAttribute('data-backup')) { return fullBackup(); }
   if (el.hasAttribute('data-dismiss')) { S.toast = ''; S.retry = null; return render(); }
@@ -3684,7 +4057,10 @@ document.addEventListener('click', async e => {
     const subtitle = document.getElementById('new-song-sub').value.trim() || null;
     const catEl = document.getElementById('new-song-cat');
     const category_id = catEl && catEl.value ? catEl.value : null;
-    const { data, error } = await sb.from('songs').insert({ title, subtitle, category_id }).select().single();
+    const pvEl = document.getElementById('new-song-pv');
+    const pvDigits = pvEl ? String(pvEl.value).replace(/\D/g, '') : '';
+    const pv_number = pvDigits ? +pvDigits : null;
+    const { data, error } = await sb.from('songs').insert({ title, subtitle, category_id, pv_number }).select().single();
     if (error) return fail(error);
     S.songs.push(data); S.songs.sort((a,b) => a.title.localeCompare(b.title)); return render();
   }
@@ -3784,9 +4160,13 @@ document.addEventListener('click', async e => {
     const subtitle = (ss && ss.value.trim()) || null;
     const cs = document.getElementById('edit-song-cat');
     const category_id = cs ? (cs.value || null) : (s.category_id || null);
-    const res = await sb.from('songs').update({ title: clean, subtitle, category_id }).eq('id', s.id).select();
+    const pe = document.getElementById('edit-song-pv');
+    const pd = pe ? String(pe.value).replace(/\D/g, '') : '';
+    const pv_number = pe ? (pd ? +pd : null) : (s.pv_number == null ? null : s.pv_number);
+    const res = await sb.from('songs').update({ title: clean, subtitle, category_id, pv_number }).eq('id', s.id).select();
     if (!wrote(res)) return render();
-    s.title = clean; s.subtitle = subtitle; s.category_id = category_id;
+    s.title = clean; s.subtitle = subtitle; s.category_id = category_id; s.pv_number = pv_number;
+
     S.songs.sort((a,b) => a.title.localeCompare(b.title));
     S.editSongRow = null; return render();
   }
@@ -3877,7 +4257,13 @@ document.addEventListener('change', async e => {
     else okToast(t('partMoved')(s.name, t(next)));
     return;
   }
+  if (el.hasAttribute('data-blk-t')) {
+    const i = +el.dataset.blkT;
+    if (S.lyrDraft && S.lyrDraft[i]) { S.lyrDraft[i].t = el.value; render(); }
+    return;
+  }
   if (el.hasAttribute('data-cat-filter')) { S.catFilter = el.value; return render(); }
+
   if (el.dataset.credit && S.edit) {
     const [slot, songId] = el.dataset.credit.split(':');
     const v = S.edit.sel.get(songId);
