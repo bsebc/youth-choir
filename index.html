@@ -613,6 +613,8 @@
   .qx:hover{background:var(--rule)}
   .cnt{width:46px;flex:none;text-align:right;font-size:var(--fs-12);color:var(--muted);font-variant-numeric:tabular-nums}
   .tile.order .who{color:var(--chrome-text-2)}
+  /* on a phone the order list needs its width for the song titles */
+  @media (max-width:699px){ .tile.order .olist .who{display:none} }
   .tile.order .who i{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:var(--line-strong)}
   .dr[data-goto-song]{cursor:pointer}
   .dr[data-goto-song]:hover .dd{color:var(--blue-text)}
@@ -1330,13 +1332,14 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '4.3.2';
+const VERSION = '4.3.3';
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '4': {
   en: [
     'Lyrics: a new tile and page with the words to every song, in verse and chorus blocks, with a Copy text button for the projector',
     'The lyrics editor is laid out in cards down one column, with the song book number, the blocks, and a sticky Save bar',
+    'The conductor and pianist names are left off the song order tile on phones, so the titles have the width',
     'Copied lyrics now name the chorus, bridge and ending, so whoever is projecting can see what comes back',
     'On Choir music, tapping anywhere on a song row opens its director tools, right under the button that opened them',
     'The Песнь возрождения number is shown quietly beside each song, and the search box finds songs by that number',
@@ -1365,6 +1368,7 @@ const NOTES = { '4': {
   ru: [
     'Тексты песен: новая плитка и страница со словами каждой песни по куплетам и припевам, с кнопкой «Копировать текст» для проектора',
     'Редактор текста собран в карточки одной колонкой: номер в сборнике, блоки и закреплённая кнопка «Сохранить»',
+    'На телефоне в плитке порядка песнопений не показываются регент и пианист — название песни занимает всю ширину',
     'В скопированном тексте подписаны припев, бридж и концовка — видно, что повторяется',
     'В «Музыке хора» нажатие на строку песни открывает инструменты регента прямо под кнопкой',
     'Номер из «Песни возрождения» тихо стоит рядом с каждой песней, и поиск находит песни по этому номеру',
