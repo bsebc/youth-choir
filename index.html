@@ -1393,11 +1393,12 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '4.6.0';
+const VERSION = '4.6.1';
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '4': {
   en: [
+    'The bottom bar highlight no longer flies past the tab you meant — it snaps to where you let go',
     'Tapping a row or a button no longer leaves it highlighted afterwards on a phone',
     'No grey flash when you tap, and a long press no longer selects button labels',
     'Pulling down on the page can no longer reload the app and lose unsaved marks',
@@ -1443,6 +1444,7 @@ const NOTES = { '4': {
     'Fixed: rows in Summary and Who led open again'
   ],
   ru: [
+    'Подсветка нижней панели больше не улетает за нужную вкладку — она встаёт там, где вы отпустили палец',
     'Нажатая строка или кнопка больше не остаётся подсвеченной на телефоне',
     'Нет серой вспышки при нажатии, а долгое нажатие больше не выделяет подписи кнопок',
     'Потянув страницу вниз, больше нельзя перезагрузить приложение и потерять несохранённые отметки',
@@ -2152,7 +2154,6 @@ function syncDock(){
   moveDockPill();
 }
 function moveDockPill(){
-  if (dockSpring) return;              // a release spring is flying the pill
   const dk = document.querySelector('.dock');
   if (!dk) return;
   const pill = dk.querySelector('.dpill');
@@ -2170,35 +2171,12 @@ function moveDockPill(){
   pill.dataset.set = '1';
   if (fresh) requestAnimationFrame(() => { pill.style.transition = ''; });
 }
-/* Apple's momentum projection (Designing Fluid Interfaces sample code): where
-   would a flick come to rest? Not the physics-textbook v²/2a — the exponential
-   decay form, which is what scroll views actually use. */
-function project(v, decel = 0.998){ return (v / 1000) * decel / (1 - decel); }
 /* At a boundary, resist progressively instead of stopping dead: a hard stop
    reads as frozen, rising resistance reads as "responsive, but nothing more
    here". Sign rides along with the overshoot. */
 function rubberband(over, dim, c = 0.55){
   return (over * dim * c) / (dim + c * Math.abs(over));
 }
-/* A critically damped spring — Apple's damping 1.0, response 0.3: no overshoot,
-   and it starts from wherever the thing already is with whatever velocity it
-   already had, so a release has no seam. Returns its own cancel function, which
-   is what makes it interruptible. */
-function springTo(from, to, v0, onFrame, onDone){
-  const w = 2 * Math.PI / 0.3;
-  let x = from - to, v = v0 || 0, last = performance.now(), raf = 0;
-  const step = now => {
-    const dt = Math.min(0.032, (now - last) / 1000); last = now;
-    v += (-w * w * x - 2 * w * v) * dt;
-    x += v * dt;
-    if (Math.abs(x) < 0.4 && Math.abs(v) < 24) { onFrame(to); return onDone && onDone(); }
-    onFrame(to + x);
-    raf = requestAnimationFrame(step);
-  };
-  raf = requestAnimationFrame(step);
-  return () => { cancelAnimationFrame(raf); };
-}
-let dockSpring = null;          // a release spring owns the pill while it runs
 /* iOS-style draggable highlight: press the lit tab and slide. The pill tracks the
    finger, the tab under it lights up live, and the release commits that tab. */
 let dockNoClick = false;
@@ -2221,14 +2199,12 @@ function wireDockDrag(host){
        not inferred from an inline style that a skipped layout pass may never set */
     const pb = pill.getBoundingClientRect();
     if (!pb.width) return;
-    if (dockSpring) { dockSpring(); dockSpring = null; }   // grab it mid-flight
     const list = items();
     st = { id: e.pointerId, x0: e.clientX, y0: e.clientY, moved: false,
            list, from: list.indexOf(from), target: list.indexOf(from),
            /* hold the pill by the point that was actually grabbed — snapping it
               to the finger's centre is the thing that breaks the illusion */
-           grab: e.clientX - pb.left, pw: pb.width,
-           hist: [{ x: e.clientX, t: e.timeStamp || performance.now() }] };
+           grab: e.clientX - pb.left, pw: pb.width };
     /* capture straight away: the moves then arrive here even if the browser
        retargets or the tab under the finger is re-rendered mid-gesture */
     try { host.setPointerCapture(e.pointerId); } catch (_) {}
@@ -2249,13 +2225,10 @@ function wireDockDrag(host){
     const d = dk.getBoundingClientRect();
     const first = st.list[0].getBoundingClientRect();
     const last = st.list[st.list.length - 1].getBoundingClientRect();
-    st.hist.push({ x: e.clientX, t: e.timeStamp || performance.now() });
-    if (st.hist.length > 6) st.hist.shift();
     /* 1:1 with the finger, then rubber-band past either end rather than jamming */
     let left = e.clientX - st.grab;
     if (left < first.left) left = first.left + rubberband(left - first.left, d.width);
     else if (left > last.left) left = last.left + rubberband(left - last.left, d.width);
-    st.left = left;
     pill.style.transition = 'none';
     pill.style.transform = 'translate(' + (left - d.left) + 'px,' + (first.top - d.top) + 'px)';
     const mid = left + st.pw / 2;
@@ -2278,37 +2251,10 @@ function wireDockDrag(host){
     try { host.releasePointerCapture(s.id); } catch (_) {}
     if (!s.moved) return;
     const pill = pillOf();
+    if (pill) pill.style.transition = '';
+    moveDockPill();                     // snap onto the tab the finger landed on
     dockNoClick = true;                 // the drag must not also fire a tap
     setTimeout(() => { dockNoClick = false; }, 400);
-    /* Velocity over the tail of the gesture, then land where the flick was
-       going — not where the finger happened to stop. A slow drag projects
-       almost nowhere, so it still snaps to the nearest tab. */
-    let vel = 0;
-    if (s.hist && s.hist.length > 1) {
-      const nowT = s.hist[s.hist.length - 1].t;
-      const old = s.hist.find(h => nowT - h.t <= 120) || s.hist[0];
-      const dt = nowT - old.t;
-      if (dt > 8) vel = (s.hist[s.hist.length - 1].x - old.x) / dt * 1000;
-    }
-    if (pill && dk && s.left != null && !calm()) {
-      const landing = s.left + project(vel);
-      let best = s.target, bd = Infinity;
-      s.list.forEach((it, i) => {
-        const b = it.getBoundingClientRect();
-        const dist = Math.abs(b.left - landing);
-        if (dist < bd) { bd = dist; best = i; }
-      });
-      s.target = best;
-      s.list.forEach((it, i) => it.classList.toggle('on', i === best));
-      const box = s.list[best].getBoundingClientRect();
-      const d = dk.getBoundingClientRect(), top = box.top - d.top;
-      pill.style.transition = 'none';
-      /* hand the finger's own velocity to the spring: no seam at the release */
-      dockSpring = springTo(s.left, box.left, vel,
-        x => { pill.style.transform = 'translate(' + (x - d.left) + 'px,' + top + 'px)'; },
-        () => { dockSpring = null; pill.style.transition = ''; moveDockPill(); });
-    }
-    else { if (pill) pill.style.transition = ''; moveDockPill(); }
     if (s.target === s.from) return;
     const el = s.list[s.target];
     if (el.hasAttribute('data-menu')) { S.menuOpen = true; return render(); }
