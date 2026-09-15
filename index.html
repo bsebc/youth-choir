@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <title>BSEBC Youth Choir</title>
 <meta name="description" content="Song orders, attendance and sheet music · Песнопения, посещаемость и ноты">
 <!-- Link preview card. A static site returns the same HTML for every URL, so these
@@ -57,6 +57,13 @@
     --z-float:20; --z-dock:38; --z-scrim:40; --z-drawer:41;
     /* -- radius -- */
     --r-xs:3px; --r-sm:5px; --r-md:8px; --r-lg:11px; --r-xl:15px; --r-2xl:20px; --r-pill:999px;
+    /* -- tracking: size-specific, because one value is wrong somewhere.
+          display tightens as it grows; small text needs the room back -- */
+    --track-display:-.021em; --track-title:-.013em; --track-tight:-.004em;
+    /* -- motion: five curves, named, so nothing forks its own -- */
+    --ease-out:cubic-bezier(.2,.8,.3,1); --ease-drawer:cubic-bezier(.32,.72,0,1);
+    --ease-in-out:cubic-bezier(.77,0,.175,1);
+    --ease-fade:cubic-bezier(.33,0,.2,1); --ease-tile:cubic-bezier(.2,.7,.3,1);
     /* -- type scale (phone values in the media block below) -- */
     --fs-9:9px; --fs-10:10px; --fs-10-5:10.5px; --fs-11:11px; --fs-11-5:11.5px;
     --fs-12:12px; --fs-12-5:12.5px; --fs-13:13px; --fs-13-5:13.5px; --fs-14:14px; --fs-14-5:14.5px;
@@ -114,23 +121,31 @@
   } }
   @media (min-width:900px){ :root{ --nameW:220px; --tallyW:62px; --cell:40px; --songW:280px; } }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--chrome);color:var(--ink);font-size:var(--fs-body);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI',system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;touch-action:manipulation}
+  /* ---- mobile baseline: the platform tells on a web app, removed at the root ---- */
+  html{
+    -webkit-tap-highlight-color:transparent;   /* no grey flash over anything tapped */
+    -webkit-text-size-adjust:100%;             /* no font inflation in landscape */
+    overscroll-behavior:none}                  /* pull-to-refresh must not reload an unsaved sheet */
+  /* controls are not content: they respond at once, and a long press does not
+     select their label or pop the callout. Body text stays selectable. */
+  button,a,[role=button],label.mini,.li.tap,.opt,.dpick,.seat,.chipx{
+    touch-action:manipulation;
+    user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+  body{margin:0;background:var(--chrome);color:var(--ink);font-size:var(--fs-body);font-optical-sizing:auto;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI',system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;touch-action:manipulation}
   input,select,textarea{font-size:var(--fs-16)}  /* 16px or more stops iOS zooming on focus */
   a{color:var(--blue-text);text-decoration:none}
-  a:hover{color:var(--ink)}
   button{font:inherit;cursor:pointer}
   ::placeholder{color:var(--placeholder);opacity:1}
   ::selection{background:var(--selection-bg);color:var(--ink)}
   html{scrollbar-color:var(--line-strong) transparent}
   input,select{font:inherit;color:var(--ink)}
-  .wrap{max-width:1200px;margin:0 auto;background:var(--surface);min-height:100vh;min-height:100lvh;display:flex;flex-direction:column}
+  .wrap{max-width:1200px;margin:0 auto;background:var(--surface);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
   /* masthead */
   .mast{background:var(--chrome);border-bottom:2px solid var(--gold);padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top));padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right));display:flex;align-items:center;gap:11px}
   .logo{width:32px;height:32px;flex:none;display:block}
-  .brand{font-family:inherit;font-weight:700;letter-spacing:-.3px;color:var(--white);font-size:var(--fs-20);line-height:1.1;letter-spacing:.01em}
+  .brand{font-family:inherit;font-weight:700;color:var(--white);font-size:var(--fs-20);line-height:1.1;letter-spacing:.01em}
   .lang{margin-left:auto;display:flex;border:1px solid var(--chrome-line);border-radius:var(--r-pill);overflow:hidden}
   .lang button{padding:5px 11px;font-size:var(--fs-12);font-weight:600;border:0;background:transparent;color:var(--chrome-text);letter-spacing:.04em;transition:background .16s ease,color .16s ease}
-  .lang button:hover:not(.on){color:var(--white)}
   .lang button.on{background:var(--gold);color:var(--ink)}
   .nav{display:flex;align-items:center;gap:2px;background:var(--chrome);padding:5px 8px;
     overflow-x:auto;overflow-y:visible;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -138,9 +153,7 @@
   .nav a,.nav .navbtn{flex:none;display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 12px;
     border:0;background:transparent;border-radius:var(--r-md);font-family:inherit;font-size:var(--fs-14);font-weight:500;
     line-height:1;color:var(--chrome-text);white-space:nowrap;transition:background .16s ease,color .16s ease}
-  .nav a:hover,.nav .navbtn:hover{color:var(--white);background:rgba(255,255,255,.08)}
   .nav a.on,.nav .navbtn.on{color:var(--on-gold);background:var(--gold);font-weight:600}
-  .nav a.on:hover,.nav .navbtn.on:hover{color:var(--ink);background:var(--gold-hover)}
   .nav .right{margin-left:auto}
   .nav .right.out{display:flex;align-items:center;gap:6px;opacity:.85}
 
@@ -149,7 +162,6 @@
   /* a two-line label (Russian) must not push its neighbours to the top */
   .tabs a{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;padding:10px 4px;text-align:center;
     font-size:var(--fs-15);line-height:1.2;color:var(--muted);border-bottom:3px solid transparent;transition:color .16s ease,border-color .16s ease}
-  .tabs a:hover{color:var(--ink)}
   .tabs a.on{color:var(--ink);font-weight:700;border-bottom-color:var(--ink)}
   .ctrl{background:var(--surface);padding:12px 14px 14px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:10px}
   .ctlbar{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--rule)}
@@ -177,12 +189,10 @@
   .savebar .st.live{color:var(--ink);font-weight:600}
   .savebar .sb{min-height:44px;padding:0 20px;border-radius:var(--r-pill);font-size:var(--fs-15);font-weight:600;border:1px solid var(--rule);
     background:var(--surface);color:var(--text-2);transition:background .15s ease,border-color .15s ease,opacity .15s ease}
-  .savebar .sb.ghost:hover{background:var(--paper)}
   .savebar .sb.go{background:var(--blue);border-color:var(--blue-text);color:var(--white)}
-  .savebar .sb.go:hover{background:var(--blue-hover)}
   .savebar .sb[disabled]{opacity:.45;cursor:default}
   .caret{width:20px;flex:none;display:flex;align-items:center;justify-content:flex-end;color:var(--faint)}
-  .caret svg{transition:transform .16s ease}
+  .caret svg{transition:transform .16s var(--ease-in-out)}
   .caret.up svg{transform:rotate(180deg)}
   .li.on .caret{color:var(--blue-text)}
   .subrow{background:var(--surface-2);border-bottom:1px solid var(--rule);padding:4px 16px 12px}
@@ -196,9 +206,8 @@
   .ver{padding:4px 16px 24px;text-align:center;font-size:var(--fs-12);color:var(--faint);
     font-variant-numeric:tabular-nums;letter-spacing:.04em}
   .ver a{color:var(--faint);text-decoration:underline;text-underline-offset:2px}
-  .ver a:hover{color:var(--ink)}
   .notespanel{margin:0 16px 28px;padding:14px 16px;border:1px solid var(--card-line);border-radius:var(--r-lg);background:var(--surface-2)}
-  .notespanel .nh{font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-15);margin-bottom:8px}
+  .notespanel .nh{font-family:inherit;font-weight:700;letter-spacing:var(--track-title);font-size:var(--fs-15);margin-bottom:8px}
   .notespanel ul{margin:0;padding-left:18px;display:grid;gap:5px}
   .notespanel li{font-size:var(--fs-13);color:var(--text-2);line-height:1.35}
   .body.adm{background:var(--paper);padding-bottom:18px}
@@ -209,7 +218,6 @@
   @media (min-width:900px){ .sec{margin:16px 20px 0} }
   .addbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border:0;background:var(--surface);color:var(--blue-text);font-weight:600;font-size:var(--fs-15);font-family:inherit;transition:background .15s ease}
   .addbtn i{font-style:normal;width:22px;height:22px;flex:none;border-radius:50%;background:var(--blue-wash);border:1px solid var(--blue-line);display:flex;align-items:center;justify-content:center;font-size:var(--fs-15);line-height:1}
-  .addbtn:hover{background:var(--surface-2)}
   .addbtn.open{color:var(--muted)}
   .addbtn.open i{background:var(--paper);border-color:var(--rule);color:var(--muted)}
   .sectbar em{font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;color:var(--faint);margin-left:8px}
@@ -238,11 +246,9 @@
   .dpick span{display:block;border:1px solid var(--rule);border-radius:var(--r-md);background:var(--surface-2);
     padding:10px 11px;font-size:var(--fs-15);line-height:1.2;color:var(--ink);text-align:center;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:border-color .15s ease,background .15s ease}
-  .dpick:hover span{border-color:var(--line-strong-2);background:var(--surface)}
   .dpick.hdr{position:relative;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
     width:30px;height:30px;border-radius:50%;color:var(--blue-text);background:rgba(var(--blue-rgb),.08);
     align-self:center;flex:none}
-  .dpick.hdr:hover{background:rgba(var(--blue-rgb),.16)}
   .dpick input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;
     -webkit-appearance:none;appearance:none;border:0;padding:0;background:transparent}
   .dpick:focus-within span{border-color:var(--blue-text);background:var(--surface);box-shadow:0 0 0 3px rgba(var(--blue-rgb),.12)}
@@ -253,20 +259,21 @@
   .pager .pg{flex:1;text-align:center;font-size:var(--fs-13);color:var(--muted);font-variant-numeric:tabular-nums}
   a.back{text-decoration:none}
   .back{border:0;background:transparent;font-size:var(--fs-26);line-height:1;color:var(--faint);padding:0 8px 0 0;margin-right:2px}
-  .back:hover{color:var(--ink)}
   .searchrow{padding:12px;background:var(--surface);border-bottom:1px solid var(--rule)}
-  .hero{padding:22px 16px 4px;font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-19);line-height:1.3;color:var(--ink);background:var(--surface);text-wrap:pretty}
+  .hero{padding:22px 16px 4px;font-family:inherit;font-weight:700;letter-spacing:var(--track-title);font-size:var(--fs-19);line-height:1.3;color:var(--ink);background:var(--surface);text-wrap:pretty}
   .hero::after{content:'';display:block;width:38px;height:2px;background:var(--gold);margin-top:12px}
   .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 16px 28px;background:var(--surface)}
   @media (min-width:700px){ .tiles{grid-template-columns:repeat(3,1fr);gap:16px;padding:18px 20px 34px} }
   .tile{display:flex;flex-direction:column;gap:12px;border:1px solid var(--card-line);border-radius:var(--r-2xl);padding:16px;background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(var(--shadow-rgb),.05);transition:box-shadow .18s ease,border-color .18s ease,transform .18s ease}
-  .tile:hover{border-color:var(--line-strong);box-shadow:0 10px 26px -12px rgba(var(--shadow-rgb),.28);transform:translateY(-2px)}
+  /* a touchscreen fires a false hover on tap and keeps it — the lift is for mice */
+  @media (hover: hover) and (pointer: fine){
+    .tile:hover{border-color:var(--line-strong);box-shadow:0 10px 26px -12px rgba(var(--shadow-rgb),.28);transform:translateY(-2px)}
+  }
   .tile:active{transform:translateY(0);box-shadow:0 1px 2px rgba(var(--shadow-rgb),.05)}
-  .tile .tt{font-family:inherit;font-weight:600;letter-spacing:-.2px;font-size:var(--fs-15-5);line-height:1.2}
+  .tile .tt{font-family:inherit;font-weight:600;letter-spacing:var(--track-title);font-size:var(--fs-15-5);line-height:1.2}
   .tile .ts{font-size:var(--fs-12);color:var(--muted);line-height:1.3;text-wrap:pretty}
   /* app-style icons, drawn from plain divs */
   .ic{width:52px;height:52px;border-radius:var(--r-xl);background:var(--ic-bg);border:1px solid var(--ic-line);display:flex;align-items:center;justify-content:center;padding:9px;box-shadow:inset 0 1px 0 var(--white)}
-  .tile:hover .ic{border-color:var(--line-strong)}
   .ic-note{width:26px;height:26px;display:block}
   .ic-tile{width:100%;height:100%;display:block;overflow:visible}
   .ic{color:var(--blue-text)}
@@ -278,11 +285,9 @@
   .chips{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
   .chips::-webkit-scrollbar{display:none}
   .chips button{flex:1;padding:7px 10px;border-radius:var(--r-pill);font-size:var(--fs-13);border:1px solid var(--rule);background:var(--paper);color:var(--text-2);white-space:nowrap;transition:background .15s ease,border-color .15s ease,color .15s ease}
-  .chips button:hover:not(.on){border-color:var(--line-strong-2);background:var(--surface)}
   .chips button.on{background:var(--chrome);color:var(--white);border-color:var(--ink);font-weight:600}
   .seg{display:flex;border:1px solid var(--rule);border-radius:var(--r-pill);overflow:hidden}
   .seg button{flex:1;padding:8px 6px;font-size:var(--fs-14);border:0;background:var(--surface);color:var(--text-2);border-left:1px solid var(--rule);transition:background .15s ease,color .15s ease}
-  .seg button:hover:not(.on){background:var(--paper)}
   .seg button:first-child{border-left:0}
   .seg button.on{background:var(--chrome);color:var(--white);font-weight:600}
   .field{width:100%;max-width:100%;min-width:0;border:1px solid var(--rule);border-radius:var(--r-md);padding:10px 11px;font-size:var(--fs-16);background:var(--surface-2);transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
@@ -302,16 +307,16 @@
   .spacer{width:calc(var(--nameW) + var(--tallyW));flex:none;position:sticky;left:0;z-index:var(--z-colhead);background:var(--surface);border-right:2px solid var(--ink)}
   .hmonth{position:sticky;top:0;z-index:var(--z-head)}
   .hmonth .spacer{z-index:var(--z-top);height:26px;background:var(--paper-2);border-bottom:1px solid var(--rule)}
-  .hmonth .m{height:26px;flex:none;display:flex;align-items:center;justify-content:center;font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-13);background:var(--paper-2);border-right:1px solid var(--grid-line);border-bottom:1px solid var(--rule);white-space:nowrap;overflow:hidden}
+  .hmonth .m{height:26px;flex:none;display:flex;align-items:center;justify-content:center;font-family:inherit;font-weight:700;letter-spacing:var(--track-tight);font-size:var(--fs-13);background:var(--paper-2);border-right:1px solid var(--grid-line);border-bottom:1px solid var(--rule);white-space:nowrap;overflow:hidden}
   .hday{position:sticky;top:26px;z-index:var(--z-head)}
-  .hday .spacer{z-index:var(--z-top);height:40px;display:flex;align-items:center;padding:0 8px;font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-13);color:var(--muted);border-bottom:2px solid var(--ink)}
+  .hday .spacer{z-index:var(--z-top);height:40px;display:flex;align-items:center;padding:0 8px;font-family:inherit;font-weight:700;letter-spacing:var(--track-tight);font-size:var(--fs-13);color:var(--muted);border-bottom:2px solid var(--ink)}
   .hday .d{width:var(--cell);flex:none;height:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:var(--surface);border-right:1px solid var(--grid-line);border-bottom:2px solid var(--ink)}
   .hday .d.svc{background:var(--blue-tint)}
   .hday .d span{font-size:var(--fs-15);font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
   .hday .d em{font-size:var(--fs-10);font-style:normal;color:var(--muted);line-height:1}
   .hday .d.svc em{color:var(--blue-text)}
   .sect{display:flex;min-width:100%;position:sticky;top:66px;z-index:var(--z-sect)}
-  .sect .lbl{width:calc(var(--nameW) + var(--tallyW));flex:none;position:sticky;left:0;z-index:var(--z-colhead);background:var(--paper);color:var(--ink);border-left:3px solid var(--gold);border-bottom:1px solid var(--rule);height:28px;display:flex;align-items:center;padding:0 10px;font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-12);letter-spacing:.16em}
+  .sect .lbl{width:calc(var(--nameW) + var(--tallyW));flex:none;position:sticky;left:0;z-index:var(--z-colhead);background:var(--paper);color:var(--ink);border-left:3px solid var(--gold);border-bottom:1px solid var(--rule);height:28px;display:flex;align-items:center;padding:0 10px;font-family:inherit;font-weight:700;letter-spacing:var(--track-tight);font-size:var(--fs-12);letter-spacing:.16em}
   .sect.soprano .lbl{border-left-color:var(--gold-hover)}
   .sect.alto .lbl{border-left-color:var(--blue-hover)}
   .sect.tenor .lbl{border-left-color:var(--green)}
@@ -357,8 +362,6 @@
   .sectbar.bass::before{background:var(--blue-line)}
   .li{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rule);background:var(--surface)}
   .li.tap{min-height:58px;cursor:pointer;user-select:none;transition:background .14s ease}
-  .li.tap:hover{background:var(--surface-2)}
-  .li.tap:hover.off{background:var(--red-wash)}
   .mini.locked{background:var(--gold-wash);border-color:var(--gold-soft-2);color:var(--gold-text);cursor:default}
   .mini.on{background:var(--gold-wash);border-color:var(--gold-soft-2);color:var(--gold-text)}
   .mini.icon{padding:0;width:40px;flex:none}
@@ -366,10 +369,9 @@
   .ord{width:26px;flex:none;font-weight:700;font-variant-numeric:tabular-nums;color:var(--blue-text)}
   .tile.order{grid-column:1/-1;background:var(--order-bg);color:var(--on-chrome);border-color:var(--order-line);
     box-shadow:0 12px 30px -16px rgba(var(--shadow-rgb),.55)}
-  .tile.order:hover{border-color:var(--gold);box-shadow:0 16px 34px -14px rgba(var(--shadow-rgb),.6)}
   .tile.order .oh{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
   .tile.order .tt{font-size:var(--fs-12);letter-spacing:.10em;text-transform:uppercase;color:var(--gold);font-weight:700}
-  .tile.order .od{font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-24);line-height:1.15;margin-top:4px}
+  .tile.order .od{font-family:inherit;font-weight:700;letter-spacing:var(--track-display);font-size:var(--fs-24);line-height:1.15;margin-top:4px}
   .tile.order .ok{font-size:var(--fs-13);color:var(--chrome-text-2);margin-top:2px}
   .tile.order .ic{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);color:var(--gold-soft)}
   .tile.order .olist{margin:4px 0 0;padding:0 0 0 22px;display:grid;gap:5px}
@@ -380,7 +382,6 @@
   .ofoot{display:flex;margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.16)}
   .obtn{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:var(--r-pill);font-size:var(--fs-14);font-weight:600;
     color:var(--onnavy-btn-ink);background:var(--onnavy-btn-bg);transition:filter .15s ease}
-  .obtn:hover{filter:brightness(1.07)}
   .obtn svg{width:17px;height:17px}
   .obar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px 14px}
   .obar .op{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:7px 13px;border-radius:var(--r-pill);background:var(--op-bg);
@@ -429,10 +430,9 @@
     transition:box-shadow .12s ease,border-color .12s ease}
   .seat[disabled]{opacity:1;cursor:default}
   .seat.empty{background:var(--paper-2);border-style:dashed;border-color:var(--rule)}
-  .seat:not([disabled]):hover{border-color:var(--blue-text)}
   .seat.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);background:var(--gold-paper)}
   .doc{background:var(--surface);padding:18px 16px 44px;max-width:760px;margin:0 auto;font-size:var(--fs-16);line-height:1.62;color:var(--text-2)}
-  .doc h3{font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-20);color:var(--ink);margin:30px 0 10px;padding-bottom:7px;border-bottom:1px solid var(--rule)}
+  .doc h3{font-family:inherit;font-weight:700;letter-spacing:var(--track-display);font-size:var(--fs-20);color:var(--ink);margin:30px 0 10px;padding-bottom:7px;border-bottom:1px solid var(--rule)}
   .doc h3:first-child{margin-top:4px}
   .doc p{margin:0 0 13px;text-wrap:pretty}
   .doc ol,.doc ul{margin:0 0 16px;padding-left:26px;display:grid;gap:10px}
@@ -470,7 +470,6 @@
   .mini.locked{gap:5px}
   .mini.sheet,.mini.trash{display:inline-flex;align-items:center;gap:5px}
   .mini.play{display:inline-flex;align-items:center;gap:5px;color:var(--blue-text);border-color:var(--blue-line);background:var(--blue-wash)}
-  .mini.play:hover{background:var(--blue-wash)}
   .mini.go{background:var(--chrome);border-color:var(--ink);color:var(--white)}
   .li.audiorow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--surface-2)}
   .li.audiorow .field{flex:1;min-width:200px}
@@ -490,7 +489,7 @@
   .lyrtitle .lyrwho{flex:1;min-width:0}
   .pvbig{flex:none;font-variant-numeric:tabular-nums;font-weight:700;font-size:var(--fs-20);color:var(--gold-text);line-height:1.05}
   .pvbig span{font-size:var(--fs-13);font-weight:600;color:var(--faint);margin-right:2px}
-  .lyrhd .tl{font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-20);line-height:1.15;text-wrap:pretty}
+  .lyrhd .tl{font-family:inherit;font-weight:700;letter-spacing:var(--track-display);font-size:var(--fs-20);line-height:1.15;text-wrap:pretty}
   .lyrhd .mt{font-size:var(--fs-13);color:var(--muted);font-variant-numeric:tabular-nums}
   .lyrhd .acts{flex-wrap:wrap}
   .lyrhd .acts .mini{display:inline-flex;align-items:center;gap:6px}
@@ -505,7 +504,6 @@
   .lyrback{display:inline-flex;align-items:center;gap:3px;align-self:flex-start;padding:2px 2px 2px 0;margin:-2px 0;
     font-size:var(--fs-13-5);font-weight:600;color:var(--blue-text);text-decoration:none}
   .lyrback svg{width:16px;height:16px;flex:none;margin-left:-4px}
-  .lyrback:hover{color:var(--blue-hover)}
   .lyrpage .savebar{margin-top:auto}
   /* one block of the song being worded */
   .lyrb{display:flex;flex-direction:column;gap:9px;padding:12px 14px;border-bottom:1px solid var(--rule);background:var(--surface)}
@@ -526,7 +524,6 @@
   .pvrow .field{width:104px;flex:none;text-align:center;font-variant-numeric:tabular-nums;font-weight:600}
   .li.off{background:var(--red-wash)}
   .li.na{background:var(--paper-2)}
-  .li.tap:hover.na{background:var(--paper)}
   .li.na .nm{color:var(--faint)}
   .li.na .pill{background:var(--rule);color:var(--muted)}
   .li .nm{font-size:var(--fs-17)}
@@ -546,16 +543,16 @@
   .acts{display:flex;gap:8px;flex:none;align-items:center}
   .step.fold{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;padding:0;cursor:pointer;text-align:left}
   .step.fold .chev{margin-left:auto;width:9px;height:9px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);
-    transform:rotate(45deg);transition:transform .15s ease;flex:none}
+    transform:rotate(45deg);transition:transform .15s var(--ease-in-out);flex:none}
   .step.fold .chev.up{transform:rotate(225deg)}
   label.mini{cursor:pointer}
   .btn{display:block;width:100%;background:var(--blue);color:var(--white);text-align:center;font-size:var(--fs-17);font-weight:600;padding:15px 0;border-radius:var(--r-md);border:0}
   .btn.ghost{background:var(--surface);color:var(--blue-text);border:1px solid var(--blue)}
   .pad{padding:16px}
   .note{padding:14px 16px 24px;font-size:var(--fs-13);color:var(--muted);text-wrap:pretty}
-  .h{font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-17);padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:8px}
+  .h{font-family:inherit;font-weight:700;letter-spacing:var(--track-title);font-size:var(--fs-17);padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:8px}
   .h .n{margin-left:auto;font-weight:600;font-variant-numeric:tabular-nums}
-  .step{font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-15);color:var(--text-2);letter-spacing:.06em}
+  .step{font-family:inherit;font-weight:700;font-size:var(--fs-15);color:var(--text-2);letter-spacing:.06em}
   .card{background:var(--surface);padding:16px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:10px;overflow:hidden}
   .opt{display:flex;align-items:center;gap:12px;min-height:54px;padding:0 14px;border:1px solid var(--rule);border-radius:var(--r-md);background:var(--surface);cursor:pointer}
   .opt.on{border:2px solid var(--ink);background:var(--blue-wash)}
@@ -567,7 +564,7 @@
   .err{color:var(--red)}
   .svc-card{background:var(--surface);border-bottom:1px solid var(--rule);padding:13px 16px;display:flex;flex-direction:column;gap:8px}
   .svc-card .top{display:flex;align-items:baseline;gap:10px}
-  .svc-card .date{font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-17)}
+  .svc-card .date{font-family:inherit;font-weight:700;letter-spacing:var(--track-title);font-size:var(--fs-17)}
   .svc-card .kind{font-size:var(--fs-12);color:var(--blue-text);border:1px solid var(--blue-line);background:var(--blue-wash);border-radius:var(--r-pill);padding:3px 9px}
   .svc-card .s{font-size:var(--fs-15);color:var(--text-2);padding-left:14px;border-left:2px solid var(--rule)}
   .loginwrap{display:flex;justify-content:center;padding:6vh 16px 40px}
@@ -575,13 +572,13 @@
     width:min(410px,100%);border-radius:var(--r-2xl);
     background:var(--glass-3);backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);
     border:1px solid var(--glass-hi);box-shadow:0 30px 70px -34px rgba(var(--shadow-rgb),.5),0 2px 0 rgba(255,255,255,.7) inset;
-    animation:loginin .4s cubic-bezier(.2,.8,.3,1)}
+    animation:loginin .4s var(--ease-out)}
   @keyframes loginin{from{opacity:0;transform:translateY(14px) scale(.985)}}
   .login .lhead{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
   .login .lmark{width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:var(--r-2xl);
     background:linear-gradient(165deg,var(--navy-deep),var(--chrome))}
   .login .lmark .logo{filter:none;width:30px;height:30px}
-  .login .lt{font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-24);line-height:1.15}
+  .login .lt{font-family:inherit;font-weight:700;letter-spacing:var(--track-display);font-size:var(--fs-24);line-height:1.15}
   .login label{display:block;margin-bottom:7px;font-size:var(--fs-12-5);font-weight:600;letter-spacing:.07em;
     text-transform:uppercase;color:var(--muted)}
   .login input{width:100%;background:var(--glass-in);border:1px solid var(--rule);border-radius:var(--r-lg);
@@ -589,14 +586,14 @@
   .login input:focus{outline:0;background:var(--surface);border-color:var(--blue-text);box-shadow:0 0 0 4px rgba(var(--blue-rgb),.13)}
   .login .btn{background:linear-gradient(165deg,var(--blue-hi),var(--blue));border-radius:var(--r-xl);font-size:var(--fs-16);
     box-shadow:0 12px 26px -12px rgba(var(--blue-rgb),.75)}
-  .login .btn:hover{background:linear-gradient(165deg,var(--blue-hi),var(--blue-hover))}
   .login .err{border-radius:var(--r-lg)}
   .toast.ok{background:rgba(63,125,78,.92)}
   .toast{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:var(--z-float);
     max-width:520px;margin-inline:auto;border-radius:var(--r-xl);background:rgba(158,59,46,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:var(--white);display:flex;
     align-items:center;gap:12px;padding:12px 14px;font-size:var(--fs-14);
-    box-shadow:0 14px 34px -12px rgba(var(--shadow-rgb),.55);animation:toastin .18s ease-out}
+    box-shadow:0 14px 34px -12px rgba(var(--shadow-rgb),.55);animation:toastin .18s var(--ease-out)}
   @keyframes toastin{from{opacity:0;transform:translateY(8px)}}
+  @keyframes fadein{from{opacity:0}}
   /* a sticky save bar owns the bottom edge, so the toast sits above it */
   #app:has(.savebar) .toast{bottom:calc(74px + env(safe-area-inset-bottom))}
   .toast button{background:rgba(255,255,255,.18);color:var(--white);border:0;border-radius:var(--r-pill);padding:8px 12px;font-weight:600}
@@ -610,14 +607,12 @@
   .qwrap{position:relative;display:block;min-width:0;flex:1}
   .qwrap .field{padding-right:40px}
   .qx{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:0;border-radius:50%;background:var(--paper);color:var(--muted);font-size:var(--fs-15);line-height:1;display:flex;align-items:center;justify-content:center}
-  .qx:hover{background:var(--rule)}
   .cnt{width:46px;flex:none;text-align:right;font-size:var(--fs-12);color:var(--muted);font-variant-numeric:tabular-nums}
   .tile.order .who{color:var(--chrome-text-2)}
   /* on a phone the order list needs its width for the song titles */
   @media (max-width:699px){ .tile.order .olist .who{display:none} }
   .tile.order .who i{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:var(--line-strong)}
   .dr[data-goto-song]{cursor:pointer}
-  .dr[data-goto-song]:hover .dd{color:var(--blue-text)}
 
   /* ==== slide-out menu (classic palette) ==== */
   body.mlock{overflow:hidden}
@@ -625,28 +620,25 @@
     border:1px solid var(--chrome-line);border-radius:var(--r-pill);background:transparent;color:var(--chrome-text-2);
     transition:background .15s ease,color .15s ease,border-color .15s ease}
   .themebtn svg{width:16px;height:16px}
-  .themebtn:hover{color:var(--white);border-color:var(--chrome-line-2);background:rgba(255,255,255,.08)}
   .themebtn:active{transform:scale(.94)}
   .menubtn{width:36px;height:36px;flex:none;display:flex;align-items:center;justify-content:center;
     border:1px solid var(--chrome-line);border-radius:var(--r-lg);background:transparent;color:var(--chrome-icon);
     transition:background .15s ease,color .15s ease}
-  .menubtn:hover{background:rgba(255,255,255,.1);color:var(--white)}
   .scrim{position:fixed;inset:0;z-index:var(--z-scrim);background:var(--scrim);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .2s ease}
-  .scrim.on{opacity:1;pointer-events:auto;animation:scrimin .22s ease}
+  .scrim.on{opacity:1;pointer-events:auto;animation:scrimin .22s var(--ease-out)}
   @keyframes scrimin{from{opacity:0}}
   .drawer{position:fixed;top:0;right:0;bottom:0;z-index:var(--z-drawer);width:min(300px,84vw);display:flex;flex-direction:column;
     background:var(--chrome);
     color:var(--white);visibility:hidden;transform:translateX(105%);overflow-y:auto;
     border-left:1px solid rgba(201,162,39,.45);box-shadow:-24px 0 60px -28px rgba(0,0,0,.75);
     padding:calc(12px + env(safe-area-inset-top)) 12px calc(14px + env(safe-area-inset-bottom))}
-  .drawer.on{visibility:visible;transform:none;animation:din .3s cubic-bezier(.2,.8,.3,1)}
+  .drawer.on{visibility:visible;transform:none;animation:din .3s var(--ease-out)}
   @keyframes din{from{transform:translateX(105%)}}
   .drawer .dhead{display:flex;align-items:center;gap:11px;padding:6px 6px 14px;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.12)}
   .drawer .dhead .logo{width:30px;height:30px}
-  .drawer .dhead .t{flex:1;font-family:inherit;font-weight:700;letter-spacing:-.3px;font-size:var(--fs-15);line-height:1.2;color:var(--white)}
+  .drawer .dhead .t{flex:1;font-family:inherit;font-weight:700;letter-spacing:var(--track-title);font-size:var(--fs-15);line-height:1.2;color:var(--white)}
   .drawer .x{width:36px;height:36px;flex:none;display:flex;align-items:center;justify-content:center;
     border:1px solid var(--chrome-line);border-radius:var(--r-lg);background:transparent;color:var(--chrome-text)}
-  .drawer .x:hover{color:var(--white);border-color:var(--chrome-line-2)}
   .drawer .it{display:flex;align-items:center;gap:13px;padding:12px;margin:1px 0;border-radius:var(--r-lg);
     color:var(--drawer-ink);font-size:var(--fs-15);font-weight:500;transition:background .15s ease,color .15s ease}
   .drawer .it svg{width:20px;height:20px;flex:none}
@@ -665,9 +657,8 @@
   .drawer .it.on .ic-note [stroke="var(--gold)"]{stroke:var(--ink)}
   .drawer .it.on .ic-note [fill="var(--blue-text)"],.drawer .it.on .ic-note [fill="var(--red)"],
   .drawer .it.on .ic-note [fill="var(--ink)"],.drawer .it.on .ic-note [fill="var(--gold)"]{fill:var(--ink)}
-  .drawer .it:hover{background:rgba(255,255,255,.08);color:var(--white)}
   .drawer .it.on{background:var(--gold);color:var(--on-gold);font-weight:600}
-  .drawer.on .it{animation:itin .28s backwards}
+  .drawer.on .it{animation:itin .28s var(--ease-out) backwards}
   @keyframes itin{from{opacity:0;transform:translateX(14px)}}
   .drawer.on .it:nth-child(3){animation-delay:.03s}.drawer.on .it:nth-child(4){animation-delay:.06s}
   .drawer.on .it:nth-child(5){animation-delay:.09s}.drawer.on .it:nth-child(6){animation-delay:.12s}
@@ -691,7 +682,6 @@
   .hero,.tiles{background:transparent}
   /* quiet glow on the things that matter */
   .logo{filter:drop-shadow(0 0 6px rgba(201,162,39,.35))}
-  .tile.order:hover{box-shadow:0 16px 40px -14px rgba(var(--blue-rgb),.45)}
   .drawer .it.on{box-shadow:0 4px 18px -6px rgba(0,0,0,.45)}
   .savebar .sb.go{box-shadow:0 6px 18px -8px rgba(var(--blue-rgb),.55)}
   .mini.go{box-shadow:0 5px 14px -7px rgba(var(--blue-rgb),.5)}
@@ -707,12 +697,43 @@
   .drawer > *{position:relative}
   /* active pills carry the brand blue */
   .chips button.on{background:var(--blue);border-color:var(--blue-text);color:var(--white);box-shadow:0 4px 12px -6px rgba(var(--blue-rgb),.5)}
-  .chips button.on:hover{background:var(--blue-hover)}
   .seg button.on{background:var(--blue);color:var(--white)}
   .tabs a.on{border-bottom-color:var(--blue-text)}
   .dlang{display:none}
   .drawer .vv{padding:10px 12px 0;font-size:var(--fs-11);color:var(--chrome-faint);letter-spacing:.05em;font-variant-numeric:tabular-nums}
-  @media (prefers-reduced-motion:reduce){ .drawer.on,.scrim.on,.drawer.on .it{animation:none} }
+  /* Reduced motion is not the only material preference. Asked for less
+     transparency, every glass layer becomes a real surface; asked for more
+     contrast, the blur goes and the edges get drawn. */
+  @media (prefers-reduced-transparency:reduce){
+    :root,:root[data-theme]{
+      --glass:var(--surface); --glass-2:var(--surface); --glass-3:var(--surface);
+      --glass-in:var(--surface-2); --glass-seat:var(--surface);
+      --dock-glass-a:var(--surface); --dock-glass-b:var(--surface);
+      --drawer-bg:var(--chrome);
+    }
+    .savebar,.login,.toast,.scrim,.topctl,.drawer,.dock{backdrop-filter:none;-webkit-backdrop-filter:none}
+    .toast{background:rgb(158,59,46)}
+    .toast.ok{background:rgb(63,125,78)}
+  }
+  @media (prefers-contrast:more){
+    :root,:root[data-theme]{
+      --glass:var(--surface); --glass-2:var(--surface); --glass-3:var(--surface);
+      --dock-glass-a:var(--surface); --dock-glass-b:var(--surface);
+      --muted:var(--text-2); --faint:var(--text-2);
+    }
+    .savebar,.login,.drawer,.dock,.topctl{backdrop-filter:none;-webkit-backdrop-filter:none}
+    .dock{box-shadow:0 0 0 1px var(--ink)}
+    .field,.dates input,.opt,.mini,.xbtn{border-color:var(--ink)}
+  }
+  /* the whole document cross-fades on a theme flip, where the browser can */
+  ::view-transition-old(root),::view-transition-new(root){animation-duration:.25s;animation-timing-function:var(--ease-fade)}
+  @media (prefers-reduced-motion:reduce){
+    .drawer.on,.scrim.on,.drawer.on .it{animation:none}
+    .login{animation:fadein .2s ease}
+    .toast{animation:fadein .12s ease}
+    .skel .sk{animation:none;background:var(--paper)}
+    ::view-transition-old(root),::view-transition-new(root){animation:none}
+  }
   /* wide screens: the menu becomes a permanent left sidebar and the page uses the width */
   @media (min-width:1000px){
     .mast{display:none}               /* the sidebar carries the brand and language switch */
@@ -753,7 +774,6 @@
   .seg{border:0;background:var(--ios-track);padding:3px;border-radius:var(--r-pill);gap:0}
   .seg button{border:0;border-left:0;background:transparent;color:var(--text-2);border-radius:var(--r-pill);
     font-size:var(--fs-13-5);font-weight:600;padding:7px 8px;letter-spacing:-.1px}
-  .seg button:hover:not(.on){background:transparent;color:var(--ink)}
   .seg button.on{background:var(--thumb);color:var(--ink);font-weight:600;
     box-shadow:0 3px 8px var(--thumb-shadow),0 1px 1px var(--thumb-ring),0 0 0 .5px var(--thumb-ring)}
   /* page tabs: same segmented material instead of an underline */
@@ -783,7 +803,6 @@
   /* 2. on phones the admin/sign-in tile spans the whole row */
   @media (max-width:699px){ .tiles .tile.dark{grid-column:1 / -1;flex-direction:row;align-items:center;gap:14px} }
   /* ---- iOS layer, part 2: grouped lists, tinted buttons, glass bars ---- */
-  a,button{-webkit-tap-highlight-color:transparent}
   /* grouped-list cards: hairline ring instead of a hard border */
   .sec{border:0;border-radius:var(--r-xl);box-shadow:0 1px 2px rgba(var(--shadow-rgb),.05),0 0 0 .5px var(--ring)}
   .notespanel{border:0;border-radius:var(--r-xl);box-shadow:0 1px 2px rgba(var(--shadow-rgb),.05),0 0 0 .5px var(--ring)}
@@ -794,25 +813,22 @@
   .addbtn{font-weight:600}
   /* buttons: borderless tinted capsules, filled for the primary action */
   .mini:not(select){border:0;background:rgba(var(--blue-rgb),.10);color:var(--blue-text)}
-  .mini:not(select):hover{background:rgba(var(--blue-rgb),.17)}
   .mini.danger{background:rgba(158,59,46,.10);color:var(--red)}
-  .mini.danger:hover{background:rgba(158,59,46,.17)}
   .mini.go{background:var(--blue);color:var(--white)}
-  .mini.go:hover{background:var(--blue-hover)}
   .btn{border-radius:var(--r-xl)}
   /* squircle radii, but keep the card edge: a real border and a fuller shadow */
   .tile{border:1px solid var(--card-line);border-radius:var(--r-2xl);
     box-shadow:0 2px 6px rgba(var(--shadow-rgb),.08),0 1px 1px rgba(var(--shadow-rgb),.04)}
-  .tile:hover{border-color:var(--line-strong);box-shadow:0 14px 30px -14px rgba(var(--shadow-rgb),.34),0 1px 1px rgba(var(--shadow-rgb),.05)}
+  @media (hover: hover) and (pointer: fine){
+    .tile:hover{border-color:var(--line-strong);box-shadow:0 14px 30px -14px rgba(var(--shadow-rgb),.34),0 1px 1px rgba(var(--shadow-rgb),.05)}
+  }
   .tile:active{box-shadow:0 2px 6px rgba(var(--shadow-rgb),.08)}
   .ic{border:1px solid var(--ic-line);border-radius:var(--r-xl);
     box-shadow:0 1px 0 var(--ic-inset) inset,0 1px 2px rgba(var(--shadow-rgb),.08)}
-  .tile:hover .ic{border-color:var(--line-strong)}
   /* seats read as soft glass tiles */
   .seat{border:0;border-radius:var(--r-lg);background:var(--glass-seat);
     box-shadow:0 1px 1px rgba(var(--shadow-rgb),.05),0 0 0 .5px var(--ring-2)}
   .seat.empty{background:rgba(120,120,128,.07);box-shadow:0 0 0 .5px var(--ring-soft)}
-  .seat:not([disabled]):hover{box-shadow:0 1px 2px rgba(var(--shadow-rgb),.08),0 0 0 1px var(--blue)}
   .seat.sel{box-shadow:0 0 0 2px var(--gold);background:var(--gold-paper)}
   /* the sticky bars over scrolling content become frosted glass */
   .topctl{background:var(--glass);
@@ -858,13 +874,11 @@
   .chips{background:var(--ios-track);border-radius:var(--r-pill);padding:3px;gap:0;overflow:hidden}
   .chips button{flex:1;border:0;background:transparent;color:var(--text-2);border-radius:var(--r-pill);
     font-size:var(--fs-13-5);font-weight:600;padding:7px 8px;letter-spacing:-.1px}
-  .chips button:hover:not(.on){background:transparent;color:var(--ink)}
   .chips button.on,.chips.hasthumb button.on{background:transparent;color:var(--ink);box-shadow:none}
   .chips > .ithumb{background:var(--surface);
     box-shadow:0 3px 8px var(--thumb-shadow),0 1px 1px var(--thumb-ring),0 0 0 .5px var(--thumb-ring)}
   /* the sign-in / admin tile: same shape as the others, on a soft blue wash */
   .tile.dark{background-color:var(--admin-bg);border-color:var(--admin-line)}
-  .tile.dark:hover{border-color:var(--blue)}
   .tile.dark .ic{background:var(--admin-ic);border-color:var(--admin-line);color:var(--blue-text)}
   /* 1. iOS liquid-glass bottom tab bar (phones only) */
   .dock{display:none}
@@ -890,7 +904,7 @@
       background:linear-gradient(180deg,rgba(var(--blue-rgb),.17),rgba(var(--blue-rgb),.10));
       box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 0 0 .5px rgba(var(--blue-rgb),.14),
                  0 4px 10px -6px rgba(var(--shadow-rgb),.35);
-      transition:transform .38s cubic-bezier(.32,.72,0,1),width .38s cubic-bezier(.32,.72,0,1),
+      transition:transform .22s var(--ease-drawer),width .22s var(--ease-drawer),
                  height .2s ease,opacity .22s ease}
     .dock svg{position:relative;width:24px;height:24px;flex:none;stroke-width:1.75}
     .dock a.on,.dock button.on{color:var(--blue-text)}
@@ -907,14 +921,14 @@
     .dock.dragging a:active,.dock.dragging button:active{opacity:1}
     .dock.dragging a,.dock.dragging button{transition:color .12s ease}
     .dock.dragging .dpill{background:linear-gradient(180deg,rgba(var(--blue-rgb),.24),rgba(var(--blue-rgb),.15));
-      box-shadow:0 6px 16px -8px rgba(var(--blue-rgb),.55)}
+      box-shadow:0 6px 16px -8px rgba(var(--blue-rgb),.55);will-change:transform}
     .dock span{position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
     .wrap{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
     .wrap:has(.scroll){padding-bottom:0}
     /* clear the dock, plus however much of the screen Safari's toolbar covers
        right now (0 in a standalone web app, where lvh and dvh are equal) */
     .scroll{padding-bottom:calc(var(--dockpad,0px) + 100lvh - 100dvh)}
-    .tabs.admtabs a{font-size:var(--fs-12-5);padding:8px 4px;letter-spacing:-.2px}
+    .tabs.admtabs a{font-size:var(--fs-12-5);padding:8px 4px;letter-spacing:var(--track-tight)}
     .toast{bottom:calc(84px + env(safe-area-inset-bottom))}
     .savebar{bottom:calc(70px + env(safe-area-inset-bottom))}
   }
@@ -940,7 +954,6 @@
   /* secondary actions: outlined rather than filled, so they sit behind the chip */
   .obar .oacts .mini{background:transparent;border-color:var(--rule);color:var(--muted);
     font-weight:500;height:34px;padding:0 13px;font-size:var(--fs-13)}
-  .obar .oacts .mini:hover{border-color:var(--line-strong);color:var(--ink)}
   .obar .oacts .mini svg{opacity:.75}
   .obar.ofootbar{padding-top:14px}
   /* usage analytics: its own small vocabulary, nothing shared with other pages */
@@ -977,8 +990,56 @@
   .ofoot .oshare{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 15px;
     border-radius:var(--r-pill);border:1px solid currentColor;background:transparent;color:inherit;
     font-family:inherit;font-size:var(--fs-13);font-weight:600;opacity:.8;transition:opacity .15s ease}
-  .ofoot .oshare:hover{opacity:1}
   .ofoot .oshare svg{width:15px;height:15px;flex:none}
+
+  /* ---- every hover state, gated ----------------------------------------
+     Touch has no hover, so the browser fakes one and leaves it stuck on the
+     last thing tapped. These are the same rules, in the same order, only now
+     they apply where a real pointer exists. */
+  @media (hover: hover) and (pointer: fine){
+    a:hover{color:var(--ink)}
+    .lang button:hover:not(.on){color:var(--white)}
+    .nav a:hover,.nav .navbtn:hover{color:var(--white);background:rgba(255,255,255,.08)}
+    .nav a.on:hover,.nav .navbtn.on:hover{color:var(--ink);background:var(--gold-hover)}
+    .tabs a:hover{color:var(--ink)}
+    .savebar .sb.ghost:hover{background:var(--paper)}
+    .savebar .sb.go:hover{background:var(--blue-hover)}
+    .ver a:hover{color:var(--ink)}
+    .addbtn:hover{background:var(--surface-2)}
+    .dpick:hover span{border-color:var(--line-strong-2);background:var(--surface)}
+    .dpick.hdr:hover{background:rgba(var(--blue-rgb),.16)}
+    .back:hover{color:var(--ink)}
+    .tile:hover .ic{border-color:var(--line-strong)}
+    .chips button:hover:not(.on){border-color:var(--line-strong-2);background:var(--surface)}
+    .seg button:hover:not(.on){background:var(--paper)}
+    .li.tap:hover{background:var(--surface-2)}
+    .li.tap:hover.off{background:var(--red-wash)}
+    .tile.order:hover{border-color:var(--gold);box-shadow:0 16px 34px -14px rgba(var(--shadow-rgb),.6)}
+    .obtn:hover{filter:brightness(1.07)}
+    .seat:not([disabled]):hover{border-color:var(--blue-text)}
+    .mini.play:hover{background:var(--blue-wash)}
+    .lyrback:hover{color:var(--blue-hover)}
+    .li.tap:hover.na{background:var(--paper)}
+    .login .btn:hover{background:linear-gradient(165deg,var(--blue-hi),var(--blue-hover))}
+    .qx:hover{background:var(--rule)}
+    .dr[data-goto-song]:hover .dd{color:var(--blue-text)}
+    .themebtn:hover{color:var(--white);border-color:var(--chrome-line-2);background:rgba(255,255,255,.08)}
+    .menubtn:hover{background:rgba(255,255,255,.1);color:var(--white)}
+    .drawer .x:hover{color:var(--white);border-color:var(--chrome-line-2)}
+    .drawer .it:hover{background:rgba(255,255,255,.08);color:var(--white)}
+    .tile.order:hover{box-shadow:0 16px 40px -14px rgba(var(--blue-rgb),.45)}
+    .chips button.on:hover{background:var(--blue-hover)}
+    .seg button:hover:not(.on){background:transparent;color:var(--ink)}
+    .mini:not(select):hover{background:rgba(var(--blue-rgb),.17)}
+    .mini.danger:hover{background:rgba(158,59,46,.17)}
+    .mini.go:hover{background:var(--blue-hover)}
+    .tile:hover .ic{border-color:var(--line-strong)}
+    .seat:not([disabled]):hover{box-shadow:0 1px 2px rgba(var(--shadow-rgb),.08),0 0 0 1px var(--blue)}
+    .chips button:hover:not(.on){background:transparent;color:var(--ink)}
+    .tile.dark:hover{border-color:var(--blue)}
+    .obar .oacts .mini:hover{border-color:var(--line-strong);color:var(--ink)}
+    .ofoot .oshare:hover{opacity:1}
+  }
 </style>
 </head>
 <body>
@@ -1313,7 +1374,7 @@ const catSelect = () => S.categories.length ? `<select class="field" style="widt
   <option value="all">${esc(t('allCats'))}</option>${
   S.categories.map(c => `<option value="${c.id}"${S.catFilter===c.id?' selected':''}>${esc(c.name)}</option>`).join('')}</select>` : '';
 const catBar = () => S.categories.length ? `<div class="ctlbar" style="flex-direction:row">${catSelect()}</div>` : '';
-const qField = (ph) => `<span class="qwrap"><input class="field" id="q" placeholder="${esc(t(ph || 'search'))}" value="${esc(S.query)}">${
+const qField = (ph) => `<span class="qwrap"><input class="field" id="q" enterkeyhint="search" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="${esc(t(ph || 'search'))}" value="${esc(S.query)}">${
   S.query ? `<button class="qx" data-clear-q aria-label="clear">×</button>` : ''}</span>`;
 /* A song is found by its title or by its Песнь возрождения number: the projector
    operator looks songs up by number on the fly, so digits typed into the search
@@ -1332,11 +1393,27 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '4.3.3';
+const VERSION = '4.6.0';
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '4': {
   en: [
+    'Tapping a row or a button no longer leaves it highlighted afterwards on a phone',
+    'No grey flash when you tap, and a long press no longer selects button labels',
+    'Pulling down on the page can no longer reload the app and lose unsaved marks',
+    'Buttons respond the moment your finger lands instead of when it lifts',
+    'Drag the highlight on the bottom bar and it now follows your finger properly, resists at the ends, and lands where you flick it',
+    'Headings and small labels are spaced for their own size instead of one setting for all',
+    'Respects the system settings for reduced transparency and increased contrast',
+    'Tabs, switchers and the bottom bar highlight keep up with your finger now',
+    'Opening the side menu right after closing it no longer plays twice',
+    'A second save message swaps the words instead of the panel jumping',
+    'Home tiles no longer stay raised after you tap them on a phone',
+    'The side menu slides back out when you close it, instead of vanishing',
+    'Folding panels — Recent entries, Export, Add, director tools — open smoothly now',
+    'Switching light and dark fades the whole page instead of flashing',
+    'Confirmation messages fade away, and the loading bars fade into the page',
+    'A singer settles into the chair you give them on the seating chart',
     'Lyrics: a new tile and page with the words to every song, in verse and chorus blocks, with a Copy text button for the projector',
     'The lyrics editor is laid out in cards down one column, with the song book number, the blocks, and a sticky Save bar',
     'The conductor and pianist names are left off the song order tile on phones, so the titles have the width',
@@ -1366,6 +1443,22 @@ const NOTES = { '4': {
     'Fixed: rows in Summary and Who led open again'
   ],
   ru: [
+    'Нажатая строка или кнопка больше не остаётся подсвеченной на телефоне',
+    'Нет серой вспышки при нажатии, а долгое нажатие больше не выделяет подписи кнопок',
+    'Потянув страницу вниз, больше нельзя перезагрузить приложение и потерять несохранённые отметки',
+    'Кнопки отзываются в момент касания, а не когда вы отпускаете палец',
+    'Подсветку на нижней панели теперь можно тянуть: она следует за пальцем, пружинит на краях и останавливается там, куда вы её бросили',
+    'Заголовки и мелкие подписи набраны с интервалом под свой размер, а не одним значением на всё',
+    'Учитываются системные настройки «Меньше прозрачности» и «Увеличить контраст»',
+    'Подсветка вкладок, переключателей и нижней панели теперь не отстаёт от нажатия',
+    'Меню больше не открывается дважды, если открыть его сразу после закрытия',
+    'Второе сообщение о сохранении меняет только текст, без подскока панели',
+    'Плитки на главной больше не остаются приподнятыми после нажатия на телефоне',
+    'Боковое меню теперь уезжает обратно при закрытии, а не исчезает мгновенно',
+    'Складные панели — «Последние записи», «Экспорт», «Добавить», инструменты регента — раскрываются плавно',
+    'Переключение светлой и тёмной темы плавно меняет всю страницу, без вспышки',
+    'Сообщения о сохранении угасают плавно, а полосы загрузки плавно сменяются страницей',
+    'Певчий плавно занимает место, которое вы ему дали на схеме',
     'Тексты песен: новая плитка и страница со словами каждой песни по куплетам и припевам, с кнопкой «Копировать текст» для проектора',
     'Редактор текста собран в карточки одной колонкой: номер в сборнике, блоки и закреплённая кнопка «Сохранить»',
     'На телефоне в плитке порядка песнопений не показываются регент и пианист — название песни занимает всю ширину',
@@ -2059,6 +2152,7 @@ function syncDock(){
   moveDockPill();
 }
 function moveDockPill(){
+  if (dockSpring) return;              // a release spring is flying the pill
   const dk = document.querySelector('.dock');
   if (!dk) return;
   const pill = dk.querySelector('.dpill');
@@ -2076,6 +2170,35 @@ function moveDockPill(){
   pill.dataset.set = '1';
   if (fresh) requestAnimationFrame(() => { pill.style.transition = ''; });
 }
+/* Apple's momentum projection (Designing Fluid Interfaces sample code): where
+   would a flick come to rest? Not the physics-textbook v²/2a — the exponential
+   decay form, which is what scroll views actually use. */
+function project(v, decel = 0.998){ return (v / 1000) * decel / (1 - decel); }
+/* At a boundary, resist progressively instead of stopping dead: a hard stop
+   reads as frozen, rising resistance reads as "responsive, but nothing more
+   here". Sign rides along with the overshoot. */
+function rubberband(over, dim, c = 0.55){
+  return (over * dim * c) / (dim + c * Math.abs(over));
+}
+/* A critically damped spring — Apple's damping 1.0, response 0.3: no overshoot,
+   and it starts from wherever the thing already is with whatever velocity it
+   already had, so a release has no seam. Returns its own cancel function, which
+   is what makes it interruptible. */
+function springTo(from, to, v0, onFrame, onDone){
+  const w = 2 * Math.PI / 0.3;
+  let x = from - to, v = v0 || 0, last = performance.now(), raf = 0;
+  const step = now => {
+    const dt = Math.min(0.032, (now - last) / 1000); last = now;
+    v += (-w * w * x - 2 * w * v) * dt;
+    x += v * dt;
+    if (Math.abs(x) < 0.4 && Math.abs(v) < 24) { onFrame(to); return onDone && onDone(); }
+    onFrame(to + x);
+    raf = requestAnimationFrame(step);
+  };
+  raf = requestAnimationFrame(step);
+  return () => { cancelAnimationFrame(raf); };
+}
+let dockSpring = null;          // a release spring owns the pill while it runs
 /* iOS-style draggable highlight: press the lit tab and slide. The pill tracks the
    finger, the tab under it lights up live, and the release commits that tab. */
 let dockNoClick = false;
@@ -2096,10 +2219,16 @@ function wireDockDrag(host){
     if (!from || !from.classList.contains('on') || !pill) return;
     /* the handle is the highlight, so it must actually be on screen — measured,
        not inferred from an inline style that a skipped layout pass may never set */
-    if (!pill.getBoundingClientRect().width) return;
+    const pb = pill.getBoundingClientRect();
+    if (!pb.width) return;
+    if (dockSpring) { dockSpring(); dockSpring = null; }   // grab it mid-flight
     const list = items();
     st = { id: e.pointerId, x0: e.clientX, y0: e.clientY, moved: false,
-           list, from: list.indexOf(from), target: list.indexOf(from) };
+           list, from: list.indexOf(from), target: list.indexOf(from),
+           /* hold the pill by the point that was actually grabbed — snapping it
+              to the finger's centre is the thing that breaks the illusion */
+           grab: e.clientX - pb.left, pw: pb.width,
+           hist: [{ x: e.clientX, t: e.timeStamp || performance.now() }] };
     /* capture straight away: the moves then arrive here even if the browser
        retargets or the tab under the finger is re-rendered mid-gesture */
     try { host.setPointerCapture(e.pointerId); } catch (_) {}
@@ -2120,14 +2249,20 @@ function wireDockDrag(host){
     const d = dk.getBoundingClientRect();
     const first = st.list[0].getBoundingClientRect();
     const last = st.list[st.list.length - 1].getBoundingClientRect();
-    const half = first.width / 2;
-    const x = Math.max(first.left + half, Math.min(last.left + half, e.clientX));
+    st.hist.push({ x: e.clientX, t: e.timeStamp || performance.now() });
+    if (st.hist.length > 6) st.hist.shift();
+    /* 1:1 with the finger, then rubber-band past either end rather than jamming */
+    let left = e.clientX - st.grab;
+    if (left < first.left) left = first.left + rubberband(left - first.left, d.width);
+    else if (left > last.left) left = last.left + rubberband(left - last.left, d.width);
+    st.left = left;
     pill.style.transition = 'none';
-    pill.style.transform = 'translate(' + (x - half - d.left) + 'px,' + (first.top - d.top) + 'px)';
+    pill.style.transform = 'translate(' + (left - d.left) + 'px,' + (first.top - d.top) + 'px)';
+    const mid = left + st.pw / 2;
     let best = st.target, bd = Infinity;
     st.list.forEach((it, i) => {
       const b = it.getBoundingClientRect();
-      const dist = Math.abs(b.left + b.width / 2 - x);
+      const dist = Math.abs(b.left + b.width / 2 - mid);
       if (dist < bd) { bd = dist; best = i; }
     });
     if (best !== st.target) {
@@ -2143,10 +2278,37 @@ function wireDockDrag(host){
     try { host.releasePointerCapture(s.id); } catch (_) {}
     if (!s.moved) return;
     const pill = pillOf();
-    if (pill) pill.style.transition = '';
-    moveDockPill();                     // snap onto the tab the finger landed on
     dockNoClick = true;                 // the drag must not also fire a tap
     setTimeout(() => { dockNoClick = false; }, 400);
+    /* Velocity over the tail of the gesture, then land where the flick was
+       going — not where the finger happened to stop. A slow drag projects
+       almost nowhere, so it still snaps to the nearest tab. */
+    let vel = 0;
+    if (s.hist && s.hist.length > 1) {
+      const nowT = s.hist[s.hist.length - 1].t;
+      const old = s.hist.find(h => nowT - h.t <= 120) || s.hist[0];
+      const dt = nowT - old.t;
+      if (dt > 8) vel = (s.hist[s.hist.length - 1].x - old.x) / dt * 1000;
+    }
+    if (pill && dk && s.left != null && !calm()) {
+      const landing = s.left + project(vel);
+      let best = s.target, bd = Infinity;
+      s.list.forEach((it, i) => {
+        const b = it.getBoundingClientRect();
+        const dist = Math.abs(b.left - landing);
+        if (dist < bd) { bd = dist; best = i; }
+      });
+      s.target = best;
+      s.list.forEach((it, i) => it.classList.toggle('on', i === best));
+      const box = s.list[best].getBoundingClientRect();
+      const d = dk.getBoundingClientRect(), top = box.top - d.top;
+      pill.style.transition = 'none';
+      /* hand the finger's own velocity to the spring: no seam at the release */
+      dockSpring = springTo(s.left, box.left, vel,
+        x => { pill.style.transform = 'translate(' + (x - d.left) + 'px,' + top + 'px)'; },
+        () => { dockSpring = null; pill.style.transition = ''; moveDockPill(); });
+    }
+    else { if (pill) pill.style.transition = ''; moveDockPill(); }
     if (s.target === s.from) return;
     const el = s.list[s.target];
     if (el.hasAttribute('data-menu')) { S.menuOpen = true; return render(); }
@@ -2166,7 +2328,8 @@ function wireDockDrag(host){
    the slide stays smooth while the page re-renders. (WAAPI on the freshly
    rebuilt element ran on the main thread and stuttered/flashed mid-slide.) */
 const THUMBS = new Map();
-const THUMB_EASE = 'transform .34s cubic-bezier(.32,.72,0,1),width .34s cubic-bezier(.32,.72,0,1),height .34s cubic-bezier(.32,.72,0,1)';
+const THUMB_EASE = ['transform','width','height']
+  .map(p => p + ' .22s var(--ease-drawer)').join(',');
 function thumbKey(track, items){
   return track.className.replace('hasthumb', '').trim() + '|' + items.map(n => n.textContent.trim()).join('/');
 }
@@ -2653,15 +2816,15 @@ function eventPicker(target){
     <div class="sec"><div class="pad" style="${S.recentOpen?'':'padding-bottom:14px'}">
       <button class="step fold" data-recent-toggle aria-expanded="${S.recentOpen?'true':'false'}" style="margin-bottom:${S.recentOpen?'8px':'0'}">${esc(t('recent'))}
         <i class="chev${S.recentOpen?' up':''}"></i></button>
-      ${S.recentOpen ? `${recent.map(e => entryRow(e, target)).join('')}
+      ${S.recentOpen ? `<div data-fold="recent">${recent.map(e => entryRow(e, target)).join('')}
       ${S.events.filter(inScope).length > recent.length
         ? `<a class="mini" style="display:flex;justify-content:center" href="#/admin/entries/${target}">${esc(t('olderEntries'))}</a>`
-        : ''}` : ''}
+        : ''}</div>` : ''}
     </div></div>
     <div class="sec"><div class="pad" style="${S.exportOpen?'':'padding-bottom:14px'}">
       <button class="step fold" data-export-toggle aria-expanded="${S.exportOpen?'true':'false'}" style="margin-bottom:${S.exportOpen?'8px':'0'}">${esc(t('exportTitle'))}
         <i class="chev${S.exportOpen?' up':''}"></i></button>
-      ${S.exportOpen ? `<div class="chips" style="padding:0 0 10px">
+      ${S.exportOpen ? `<div data-fold="export"><div class="chips" style="padding:0 0 10px">
         ${[['6','exp6'],['12','exp12'],['all','expAll']].map(([v,l]) =>
           `<button class="${S.exportPreset===v?'on':''}" data-export-preset="${v}">${esc(t(l))}</button>`).join('')}
       </div>
@@ -2672,7 +2835,7 @@ function eventPicker(target){
       <div style="display:flex;gap:8px;margin-top:8px">
         <button class="xbtn" data-backup ${S.backingUp?'disabled':''}>${esc(S.backingUp ? t('loading') : t('backupBtn'))}</button>
       </div>
-      <div class="note" style="padding:8px 0 0">${esc(t('backupNote'))}</div>` : ''}
+      <div class="note" style="padding:8px 0 0">${esc(t('backupNote'))}</div></div>` : ''}
     </div></div>`;
 }
 function entryRow(e, target){
@@ -3410,6 +3573,89 @@ function exportCSV(kind){
   }
 }
 
+/* ---------- motion ----------
+   #app is rebuilt wholesale on every render, so an exit cannot be a CSS
+   transition: the node is gone before one could run. Play the exit on the live
+   node, then re-render when it finishes. Entrances that happen once per state
+   change are queued here and claimed by afterRender. */
+const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const EASE = { out:'cubic-bezier(.2,.8,.3,1)', drawer:'cubic-bezier(.32,.72,0,1)',
+               fade:'cubic-bezier(.33,0,.2,1)' };
+let pendingReveal = null;     // selector of a panel that should grow open
+let pendingPop = null;        // selector of an element that should land
+let menuClosing = false;      // an exit slide is in flight
+let wasLoading = false;       // the last paint was the loading shimmer
+let toastWasUp = false;       // a toast was on screen at the previous paint
+function playOut(specs, then){
+  const runs = calm() ? [] : specs.filter(s => s.el && s.el.animate)
+    .map(s => s.el.animate(s.kf, { duration:s.ms, easing:s.easing, fill:'forwards' }));
+  if (!runs.length) return then();
+  let left = runs.length, fired = false;
+  const go = () => { if (!fired && --left <= 0) { fired = true; then(); } };
+  runs.forEach(a => { a.onfinish = go; a.oncancel = go; });
+  setTimeout(() => { if (!fired) { fired = true; then(); } }, 500);  // never strand a render
+}
+/* A collapse is the one place height is worth animating, and the panel has no
+   size until it is in the document — so measure the real node and grow to it. */
+function reveal(sel){
+  const el = sel && document.querySelector(sel);
+  if (!el || !el.animate) return;
+  if (calm()) return void el.animate([{opacity:0},{opacity:1}], { duration:120 });
+  const h = el.getBoundingClientRect().height;
+  if (!h) return;
+  const was = el.style.overflow;
+  el.style.overflow = 'hidden';
+  const a = el.animate([{height:'0px',opacity:0},{height:h+'px',opacity:1}],
+    { duration:200, easing:EASE.out });
+  a.onfinish = a.oncancel = () => { el.style.overflow = was; };
+}
+/* One thing lands; the seat it left stays put. Two moving things read as a glitch. */
+function pop(sel){
+  const el = sel && document.querySelector(sel);
+  if (!el || !el.animate) return;
+  el.animate(calm() ? [{opacity:0},{opacity:1}]
+    : [{opacity:0,transform:'scale(.94)'},{opacity:1,transform:'none'}],
+    { duration:calm() ? 120 : 140, easing:EASE.out });
+}
+/* The shimmer is replaced by a whole page of fresh geometry in one frame. The
+   masthead was already there, so it does not take part. */
+function fadeInBody(){
+  const app = document.getElementById('app');
+  if (!app) return;
+  [...app.children].forEach(k => {
+    if (!k.animate || (k.classList && k.classList.contains('mast'))) return;
+    k.animate([{opacity:0},{opacity:1}], { duration:calm() ? 120 : 300, easing:EASE.fade });
+  });
+}
+/* A theme flip repaints every colour at once. Where the browser can cross-fade
+   the whole document, let it. */
+function paint(fn){
+  if (calm() || !document.startViewTransition) return fn();
+  document.startViewTransition(fn);
+}
+/* The menu arrives over 300ms and used to leave in a single frame, while the
+   scrim behind it faded — the two disagreed. A dismissal plays the slide back
+   out; tapping a menu item does not, because then the new page is the story. */
+function dismissMenu(){
+  if (menuClosing) return;                  // already leaving
+  S.menuOpen = false;
+  document.body.classList.remove('mlock');
+  if (matchMedia('(min-width:1000px)').matches) return render();   // a permanent sidebar
+  menuClosing = true;
+  playOut([
+    { el:document.querySelector('.drawer.on'), ms:250, easing:EASE.drawer,
+      kf:[{transform:'none'},{transform:'translateX(105%)'}] },
+    { el:document.querySelector('.scrim.on'), ms:200, easing:'ease',
+      kf:[{opacity:1},{opacity:0}] }
+  ], () => { menuClosing = false; if (!S.menuOpen) render(); });
+}
+/* It arrives from 8px below; it leaves the same way. */
+function hideToast(){
+  playOut([{ el:document.querySelector('.toast'), ms:160, easing:'ease-out',
+    kf:[{opacity:1,transform:'none'},{opacity:0,transform:'translateY(8px)'}] }],
+    () => { S.toast = ''; S.toastOk = false; S.retry = null; render(); });
+}
+
 /* ---------- render ---------- */
 function render(){
   captureThumbs();
@@ -3429,7 +3675,8 @@ function render(){
   syncDock();
 
   if (S.loading && !onLogin) { document.getElementById('app').innerHTML = html
-    + `<div class="skel" aria-label="${esc(t('loading'))}">` + '<div class="sk"></div>'.repeat(7) + `</div>`; return; }
+    + `<div class="skel" aria-label="${esc(t('loading'))}">` + '<div class="sk"></div>'.repeat(7) + `</div>`;
+    wasLoading = true; return; }
 
   if (r.startsWith('#/admin')) {
     if (!S.session) { location.hash = '#/login'; return; }
@@ -3587,6 +3834,14 @@ async function signIn(){
 }
 function afterRender(){
   document.querySelectorAll('textarea.lyrta').forEach(autoGrow);
+  if (wasLoading) { wasLoading = false; fadeInBody(); }
+  /* A second message inside the 2.5s window swaps the words in place: the node
+     is new every render, so the entrance would otherwise replay under it. */
+  const tn = document.querySelector('.toast');
+  if (tn) { if (toastWasUp) tn.style.animation = 'none'; toastWasUp = true; }
+  else toastWasUp = false;
+  reveal(pendingReveal); pendingReveal = null;
+  pop(pendingPop); pendingPop = null;
   /* Place the switcher thumbs before this frame paints: waiting a frame showed the
      plain CSS pill at the new spot first, which is the flash. */
   syncThumbs();
@@ -3664,7 +3919,7 @@ let toastTimer = null;
 function okToast(msg){
   S.toast = msg; S.toastOk = true; S.retry = null;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { S.toast = ''; S.toastOk = false; render(); }, 2500);
+  toastTimer = setTimeout(hideToast, 2500);
 }
 function fail(error, retry){
   clearTimeout(toastTimer); S.toastOk = false;
@@ -3701,9 +3956,9 @@ document.addEventListener('click', async e => {
 
   if (d.lang) { S.lang = d.lang; localStorage.setItem('bsebc-youth-lang', d.lang); return render(); }
 
-  if (el.hasAttribute('data-theme-flip')) { const next = effTheme() === 'dark' ? 'light' : 'dark'; S.theme = next; localStorage.setItem('bsebc-youth-theme', next); return render(); }
+  if (el.hasAttribute('data-theme-flip')) { const next = effTheme() === 'dark' ? 'light' : 'dark'; S.theme = next; localStorage.setItem('bsebc-youth-theme', next); return paint(render); }
 
-  if (d.themeSet) { S.theme = d.themeSet; localStorage.setItem('bsebc-youth-theme', d.themeSet); return render(); }
+  if (d.themeSet) { S.theme = d.themeSet; localStorage.setItem('bsebc-youth-theme', d.themeSet); return paint(render); }
 
   if (el.hasAttribute('data-toggle-range')) { S.showRange = !S.showRange; return render(); }
   if (d.preset) {
@@ -3942,12 +4197,19 @@ document.addEventListener('click', async e => {
     const [b, r, c] = d.seat.split(':');
     const who = seatMap().get(d.seat);
     if (!S.seatEdit) { S.seatSel = who && S.seatSel !== who.id ? who.id : null; return render(); }  // view: name the person
-    if (S.seatSel) { if (who && who.id === S.seatSel) S.seatSel = null; else seatPlace(S.seatSel, { b, r:+r, c:+c }); }
+    if (S.seatSel) {
+      if (who && who.id === S.seatSel) S.seatSel = null;
+      else { seatPlace(S.seatSel, { b, r:+r, c:+c }); pendingPop = '[data-seat="' + d.seat + '"]'; }
+    }
     else if (who) S.seatSel = who.id;
     return render();
   }
-  if (el.hasAttribute('data-menu')) { S.menuOpen = !S.menuOpen; document.body.classList.toggle('mlock', S.menuOpen); return render(); }
-  if (el.hasAttribute('data-menu-x')) { S.menuOpen = false; document.body.classList.remove('mlock'); return render(); }
+  if (el.hasAttribute('data-menu')) {
+    if (S.menuOpen) return dismissMenu();
+    menuClosing = false;                    // re-opened mid-exit: let it land open
+    S.menuOpen = true; document.body.classList.add('mlock'); return render();
+  }
+  if (el.hasAttribute('data-menu-x')) return dismissMenu();
   if (d.shareOrder) {
     const ev = S.events.find(x => String(x.id) === d.shareOrder);
     if (!ev) return;
@@ -3961,7 +4223,11 @@ document.addEventListener('click', async e => {
       + (lines.length ? lines.join('\n') + '\n\n' : '')
       + t('listenHere') + '\n' + pageURL('#/o/' + shortId(ev.id)));
   }
-  if (d.admRow) { S.admRow = S.admRow === d.admRow ? null : d.admRow; S.audioEdit = null; return render(); }
+  if (d.admRow) {
+    S.admRow = S.admRow === d.admRow ? null : d.admRow; S.audioEdit = null;
+    if (S.admRow) pendingReveal = '.admstrip';
+    return render();
+  }
   if (d.lyrMissing) { S.lyrMissing = d.lyrMissing === '1'; return render(); }
   if (d.lyrEdit) {
     startLyrDraft(d.lyrEdit); S.lyrFor = d.lyrEdit; S.admRow = null;
@@ -4051,7 +4317,7 @@ document.addEventListener('click', async e => {
   }
   if (d.export) { return exportCSV(d.export); }
   if (el.hasAttribute('data-backup')) { return fullBackup(); }
-  if (el.hasAttribute('data-dismiss')) { S.toast = ''; S.retry = null; return render(); }
+  if (el.hasAttribute('data-dismiss')) { clearTimeout(toastTimer); return hideToast(); }
   if (el.hasAttribute('data-retry')) { const r = S.retry; S.toast = ''; S.retry = null; render(); return r && r(); }
 
   if (d.addSong !== undefined && el.hasAttribute('data-add-song')) {
@@ -4191,6 +4457,7 @@ document.addEventListener('click', async e => {
   if (el.hasAttribute('data-notes')) {
     e.preventDefault();
     S.showNotes = !S.showNotes;
+    if (S.showNotes) pendingReveal = '.notespanel';
     render();
     if (S.showNotes) {                       // bring the panel into view, it sits below the fold
       const p = document.querySelector('.notespanel');
@@ -4198,15 +4465,27 @@ document.addEventListener('click', async e => {
     }
     return;
   }
-  if (el.hasAttribute('data-export-toggle')) { S.exportOpen = !S.exportOpen; return render(); }
-  if (el.hasAttribute('data-recent-toggle')) { S.recentOpen = !S.recentOpen; return render(); }
+  if (el.hasAttribute('data-export-toggle')) {
+    S.exportOpen = !S.exportOpen;
+    if (S.exportOpen) pendingReveal = '[data-fold="export"]';
+    return render();
+  }
+  if (el.hasAttribute('data-recent-toggle')) {
+    S.recentOpen = !S.recentOpen;
+    if (S.recentOpen) pendingReveal = '[data-fold="recent"]';
+    return render();
+  }
   if (d.uperiod) {
     S.usagePeriod = d.uperiod === 'all' ? 'all' : Number(d.uperiod);
     S.usage = null;
     return render();
   }
   if (d.exportPreset) { S.exportPreset = d.exportPreset; return render(); }
-  if (d.addOpen) { S.addOpen = S.addOpen === d.addOpen ? null : d.addOpen; return render(); }
+  if (d.addOpen) {
+    S.addOpen = S.addOpen === d.addOpen ? null : d.addOpen;
+    if (S.addOpen) pendingReveal = '.addbtn.open + .card';
+    return render();
+  }
   if (el.hasAttribute('data-toggle-cats')) { S.showCats = !S.showCats; return render(); }
   if (el.hasAttribute('data-add-cat')) {
     const inp = document.getElementById('new-cat-name');
@@ -4322,7 +4601,7 @@ document.addEventListener('input', e => {
   }
 });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && S.menuOpen) { S.menuOpen = false; document.body.classList.remove('mlock'); render(); }
+  if (e.key === 'Escape' && S.menuOpen) dismissMenu();
 });
 window.addEventListener('hashchange', () => {
   requestAnimationFrame(() => {          // after the route handler paints the new page
