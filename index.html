@@ -3,16 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-<title>BSEBC Choir</title>
+<title>BSEBC Youth Choir</title>
 <meta name="description" content="Song orders, attendance and sheet music · Песнопения, посещаемость и ноты">
-  <!-- If the senior site lives on a different address, change the two URLs below to match. -->
 <!-- Link preview card. A static site returns the same HTML for every URL, so these
      describe the site as a whole; the Share buttons put the page name in the message. -->
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="BSEBC Choir">
-<meta property="og:title" content="BSEBC Choir">
+<meta property="og:site_name" content="BSEBC Youth Choir">
+<meta property="og:title" content="BSEBC Youth Choir">
 <meta property="og:description" content="Song orders, attendance and sheet music · Песнопения, посещаемость и ноты">
-<meta property="og:url" content="https://choir.bsebc.com/">
+<meta property="og:url" content="https://youthchoir.bsebc.com/">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="ru_RU">
 <meta name="twitter:card" content="summary">
@@ -22,8 +21,9 @@
 <meta name="theme-color" content="#17203a">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="BSEBC Choir">
+<meta name="apple-mobile-web-app-title" content="Youth Choir">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script>try{var t=localStorage.getItem('bsebc-youth-theme')||'light';if(t!=='auto')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <style>
   :root{
     color-scheme:light dark;
@@ -1054,6 +1054,9 @@
      so it settles every earlier rule it touches. */
   body{background:var(--canvas)}
   .wrap{background:var(--canvas);background-image:none}
+  /* phones: Safari 26 colours its address-bar area from the page background, so the
+     page background is the navy chrome and the app frame paints the canvas over it */
+  @media (max-width:999px){ html,body{background:var(--chrome)} .wrap{min-height:100vh;min-height:100dvh} }
   .pg{width:100%;max-width:1360px;margin:0 auto;padding:0 var(--gut) 32px;flex:1;min-width:0}
   .pg:has(> .scroll){padding-bottom:0}
   .ai{display:block;flex:none}
@@ -1764,8 +1767,8 @@
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const SUPABASE_URL = 'https://qynprpimmjansluhuoez.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5bnBycGltbWphbnNsdWh1b2V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNjc4NzQsImV4cCI6MjEwMDc0Mzg3NH0.dJNRtomDs8bpqleXRmZZB0JG04M3l8MiAi1pTHuxYME';
+const SUPABASE_URL = 'https://cetjvfzgituzeiooxaex.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNldGp2ZnpnaXR1emVpb294YWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxODY0ODAsImV4cCI6MjEwMDc2MjQ4MH0.cMannk6niEUPPLBzJRo7Fs2VPWVp7LeNrvWD-DkBJl8';
 
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -1832,9 +1835,8 @@ const STR = {
     tUsage:'Usage',tUsageSub:'How the site gets used',
     uAdminOnly:'Sign in to see this page.',
     uSetup:'The usage table is not set up yet. Run supabase/usage_log.sql in the Supabase SQL editor, then reload this page.',
-    uNone:'Nothing recorded yet.',uLoading:'Loading…',
-    uDevices:'Devices',uOrders:'Order opens',uSheets:'Sheet opens',uListens:'Recordings',
-    uActivity:'Activity',uTopSongs:'Most opened songs',uTopServices:'Most viewed services',
+    uDevices:'Devices',uOrders:'Order opens',uSheets:'Sheet opens',uListens:'Recordings',uActivity:'Activity',
+    uTopSongs:'Most opened songs',uTopServices:'Most viewed services',
     uLang:'Language',uRecent:'Recent activity',uPerDay:'by day',uPerWeek:'by week',
     u7:'7 days',u30:'30 days',u90:'90 days',uAll:'All time',
     kOrder:'Song order',kSheet:'Sheet music',kAudio:'Recording',
@@ -1871,7 +1873,7 @@ const STR = {
     sessionLost:'Your sign-in expired. Please sign in again.',
     blocksN:n=>n===1?'1 block':n+' blocks',
     stEvent:'Event',stSongs:'Songs',stReview:'Review',review:'Review',back:'Back',draft:'Draft',recordAtt:'Mark attendance',planSvc:'Plan a service',repertoire:'Repertoire',usageIns:'Usage insights',editSongT:'Edit song',editMemberT:'Edit member',allPresent:'Everyone is marked present.',cancelEvent:'Cancel event',neverSung:'Not sung before',date2:'Date',event2:'Event',recentT:'Recent entries',exportT:'Export',titleL:'Title',catL:'Category',pvL:'№ in Песнь возрождения',nameL:'Full name · surname first',saveSong:'Save song',sinceD:d=>'since '+d,fromRoster:'Someone already on the roster',orNew:'…or add a new person:',
-    appName:'Senior Choir',appTag:'Music · attendance',overview:'Overview',navWork:'Workspace',navLib:'Music library',navChoir:'Our choir',navDir:'Director',
+    appName:'Youth Choir',appTag:'Music · attendance',overview:'Overview',navWork:'Workspace',navLib:'Music library',navChoir:'Our choir',navDir:'Director',
     findSong:'Find a song',dirSignin:'Director sign in',dirSigninSub:'Manage the choir',dirWs:'Director workspace',signedIn:'Signed in',
     kSingers:'Singers',kParts:n=>n===1?'1 voice part':n+' voice parts',kActive:n=>n===1?'1 active singer':n+' active singers',kRep:'Repertoire',kRepSub:n=>n+' with choir sheets',
     kAtt:'Attendance',kAttSub:'Last 30 days',kSvc:'Services',kSvcSub:n=>n===1?'1 song sung · 12 months':n+' songs sung · 12 months',
@@ -1879,7 +1881,7 @@ const STR = {
     lastAtt:'Last attendance',viewAtt:'View attendance',library:'Music library',browseAll:'Browse all',recentSvc:'Recent services',viewAll:'View all',
     scoresN:n=>n===1?'1 score':n+' scores',textsN:n=>n===1?'1 song':n+' songs',noAttYet:'No attendance recorded yet.',noSvcYet:'No services recorded yet.',
     attSub:'Rehearsals and services',songsSub:'What was sung, and who led it',libPart:'Part',ofChoir:'of the choir',
-    home:'Home',homeSub:'Choir attendance and song ledger',
+    home:'Home',homeSub:'Youth choir attendance and song ledger',
     tAttGrid:'Attendance',tAttGridSub:'Who was at each rehearsal and service',
     tAttSum:'Attendance summary',tAttSumSub:'Percentage per singer',
     tSongGrid:'Song history',tSongGridSub:'What was sung, service by service',
@@ -1956,9 +1958,8 @@ const STR = {
     tUsage:'Статистика',tUsageSub:'Как пользуются сайтом',
     uAdminOnly:'Войдите, чтобы увидеть эту страницу.',
     uSetup:'Таблица статистики ещё не создана. Выполните supabase/usage_log.sql в SQL-редакторе Supabase и обновите страницу.',
-    uNone:'Пока нет данных.',uLoading:'Загрузка…',
-    uDevices:'Устройств',uOrders:'Открытий порядка',uSheets:'Скачиваний нот',uListens:'Прослушиваний',
-    uActivity:'Активность',uTopSongs:'Чаще всего открывали ноты',uTopServices:'Чаще всего смотрели служения',
+    uDevices:'Устройств',uOrders:'Открытий порядка',uSheets:'Скачиваний нот',uListens:'Прослушиваний',uActivity:'Активность',
+    uTopSongs:'Чаще всего открывали ноты',uTopServices:'Чаще всего смотрели служения',
     uLang:'Язык',uRecent:'Последние действия',uPerDay:'по дням',uPerWeek:'по неделям',
     u7:'7 дней',u30:'30 дней',u90:'90 дней',uAll:'За всё время',
     kOrder:'Порядок песнопений',kSheet:'Ноты',kAudio:'Запись',
@@ -1966,7 +1967,7 @@ const STR = {
     backupBtn:'Полная копия',backupNote:'Скачивает все таблицы — хористы, события, посещаемость, песни, категории — одним файлом JSON. PDF-ноты не входят.',backupFail:'Не удалось создать копию — попробуйте ещё раз.',
     blocksN:n=>n+' '+(n%10===1&&n%100!==11?'блок':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'блока':'блоков'),
     stEvent:'Событие',stSongs:'Песни',stReview:'Проверка',review:'Проверить',back:'Назад',draft:'Черновик',recordAtt:'Отметить посещаемость',planSvc:'План служения',repertoire:'Репертуар',usageIns:'Активность',editSongT:'Изменить песню',editMemberT:'Изменить участника',allPresent:'Все отмечены присутствующими.',cancelEvent:'Отменить событие',neverSung:'Ранее не исполнялась',date2:'Дата',event2:'Событие',recentT:'Последние записи',exportT:'Экспорт',titleL:'Название',catL:'Категория',pvL:'№ в «Песни возрождения»',nameL:'Фамилия и имя',saveSong:'Сохранить песню',sinceD:d=>'с '+d,fromRoster:'Кто-то из состава',orNew:'…или добавьте нового человека:',
-    appName:'Взрослый хор',appTag:'Ноты · посещения',overview:'Обзор',navWork:'Пространство',navLib:'Библиотека',navChoir:'Наш хор',navDir:'Регент',
+    appName:'Молодёжный хор',appTag:'Ноты · посещения',overview:'Обзор',navWork:'Пространство',navLib:'Библиотека',navChoir:'Наш хор',navDir:'Регент',
     findSong:'Найти песню',dirSignin:'Вход для регента',dirSigninSub:'Управление хором',dirWs:'Кабинет регента',signedIn:'Вы вошли',
     kSingers:'Хористы',kParts:n=>n+(n===1?' партия':n<5?' партии':' партий'),kActive:n=>'активных хористов: '+n,kRep:'Репертуар',kRepSub:n=>'с нотами: '+n,
     kAtt:'Посещаемость',kAttSub:'За 30 дней',kSvc:'Служения',kSvcSub:n=>'песен спето: '+n+' · 12 мес.',
@@ -1974,7 +1975,7 @@ const STR = {
     lastAtt:'Последняя отметка',viewAtt:'Открыть посещаемость',library:'Библиотека',browseAll:'Все ноты',recentSvc:'Последние служения',viewAll:'Все',
     scoresN:n=>'партитур: '+n,textsN:n=>'текстов: '+n,noAttYet:'Посещаемость ещё не отмечалась.',noSvcYet:'Служений пока нет.',
     attSub:'Спевки и служения',songsSub:'Что пели и кто вёл',libPart:'Партия',ofChoir:'хора',
-    home:'Главная',homeSub:'Журнал посещаемости и песнопений',
+    home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
     period:'Период',changePeriod:'Изменить',
     chooseFrom:'Выбор песен',showList:n=>'Показать все ('+n+')',hideList:'Скрыть список',
     order:'Порядок песнопений',orderHint:'Номера ставятся в порядке нажатия. Стрелками можно поменять местами.',
@@ -2064,8 +2065,8 @@ function normRouteBoot(h){
 }
 const S = {
   ripple: true,
-  lang: localStorage.getItem('bsebc-lang') || 'en',
-  theme: localStorage.getItem('bsebc-theme-mode') || 'auto',
+  lang: localStorage.getItem('bsebc-youth-lang') || 'en',
+  theme: localStorage.getItem('bsebc-youth-theme') || 'light',   // light unless the user picks otherwise
   session: null,
   menuOpen: false,
   route: normRouteBoot(location.hash),
@@ -2132,13 +2133,14 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.0.1';
+const VERSION = '5.0.2';
 /* the church card in the sidebar */
-const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Church choir', ru:'Церковный хор' } };
+const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Light mode is now the default, day or night; dark mode stays one tap away. On iPhone the navy header runs up behind Safari’s address bar',
     'A new look across the whole site: cards on a soft canvas, navy and gold in light mode, deep indigo in dark mode',
     'The home page is now an overview: choir numbers, the latest song order, last attendance by part, the music library and recent services',
     'On a computer, a grouped sidebar and a top bar with live song search, language and appearance',
@@ -2147,6 +2149,7 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'Светлая тема теперь по умолчанию в любое время суток; тёмная — по нажатию. На iPhone тёмно-синяя шапка продолжается под адресной строкой Safari',
     'Новый вид всего сайта: карточки на светлом фоне, тёмно-синий с золотом днём и глубокий индиго ночью',
     'Главная теперь — обзор: цифры хора, последний порядок песен, посещаемость по партиям, библиотека нот и последние служения',
     'На компьютере — боковое меню по разделам и верхняя панель с поиском песни, языком и оформлением',
@@ -2894,7 +2897,7 @@ function mast(){
   const [sec, page] = crumbs();
   return `<div class="mast">
     <a href="#/home" class="mbrand"><span class="bmark">${LOGOSVG}</span>
-      <div class="brand">BSEBC Choir</div>
+      <div class="brand">Youth Choir</div>
     </a>
     ${langSeg()}${themeBtn()}
     <button class="menubtn" data-menu aria-label="Menu" aria-expanded="${S.menuOpen?'true':'false'}">${AIC.more}</button>
@@ -4827,11 +4830,11 @@ document.addEventListener('click', async e => {
   if (!el) return;
   const d = el.dataset;
 
-  if (d.lang) { S.lang = d.lang; localStorage.setItem('bsebc-lang', d.lang); return render(); }
+  if (d.lang) { S.lang = d.lang; localStorage.setItem('bsebc-youth-lang', d.lang); return render(); }
 
-  if (el.hasAttribute('data-theme-flip')) { const next = effTheme() === 'dark' ? 'light' : 'dark'; S.theme = next; localStorage.setItem('bsebc-theme-mode', next); return paint(render); }
+  if (el.hasAttribute('data-theme-flip')) { const next = effTheme() === 'dark' ? 'light' : 'dark'; S.theme = next; localStorage.setItem('bsebc-youth-theme', next); return paint(render); }
 
-  if (d.themeSet) { S.theme = d.themeSet; localStorage.setItem('bsebc-theme-mode', d.themeSet); return paint(render); }
+  if (d.themeSet) { S.theme = d.themeSet; localStorage.setItem('bsebc-youth-theme', d.themeSet); return paint(render); }
 
   if (el.hasAttribute('data-toggle-range')) { S.showRange = !S.showRange; return render(); }
   if (d.preset) {
