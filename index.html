@@ -119,6 +119,13 @@
     --dock-glass-a:rgba(58,66,96,.70); --dock-glass-b:rgba(46,53,78,.58); --dock-border:rgba(255,255,255,.20); --dock-sheen:rgba(255,255,255,.07); --dock-edge:rgba(255,255,255,.10); --dock-top:rgba(255,255,255,.12);
     --placeholder:#7c85a2; --disabled-ink:#6f7891; --focus:#8fa6e8; --selection-bg:#35406b; --skel:#3a4260;
   } }
+  /* v5 layout tokens, in the navy/gold palette */
+  :root{ --canvas:#f4f5f2; --gut:16px; --violet:#b08a1c; --violet-wash:#fdf7e7; --teal:#3f7d4e; --teal-tint:#f2f7f1; --rose:#33488f; --rose-wash:#f2f4fb; --amber:#6b7590; --amber-wash:#f4f5f2;
+    --shadow-card:0 1px 2px rgba(23,32,58,.05),0 6px 20px -14px rgba(23,32,58,.22); }
+  :root[data-theme="dark"]{ --canvas:#15192a; --violet:#e5cb7d; --violet-wash:#332c1a; --teal:#71b982; --teal-tint:#1f2f26; --rose:#b0bfe8; --rose-wash:#252c47; --amber:#a8b0c8; --amber-wash:#2f3650; --shadow-card:0 6px 22px -14px rgba(0,0,0,.6); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --canvas:#15192a; --violet:#e5cb7d; --violet-wash:#332c1a; --teal:#71b982; --teal-tint:#1f2f26; --rose:#b0bfe8; --rose-wash:#252c47; --amber:#a8b0c8; --amber-wash:#2f3650; --shadow-card:0 6px 22px -14px rgba(0,0,0,.6); } }
+  @media (min-width:700px){ :root{ --gut:24px } }
+  @media (min-width:1000px){ :root{ --gut:32px } }
   @media (min-width:900px){ :root{ --nameW:220px; --tallyW:62px; --cell:40px; --songW:280px; } }
   *{box-sizing:border-box}
   /* ---- mobile baseline: the platform tells on a web app, removed at the root ---- */
@@ -1040,6 +1047,714 @@
     .obar .oacts .mini:hover{border-color:var(--line-strong);color:var(--ink)}
     .ofoot .oshare:hover{opacity:1}
   }
+
+  /* ======================= v5 workspace layer =======================
+     Indigo on a cool canvas, cards for everything, a navy sidebar. Written last,
+     so it settles every earlier rule it touches. */
+  body{background:var(--canvas)}
+  .wrap{background:var(--canvas);background-image:none}
+  .pg{width:100%;max-width:1360px;margin:0 auto;padding:0 var(--gut) 32px;flex:1;min-width:0}
+  .pg:has(> .scroll){padding-bottom:0}
+  .ai{display:block;flex:none}
+  /* phone + tablet bar: the navy chrome, so the status bar stays legible */
+  .mast{background:var(--chrome);background-image:none;border-bottom:0;gap:10px;min-height:58px;
+    padding:10px var(--gut);padding-top:calc(10px + env(safe-area-inset-top));
+    padding-left:calc(var(--gut) + env(safe-area-inset-left));padding-right:calc(var(--gut) + env(safe-area-inset-right))}
+  .mbrand{display:flex;align-items:center;gap:10px;min-width:0;color:inherit;margin-right:auto}
+  .bmark{width:34px;height:36px;flex:none;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(165deg,#33488f,#24346c);box-shadow:0 4px 14px -4px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.18)}
+  .bmark .logo{width:26px;height:26px;filter:none}
+  .mast .brand{font-size:17px;font-weight:650;letter-spacing:-.4px;color:#fff;white-space:nowrap}
+  .lang{margin-left:0;background:rgba(255,255,255,.09)}
+  .lang button{color:var(--chrome-text)}
+  .lang button.on,.lang > .ithumb{background:var(--gold);color:var(--on-gold);box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .lang.hasthumb button.on{color:var(--on-gold)}
+  .themebtn{width:36px;height:36px;border:0;border-radius:10px;background:rgba(255,255,255,.08);color:var(--chrome-text-2)}
+  .themebtn .ai{width:17px;height:17px}
+  .menubtn{border:0;background:rgba(255,255,255,.08)}
+  /* wide screens: a quiet top bar with the breadcrumb */
+  .topbar{display:none}
+  @media (min-width:1000px){
+    .topbar{display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:30;height:68px;padding:0 var(--gut);
+      background:var(--glass-3);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
+      border-bottom:1px solid var(--rule)}
+    .drawer{width:248px;background:var(--chrome);border-right:1px solid rgba(201,162,39,.45);box-shadow:none;padding:24px 14px 16px}
+    .wrap{width:auto;margin:0 0 0 248px;border-left:0}
+    .toast{left:calc(248px + 12px)}
+    .drawer .dhead{padding-top:0}
+  }
+  .crumbs{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);white-space:nowrap;min-width:0}
+  .crumbs .ai{width:14px;height:14px;color:var(--faint)}
+  .crumbs strong{color:var(--ink);font-weight:600}
+  .tacts{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .findsong{display:flex;align-items:center;gap:9px;height:38px;padding:0 14px 0 12px;min-width:210px;border-radius:10px;
+    background:var(--surface-2);border:1px solid var(--rule);color:var(--muted);font-size:13px;transition:border-color .15s ease,color .15s ease}
+  .findsong .ai{width:16px;height:16px}
+  .tdiv{width:1px;height:24px;background:var(--rule)}
+  .topbar .lang{background:var(--ios-track)}
+  .topbar .lang button{color:var(--text-2)}
+  .topbar .lang > .ithumb,.topbar .lang button.on{background:var(--thumb);color:var(--ink);
+    box-shadow:0 3px 8px var(--thumb-shadow),0 1px 1px var(--thumb-ring),0 0 0 .5px var(--thumb-ring)}
+  .topbar .lang.hasthumb button.on{color:var(--ink);background:transparent;box-shadow:none}
+  .topbar .themebtn{background:transparent;border:1px solid var(--rule);color:var(--muted)}
+  /* the sidebar / slide-out menu */
+  .drawer::before{display:none}
+  /* the slide-out menu is the same solid navy panel as the desktop sidebar */
+  .drawer{background:var(--chrome) !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;padding:calc(18px + env(safe-area-inset-top)) 14px calc(16px + env(safe-area-inset-bottom))}
+  @media (max-width:899px){ .drawer{box-shadow:-18px 0 50px -10px rgba(5,8,25,.45)} }
+  .drawer .dhead{border-bottom:0;padding:2px 4px 0;margin-bottom:18px;gap:10px}
+  .dbrand{display:flex;align-items:center;gap:11px;flex:1;min-width:0;color:#fff}
+  .bword{font-size:17px;font-weight:650;letter-spacing:-.5px;line-height:1.05;color:#fafaff;min-width:0}
+  .bword small{display:block;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--chrome-faint);margin-top:6px}
+  .dchurch{display:flex;align-items:center;gap:11px;padding:11px 12px;margin:0 2px 6px;background:var(--chrome-hi);
+    border:1px solid var(--chrome-line);border-radius:12px;color:#edeefa}
+  .demb{width:34px;height:36px;flex:none;display:grid;place-items:center;border-radius:9px;background:var(--chrome-line);color:var(--gold-soft);
+    font-family:Georgia,'Times New Roman',serif;font-size:21px}
+  .dchurch strong{display:block;font-size:12.5px;font-weight:600;line-height:1.3;text-wrap:balance}
+  .dchurch small{display:block;font-size:11.5px;color:var(--chrome-text);margin-top:2px}
+  .dsec{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;font-weight:650;color:var(--chrome-faint);padding:18px 12px 7px}
+  .drawer .it{gap:12px;padding:10px 12px;min-height:42px;border-radius:10px;font-size:14px;font-weight:500;color:var(--drawer-ink);margin:1px 0}
+  .drawer .it .ai{width:19px;height:19px;color:var(--chrome-accent)}
+  .drawer .it.on{background:var(--gold);color:var(--on-gold);font-weight:600;box-shadow:0 4px 18px -6px rgba(0,0,0,.45)}
+  .drawer .it.on .ai{color:var(--on-gold)}
+  .cnt2{margin-left:auto;font-style:normal;font-size:10.5px;font-weight:600;border-radius:6px;background:var(--chrome-hi);color:var(--chrome-text-2);padding:2px 7px}
+  .it.on .cnt2{background:rgba(23,32,58,.14);color:var(--on-gold)}
+  .drawer .grow{flex:1;min-height:18px}
+  .dtheme{padding:4px 6px 12px}
+  .lang.theme button .ai{width:14px;height:14px}
+  .dtheme .lang.theme{width:100%;min-width:0}
+  .dtheme .lang.theme button{flex:1 1 0;min-width:0;padding:7px 4px;gap:5px;font-size:12.5px;justify-content:center;white-space:nowrap;overflow:hidden}
+  .drawer .dfoot{border-top:1px solid var(--chrome-line);padding-top:12px;margin-top:4px}
+  .dacct{display:flex;align-items:center;gap:10px;padding:6px;border-radius:12px;color:#f1f2ff;transition:background .15s ease}
+  .dacct.on{background:rgba(255,255,255,.06)}
+  .dav{width:36px;height:36px;flex:none;border-radius:11px;background:var(--chrome-hi);display:grid;place-items:center;color:#d7dcf6}
+  .dav .ai{width:18px;height:18px}
+  .grow2{flex:1;min-width:0;display:block}
+  .dacct strong{display:block;font-size:13px;font-weight:600}
+  .dacct small{display:block;font-size:11px;color:var(--chrome-text);margin-top:2px}
+  .dout{width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:10px;color:var(--chrome-text);transition:background .15s ease,color .15s ease}
+  .dout .ai{width:18px;height:18px}
+  @media (hover: hover) and (pointer: fine){ .dout:hover{background:rgba(255,255,255,.1);color:#fff} .dacct.in:hover{background:transparent} }
+  .dacct > .ai{width:15px;height:15px;color:var(--chrome-faint)}
+  .drawer .vv{padding:10px 8px 0}
+  .drawer .x{border-color:var(--chrome-line);color:var(--chrome-text)}
+  .drawer{border-left-color:var(--chrome-line)}
+  .lyrbar .mini{gap:6px}
+  .dock svg{width:23px;height:23px}
+  /* page heads */
+  .h{background:transparent;border:0;padding:26px 0 14px;font-size:28px;font-weight:650;letter-spacing:-.9px;line-height:1.15;
+    align-items:center;flex-wrap:wrap;gap:8px 14px;color:var(--ink)}
+  .h .n{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:0}
+  .h .mini{margin-left:0}
+  /* page titles live in the top bar; a head keeps only its counts and actions */
+  .h:not(:has(> .back)){font-size:0;letter-spacing:0;padding:20px 0 6px;min-height:0;justify-content:flex-end}
+  .h:not(:has(> .back)) .n{margin-left:0;margin-right:auto}
+  .lyrpage:not(.view) .h{font-size:22px;letter-spacing:-.6px;justify-content:flex-start}
+  .lyrpage:not(.view) .h .n{margin-left:auto;margin-right:0}
+  .dtop{height:20px}
+  .dtop + .tabs,.dtop + .kpis{margin-top:0}
+  .pgt small{display:block;font-size:13.5px;font-weight:450;letter-spacing:0;color:var(--muted);margin-top:6px}
+  .h .back{font-size:30px;color:var(--muted)}
+  .h:has(> .back){flex-wrap:nowrap;align-items:baseline;gap:8px;font-size:24px}
+  .h:has(> .back) .n{margin-left:auto;font-size:18px;font-weight:650}
+  .body.adm > .pad{padding:4px 0 8px}
+  .body.adm{background:transparent;padding-bottom:18px}
+  .body.adm .h{padding:22px 0 8px}
+  @media (max-width:699px){ .h{font-size:24px;padding:20px 0 10px} }
+  /* cards */
+  .sec{margin:14px 0 0;border:1px solid var(--card-line);border-radius:16px;box-shadow:var(--shadow-card);background:var(--card)}
+  .notespanel{margin:0 0 28px;border:1px solid var(--card-line);box-shadow:var(--shadow-card);background:var(--card);border-radius:16px}
+  .li{background:var(--card);border-bottom:1px solid var(--rule)}
+  .sec > .li:last-child,.sec > a.li:last-child{border-bottom:0}
+  .card{background:var(--card)}
+  .msg{padding:22px 0;color:var(--muted)}
+  .sec .msg{padding:20px}
+  .note{padding:14px 2px 24px}
+  .sec .note{padding:14px 16px 18px}
+  /* toolbars sit on the canvas, not in bars of their own */
+  .tabs{--tabpad:0px;padding:4px 0;margin:2px auto 6px;background:transparent;border:0;max-width:600px}
+  .tabs::before{top:4px;bottom:4px}
+  .tabs.admtabs{max-width:680px}
+  .topctl .tabs{margin-left:auto;margin-right:auto}
+  .subtabs{justify-content:center}
+  .stepper{justify-content:center}
+  .ctlbar,.ctlbar.wide{background:transparent;border:0;padding:10px 0}
+  .searchrow{background:transparent;border:0;padding:6px 0 4px !important}
+  .ctrl{background:transparent;border:0;padding:12px 0}
+  .panel{background:var(--card);border:1px solid var(--card-line);border-radius:14px;box-shadow:var(--shadow-card);padding:12px 14px;margin-bottom:6px}
+  .rangebtn{background:var(--card);border:1px solid var(--card-line);box-shadow:var(--shadow-card);min-height:40px}
+  .obar{padding:12px 0 14px}
+  .savebar{margin-left:0;margin-right:0;border-radius:16px}
+  @media (min-width:1000px){ .savebar{bottom:14px;margin-top:14px} }
+  /* the ledger grids live in a card */
+  .scroll{background:var(--card);border:1px solid var(--card-line);border-radius:16px;box-shadow:var(--shadow-card);margin:4px 0 0}
+  @media (min-width:1000px){ .scroll{margin-bottom:24px} }
+  .topctl{padding:4px 14px 2px;background:var(--glass)}
+  .topctl .tabs{margin:6px 0 2px}
+  .spacer,.tally{border-right:1px solid var(--line-strong)}
+  .hday .spacer,.hday .d{border-bottom:1px solid var(--line-strong)}
+  .hmonth .spacer,.hmonth .m{background:var(--surface-2)}
+  .hday .spacer{color:var(--muted);font-weight:600}
+  .hday .d.svc,.cell.svc{background:var(--blue-wash)}
+  .hday .d.svc em{color:var(--blue-text)}
+  .cell .pr{font-style:normal;color:var(--teal);font-weight:600;font-size:var(--fs-13)}
+  .legend i.pr{font-style:normal;color:var(--teal);border-color:var(--rule)}
+  .cell .ab{color:var(--red)}
+  .cell .sq{background:var(--blue);border-radius:3px}
+  .sect .lbl{background:var(--surface-2);color:var(--muted);font-size:10.5px;border-left-width:3px}
+  .sect .fill{background:var(--surface-2)}
+  .sect.soprano .lbl{border-left-color:var(--violet)} .sect.alto .lbl{border-left-color:var(--teal)}
+  .sect.tenor .lbl{border-left-color:var(--rose)} .sect.bass .lbl{border-left-color:var(--amber)}
+  .legend i{border-radius:4px}
+  /* voice parts wear one colour each, everywhere */
+  .sectbar{background:var(--surface-2);color:var(--muted);font-size:10.5px;letter-spacing:.12em;padding:12px 16px 8px;border-bottom-color:var(--rule)}
+  .sectbar::before{background:var(--blue-line)}
+  .sectbar.soprano{background:var(--violet-wash);color:var(--violet);border-bottom-color:var(--rule)} .sectbar.soprano::before{background:var(--violet)}
+  .sectbar.alto{background:var(--teal-tint);color:var(--teal);border-bottom-color:var(--rule)} .sectbar.alto::before{background:var(--teal)}
+  .sectbar.tenor{background:var(--rose-wash);color:var(--rose);border-bottom-color:var(--rule)} .sectbar.tenor::before{background:var(--rose)}
+  .sectbar.bass{background:var(--amber-wash);color:var(--gold-text);border-bottom-color:var(--rule)} .sectbar.bass::before{background:var(--amber)}
+  .blk{border-radius:14px}
+  .blk.soprano{border-color:color-mix(in srgb,var(--violet) 32%,transparent);background:var(--violet-wash)} .blk.soprano .blkh{color:var(--violet)}
+  .blk.alto{border-color:color-mix(in srgb,var(--teal) 32%,transparent);background:var(--teal-tint)} .blk.alto .blkh{color:var(--teal)}
+  .blk.tenor{border-color:color-mix(in srgb,var(--rose) 32%,transparent);background:var(--rose-wash)} .blk.tenor .blkh{color:var(--rose)}
+  .blk.bass{border-color:color-mix(in srgb,var(--amber) 36%,transparent);background:var(--amber-wash)} .blk.bass .blkh{color:var(--gold-text)}
+  .seat.sel,.chipx.sel{box-shadow:0 0 0 2px var(--blue);background:var(--blue-tint);border-color:var(--blue)}
+  .sec.seatcard{padding:4px 0 12px}
+  .stagewrap{background:transparent}
+  /* credits and song-book numbers: small outlined chips */
+  .who{margin-left:0;gap:5px;padding:2px 7px 2px 3px;border-radius:6px;background:var(--surface-2);border:1px solid var(--card-line);color:var(--text-2)}
+  .who i{border:0;background:var(--blue-tint);color:var(--blue-text);border-radius:4px;padding:2px 4px}
+  .s .who,.subrow .dc .who,.li .who{margin-left:6px}
+  .pvn{border:1px solid var(--card-line);border-radius:5px;padding:1px 5px;font-size:10.5px;color:var(--muted);margin-left:8px;vertical-align:1px}
+  .bar{background:var(--paper);height:6px;border-radius:4px}
+  .bar i{border-radius:4px;background:var(--blue)}
+  .opt.on{border:2px solid var(--blue);background:var(--blue-wash)}
+  .ftile{width:40px;height:44px;flex:none;border-radius:10px;background:var(--blue-tint);color:var(--blue-text);display:grid;place-items:center}
+  .lyrn{font-size:13px;color:var(--muted);white-space:nowrap;flex:none;font-variant-numeric:tabular-nums}
+  .lyrn.none{color:var(--faint)}
+  a.li.tap > .ai{width:17px;height:17px;color:var(--faint);flex:none;margin-left:2px}
+  .ftile .ai{width:19px;height:19px}
+  .ord{width:34px;height:36px;flex:none;display:grid;place-items:center;border-radius:9px;background:var(--surface-2);
+    border:1px solid var(--card-line);color:var(--muted);font-size:12px;font-weight:600}
+  .sec.songc{margin-top:10px}
+  .sec.songc > .li{border-bottom:0;padding:14px 18px;min-height:72px}
+  .sec.songc > .li + *{border-top:1px solid var(--rule)}
+  .admstrip{background:var(--surface-2);border-bottom:0}
+  .obar .op{background:var(--blue);color:#fff}
+  /* ---- overview ---- */
+  .dhead{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 0 20px}
+  .dhead h1{margin:0;font-size:30px;font-weight:650;letter-spacing:-1px;line-height:1.15}
+  .dhead p{margin:7px 0 0;font-size:13.5px;color:var(--muted)}
+  .datechip{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--card-line);border-radius:10px;
+    padding:9px 12px;font-size:12.5px;color:var(--muted);white-space:nowrap;box-shadow:var(--shadow-card)}
+  .datechip .ai{width:16px;height:16px}
+  .datechip strong{color:var(--ink);font-weight:600}
+  .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:20px}
+  .kpi{background:var(--card);border:1px solid var(--card-line);border-radius:16px;padding:18px 18px 16px;box-shadow:var(--shadow-card);
+    display:flex;flex-direction:column;min-width:0;color:var(--ink);transition:border-color .18s ease,transform .18s var(--ease-out)}
+  .kl{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;font-weight:550;color:var(--muted)}
+  .ki{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:var(--blue-tint);color:var(--blue-text);flex:none}
+  .ki .ai{width:17px;height:17px}
+  .k2 .ki{background:var(--amber-wash);color:var(--gold-text)} .k3 .ki{background:var(--teal-tint);color:var(--teal)} .k4 .ki{background:var(--rose-wash);color:var(--rose)}
+  .kv{font-size:34px;font-weight:650;letter-spacing:-1.2px;line-height:1.05;margin:10px 0 12px;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:3px}
+  .kv small{font-size:19px;font-weight:500;letter-spacing:0;color:var(--muted)}
+  .kf{margin-top:auto;font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:6px;line-height:1.4}
+  .kf .ai{width:14px;height:14px;color:var(--green)}
+  .dgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:20px;align-items:stretch}
+  .dsvc,.dpanel{background:var(--card);border:1px solid var(--card-line);border-radius:18px;box-shadow:var(--shadow-card);min-width:0;display:flex;flex-direction:column}
+  .dsvc{overflow:hidden}
+  .dpanel{padding:20px 22px}
+  .sban{position:relative;isolation:isolate;overflow:hidden;background:#17203a;background-image:var(--order-aurora);color:#fff;padding:26px 28px 24px}
+  .sban::after{content:'';position:absolute;width:260px;height:260px;right:-90px;top:-70px;border-radius:50%;z-index:-1;
+    border:1px solid rgba(255,255,255,.08);box-shadow:0 0 0 26px rgba(255,255,255,.035),0 0 0 52px rgba(255,255,255,.03),0 0 0 80px rgba(255,255,255,.025)}
+  /* a ripple out of the rings each time the overview is opened */
+  .sban::before{content:'';position:absolute;width:260px;height:260px;right:-90px;top:-70px;border-radius:50%;z-index:-1;
+    border:1px solid rgba(255,255,255,.35);opacity:0;pointer-events:none}
+  .sban.rip::after{animation:ringsin 1.4s var(--ease-out) both}
+  .sban.rip::before{animation:ripple 2.2s cubic-bezier(.2,.6,.3,1) .25s both}
+  @keyframes ringsin{from{transform:scale(.6);opacity:0}}
+  @keyframes ripple{0%{transform:scale(.35);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+  /* …and the card breathes a soft glow twice, so it is the first thing noticed */
+
+  @keyframes cardglow{
+    0%,100%{box-shadow:var(--shadow-card)}
+    25%,75%{box-shadow:var(--shadow-card),0 0 0 3px rgba(var(--glow),.16),0 14px 40px -12px rgba(var(--glow),.45)}
+    50%{box-shadow:var(--shadow-card),0 0 0 1px rgba(var(--glow),.08),0 10px 30px -16px rgba(var(--glow),.25)}}
+  /* once the ripple has spread, the main button pulses twice to invite a tap */
+  .sban.rip .sbtn{animation:btnpulse 1.8s ease-in-out 2.4s both}
+  @keyframes btnpulse{
+    0%,100%{box-shadow:0 6px 14px -6px rgba(10,10,50,.45),0 0 0 0 rgba(255,255,255,0)}
+    25%,75%{box-shadow:0 6px 14px -6px rgba(10,10,50,.45),0 0 0 5px rgba(255,255,255,.22),0 0 22px 4px rgba(255,255,255,.35)}
+    50%{box-shadow:0 6px 14px -6px rgba(10,10,50,.45),0 0 0 2px rgba(255,255,255,.1),0 0 12px 1px rgba(255,255,255,.15)}}
+  @media (prefers-reduced-motion:reduce){ .sban.rip::after,.sban.rip::before,.dsvc.rip,.sban.rip .sbtn{animation:none} }
+  .sbtop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+  .eye{font-size:10.5px;font-weight:650;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
+  .eye::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold)}
+  .sstat{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);font-size:11.5px;color:var(--chrome-text-2);padding:5px 9px;border-radius:7px;white-space:nowrap}
+  .sban h2{margin:0;font-size:28px;font-weight:650;letter-spacing:-.8px;line-height:1.15}
+  .sdate{margin:8px 0 0;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--chrome-text-2)}
+  .sdate .ai{width:15px;height:15px}
+  .sbact{display:flex;gap:14px;margin-top:22px}
+  .sbtn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:var(--r-pill);background:var(--onnavy-btn-bg);color:var(--onnavy-btn-ink);
+    font-size:14px;font-weight:600;box-shadow:0 6px 14px -6px rgba(10,10,50,.45);transition:background .15s ease}
+  .sbtn .ai{width:14px;height:14px;fill:currentColor}
+  .sshare{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.07);color:#fff;padding:0;transition:background .15s ease}
+  .sshare .ai{width:17px;height:17px}
+  .sethd{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:18px 26px 4px;font-size:13.5px;font-weight:650}
+  .sethd small{font-size:11.5px;font-weight:450;color:var(--muted)}
+  .setlist{padding:0 26px 6px;flex:1}
+  .srow2,.svcl li{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--rule);color:var(--ink);min-height:62px}
+  .srow2:last-child,.svcl li:last-child{border-bottom:0}
+  .sno{width:30px;height:32px;flex:none;display:grid;place-items:center;border-radius:8px;background:var(--surface-2);border:1px solid var(--card-line);
+    font-size:11.5px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+  .sbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+  .stl{font-size:15px;font-weight:600;line-height:1.3;letter-spacing:-.2px;transition:color .15s ease}
+  .scr{display:flex;flex-wrap:wrap;gap:6px}
+  .scr .who{margin-left:0}
+  .srow2 > .ai{width:16px;height:16px;color:var(--faint)}
+  .pfoot{border-top:1px solid var(--rule);padding:0 24px;display:flex;justify-content:flex-end}
+  .pfoot a,.tlink{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--blue-text)}
+  .pfoot a{min-height:48px}
+  .pfoot .ai,.tlink .ai{width:15px;height:15px}
+  .pfoot.c{justify-content:center;margin:18px -22px -20px}
+  .phd{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px}
+  .phd h2{margin:0;font-size:16.5px;font-weight:650;letter-spacing:-.3px}
+  .phd > .ai{width:18px;height:18px;color:var(--muted)}
+  .pcap{margin:2px 0 0;font-size:12.5px;color:var(--muted);line-height:1.5}
+  /* the ring and the part bars fill in each time the overview is opened */
+  @property --p{syntax:'<percentage>';inherits:false;initial-value:0%}
+  .datt.rip .donut{animation:donutfill 1.3s cubic-bezier(.3,.7,.2,1) .2s both}
+  @keyframes donutfill{from{--p:0%}}
+  .datt.rip .pbar b{animation:barfill 1s cubic-bezier(.3,.7,.2,1) both}
+  .datt.rip .prow:nth-child(1) .pbar b{animation-delay:.55s} .datt.rip .prow:nth-child(2) .pbar b{animation-delay:.65s}
+  .datt.rip .prow:nth-child(3) .pbar b{animation-delay:.75s} .datt.rip .prow:nth-child(4) .pbar b{animation-delay:.85s}
+  @keyframes barfill{from{width:0}}
+  @media (prefers-reduced-motion:reduce){ .datt.rip .donut,.datt.rip .pbar b{animation:none} }
+  .donut{--p:0%;width:184px;height:184px;flex:none;border-radius:50%;margin:24px auto 16px;display:grid;place-items:center;
+    background:conic-gradient(from -90deg,var(--blue-hover) 0%,var(--blue) var(--p),var(--paper) var(--p) 100%)}
+  .donut > div{width:152px;height:152px;border-radius:50%;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .donut strong{font-size:38px;font-weight:650;letter-spacing:-1.3px;line-height:1.1;font-variant-numeric:tabular-nums}
+  .donut span{font-size:12px;color:var(--muted);margin-top:3px}
+  .akey{display:flex;justify-content:center;gap:20px;font-size:12px;color:var(--muted);margin-bottom:18px}
+  .akey span{display:flex;align-items:center;gap:6px}
+  .akey i{width:7px;height:7px;border-radius:50%;background:var(--blue)}
+  .akey span + span i{background:var(--line-strong-2)}
+  .akey b{color:var(--ink);font-weight:600}
+  .parts{border-top:1px solid var(--rule);padding-top:17px;margin-top:auto;display:flex;flex-direction:column;gap:14px}
+  .prow{display:grid;grid-template-columns:82px 1fr 40px;align-items:center;gap:12px;font-size:12.5px}
+  .prow > span{display:flex;align-items:center;gap:7px;color:var(--muted)}
+  .prow i{width:7px;height:7px;border-radius:50%;background:var(--pc)}
+  .pbar{height:6px;border-radius:4px;background:var(--paper);overflow:hidden}
+  .pbar b{display:block;height:100%;border-radius:4px;background:var(--pc)}
+  .prow strong{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  .prow.soprano{--pc:var(--violet)} .prow.alto{--pc:var(--teal)} .prow.tenor{--pc:var(--rose)} .prow.bass{--pc:var(--amber)}
+  .dbottom{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:20px}
+  .dbottom .phd{margin-bottom:16px}
+  .reslist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;flex:1}
+  .reslist .res{display:flex;flex-direction:column;justify-content:flex-end}
+  .reslist .res .rico{margin-bottom:auto}
+  .reslist .res strong{margin-top:14px}
+  .reslist.two{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}
+  .res{display:block;min-width:0;border:1px solid var(--card-line);background:var(--surface-2);border-radius:13px;padding:15px 14px;color:var(--ink);
+    transition:border-color .18s ease,transform .18s var(--ease-out)}
+  .reslist.two .res{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:12px;align-items:center;padding:12px 14px}
+  .reslist.two .rico{grid-row:span 2;margin:0}
+  .rico{width:36px;height:38px;border-radius:9px;display:grid;place-items:center;background:var(--blue-tint);color:var(--blue-text);margin-bottom:14px}
+  .rico .ai{width:18px;height:18px}
+  .r2 .rico{background:var(--teal-tint);color:var(--teal)} .r3 .rico{background:var(--violet-wash);color:var(--violet)}
+  .r4 .rico{background:var(--amber-wash);color:var(--gold-text)} .r5 .rico{background:var(--rose-wash);color:var(--rose)}
+  .res strong{display:block;font-size:13.5px;font-weight:600;line-height:1.3}
+  .res small{display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.35}
+  .recent{display:flex;flex-direction:column;margin-top:-6px}
+  .rsvc{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--rule);color:var(--ink)}
+  .rsvc:last-child{border-bottom:0;padding-bottom:0}
+  .mdate{width:40px;height:44px;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface-2);
+    border:1px solid var(--card-line);border-radius:9px;line-height:1.15}
+  .mdate span{font-size:9.5px;text-transform:uppercase;color:var(--muted);letter-spacing:.04em}
+  .mdate strong{font-size:16px;font-weight:650}
+  .rsvc strong{display:block;font-size:14px;font-weight:600;transition:color .15s ease}
+  .rsvc small{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+  .rsvc > .ai{width:16px;height:16px;color:var(--faint)}
+  .dadmin{display:flex;align-items:center;gap:14px;margin-top:20px;background:var(--card);border:1px solid var(--card-line);border-radius:16px;
+    padding:14px 18px;box-shadow:var(--shadow-card);color:var(--ink)}
+  .dadmin .rico{margin:0}
+  .dadmin strong{display:block;font-size:14px;font-weight:600}
+  .dadmin small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+  .dadmin > .ai{width:16px;height:16px;color:var(--faint)}
+  .ver{padding:26px 0 10px}
+  @media (max-width:1200px){ .kpis{gap:12px} .kv{font-size:30px} .dgrid,.dbottom{gap:16px} .dbottom{margin-top:16px} }
+  @media (max-width:860px){ .dgrid,.dbottom{grid-template-columns:minmax(0,1fr)} }
+  /* phones: the numbers follow the library, just above recent services */
+  @media (max-width:699px){
+    .ov{display:flex;flex-direction:column;gap:16px}
+    .ov > .dgrid,.ov > .dbottom{display:contents}
+    .ov .dsvc{order:1}
+    .ov .dbottom > :first-child{order:2}
+    .ov .datt{order:3}
+    .ov .kpis{order:4;margin:0}
+    .ov .dbottom > :last-child{order:5}
+    .ov .dbottom{margin:0}
+  }
+  @media (max-width:699px){
+    .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .dhead{padding:20px 0 16px} .dhead h1{font-size:26px} .datechip{display:none}
+    .kpi{padding:14px 14px 13px;border-radius:14px} .kv{font-size:28px;margin:8px 0 10px}
+    .sban{padding:22px 20px} .sban h2{font-size:24px}
+    .setlist{padding:0 18px 4px} .sethd{padding:16px 18px 4px} .pfoot{padding:0 18px}
+    .dpanel{padding:18px} .pfoot.c{margin:16px -18px -18px}
+    .reslist{gap:8px} .res{padding:13px 11px} .stl{font-size:14px}
+    .reslist.two{grid-template-columns:minmax(0,1fr)}
+  }
+  /* ---- service cards ---- */
+  .svcgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr));gap:16px;margin-top:6px;padding-bottom:10px}
+  .sec.svc{margin:0}
+  .sec.svc.cx{opacity:.7}
+  .svch{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px;border-bottom:1px solid var(--rule)}
+  .svcd{font-size:11px;font-weight:650;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+  .svch h3{margin:5px 0 0;font-size:19px;font-weight:650;letter-spacing:-.4px}
+  .svcx{font-size:11px;font-weight:600;color:var(--red);background:var(--red-wash);padding:2px 8px;border-radius:6px;vertical-align:middle;letter-spacing:0}
+  .svcl{list-style:none;margin:0;padding:2px 22px 6px}
+  @media (max-width:699px){ .svch{padding:16px 18px} .svcl{padding:2px 18px 6px} }
+  /* ---- lyrics: a printed page ---- */
+  .lyrbg{background:transparent}
+  .lyrpage.view{max-width:820px;margin:0 auto;padding:22px 0 30px;width:100%;display:block}
+  .lyrpage.view .lyrback{margin:0 0 18px}
+  .lyrhd2 .tl{margin:0;font-size:32px;font-weight:650;letter-spacing:-1px;line-height:1.15;text-wrap:balance}
+  .lyrhd2 .mt{margin-top:8px;font-size:13.5px;color:var(--muted)}
+  .lyrbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:18px 0}
+  .lyrbar .acts{flex-wrap:wrap}
+  .pvchip{font-size:12px;color:var(--muted);background:var(--card);border:1px solid var(--card-line);border-radius:8px;padding:6px 10px}
+  .paper{background:var(--card);border:1px solid var(--card-line);border-radius:18px;padding:44px 56px 48px;
+    box-shadow:0 1px 2px rgba(var(--shadow-rgb),.04),0 20px 48px -28px rgba(var(--shadow-rgb),.38)}
+  .paper .lyrblk{padding:0;border:0;background:transparent;margin:0 0 30px}
+  .paper .lyrblk:last-child{margin-bottom:0}
+  .paper .bl{font-size:11px;letter-spacing:1.6px;color:var(--blue-text);margin-bottom:10px}
+  .paper .tx{font-size:20px;line-height:1.72;color:var(--ink);max-width:none}
+  .lyrpage .h{padding-left:0;padding-right:0}
+  @media (max-width:699px){ .paper{padding:28px 22px 30px;border-radius:16px} .paper .tx{font-size:17.5px} .lyrhd2 .tl{font-size:26px} }
+  /* ---- choir rules: the same page ---- */
+  .doc{background:transparent;padding:6px 0 40px}
+  .pg > .tabs:first-child{margin-top:20px}
+  .doc.paper{max-width:none;margin:4px 0 24px;padding:44px 52px 48px;font-size:var(--fs-17);line-height:1.7;background:var(--card)}
+  .doc h3{border-bottom:0;font-size:22px;letter-spacing:-.5px;margin:34px 0 12px;padding-bottom:0}
+  .doc blockquote{border-left-color:var(--blue-line);background:var(--surface-2);border-radius:0 10px 10px 0}
+  .doc mark{background:color-mix(in srgb,var(--blue) 15%,transparent);color:inherit}
+  @media (max-width:699px){ .doc.paper{padding:26px 22px 30px} }
+  /* ---- sign in ---- */
+  .loginwrap{padding:7vh 0 40px}
+  .login{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid var(--card-line);border-top:4px solid var(--gold);
+    border-radius:18px;box-shadow:0 22px 60px -34px rgba(var(--shadow-rgb),.55);padding:28px 28px 26px;width:min(440px,100%);gap:18px}
+  .login .lhead{align-items:flex-start;text-align:left;gap:10px}
+  .login .lmark{width:52px;height:52px;border-radius:14px;background:var(--blue-tint);color:var(--blue-text);display:grid;place-items:center}
+  .login .lmark .ai{width:26px;height:26px}
+  .login .lt{font-size:23px;font-weight:650;letter-spacing:-.6px;margin-top:4px}
+  .lnote{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5}
+  .login label{text-transform:none;letter-spacing:0;font-size:13px;font-weight:500;color:var(--text-2)}
+  .login input{border-radius:11px;background:var(--surface);border:1px solid var(--line-strong);padding:12px 14px}
+  .login .btn{background:linear-gradient(165deg,var(--blue-hi),var(--blue));border-radius:11px;box-shadow:0 12px 26px -12px rgba(var(--blue-rgb),.75)}
+  .qwrap .field{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23939bb2' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='m16 16 5 5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:13px center;padding-left:38px;background-color:var(--card);border-color:var(--card-line);box-shadow:var(--shadow-card)}
+  [data-cat-filter]{background-color:var(--card);border-color:var(--card-line);box-shadow:var(--shadow-card)}
+
+  .findsong{position:relative;cursor:text;width:280px;min-width:0}
+  .findsong input{flex:1;min-width:0;border:0;background:transparent;outline:0;padding:0;font-size:13px;color:var(--ink);-webkit-appearance:none;appearance:none}
+  .findsong input::-webkit-search-cancel-button{-webkit-appearance:none}
+  .findsong:focus-within{border-color:var(--blue-text);background:var(--card);box-shadow:0 0 0 3px rgba(var(--blue-rgb),.12);color:var(--ink)}
+  .tsugg{position:absolute;top:calc(100% + 8px);left:0;width:min(400px,calc(100vw - 300px));background:var(--card);border:1px solid var(--card-line);
+    border-radius:14px;box-shadow:0 22px 50px -22px rgba(var(--shadow-rgb),.5);padding:6px;z-index:45;max-height:min(420px,70vh);overflow:auto}
+  .tsugg[hidden]{display:none}
+  .tsugg a{display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:10px;color:var(--ink);min-height:48px}
+  .tsugg a.on{background:var(--blue-wash)}
+  .tsi{width:32px;height:34px;flex:none;border-radius:8px;display:grid;place-items:center;background:var(--blue-tint);color:var(--blue-text)}
+  .tsi .ai{width:16px;height:16px}
+  .tst{display:block;font-size:13.5px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tsm{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+  .tsugg em{flex:none;font-style:normal;font-size:11.5px;font-weight:600;color:var(--blue-text)}
+  .tsnone{padding:14px 12px;font-size:13px;color:var(--muted)}
+
+  /* ---- director pages ---- */
+  .admh{justify-content:space-between}
+  .admbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0 4px}
+  .admbar .n{font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .body.adm > .tabs:first-child{margin-top:20px}
+  .admh .pbtn{margin-left:auto}
+  .pbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border:0;border-radius:12px;
+    background:var(--blue);color:#fff;font-size:14.5px;font-weight:600;letter-spacing:-.1px;font-family:inherit;white-space:nowrap;
+    box-shadow:0 8px 18px -10px rgba(var(--blue-rgb),.8);transition:background .15s ease,transform .15s ease}
+  .pbtn .ai{width:16px;height:16px}
+  .pbtn:active{transform:scale(.97)}
+  .obtn2{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:40px;padding:0 15px;border-radius:11px;
+    border:1px solid var(--card-line);background:var(--card);color:var(--blue-text);font-size:13.5px;font-weight:600;font-family:inherit;
+    box-shadow:var(--shadow-card);white-space:nowrap;transition:border-color .15s ease,background .15s ease}
+  .obtn2 svg{width:15px;height:15px}
+  .obtn2.on{background:var(--red-wash);border-color:var(--red-line);color:var(--red)}
+  .obtn2[disabled]{opacity:.5}
+  .tbtn{border:0;background:transparent;color:var(--blue-text);font-size:13.5px;font-weight:600;font-family:inherit;padding:8px 10px;border-radius:9px;white-space:nowrap;flex:none}
+  .ibtn{width:36px;height:36px;flex:none;display:grid;place-items:center;border:0;border-radius:10px;background:transparent;color:var(--muted);padding:0}
+  .ibtn svg{width:17px;height:17px}
+  .ibtn.danger{color:var(--muted)}
+  .ibtn[disabled]{opacity:.3}
+  .stepper{list-style:none;margin:6px 0 16px;padding:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .stepper li{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--muted)}
+  .stepper li.on{color:var(--ink)}
+  .stepper li.done{color:var(--text-2)}
+  .stepper .sn{min-width:28px;height:26px;padding:0 6px;border-radius:8px;display:grid;place-items:center;font-size:11.5px;font-weight:600;
+    color:var(--muted);font-variant-numeric:tabular-nums}
+  .stepper li.on .sn{background:var(--blue-tint);color:var(--blue-text)}
+  .stepper li.done .sn{color:var(--green)}
+  .stepper .sn .ai{width:15px;height:15px}
+  .stepper .sx{color:var(--faint)} .stepper .sx .ai{width:14px;height:14px}
+  .wcard{padding:22px 24px;display:flex;flex-direction:column;gap:18px}
+  .fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}
+  .fl{display:flex;flex-direction:column;gap:7px;min-width:0}
+  .fl > span{font-size:13px;font-weight:500;color:var(--muted)}
+  .fl.full,.fgrid .full{grid-column:1/-1}
+  .fl .field,.fl select.field{border-radius:11px;min-height:46px;padding:11px 14px;background:var(--surface-2);border:1px solid var(--card-line);text-align:left}
+  .fl select.field{padding-right:36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23939bb2' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+  .fhint{font-size:12.5px;color:var(--muted);line-height:1.5;grid-column:1/-1}
+  .ck{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-2);min-height:40px}
+  .ck input{width:20px;height:20px;accent-color:var(--blue);margin:0}
+  @media (max-width:560px){ .fgrid{grid-template-columns:minmax(0,1fr)} }
+  .chd{display:flex;align-items:center;gap:10px;padding:16px 20px 12px;border-bottom:1px solid var(--rule)}
+  .chd h3{margin:0;font-size:15.5px;font-weight:650;letter-spacing:-.3px;flex:1;min-width:0;text-align:left}
+  .chd .n{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .chd.bare{border:0;padding:22px 0 4px}
+  button.chd{width:100%;border:0;background:transparent;font-family:inherit;color:var(--ink);cursor:pointer}
+  button.chd[aria-expanded="false"]{border-bottom:0}
+  .chd .chev{width:9px;height:9px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);transform:rotate(45deg);transition:transform .15s var(--ease-in-out);flex:none;margin:0 4px}
+  .chd .chev.up{transform:rotate(225deg)}
+  .cfoot{padding:12px 20px}
+  .cfoot .tlink{border:0;background:transparent;font-family:inherit;padding:0}
+  .brow{display:flex;gap:8px;flex-wrap:wrap}
+  .erow{gap:10px;padding:12px 16px 12px 20px}
+  .erow-main{display:flex;align-items:center;gap:13px;flex:1;min-width:0;color:var(--ink)}
+  .erow-main strong{display:block;font-size:15px;font-weight:600}
+  .erow-main small{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+  .erow-main small.cx{color:var(--red)}
+  .evtools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+  .evdate{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;background:var(--card);border:1px solid var(--card-line);border-radius:11px;padding:8px 10px 8px 14px;box-shadow:var(--shadow-card)}
+  .evacts{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .evcount{font-size:13px;color:var(--muted)} .evcount b{color:var(--red);font-weight:650}
+  .notice{background:var(--blue-wash);border:1px solid var(--blue-line);color:var(--blue-text);border-radius:12px;padding:12px 16px;font-size:13.5px;margin:0 0 12px}
+  .notice.warn{background:var(--red-wash);border-color:var(--red-line);color:var(--red)}
+  .sectbar em{margin-left:auto}
+  .arow{gap:12px;padding:9px 12px 9px 20px;min-height:58px}
+  .arow .nm{flex:1;min-width:0;font-size:15px}
+  .arow.absent .nm{color:var(--red);font-weight:600}
+  .arow.na .nm{color:var(--faint)}
+  .li.arow.na{background:var(--card)}
+  .att3{display:flex;flex:none;background:var(--ios-track);border-radius:12px;padding:3px;gap:2px}
+  .att3 button{display:flex;align-items:center;gap:6px;border:0;background:transparent;border-radius:9px;padding:7px 11px;font-family:inherit;
+    font-size:12.5px;font-weight:500;color:var(--muted);white-space:nowrap;transition:background .15s ease,color .15s ease}
+  .att3 b{font-weight:700;font-size:13px;width:10px;text-align:center}
+  .att3 button.present.on{background:var(--green-wash);color:var(--green);box-shadow:0 1px 2px rgba(var(--shadow-rgb),.08)}
+  .att3 button.absent.on{background:var(--red-wash);color:var(--red);box-shadow:0 1px 2px rgba(var(--shadow-rgb),.08)}
+  .att3 button.na.on{background:var(--card);color:var(--text-2);box-shadow:0 1px 2px rgba(var(--shadow-rgb),.1)}
+  @media (max-width:640px){ .att3 span{display:none} .att3 button{padding:8px 13px} .att3 b{font-size:15px} }
+  .rvhd{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .rvhd > div{flex:1;min-width:0}
+  .wcard .svcl{padding:0}
+  .mhd h2{flex:1;min-width:0}
+  .rvhd h3{margin:0;font-size:20px;font-weight:650;letter-spacing:-.4px}
+  .rvhd p{margin:5px 0 0;font-size:13.5px;color:var(--muted)}
+  .chip{font-size:12px;font-weight:600;color:var(--muted);background:var(--surface-2);border:1px solid var(--card-line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+  .rvstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .rvs{background:var(--surface-2);border-radius:13px;padding:16px 18px}
+  .rvs b{display:block;font-size:30px;font-weight:650;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+  .rvs span{display:block;font-size:13px;color:var(--muted);margin-top:3px}
+  .rvs.ok b{color:var(--green)} .rvs.bad b{color:var(--red)}
+  .rvnote{margin:0;font-size:14px;color:var(--muted)}
+  .rvlist{display:flex;flex-direction:column;gap:8px}
+  .rvl{font-size:11px;font-weight:650;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)} .rvl.bad{color:var(--red)}
+  .rvn{display:flex;flex-wrap:wrap;gap:6px}
+  .rvn span{font-size:13px;background:var(--surface-2);border:1px solid var(--card-line);border-radius:8px;padding:4px 9px}
+  .li.pick{gap:12px;padding:12px 16px 12px 20px;min-height:64px}
+  .li.pick .sub{font-style:normal;color:var(--muted)}
+  .li.pick .sub.soon{color:var(--gold-text)}
+  .li.pick.on{background:var(--blue-wash)}
+  .pk{width:34px;height:34px;flex:none;display:grid;place-items:center;border-radius:10px;color:var(--blue-text);font-size:22px;font-weight:300;line-height:1}
+  .pick.on .pk{background:var(--blue);color:#fff}
+  .pk b{font-size:14px;font-weight:650}
+  .stl{font-size:15px;font-weight:600;line-height:1.3;letter-spacing:-.2px}
+  .rrow,.mrow{gap:12px;padding:12px 12px 12px 20px;min-height:68px}
+  .rrow .sub,.mrow .sub{font-style:normal;color:var(--muted);margin-top:3px}
+  .av{width:40px;height:40px;flex:none;border-radius:11px;background:var(--blue-tint);color:var(--blue-text);display:grid;place-items:center;font-size:12.5px;font-weight:650;letter-spacing:.02em}
+  .mrow.na .av{background:var(--surface-2);color:var(--faint)}
+  .subtabs{display:flex;gap:6px;margin:4px 0 4px;flex-wrap:wrap}
+  .subtabs a{padding:8px 14px;border-radius:10px;font-size:13.5px;font-weight:600;color:var(--muted)}
+  .subtabs a.on{background:var(--blue-tint);color:var(--blue-text)}
+  .crow{background:var(--card)}
+  /* ---- dialogs ---- */
+  .mscrim{position:fixed;inset:0;z-index:60;background:rgba(10,14,30,.46);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);animation:scrimin .2s var(--ease-out)}
+  .modal{position:fixed;z-index:61;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 40px);overflow:auto;
+    background:var(--card);border:1px solid var(--card-line);border-radius:20px;box-shadow:0 30px 90px -20px rgba(10,14,40,.45);animation:modalin .24s var(--ease-out)}
+  .modal.wide{width:min(760px,calc(100vw - 24px))}
+  @keyframes modalin{from{opacity:0;transform:translate(-50%,calc(-50% + 12px)) scale(.98)}}
+  .mhd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:24px 28px 6px}
+  .mhd h2{margin:0;font-size:22px;font-weight:650;letter-spacing:-.6px}
+  .mx{width:40px;height:40px;flex:none;border-radius:11px;border:1px solid var(--card-line);background:var(--card);color:var(--muted);font-size:22px;line-height:1;display:grid;place-items:center;padding:0}
+  .mbody{padding:14px 28px 4px}
+  .mfoot{display:flex;justify-content:flex-end;gap:10px;margin:18px 28px 0;padding:18px 0 24px;border-top:1px solid var(--rule)}
+  @media (max-width:560px){ .mhd{padding:20px 20px 4px} .mbody{padding:12px 20px 4px} .mfoot{margin:16px 20px 0;padding:16px 0 20px} .mfoot > *{flex:1} }
+  /* ---- usage ---- */
+  .ugrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:14px}
+  .ugrid > .sec{margin:0}
+  @media (max-width:760px){ .ugrid{grid-template-columns:minmax(0,1fr)} }
+  .ucnt{min-width:32px;height:28px;padding:0 8px;border-radius:8px;display:grid;place-items:center;background:var(--blue-tint);color:var(--blue-text);font-size:13px;font-weight:650;font-variant-numeric:tabular-nums;flex:none}
+  .ustats{gap:14px}
+  .ustat{padding:18px 20px}
+  .ustat b{font-size:32px}
+  .ustat span{font-size:13px}
+  .uchart{height:150px;padding:18px 20px 0}
+  .uchart i{background:var(--blue);opacity:.85;border-radius:4px 4px 0 0}
+  .uchart i.hi{opacity:1}
+  .uaxis{padding:8px 20px 16px}
+  @media (hover: hover) and (pointer: fine){
+    .pbtn:hover{background:var(--blue-hover)}
+    .obtn2:hover{border-color:var(--blue-line)}
+    .tbtn:hover{background:var(--blue-wash)}
+    .ibtn:hover{background:var(--surface-2);color:var(--ink)}
+    .ibtn.danger:hover{background:var(--red-wash);color:var(--red)}
+    .att3 button:hover:not(.on){color:var(--ink)}
+    .subtabs a:hover:not(.on){color:var(--ink)}
+    .mx:hover{color:var(--ink);border-color:var(--line-strong)}
+    .erow-main:hover strong{color:var(--blue-text)}
+  }
+  /* ---- usage (older) ---- */
+  .ustats{padding:12px 0 2px}
+  .ustat{border-radius:14px;box-shadow:var(--shadow-card)}
+  .uchart i.hi{background:var(--blue)}
+
+  /* dark mode: the workspace indigo; light mode keeps navy and gold */
+  :root[data-theme="dark"]{ --glow:130,124,255; --ink:#eff0fb; --text-2:#cfd3e8; --muted:#adb4cf; --faint:#8890ae;
+    --canvas:#15182b; --page:#15182b; --surface:#20243c; --card:#20243c; --surface-2:#262b46; --paper:#262b46; --paper-2:#232840;
+    --stage:#2b3050; --ic-bg:#302f54; --ic-line:transparent; --ic-inset:transparent; --tile-line:#6b7396;
+    --rule:#31375a; --card-line:#343a57; --grid-line:#383f62; --line-strong:#424a6c; --line-strong-2:#59618a;
+    --blue:#5751e7; --blue-text:#aaa4ff; --blue-hover:#6560ee; --blue-hi:#7a74f2; --blue-rgb:170,164,255;
+    --blue-wash:#262a4d; --blue-tint:#2d2d56; --blue-line:#45457a;
+    --chrome:#101326; --chrome-rgb:16,19,38; --chrome-hi:#1b1f37; --navy-deep:#1b1f37; --chrome-line:#262b45; --chrome-line-2:#3a4063;
+    --chrome-text:#a7aecb; --chrome-text-2:#b9c1df; --chrome-accent:#8e97b8; --chrome-faint:#818aa9;
+    --gold:#5350d9; --gold-hover:#5f5be4; --on-gold:#fff; --gold-text:#ebc47d;
+    --gold-soft:#7a6331; --gold-soft-2:#5e4d2a; --gold-bright:#4d3f1f; --gold-wash:#3a3022; --gold-paper:#2e2a26;
+    --violet:#aaa4ff; --violet-wash:#2a2a50; --teal:#73d0ba; --teal-tint:#1f3a3d; --rose:#ee9fc2; --rose-wash:#3b2538; --amber:#ebc47d; --amber-wash:#3a3022;
+    --red:#fa97ad; --red-wash:#3d2432; --red-line:#653549; --green:#73d0ba; --green-text:#8fdcc8; --green-wash:#1f3a3d; --green-line:#2f5a58;
+    --onnavy-btn-bg:#fff; --onnavy-btn-ink:#4a44c4; --order-aurora:none; --order-bg:#4f49d6; --order-line:transparent; --op-bg:#5751e7;
+    --admin-bg:#262a4d; --admin-line:#45457a; --admin-ic:#302f54; --drawer-ink:#a7aecb; --drawer-sel:#fff;
+    --thumb:#3b4068; --thumb-ring:rgba(255,255,255,.10); --thumb-shadow:rgba(0,0,0,.45); --ios-track:rgba(255,255,255,.07); --ios-track2:rgba(255,255,255,.12);
+    --key-w:#c3cade; --key-b:#15182b; --shadow-rgb:0,0,0; --ring:rgba(255,255,255,.08); --ring-2:rgba(255,255,255,.12); --ring-soft:rgba(255,255,255,.08); --ring-dock:rgba(255,255,255,.12);
+    --shadow-card:0 6px 26px -16px rgba(0,0,0,.55);
+    --glass:rgba(32,36,60,.86); --glass-2:rgba(32,36,60,.80); --glass-3:rgba(32,36,60,.92); --glass-hi:rgba(52,58,90,.92); --glass-seat:#2a2f4e; --glass-in:#1b1f35;
+    --drawer-bg:rgba(16,19,38,.95); --scrim:rgba(5,6,15,.62);
+    --dock-glass-a:rgba(42,47,78,.74); --dock-glass-b:rgba(30,34,58,.62); --dock-border:rgba(255,255,255,.12); --dock-sheen:rgba(255,255,255,.06); --dock-edge:rgba(255,255,255,.08); --dock-top:rgba(255,255,255,.10);
+    --placeholder:#7c84a3; --disabled-ink:#6c7493; --focus:#b8b2ff; --selection-bg:#3a3870; --skel:#262b46; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --glow:130,124,255; --ink:#eff0fb; --text-2:#cfd3e8; --muted:#adb4cf; --faint:#8890ae;
+    --canvas:#15182b; --page:#15182b; --surface:#20243c; --card:#20243c; --surface-2:#262b46; --paper:#262b46; --paper-2:#232840;
+    --stage:#2b3050; --ic-bg:#302f54; --ic-line:transparent; --ic-inset:transparent; --tile-line:#6b7396;
+    --rule:#31375a; --card-line:#343a57; --grid-line:#383f62; --line-strong:#424a6c; --line-strong-2:#59618a;
+    --blue:#5751e7; --blue-text:#aaa4ff; --blue-hover:#6560ee; --blue-hi:#7a74f2; --blue-rgb:170,164,255;
+    --blue-wash:#262a4d; --blue-tint:#2d2d56; --blue-line:#45457a;
+    --chrome:#101326; --chrome-rgb:16,19,38; --chrome-hi:#1b1f37; --navy-deep:#1b1f37; --chrome-line:#262b45; --chrome-line-2:#3a4063;
+    --chrome-text:#a7aecb; --chrome-text-2:#b9c1df; --chrome-accent:#8e97b8; --chrome-faint:#818aa9;
+    --gold:#5350d9; --gold-hover:#5f5be4; --on-gold:#fff; --gold-text:#ebc47d;
+    --gold-soft:#7a6331; --gold-soft-2:#5e4d2a; --gold-bright:#4d3f1f; --gold-wash:#3a3022; --gold-paper:#2e2a26;
+    --violet:#aaa4ff; --violet-wash:#2a2a50; --teal:#73d0ba; --teal-tint:#1f3a3d; --rose:#ee9fc2; --rose-wash:#3b2538; --amber:#ebc47d; --amber-wash:#3a3022;
+    --red:#fa97ad; --red-wash:#3d2432; --red-line:#653549; --green:#73d0ba; --green-text:#8fdcc8; --green-wash:#1f3a3d; --green-line:#2f5a58;
+    --onnavy-btn-bg:#fff; --onnavy-btn-ink:#4a44c4; --order-aurora:none; --order-bg:#4f49d6; --order-line:transparent; --op-bg:#5751e7;
+    --admin-bg:#262a4d; --admin-line:#45457a; --admin-ic:#302f54; --drawer-ink:#a7aecb; --drawer-sel:#fff;
+    --thumb:#3b4068; --thumb-ring:rgba(255,255,255,.10); --thumb-shadow:rgba(0,0,0,.45); --ios-track:rgba(255,255,255,.07); --ios-track2:rgba(255,255,255,.12);
+    --key-w:#c3cade; --key-b:#15182b; --shadow-rgb:0,0,0; --ring:rgba(255,255,255,.08); --ring-2:rgba(255,255,255,.12); --ring-soft:rgba(255,255,255,.08); --ring-dock:rgba(255,255,255,.12);
+    --shadow-card:0 6px 26px -16px rgba(0,0,0,.55);
+    --glass:rgba(32,36,60,.86); --glass-2:rgba(32,36,60,.80); --glass-3:rgba(32,36,60,.92); --glass-hi:rgba(52,58,90,.92); --glass-seat:#2a2f4e; --glass-in:#1b1f35;
+    --drawer-bg:rgba(16,19,38,.95); --scrim:rgba(5,6,15,.62);
+    --dock-glass-a:rgba(42,47,78,.74); --dock-glass-b:rgba(30,34,58,.62); --dock-border:rgba(255,255,255,.12); --dock-sheen:rgba(255,255,255,.06); --dock-edge:rgba(255,255,255,.08); --dock-top:rgba(255,255,255,.10);
+    --placeholder:#7c84a3; --disabled-ink:#6c7493; --focus:#b8b2ff; --selection-bg:#3a3870; --skel:#262b46; } }
+  :root[data-theme="dark"] .sban{background:linear-gradient(112deg,#35338f,#5750dd 68%,#7a71ee)}
+  :root[data-theme="dark"] .eye{color:#d8d6ff}
+  :root[data-theme="dark"] .eye::before{background:#c7c4ff}
+  :root[data-theme="dark"] .sstat, :root[data-theme="dark"] .sdate{color:#e6e5ff}
+  :root[data-theme="dark"] .bmark{background:linear-gradient(145deg,#7d78f8,#4f49d6);box-shadow:0 4px 16px -4px rgba(79,73,214,.6),inset 0 1px 0 rgba(255,255,255,.25)}
+  :root[data-theme="dark"] .drawer{border-right-color:var(--chrome-line);border-left-color:var(--chrome-line)}
+  :root[data-theme="dark"] .demb{background:#343a5a;color:#d4d8f5}
+  :root[data-theme="dark"] .it.on .cnt2{background:#726eec;color:#fff}
+  :root[data-theme="dark"] .drawer .it.on{box-shadow:0 6px 16px -6px rgba(0,0,0,.6)}
+  @media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .sban{background:linear-gradient(112deg,#35338f,#5750dd 68%,#7a71ee)}
+  :root:not([data-theme="light"]) .eye{color:#d8d6ff}
+  :root:not([data-theme="light"]) .eye::before{background:#c7c4ff}
+  :root:not([data-theme="light"]) .sstat, :root:not([data-theme="light"]) .sdate{color:#e6e5ff}
+  :root:not([data-theme="light"]) .bmark{background:linear-gradient(145deg,#7d78f8,#4f49d6);box-shadow:0 4px 16px -4px rgba(79,73,214,.6),inset 0 1px 0 rgba(255,255,255,.25)}
+  :root:not([data-theme="light"]) .drawer{border-right-color:var(--chrome-line);border-left-color:var(--chrome-line)}
+  :root:not([data-theme="light"]) .demb{background:#343a5a;color:#d4d8f5}
+  :root:not([data-theme="light"]) .it.on .cnt2{background:#726eec;color:#fff}
+  :root:not([data-theme="light"]) .drawer .it.on{box-shadow:0 6px 16px -6px rgba(0,0,0,.6)}
+  }
+  @media (hover: hover) and (pointer: fine){
+    .kpi:hover{border-color:color-mix(in srgb,var(--blue) 30%,var(--card-line));transform:translateY(-2px)}
+    .res:hover{border-color:var(--blue-line);transform:translateY(-2px)}
+    .rsvc:hover strong,a.srow2:hover .stl{color:var(--blue-text)}
+    .sbtn:hover{filter:brightness(1.07)}
+    .sshare:hover{background:rgba(255,255,255,.16)}
+    .drawer .it:hover{background:rgba(255,255,255,.06);color:#fff}
+    .drawer .it.on:hover{background:var(--gold-hover)}
+    .dacct:hover{background:rgba(255,255,255,.06);color:#fff}
+    .dbrand:hover,.mbrand:hover{color:#fff}
+    .findsong:hover{border-color:var(--line-strong);color:var(--ink)}
+    .themebtn:hover{background:rgba(255,255,255,.14);color:#fff}
+    .topbar .themebtn:hover{color:var(--ink);background:var(--surface-2);border-color:var(--line-strong)}
+    .topbar .lang button:hover:not(.on){color:var(--ink)}
+    .tlink:hover,.pfoot a:hover{color:var(--blue-hover)}
+    .dadmin:hover{border-color:var(--blue-line)}
+    .login .btn:hover{background:var(--blue-hover)}
+    .li.tap:hover{background:var(--surface-2)}
+  }
+
+  /* ---- phone bar: icons only, the selected tab's pill carries its label ---- */
+  :root{ --dk-rim-top:rgba(255,255,255,.95); --dk-rim-bot:rgba(20,24,40,.10); --dk-sheen:rgba(255,255,255,.7); --dk-bg:rgba(252,252,253,.9); --dk-line:rgba(20,24,40,.07); --dk-pill:#ecedf0; --dk-pill-drag:#e3e5ea; --dk-ink:var(--ink); --dk-ink2:var(--text-2); }
+  :root[data-theme="dark"]{ --dk-rim-top:rgba(255,255,255,.2); --dk-rim-bot:rgba(0,0,0,.35); --dk-sheen:rgba(255,255,255,.06); --dk-bg:rgba(34,38,60,.9); --dk-line:rgba(255,255,255,.09); --dk-pill:#3a3f5c; --dk-pill-drag:#454b6b; --dk-ink:#fff; --dk-ink2:#c3c8de; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --dk-rim-top:rgba(255,255,255,.2); --dk-rim-bot:rgba(0,0,0,.35); --dk-sheen:rgba(255,255,255,.06); --dk-bg:rgba(34,38,60,.9); --dk-line:rgba(255,255,255,.09); --dk-pill:#3a3f5c; --dk-pill-drag:#454b6b; --dk-ink:#fff; --dk-ink2:#c3c8de; } }
+  @media (max-width:999px){
+    .dock{--dk-ease:cubic-bezier(.32,.72,0,1);--dk-dur:.46s;left:12px;right:12px;height:64px;padding:6px;gap:0;
+      background:var(--dk-bg);border:0;-webkit-backdrop-filter:blur(22px) saturate(1.8);backdrop-filter:blur(22px) saturate(1.8);
+      box-shadow:0 14px 36px -14px rgba(var(--shadow-rgb),.38),0 2px 6px -2px rgba(var(--shadow-rgb),.1),0 0 0 1px var(--dk-line)}
+    .dock::after{display:none}
+    .dock a,.dock button{flex:none;flex-direction:row;gap:0;padding:0;height:100%;justify-content:center;overflow:hidden;
+      color:var(--dk-ink2);transition:width var(--dk-dur) var(--dk-ease),color .2s ease}
+    .dock a.on,.dock button.on{color:var(--dk-ink)}
+    .dock a:active,.dock button:active{opacity:1}
+    .dki{position:relative;display:block;width:22px;height:22px;flex:none;transition:transform .3s var(--dk-ease)}
+    .dock a:active .dki,.dock button:active .dki{transform:scale(.86)}
+    .dock.dragging .dki{transform:none}
+    .dock .dki svg{position:absolute;inset:0;width:22px;height:22px;stroke-width:2;transition:opacity .22s ease}
+    .dock .dki .f{opacity:0}
+    .dock .on .dki .f{opacity:1}
+    .dock .on .dki .o{opacity:0}
+    .dock .cut{stroke:var(--dk-pill)} .dock .cutf{fill:var(--dk-pill)}
+    .dock .dkl{display:block;font-style:normal;font-size:15px;font-weight:600;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;
+      max-width:0;margin-left:0;opacity:0;color:inherit;
+      transition:max-width var(--dk-dur) var(--dk-ease),margin var(--dk-dur) var(--dk-ease),opacity .14s ease}
+    .dock .on .dkl{max-width:var(--lw,90px);margin-left:8px;opacity:1;
+      transition:max-width var(--dk-dur) var(--dk-ease),margin var(--dk-dur) var(--dk-ease),opacity .3s ease .12s}
+    .dock .dpill{top:6px;bottom:6px;height:auto;left:0;background:var(--dk-pill);box-shadow:none;border:0;
+      transition:transform var(--dk-dur) var(--dk-ease),width var(--dk-dur) var(--dk-ease),opacity .2s ease}
+    .dock.dragging .dpill{background:var(--dk-pill-drag);box-shadow:0 8px 20px -10px rgba(var(--shadow-rgb),.4);
+      transition:width var(--dk-dur) var(--dk-ease),background .2s ease}
+    .dock.dragging .cut{stroke:var(--dk-pill-drag)} .dock.dragging .cutf{fill:var(--dk-pill-drag)}
+    .dock.dragging a,.dock.dragging button{transition:width var(--dk-dur) var(--dk-ease),color .15s ease}
+    .dock.noanim *{transition:none !important}
+    /* tucked while scrolling down: the whole bar eases smaller toward the bottom */
+    .dock{transform-origin:50% 100%;transition:transform .38s var(--dk-ease),box-shadow .38s ease}
+    .dock.mini{transform:translateY(4px) scale(.86)}
+    /* a glass rim: bright hairline along the top, a soft shade along the bottom,
+       so the bar reads as its own layer over busy content */
+    .dock{box-shadow:inset 0 1px 0 var(--dk-rim-top),inset 0 -1px 0 var(--dk-rim-bot),
+      0 14px 36px -14px rgba(var(--shadow-rgb),.38),0 2px 6px -2px rgba(var(--shadow-rgb),.1),0 0 0 1px var(--dk-line)}
+    .dock::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2;padding:1px;
+      background:linear-gradient(180deg,var(--dk-rim-top),rgba(255,255,255,0) 38%,rgba(255,255,255,0) 64%,var(--dk-rim-bot));
+      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+      mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+    .dock.mini .dpill{background:var(--dk-pill)}
+    .wrap{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  }
+  @media (max-width:999px) and (prefers-reduced-motion:reduce){ .dock{--dk-dur:.2s} }
 </style>
 </head>
 <body>
@@ -1116,7 +1831,7 @@ const STR = {
     tUsage:'Usage',tUsageSub:'How the site gets used',
     uAdminOnly:'Sign in to see this page.',
     uSetup:'The usage table is not set up yet. Run supabase/usage_log.sql in the Supabase SQL editor, then reload this page.',
-    uDevices:'Devices',uOrders:'Order opens',uActivity:'Activity',
+    uDevices:'Devices',uOrders:'Order opens',uSheets:'Sheet opens',uListens:'Recordings',uActivity:'Activity',
     uTopSongs:'Most opened songs',uTopServices:'Most viewed services',
     uLang:'Language',uRecent:'Recent activity',uPerDay:'by day',uPerWeek:'by week',
     u7:'7 days',u30:'30 days',u90:'90 days',uAll:'All time',
@@ -1152,6 +1867,16 @@ const STR = {
     noPdf:'No file yet',uploading:'Uploading…',pdfOnly:'Please choose a PDF file.',
     confirmRemovePdf:'Remove the PDF for this song?',withPdf:n=>n+' with choir sheets',
     sessionLost:'Your sign-in expired. Please sign in again.',
+    blocksN:n=>n===1?'1 block':n+' blocks',
+    stEvent:'Event',stSongs:'Songs',stReview:'Review',review:'Review',back:'Back',draft:'Draft',recordAtt:'Mark attendance',planSvc:'Plan a service',repertoire:'Repertoire',usageIns:'Usage insights',editSongT:'Edit song',editMemberT:'Edit member',allPresent:'Everyone is marked present.',cancelEvent:'Cancel event',neverSung:'Not sung before',date2:'Date',event2:'Event',recentT:'Recent entries',exportT:'Export',titleL:'Title',catL:'Category',pvL:'№ in Песнь возрождения',nameL:'Full name · surname first',saveSong:'Save song',sinceD:d=>'since '+d,fromRoster:'Someone already on the roster',orNew:'…or add a new person:',
+    appName:'Youth Choir',appTag:'Music · attendance',overview:'Overview',navWork:'Workspace',navLib:'Music library',navChoir:'Our choir',navDir:'Director',
+    findSong:'Find a song',dirSignin:'Director sign in',dirSigninSub:'Manage the choir',dirWs:'Director workspace',signedIn:'Signed in',
+    kSingers:'Singers',kParts:n=>n===1?'1 voice part':n+' voice parts',kActive:n=>n===1?'1 active singer':n+' active singers',kRep:'Repertoire',kRepSub:n=>n+' with choir sheets',
+    kAtt:'Attendance',kAttSub:'Last 30 days',kSvc:'Services',kSvcSub:n=>n===1?'1 song sung · 12 months':n+' songs sung · 12 months',
+    songOrder:'Song order',songsCount:n=>n===1?'1 song':n+' songs',inOrder:'In singing order',svcHistory:'Service history',
+    lastAtt:'Last attendance',viewAtt:'View attendance',library:'Music library',browseAll:'Browse all',recentSvc:'Recent services',viewAll:'View all',
+    scoresN:n=>n===1?'1 score':n+' scores',textsN:n=>n===1?'1 song':n+' songs',noAttYet:'No attendance recorded yet.',noSvcYet:'No services recorded yet.',
+    attSub:'Rehearsals and services',songsSub:'What was sung, and who led it',libPart:'Part',ofChoir:'of the choir',
     home:'Home',homeSub:'Youth choir attendance and song ledger',
     tAttGrid:'Attendance',tAttGridSub:'Who was at each rehearsal and service',
     tAttSum:'Attendance summary',tAttSumSub:'Percentage per singer',
@@ -1229,13 +1954,23 @@ const STR = {
     tUsage:'Статистика',tUsageSub:'Как пользуются сайтом',
     uAdminOnly:'Войдите, чтобы увидеть эту страницу.',
     uSetup:'Таблица статистики ещё не создана. Выполните supabase/usage_log.sql в SQL-редакторе Supabase и обновите страницу.',
-    uDevices:'Устройств',uOrders:'Открытий порядка',uActivity:'Активность',
+    uDevices:'Устройств',uOrders:'Открытий порядка',uSheets:'Скачиваний нот',uListens:'Прослушиваний',uActivity:'Активность',
     uTopSongs:'Чаще всего открывали ноты',uTopServices:'Чаще всего смотрели служения',
     uLang:'Язык',uRecent:'Последние действия',uPerDay:'по дням',uPerWeek:'по неделям',
     u7:'7 дней',u30:'30 дней',u90:'90 дней',uAll:'За всё время',
     kOrder:'Порядок песнопений',kSheet:'Ноты',kAudio:'Запись',
     uNow:'только что',uMin:n=>n+' мин назад',uHr:n=>n+' ч назад',uDay:n=>n+' дн. назад',listenHere:'Смотреть/слушать здесь:',copied:'Скопировано — вставьте в чат',
     backupBtn:'Полная копия',backupNote:'Скачивает все таблицы — хористы, события, посещаемость, песни, категории — одним файлом JSON. PDF-ноты не входят.',backupFail:'Не удалось создать копию — попробуйте ещё раз.',
+    blocksN:n=>n+' '+(n%10===1&&n%100!==11?'блок':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'блока':'блоков'),
+    stEvent:'Событие',stSongs:'Песни',stReview:'Проверка',review:'Проверить',back:'Назад',draft:'Черновик',recordAtt:'Отметить посещаемость',planSvc:'План служения',repertoire:'Репертуар',usageIns:'Активность',editSongT:'Изменить песню',editMemberT:'Изменить участника',allPresent:'Все отмечены присутствующими.',cancelEvent:'Отменить событие',neverSung:'Ранее не исполнялась',date2:'Дата',event2:'Событие',recentT:'Последние записи',exportT:'Экспорт',titleL:'Название',catL:'Категория',pvL:'№ в «Песни возрождения»',nameL:'Фамилия и имя',saveSong:'Сохранить песню',sinceD:d=>'с '+d,fromRoster:'Кто-то из состава',orNew:'…или добавьте нового человека:',
+    appName:'Молодёжный хор',appTag:'Ноты · посещения',overview:'Обзор',navWork:'Пространство',navLib:'Библиотека',navChoir:'Наш хор',navDir:'Регент',
+    findSong:'Найти песню',dirSignin:'Вход для регента',dirSigninSub:'Управление хором',dirWs:'Кабинет регента',signedIn:'Вы вошли',
+    kSingers:'Хористы',kParts:n=>n+(n===1?' партия':n<5?' партии':' партий'),kActive:n=>'активных хористов: '+n,kRep:'Репертуар',kRepSub:n=>'с нотами: '+n,
+    kAtt:'Посещаемость',kAttSub:'За 30 дней',kSvc:'Служения',kSvcSub:n=>'песен спето: '+n+' · 12 мес.',
+    songOrder:'Порядок песен',songsCount:n=>n+' '+(n%10===1&&n%100!==11?'песня':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'песни':'песен'),inOrder:'По порядку исполнения',svcHistory:'История служений',
+    lastAtt:'Последняя отметка',viewAtt:'Открыть посещаемость',library:'Библиотека',browseAll:'Все ноты',recentSvc:'Последние служения',viewAll:'Все',
+    scoresN:n=>'партитур: '+n,textsN:n=>'текстов: '+n,noAttYet:'Посещаемость ещё не отмечалась.',noSvcYet:'Служений пока нет.',
+    attSub:'Спевки и служения',songsSub:'Что пели и кто вёл',libPart:'Партия',ofChoir:'хора',
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
     period:'Период',changePeriod:'Изменить',
     chooseFrom:'Выбор песен',showList:n=>'Показать все ('+n+')',hideList:'Скрыть список',
@@ -1325,6 +2060,7 @@ function normRouteBoot(h){
   return m ? '#/sheets/order-' + m[1] : (h || '#/home');
 }
 const S = {
+  ripple: true,
   lang: localStorage.getItem('bsebc-youth-lang') || 'en',
   theme: localStorage.getItem('bsebc-youth-theme') || 'auto',
   session: null,
@@ -1393,10 +2129,29 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '4.6.1';
+const VERSION = '5.0.1';
+/* the church card in the sidebar */
+const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
-const NOTES = { '4': {
+const NOTES = { '5': {
+  en: [
+    'A new look across the whole site: cards on a soft canvas, navy and gold in light mode, deep indigo in dark mode',
+    'The home page is now an overview: choir numbers, the latest song order, last attendance by part, the music library and recent services',
+    'On a computer, a grouped sidebar and a top bar with live song search, language and appearance',
+    'Sheet music, services, lyrics and the choir rules are laid out as cards; lyrics and rules read like a printed page',
+    'Director pages: Repertoire and Members are cleaner lists, adding and editing happens in a dialog, and Usage insights is easier to read',
+    'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
+  ],
+  ru: [
+    'Новый вид всего сайта: карточки на светлом фоне, тёмно-синий с золотом днём и глубокий индиго ночью',
+    'Главная теперь — обзор: цифры хора, последний порядок песен, посещаемость по партиям, библиотека нот и последние служения',
+    'На компьютере — боковое меню по разделам и верхняя панель с поиском песни, языком и оформлением',
+    'Ноты, служения, тексты и правила хора оформлены карточками; тексты и правила читаются как напечатанная страница',
+    'Страницы регента: аккуратные списки репертуара и состава, добавление и изменение в окне, понятная страница активности',
+    'Новая нижняя панель на телефоне: только значки, выбранная вкладка раскрывается с названием, при прокрутке панель уменьшается'
+  ] },
+  '4': {
   en: [
     'The bottom bar highlight no longer flies past the tab you meant — it snaps to where you let go',
     'Tapping a row or a button no longer leaves it highlighted afterwards on a phone',
@@ -1654,7 +2409,7 @@ function usageBuckets(u){
   return { arr, step };
 }
 function usagePage(){
-  const head = `<div class="h">${esc(t('tUsage'))}<span class="n">${esc(t('tUsageSub'))}</span></div>`;
+  const head = admHead(t('usageIns'), t('tUsageSub'));
   const note = msg => head + `<div class="sec"><div class="pad"><div class="note">${esc(msg)}</div></div></div>`;
   if (!S.session) return note(t('uAdminOnly'));
   const chips = `<div class="chips">${[[7,'u7'],[30,'u30'],[90,'u90'],['all','uAll']].map(([v,l]) =>
@@ -1672,7 +2427,7 @@ function usagePage(){
   const { arr, step } = usageBuckets(u);
   const max = Math.max(1, ...arr.map(b => b.n));
   const chart = `<div class="sec">
-      <div class="step" style="padding:14px 16px 0">${esc(t('uActivity'))}</div>
+      <div class="chd"><h3>${esc(t('uActivity'))}</h3><span class="n">${esc(t(step === 1 ? 'uPerDay' : 'uPerWeek'))}</span></div>
       <div class="uchart">${arr.map(b =>
         `<i class="${b.n === max && b.n ? 'hi' : ''}" style="height:${Math.round(b.n / max * 100)}%"></i>`).join('')}</div>
       <div class="uaxis"><span>${esc(fmtShort(localISO(new Date(arr[0].at))))}</span>
@@ -1680,12 +2435,8 @@ function usagePage(){
         <span>${esc(fmtShort(today()))}</span></div>
     </div>`;
   const rank = (rows, label) => rows.length ? `<div class="sec">
-      <div class="step" style="padding:14px 16px 6px">${esc(label)}</div>
-      ${rows.map(([name, c]) => `<div class="li"><div style="flex:1;min-width:0">
-        <div class="urow"><div style="flex:1;min-width:0;font-size:var(--fs-15)">${esc(name)}</div>
-          <div class="un">${c}</div></div>
-        <div class="ubar"><em style="width:${Math.round(c / rows[0][1] * 100)}%"></em></div>
-      </div></div>`).join('')}
+      <div class="chd"><h3>${esc(label)}</h3></div>
+      ${rows.map(([name, c]) => `<div class="li"><div style="flex:1;min-width:0;font-size:var(--fs-15)">${esc(name)}</div><span class="ucnt">${c}</span></div>`).join('')}
     </div>` : '';
   const tally = (pred, name) => {
     const m = {};
@@ -1700,7 +2451,7 @@ function usagePage(){
   const ru = u.filter(x => x.lang === 'ru').length, en = u.filter(x => x.lang === 'en').length;
   const both = Math.max(1, ru + en);
   const lang = (ru + en) ? `<div class="sec">
-      <div class="step" style="padding:14px 16px 8px">${esc(t('uLang'))}</div>
+      <div class="chd"><h3>${esc(t('uLang'))}</h3></div>
       <div class="usplit"><span style="width:${Math.round(en / both * 100)}%;background:var(--blue)"></span><span style="flex:1;background:var(--gold)"></span></div>
       <div class="ukey"><span><i style="background:var(--blue)"></i>EN <b>${en}</b></span>
         <span><i style="background:var(--gold)"></i>RU <b>${ru}</b></span></div>
@@ -1711,13 +2462,13 @@ function usagePage(){
     return (S.songs.find(y => y.id === x.ref) || {}).title || '—';
   };
   const recent = `<div class="sec">
-      <div class="step" style="padding:14px 16px 6px">${esc(t('uRecent'))}</div>
+      <div class="chd"><h3>${esc(t('uRecent'))}</h3></div>
       ${u.slice(0, 12).map(x => `<div class="li"><div style="flex:1;min-width:0">
         <div style="font-size:var(--fs-15)">${esc(refName(x))}</div>
         <div class="sub" style="font-style:normal">${esc(kindName(x.kind))}</div></div>
         <div class="un">${esc(agoShort(x.at))}</div></div>`).join('')}
     </div>`;
-  return wrap(stats + chart + rank(songRank, t('uTopSongs')) + rank(svcRank, t('uTopServices')) + lang + recent);
+  return wrap(stats + chart + `<div class="ugrid">` + rank(songRank, t('uTopSongs')) + rank(svcRank, t('uTopServices')) + `</div><div class="ugrid">` + lang + recent + `</div>`);
 }
 const SHEETCACHE = 'bsebc-sheets-v1';
 function sheetKey(kind, id){ return './offline-sheet/' + kind + '/' + id; }
@@ -1910,7 +2661,7 @@ function seatingPage(){
   };
   return `<div class="h">${esc(t('tSeating'))}<span class="n">${roster.length - unseated.length}/${roster.length}</span>
       ${S.session && !editing ? `<button class="mini" data-seat-edit>${esc(t('editSeats'))}</button>` : ''}</div>
-    <div class="seatctl">
+    <div class="sec seatcard"><div class="seatctl">
       <div class="seg tiny">
         <button data-seat-part="all" class="${S.seatPart==='all'?'on':''}">${esc(t('allParts'))}</button>
         ${PARTS.map(p => `<button data-seat-part="${p}" class="${S.seatPart===p?'on':''}">${esc(t(p))}</button>`).join('')}
@@ -1928,7 +2679,7 @@ function seatingPage(){
       ${rows.map(row => `<div class="stagerow">${row.map((p, i) => block(p, i)).join('')}</div>`).join('')}
     </div></div>
     ${flip ? '' : `<div class="stagefig"><div class="platform"><svg class="cap l" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg><div class="mid">${esc(t('audienceSide'))}</div><svg class="cap r" viewBox="0 0 64 66" aria-hidden="true"><path d="M64 0H18C8 0 0 8 0 18v12c0 7 3 13 8 17l18 15c3 3 7 4 11 4h27z" fill="currentColor"></path></svg></div></div>`}
-    ${editing ? (unseated.length ? `<div class="note" style="padding-bottom:0">${esc(t('trayNote'))}</div>
+    </div>${editing ? (unseated.length ? `<div class="note" style="padding-bottom:0">${esc(t('trayNote'))}</div>
         <div class="tray">${unseated.map(s => `<button class="chipx ${S.seatSel===s.id?'sel':''}" data-tray="${s.id}">${esc(s.name)}</button>`).join('')}</div>` : '')
       : (unseated.length ? `<div class="note">${esc(t('notSeated'))}: <b style="color:var(--ink)">${unseated.length}</b>
           <button class="mini" style="margin-left:8px" data-seat-list>${esc(S.seatList ? t('hide') : t('showNames'))}</button>
@@ -2025,7 +2776,7 @@ function rulesPage(){
   return `<div class="h">${esc(t('tRules'))}
       ${when ? `<span class="n" style="font-size:var(--fs-13);color:var(--muted);font-weight:400">${esc(t('rulesUpdated')(when))}</span>` : '<span class="n"></span>'}
       ${S.session ? `<button class="mini" data-rules-edit>${esc(t('editRules'))}</button>` : ''}</div>
-    <div class="doc">${body.trim() ? rulesBody(body) : `<p style="color:var(--muted)">${esc(t('rulesEmpty'))}</p>`}</div>`;
+    <article class="doc paper">${body.trim() ? rulesBody(body) : `<p style="color:var(--muted)">${esc(t('rulesEmpty'))}</p>`}</article>`;
 }
 const MDLINE = { h: '# ', ol: '1. ', ul: '- ', sub: '  a. ', quote: '> ' };
 function applyMd(kind){
@@ -2081,21 +2832,78 @@ async function saveRules(){
 }
 
 /* ---------- chrome ---------- */
-function mast(){
-  return `<div class="mast">
-    <a href="#/home" class="mbrand" style="display:flex;align-items:center;gap:11px;color:inherit;min-width:0">
-      <svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(0 6.5)"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path></g></svg>
-      <div class="brand">Youth Choir</div>
-    </a>
-    <div class="lang">
+/* One stroke family for every navigation icon: 24-grid, 1.75 stroke, round ends. */
+const AI = p => '<svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>';
+const AIC = {
+  home: AI('<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"></path>'),
+  att: AI('<rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path><path d="m9 16 2 2 4-4"></path>'),
+  hist: AI('<path d="M3 11a9 9 0 1 1 2.4 7"></path><path d="M3 4v7h7"></path><path d="M12 7v5l3 2"></path>'),
+  sheets: AI('<path d="M6 3h8l5 5v13H6z"></path><path d="M14 3v5h5"></path><path d="M9 12h7M9 16h7"></path>'),
+  piano: AI('<rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M7.5 4v16M12 4v16M16.5 4v16"></path><path d="M6 4v8h3V4M15 4v8h3V4"></path>'),
+  lyrics: AI('<path d="M4 5h16M12 5v15M8 20h8M4 5v3M20 5v3"></path>'),
+  seat: AI('<path d="M5 12V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7"></path><path d="M4 12h16v6H4z"></path><path d="M6 18v3M18 18v3"></path>'),
+  rules: AI('<path d="M4 3h12l4 4v14H4z"></path><path d="M16 3v4h4"></path><path d="M8 11h8M8 15h8"></path>'),
+  user: AI('<circle cx="12" cy="8" r="4"></circle><path d="M4 21v-2a8 8 0 0 1 16 0v2"></path>'),
+  admin: AI('<path d="M20 7h-9M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle>'),
+  chart: AI('<path d="M4 3v18h17"></path><path d="M8 17v-5M13 17V8M18 17V4"></path>'),
+  out: AI('<path d="M9 3H3v18h6"></path><path d="m14 6 6 6-6 6M20 12H8"></path>'),
+  music: AI('<path d="M9 18V5l12-2v13"></path><path d="M9 9l12-2"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>'),
+  search: AI('<circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path>'),
+  chev: AI('<path d="m9 5 7 7-7 7"></path>'),
+  arrow: AI('<path d="M5 12h14M13 6l6 6-6 6"></path>'),
+  play: AI('<path d="m8 4 13 8-13 8z"></path>'),
+  share: AI('<path d="M12 15V2M8 6l4-4 4 4"></path><path d="M7 9H4v12h16V9h-3"></path>'),
+  cal: AI('<rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path>'),
+  check: AI('<path d="m4 12 5 5L20 6"></path>'),
+  headphones: AI('<path d="M3 15v-3a9 9 0 0 1 18 0v3"></path><rect x="3" y="12" width="4" height="8" rx="2"></rect><rect x="17" y="12" width="4" height="8" rx="2"></rect>'),
+  more: '<svg class="ai" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="19" cy="12" r="1.7"></circle></svg>',
+  sun: AI('<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"></path>'),
+  moon: AI('<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>'),
+  auto: AI('<circle cx="12" cy="12" r="9"></circle><path d="M12 18a6 6 0 0 0 0-12v12z" fill="currentColor" stroke="none"></path>')
+};
+const LOGOSVG = '<svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(0 6.5)"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path></g></svg>';
+/* which part of the workspace a route belongs to — the sidebar groups and the
+   breadcrumb read from the same table */
+function crumbs(){
+  const r = S.route || '#/home';
+  const W = t('navWork'), L = t('navLib'), C = t('navChoir'), D = t('navDir');
+  if (r.startsWith('#/attendance')) return [W, t('attendance')];
+  if (r.startsWith('#/songs')) return [W, t('songs')];
+  if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) return [L, t('tPiano')];
+  if (r.startsWith('#/sheets')) return [L, t('tSheets')];
+  if (r.startsWith('#/lyrics')) return [L, t('tLyrics')];
+  if (r.startsWith('#/seating')) return [C, t('tSeating')];
+  if (r.startsWith('#/rules')) return [C, t('tRules')];
+  if (r.startsWith('#/usage')) return [D, t('usageIns')];
+  if (r.startsWith('#/admin/songlist')) return [D, t('repertoire')];
+  if (r.startsWith('#/admin/members')) return [D, t('members')];
+  if (r.startsWith('#/admin/songs') || r.startsWith('#/admin/entries/songs')) return [D, t('planSvc')];
+  if (r.startsWith('#/admin')) return [D, t('recordAtt')];
+  if (r.startsWith('#/login')) return [D, t('dirWs')];
+  return [W, t('overview')];
+}
+const langSeg = () => `<div class="lang">
       <button data-lang="en" class="${S.lang==='en'?'on':''}">EN</button>
       <button data-lang="ru" class="${S.lang==='ru'?'on':''}">RU</button>
+    </div>`;
+const themeBtn = () => `<button class="themebtn" data-theme-flip aria-label="${esc(t('appearance'))}" title="${esc(t('appearance'))}">${effTheme()==='dark' ? AIC.sun : AIC.moon}</button>`;
+function mast(){
+  const [sec, page] = crumbs();
+  return `<div class="mast">
+    <a href="#/home" class="mbrand"><span class="bmark">${LOGOSVG}</span>
+      <div class="brand">Youth Choir</div>
+    </a>
+    ${langSeg()}${themeBtn()}
+    <button class="menubtn" data-menu aria-label="Menu" aria-expanded="${S.menuOpen?'true':'false'}">${AIC.more}</button>
+  </div>
+  <header class="topbar">
+    <div class="crumbs"><span>${esc(sec)}</span>${AIC.chev}<strong>${esc(page)}</strong></div>
+    <div class="tacts">
+      <label class="findsong" role="search">${AIC.search}<input id="tsearch" type="search" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" placeholder="${esc(t('findSong'))}" aria-label="${esc(t('findSong'))}" aria-expanded="false" aria-autocomplete="list"><div class="tsugg" role="listbox" hidden></div></label>
+      <span class="tdiv"></span>
+      ${langSeg()}${themeBtn()}
     </div>
-    <button class="themebtn" data-theme-flip aria-label="${esc(t('appearance'))}" title="${esc(t('appearance'))}">${effTheme()==='dark' ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.9 4.9 1.4 1.4"></path><path d="m17.7 17.7 1.4 1.4"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.3 17.7-1.4 1.4"></path><path d="m19.1 4.9-1.4 1.4"></path></svg>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>`}</button>
-    <button class="menubtn" data-menu aria-label="Menu" aria-expanded="${S.menuOpen?'true':'false'}">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
-    </button>
-  </div>` + drawerNav();
+  </header>` + drawerNav();
 }
 const NAVIC = {
   home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>',
@@ -2108,12 +2916,21 @@ const NAVIC = {
   login:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>',
   out:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>'
 };
-const DOCKIC = {
-  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>',
-  att:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M3 10h18"></path><path d="m9 16 2 2 4-4"></path></svg>',
-  songs:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>',
-  music:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>',
-  more:'<svg viewBox="0 0 24 24" fill="none"><g fill="currentColor"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></g></svg>'
+const DOCKIC = { home: AIC.home, att: AIC.att, songs: AIC.hist, music: AIC.sheets, more: AIC.more };
+/* The phone bar's own icon set: a bolder rounded line, and a filled twin for the
+   selected tab. `.cut` strokes/fills are knocked out in the pill's colour. */
+const DKSVG = p => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>';
+const DKHOME = 'M3.6 10.3 12 3.7l8.4 6.6V19a2 2 0 0 1-2 2h-3.2v-5a1.7 1.7 0 0 0-1.7-1.7h-3A1.7 1.7 0 0 0 8.8 16v5H5.6a2 2 0 0 1-2-2z';
+const DKI = {
+  home: [DKSVG(`<path d="${DKHOME}"></path>`), DKSVG(`<path d="${DKHOME}" fill="currentColor"></path>`)],
+  att: [DKSVG('<rect x="3.5" y="5" width="17" height="16" rx="4.5"></rect><path d="M8 3v3.5M16 3v3.5"></path><path d="m8.8 13.7 2.2 2.2 4.3-4.4"></path>'),
+        DKSVG('<rect x="3.5" y="5" width="17" height="16" rx="4.5" fill="currentColor"></rect><path d="M8 3v3.5M16 3v3.5"></path><path class="cut" d="m8.8 13.7 2.2 2.2 4.3-4.4"></path>')],
+  songs: [DKSVG('<path d="M3.6 12a8.4 8.4 0 1 0 2.4-5.9"></path><path d="M3.4 4.4v4.5h4.5"></path><path d="M12 7.8V12l3 2"></path>'),
+          DKSVG('<path d="M3.6 12a8.4 8.4 0 1 0 2.4-5.9" fill="currentColor"></path><path d="M3.4 4.4v4.5h4.5"></path><path class="cut" d="M12 7.8V12l3 2"></path>')],
+  music: [DKSVG('<path d="M4 6.5h10M4 11.5h10M4 16.5h5"></path><path d="M18.6 17.4V6.2l2.6 1.1"></path><circle cx="16.2" cy="17.4" r="2.5"></circle>'),
+          DKSVG('<path d="M4 6.5h10M4 11.5h10M4 16.5h5"></path><path d="M18.6 17.4V6.2l2.6 1.1"></path><circle cx="16.2" cy="17.4" r="2.5" fill="currentColor"></circle>')],
+  more: [DKSVG('<rect x="4" y="4" width="6.6" height="6.6" rx="2.2"></rect><rect x="13.4" y="4" width="6.6" height="6.6" rx="2.2"></rect><rect x="4" y="13.4" width="6.6" height="6.6" rx="2.2"></rect><rect x="13.4" y="13.4" width="6.6" height="6.6" rx="3.3"></rect>'),
+         DKSVG('<g fill="currentColor"><rect x="4" y="4" width="6.6" height="6.6" rx="2.2"></rect><rect x="13.4" y="4" width="6.6" height="6.6" rx="2.2"></rect><rect x="4" y="13.4" width="6.6" height="6.6" rx="2.2"></rect><rect x="13.4" y="13.4" width="6.6" height="6.6" rx="3.3"></rect></g>')]
 };
 /* The phone dock mirrors the five places people actually go; More opens the
    same slide-out menu the desktop sidebar is built from. */
@@ -2124,15 +2941,17 @@ function dockKey(r){
   if (r.startsWith('#/home')) return 'home';
   return '';
 }
+/* Icons only, except the selected tab: its pill widens to carry the label. */
 function dock(){
   const k = dockKey(S.route || '#/home');
-  const a = (href, key, ic, label) => `<a href="${href}" data-tab="${key}" class="${k===key?'on':''}">${ic}<span>${esc(label)}</span></a>`;
+  const ic = key => `<i class="dki">${DKI[key][0].replace('<svg', '<svg class="o"')}${DKI[key][1].replace('<svg', '<svg class="f"')}</i>`;
+  const a = (href, key, label) => `<a href="${href}" data-tab="${key}" class="${k===key?'on':''}" aria-label="${esc(label)}">${ic(key)}<em class="dkl">${esc(label)}</em></a>`;
   return `<nav class="dock" aria-label="Tabs"><i class="dpill" aria-hidden="true"></i>
-    ${a('#/home','home', DOCKIC.home, t('home'))}
-    ${a('#/attendance/grid','att', DOCKIC.att, t('attendance'))}
-    ${a('#/songs/summary','songs', DOCKIC.songs, t('dkSongs'))}
-    ${a('#/sheets','music', DOCKIC.music, t('dkMusic'))}
-    <button data-menu class="${S.menuOpen?'on':''}" aria-label="${esc(t('more'))}" aria-expanded="${S.menuOpen?'true':'false'}">${DOCKIC.more}<span>${esc(t('more'))}</span></button>
+    ${a('#/home','home', t('home'))}
+    ${a('#/attendance/grid','att', t('attendance'))}
+    ${a('#/songs/summary','songs', t('dkSongs'))}
+    ${a('#/sheets','music', t('dkMusic'))}
+    <button data-menu class="${S.menuOpen?'on':''}" aria-label="${esc(t('more'))}" aria-expanded="${S.menuOpen?'true':'false'}">${ic('more')}<em class="dkl">${esc(t('more'))}</em></button>
   </nav>`;
 }
 /* The dock lives outside #app, so moving between pages never rebuilds it: the
@@ -2143,34 +2962,81 @@ function syncDock(){
   if (!host.firstChild || host.dataset.lang !== S.lang) { host.innerHTML = dock(); host.dataset.lang = S.lang; }
   const dk = host.querySelector('.dock');
   if (!dk) return;
-  const k = dockKey(S.route || '#/home');
-  dk.querySelectorAll('[data-tab]').forEach(a => a.classList.toggle('on', a.dataset.tab === k));
   const more = dk.querySelector('[data-menu]');
-  if (more) {
-    more.classList.toggle('on', !!S.menuOpen);
-    more.setAttribute('aria-expanded', S.menuOpen ? 'true' : 'false');
-  }
+  if (more) more.setAttribute('aria-expanded', S.menuOpen ? 'true' : 'false');
   wireDockDrag(host);
   moveDockPill();
 }
+/* Geometry is computed, never read back from the moving layout: the selected tab
+   is icon + gap + label + padding wide, the rest share what is left equally.
+   Items and pill then transition to the same numbers on the same curve, so the
+   pill always sits exactly on its tab. */
+const DK_ICON = 22, DK_GAP = 8, DK_PAD = 34;
+function dockGeo(dk){
+  const items = [...dk.querySelectorAll('[data-tab],[data-menu]')];
+  const cs = getComputedStyle(dk);
+  const pl = parseFloat(cs.paddingLeft) || 0, pr = parseFloat(cs.paddingRight) || 0;
+  const D = dk.clientWidth - pl - pr, n = items.length;
+  const A = items.map(it => {
+    const l = it.querySelector('.dkl');
+    const lw = Math.ceil(l ? l.scrollWidth : 0);
+    const w = Math.min(D * 0.46, DK_ICON + DK_GAP + lw + DK_PAD);
+    it.style.setProperty('--lw', Math.max(0, w - DK_ICON - DK_GAP - DK_PAD) + 'px');
+    return w;
+  });
+  const at = i => { const O = (D - A[i]) / (n - 1); return { x: pl + i * O, w: A[i], O }; };
+  return { items, D, pl, n, A, at };
+}
+function dockItems(g, idx){
+  const p = g.at(idx);
+  g.items.forEach((it, i) => { it.style.width = (i === idx ? p.w : p.O) + 'px'; it.classList.toggle('on', i === idx); });
+  return p;
+}
+function layoutDock(dk, idx, instant){
+  if (!dk.clientWidth) return;
+  const g = dockGeo(dk), pill = dk.querySelector('.dpill');
+  if (instant) dk.classList.add('noanim');
+  if (idx < 0) {
+    g.items.forEach(it => { it.style.width = (g.D / g.n) + 'px'; it.classList.remove('on'); });
+    if (pill) pill.style.opacity = '0';
+  } else {
+    const p = dockItems(g, idx);
+    if (pill) { pill.style.width = p.w + 'px'; pill.style.transform = 'translateX(' + p.x + 'px)'; pill.style.opacity = '1'; }
+  }
+  if (instant) { void dk.offsetWidth; requestAnimationFrame(() => dk.classList.remove('noanim')); }
+}
+function dockIndex(dk){
+  const items = [...dk.querySelectorAll('[data-tab],[data-menu]')];
+  if (S.menuOpen) return items.findIndex(it => it.hasAttribute('data-menu'));
+  const k = dockKey(S.route || '#/home');
+  return items.findIndex(it => it.dataset.tab === k);
+}
+let dockW = 0;
 function moveDockPill(){
   const dk = document.querySelector('.dock');
-  if (!dk) return;
-  const pill = dk.querySelector('.dpill');
-  if (!pill) return;
-  const on = dk.querySelector('[data-tab].on') || dk.querySelector('[data-menu].on');
-  const box = on && on.getBoundingClientRect();
-  if (!box || !box.width) { pill.style.opacity = '0'; return; }
-  const d = dk.getBoundingClientRect();
-  const fresh = !pill.dataset.set;                   // don't animate in from the corner
-  if (fresh) pill.style.transition = 'none';
-  pill.style.width = box.width + 'px';
-  pill.style.height = box.height + 'px';
-  pill.style.transform = 'translate(' + (box.left - d.left) + 'px,' + (box.top - d.top) + 'px)';
-  pill.style.opacity = '1';
-  pill.dataset.set = '1';
-  if (fresh) requestAnimationFrame(() => { pill.style.transition = ''; });
+  if (!dk || !dk.clientWidth || dk.classList.contains('dragging')) return;
+  const fresh = !dk.dataset.set || dk.clientWidth !== dockW;   // first paint / rotation: no slide
+  dk.dataset.set = '1'; dockW = dk.clientWidth;
+  layoutDock(dk, dockIndex(dk), fresh);
 }
+/* Like Instagram: scrolling down tucks the bar in a little, any scroll up
+   brings it back. Listens in capture so the grids' own scroll boxes count too. */
+const dockScrollY = new WeakMap();
+function setDockMini(on){
+  const dk = document.querySelector('.dock');
+  if (dk && dk.classList.contains('mini') !== on && !dk.classList.contains('dragging')) dk.classList.toggle('mini', on);
+}
+document.addEventListener('scroll', e => {
+  const el = e.target === document ? document.scrollingElement : e.target;
+  if (!el || el.nodeType !== 1) return;
+  const y = el.scrollTop, prev = dockScrollY.has(el) ? dockScrollY.get(el) : y;
+  dockScrollY.set(el, y);
+  const dy = y - prev;
+  if (y < 24) return setDockMini(false);
+  if (Math.abs(dy) < 3) return;
+  setDockMini(dy > 0);
+}, { capture: true, passive: true });
+window.addEventListener('hashchange', () => setDockMini(false));
 /* At a boundary, resist progressively instead of stopping dead: a hard stop
    reads as frozen, rising resistance reads as "responsive, but nothing more
    here". Sign rides along with the overshoot. */
@@ -2178,86 +3044,72 @@ function rubberband(over, dim, c = 0.55){
   return (over * dim * c) / (dim + c * Math.abs(over));
 }
 /* iOS-style draggable highlight: press the lit tab and slide. The pill tracks the
-   finger, the tab under it lights up live, and the release commits that tab. */
+   finger, the tab under it opens its label live, and the release commits it. */
 let dockNoClick = false;
-/* Bound to the HOST, which is created once and never replaced — binding to .dock
-   itself meant any rebuild (or a first render where the bar was not yet laid out)
-   could leave the page with an unwired dock until the next navigation. */
+/* Bound to the HOST, which is created once and never replaced. */
 function wireDockDrag(host){
   if (host.dataset.drag) return;
   host.dataset.drag = '1';
   let st = null;
   const dockOf = () => host.querySelector('.dock');
-  const items = () => [...host.querySelectorAll('[data-tab],[data-menu]')];
   const pillOf = () => host.querySelector('.dpill');
   host.addEventListener('pointerdown', e => {
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     const from = e.target.closest && e.target.closest('[data-tab],[data-menu]');
-    const pill = pillOf();
-    if (!from || !from.classList.contains('on') || !pill) return;
-    /* the handle is the highlight, so it must actually be on screen — measured,
-       not inferred from an inline style that a skipped layout pass may never set */
+    const dk = dockOf(), pill = pillOf();
+    if (!from || !dk || !pill || !from.classList.contains('on')) return;
     const pb = pill.getBoundingClientRect();
     if (!pb.width) return;
-    const list = items();
-    st = { id: e.pointerId, x0: e.clientX, y0: e.clientY, moved: false,
-           list, from: list.indexOf(from), target: list.indexOf(from),
-           /* hold the pill by the point that was actually grabbed — snapping it
-              to the finger's centre is the thing that breaks the illusion */
-           grab: e.clientX - pb.left, pw: pb.width };
-    /* capture straight away: the moves then arrive here even if the browser
-       retargets or the tab under the finger is re-rendered mid-gesture */
+    const g = dockGeo(dk), idx = g.items.indexOf(from);
+    st = { id: e.pointerId, x0: e.clientX, y0: e.clientY, moved: false, g, from: idx, target: idx,
+           /* hold the pill by the point that was grabbed, as a fraction of its width,
+              so it stays under the finger while it resizes */
+           frac: Math.min(1, Math.max(0, (e.clientX - pb.left) / pb.width)) };
     try { host.setPointerCapture(e.pointerId); } catch (_) {}
   });
   host.addEventListener('pointermove', e => {
     if (!st || e.pointerId !== st.id) return;
     const dx = e.clientX - st.x0, dy = e.clientY - st.y0;
     if (!st.moved) {
-      /* let a vertical swipe scroll the page instead of grabbing the pill */
-      if (Math.abs(dx) < 6 || Math.abs(dx) <= Math.abs(dy)) return;
+      if (Math.abs(dx) < 6 || Math.abs(dx) <= Math.abs(dy)) return;   // vertical swipes scroll
       st.moved = true;
-      const dkEl = dockOf();
-      if (dkEl) dkEl.classList.add('dragging');
+      const dk0 = dockOf(); if (dk0) dk0.classList.add('dragging');
     }
     e.preventDefault();
     const pill = pillOf(), dk = dockOf();
     if (!pill || !dk) return;
-    const d = dk.getBoundingClientRect();
-    const first = st.list[0].getBoundingClientRect();
-    const last = st.list[st.list.length - 1].getBoundingClientRect();
-    /* 1:1 with the finger, then rubber-band past either end rather than jamming */
-    let left = e.clientX - st.grab;
-    if (left < first.left) left = first.left + rubberband(left - first.left, d.width);
-    else if (left > last.left) left = last.left + rubberband(left - last.left, d.width);
-    pill.style.transition = 'none';
-    pill.style.transform = 'translate(' + (left - d.left) + 'px,' + (first.top - d.top) + 'px)';
-    const mid = left + st.pw / 2;
+    const g = st.g, d = dk.getBoundingClientRect();
+    const w = g.A[st.target];
+    let left = e.clientX - d.left - st.frac * w;
+    const min = g.pl, max = g.pl + g.D - w;
+    if (left < min) left = min + rubberband(left - min, g.D);
+    else if (left > max) left = max + rubberband(left - max, g.D);
+    pill.style.transform = 'translateX(' + left + 'px)';
+    /* pick the tab whose own finished layout is centred nearest the pill —
+       stable, because it never depends on items that are still moving */
+    const mid = left + w / 2;
     let best = st.target, bd = Infinity;
-    st.list.forEach((it, i) => {
-      const b = it.getBoundingClientRect();
-      const dist = Math.abs(b.left + b.width / 2 - mid);
-      if (dist < bd) { bd = dist; best = i; }
-    });
+    g.items.forEach((_, i) => { const p = g.at(i); const dist = Math.abs(p.x + p.w / 2 - mid); if (dist < bd) { bd = dist; best = i; } });
     if (best !== st.target) {
       st.target = best;
-      st.list.forEach((it, i) => it.classList.toggle('on', i === best));
+      const p = dockItems(g, best);
+      pill.style.width = p.w + 'px';
+      if (navigator.vibrate) try { navigator.vibrate(4); } catch (_) {}
     }
   });
   const end = e => {
     if (!st || (e.pointerId != null && e.pointerId !== st.id)) return;
     const s = st; st = null;
     const dk = dockOf();
-    if (dk) dk.classList.remove('dragging');
     try { host.releasePointerCapture(s.id); } catch (_) {}
     if (!s.moved) return;
-    const pill = pillOf();
-    if (pill) pill.style.transition = '';
-    moveDockPill();                     // snap onto the tab the finger landed on
+    if (dk) { dk.classList.remove('dragging'); layoutDock(dk, s.target, false); }   // glide onto the tab
     dockNoClick = true;                 // the drag must not also fire a tap
     setTimeout(() => { dockNoClick = false; }, 400);
     if (s.target === s.from) return;
-    const el = s.list[s.target];
+    const el = s.g.items[s.target];
     if (el.hasAttribute('data-menu')) { S.menuOpen = true; return render(); }
+    if (S.menuOpen) S.menuOpen = false;
     const href = el.getAttribute('href');
     if (href) location.hash = href;
   };
@@ -2349,40 +3201,39 @@ function effTheme(){
 }
 function drawerNav(){
   const r = S.route || '#/home';
-  const it = (href, on, ic, label) => `<a class="it${on?' on':''}" href="${href}">${ic}<span>${esc(label)}</span></a>`;
   const piano = r.startsWith('#/sheets/piano');
+  const it = (href, on, ic, label, count) => `<a class="it${on?' on':''}" href="${href}"${on?' aria-current="page"':''}>${ic}<span>${esc(label)}</span>${count != null ? `<em class="cnt2">${count}</em>` : ''}</a>`;
+  const sec = k => `<div class="dsec">${esc(t(k))}</div>`;
+  const acct = S.session
+    ? `<div class="dacct in"><span class="dav">${AIC.user}</span><span class="grow2"><strong>${esc(t('dirWs'))}</strong><small>${esc(t('signedIn'))}</small></span><a class="dout" href="#/home" data-signout aria-label="${esc(t('signout'))}" title="${esc(t('signout'))}">${AIC.out}</a></div>`
+    : `<a class="dacct${r.startsWith('#/login')?' on':''}" href="#/login"><span class="dav">${AIC.user}</span><span class="grow2"><strong>${esc(t('dirSignin'))}</strong><small>${esc(t('dirSigninSub'))}</small></span>${AIC.chev}</a>`;
   return `<div class="scrim${S.menuOpen?' on':''}" data-menu-x></div>
   <nav class="drawer${S.menuOpen?' on':''}" aria-label="Menu">
     <div class="dhead">
-      <svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(0 6.5)"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path></g></svg>
-      <div class="t">Youth Choir</div>
-      <div class="lang dlang">
-        <button data-lang="en" class="${S.lang==='en'?'on':''}">EN</button>
-        <button data-lang="ru" class="${S.lang==='ru'?'on':''}">RU</button>
-      </div>
+      <a class="dbrand" href="#/home"><span class="bmark">${LOGOSVG}</span><span class="bword">${esc(t('appName'))}<small>${esc(t('appTag'))}</small></span></a>
       <button class="x" data-menu-x aria-label="Close">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"></path></svg>
       </button>
     </div>
-    ${it('#/home', r.startsWith('#/home'), NAVIC.home, t('home'))}
-    ${it('#/sheets', r.startsWith('#/sheets') && !piano, ICON.sheets, t('tSheets'))}
-    ${it('#/lyrics', r.startsWith('#/lyrics'), ICON.lyrics, t('tLyrics'))}
-    ${it('#/attendance/grid', r.startsWith('#/attendance'), ICON.attGrid, t('tAttGrid'))}
-    ${it('#/songs/summary', r.startsWith('#/songs'), ICON.songGrid, t('tSongGrid'))}
-    ${it('#/sheets/piano', piano, ICON.piano, t('tPiano'))}
-    ${it('#/seating', r.startsWith('#/seating'), ICON.seat, t('tSeating'))}
-    ${it('#/rules', r.startsWith('#/rules'), ICON.rules, t('tRules'))}
+    <div class="dchurch"><span class="demb">${esc(CHURCH.mark)}</span><div><strong>${esc(CHURCH.name)}</strong></div></div>
+    ${sec('navWork')}
+    ${it('#/home', r.startsWith('#/home'), AIC.home, t('overview'))}
+    ${it('#/attendance/grid', r.startsWith('#/attendance'), AIC.att, t('attendance'))}
+    ${it('#/songs/summary', r.startsWith('#/songs'), AIC.hist, t('songs'))}
+    ${sec('navLib')}
+    ${it('#/sheets', r.startsWith('#/sheets') && !piano, AIC.sheets, t('tSheets'), S.songs.filter(x => x.pdf_path).length)}
+    ${it('#/sheets/piano', piano, AIC.piano, t('tPiano'))}
+    ${it('#/lyrics', r.startsWith('#/lyrics'), AIC.lyrics, t('tLyrics'))}
+    ${sec('navChoir')}
+    ${it('#/seating', r.startsWith('#/seating'), AIC.seat, t('tSeating'))}
+    ${it('#/rules', r.startsWith('#/rules'), AIC.rules, t('tRules'))}
+    ${S.session ? sec('navDir') + it('#/admin/attendance', r.startsWith('#/admin/attendance') || r.startsWith('#/admin/entries/att'), AIC.att, t('recordAtt'))
+        + it('#/admin/songs', r.startsWith('#/admin/songs') || r.startsWith('#/admin/entries/songs'), AIC.music, t('planSvc'))
+        + it('#/admin/songlist', r.startsWith('#/admin/songlist'), AIC.sheets, t('repertoire'))
+        + it('#/admin/members', r.startsWith('#/admin/members'), AIC.user, t('members'))
+        + it('#/usage', r.startsWith('#/usage'), AIC.chart, t('usageIns')) : ''}
     <div class="grow"></div>
-    <div class="dtheme"><span class="dtl">${esc(t('appearance'))}</span>
-      <div class="lang theme"><button data-theme-set="light" class="${S.theme==='light'?'on':''}" aria-pressed="${S.theme==='light'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.9 4.9 1.4 1.4"></path><path d="m17.7 17.7 1.4 1.4"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.3 17.7-1.4 1.4"></path><path d="m19.1 4.9-1.4 1.4"></path></svg>${esc(t('thLight'))}</button><button data-theme-set="auto" class="${S.theme==='auto'?'on':''}" aria-pressed="${S.theme==='auto'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 18a6 6 0 0 0 0-12v12z" fill="currentColor" stroke="none"></path></svg>${esc(t('thAuto'))}</button><button data-theme-set="dark" class="${S.theme==='dark'?'on':''}" aria-pressed="${S.theme==='dark'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>${esc(t('thDark'))}</button></div>
-    </div>
-    <div class="dfoot">
-      ${S.session ? it('#/admin/attendance', r.startsWith('#/admin'), NAVIC.admin, t('admin')) : ''}
-      ${S.session
-        ? `<a class="it" href="#/home" data-signout>${NAVIC.out}<span>${esc(t('signout'))}</span></a>`
-        : it('#/login', r.startsWith('#/login'), NAVIC.login, t('signin'))}
-      <div class="vv">v${VERSION}</div>
-    </div>
+    <div class="dfoot">${acct}<div class="vv">v${VERSION}</div></div>
   </nav>`;
 }
 const ICON = {
@@ -2462,38 +3313,101 @@ const TILEICON = {
         <path d="M6.5 29.5c1.6-6 5.6-9 10.5-9s8.9 3 10.5 9" fill="none" stroke="var(--blue-text)" stroke-width="2.2" stroke-linecap="round"></path></svg>`
 };
 function homePage(){
-  const tile = (href, title, sub, icon, dark) => `<a class="tile ${dark?'dark':''}" href="${href}">
-      <div class="ic">${icon}</div>
-      <div><div class="tt">${esc(t(title))}</div><div class="ts">${esc(t(sub))}</div></div></a>`;
+  const members = S.singers.filter(x => x.part && x.active !== false);
+  const now = today(), [ty, tm, td] = now.split('-').map(Number);
+  const past = e => e.date <= now && !e.cancelled;
+  /* attendance over the last 30 days: every present mark over every mark that counted */
+  const cut30 = localISO(new Date(Date.now() - 30 * 86400000));
+  const month = S.events.filter(e => hasAtt(e) && past(e) && e.date >= cut30);
+  let came = 0, of = 0;
+  members.forEach(m => { const c = attCount(month, m.id); came += c.came; of += c.of; });
+  const avg = of ? Math.round(came / of * 100) : null;
+  const cut12 = shift(12);
+  const svc12 = S.events.filter(e => e.kind !== 'rehearsal' && past(e) && e.date >= cut12 && hasSongs(e));
+  const sung12 = svc12.reduce((n, e) => n + songsFor(e.id).length, 0);
+  const withPdf = S.songs.filter(x => x.pdf_path).length, withPiano = S.songs.filter(x => x.piano_path).length;
+  const withLyr = S.songs.filter(hasLyrics).length;
+  const parts = PARTS.filter(p => members.some(m => m.part === p)).length;
+  const kpi = (href, label, value, foot, ic, tone) => `<a class="kpi ${tone}" href="${href}">
+      <div class="kl"><span>${esc(label)}</span><span class="ki">${ic}</span></div>
+      <div class="kv">${value}</div><div class="kf">${foot}</div></a>`;
+  const kpis = `<div class="kpis">
+    ${kpi('#/seating', t('kSingers'), members.length, AIC.check + esc(t('kActive')(members.length)), AIC.user, 'k1')}
+    ${kpi('#/sheets', t('kRep'), S.songs.length, esc(t('kRepSub')(withPdf)), AIC.sheets, 'k2')}
+    ${kpi('#/attendance/summary', t('kAtt'), avg === null ? '—' : avg + '<small>%</small>', esc(t('kAttSub')), AIC.chart, 'k3')}
+    ${kpi('#/songs/services', t('kSvc'), svc12.length, esc(t('kSvcSub')(sung12)), AIC.hist, 'k4')}
+  </div>`;
+
   const svc = latestService();
-  const orderTile = `<div class="tile order">
-      <a class="ofill" href="#/songs/services">
-      <div class="oh"><div>
-        <div class="tt">${esc(t('tOrder'))}</div>
-        <div class="od">${svc ? esc(fmtLong(svc.date)) : ''}</div>
-        ${svc ? `<div class="ok">${esc(svc.name || kindWord(svc))}</div>` : ''}
-      </div><div class="ic">${TILEICON.songSvc}</div></div>
-      ${svc ? `<ol class="olist">${songsFor(svc.id).map(s =>
-            `<li>${esc(s.title)}${pvTag(s)}${creditPills(songRow(svc.id, s.id))}</li>`).join('')}</ol>`
-            : `<div class="ts">${esc(t('noOrderYet'))}</div>`}</a>
-      ${svc && songsFor(svc.id).length ? `<div class="ofoot">
-        <a class="obtn" href="#/sheets/order-${shortId(svc.id)}">${esc(t('viewSheets'))}</a>
-        <button class="oshare" data-share-order="${svc.id}">${SHARESVG}${esc(t('shareBtn'))}</button>
-      </div>` : ''}</div>`;
-  return `<div class="tiles">
-      ${orderTile}
-      ${tile('#/sheets','tSheets','tSheetsSub',TILEICON.sheets)}
-      ${tile('#/lyrics','tLyrics','tLyricsSub',TILEICON.lyrics)}
-      ${tile('#/attendance/grid','tAttGrid','tAttGridSub',TILEICON.attGrid)}
-      ${tile('#/songs/summary','tSongGrid','tSongGridSub',TILEICON.songGrid)}
-      ${tile('#/sheets/piano','tPiano','tPianoSub',TILEICON.piano)}
-      ${tile('#/seating','tSeating','tSeatingSub',TILEICON.seat)}
-      ${tile('#/rules','tRules','tRulesSub',TILEICON.rules)}
-      ${S.session ? tile('#/usage','tUsage','tUsageSub',CHARTICON) : ''}
-      ${S.session ? tile('#/admin/attendance','tAdmin','tAdminSub',TILEICON.user,true)
-                  : tile('#/login','tSignIn','tSignInSub',TILEICON.user,true)}
-    </div>
-    <div class="ver">v${VERSION} · <a href="#" data-notes>${esc(t('relNotes'))}</a></div>
+  const list = svc ? songsFor(svc.id) : [];
+  setTimeout(() => { S.ripple = false; }, 0);      // plays once per visit, not on every redraw
+  const setRow = (x, i) => {
+    const inner = `<span class="sno">${String(i + 1).padStart(2, '0')}</span>
+      <span class="sbody"><span class="stl">${esc(x.title)}${pvTag(x)}</span>${creditPills(songRow(svc.id, x.id)) ? `<span class="scr">${creditPills(songRow(svc.id, x.id))}</span>` : ''}</span>`;
+    return hasLyrics(x) ? `<a class="srow2" href="#/lyrics/${shortId(x.id)}">${inner}${AIC.chev}</a>` : `<div class="srow2">${inner}</div>`;
+  };
+  const service = svc ? `<section class="dsvc${S.ripple ? ' rip' : ''}">
+      <div class="sban${S.ripple ? ' rip' : ''}">
+        <div class="sbtop"><span class="eye">${esc(t('songOrder'))}</span><span class="sstat">${esc(t('songsCount')(list.length))}</span></div>
+        <h2>${esc(svc.name || t(svc.kind))}</h2>
+        <p class="sdate">${AIC.cal}${esc(fmtLong(svc.date))}</p>
+        <div class="sbact">
+          <a class="sbtn" href="#/sheets/order-${shortId(svc.id)}">${AIC.play}${esc(t('viewSheets'))}</a>
+          <button class="sshare" data-share-order="${svc.id}" aria-label="${esc(t('shareBtn'))}" title="${esc(t('shareBtn'))}">${AIC.share}</button>
+        </div>
+      </div>
+      <div class="sethd"><span>${esc(t('order'))}</span><small>${esc(t('inOrder'))}</small></div>
+      <div class="setlist">${list.map(setRow).join('')}</div>
+      <div class="pfoot"><a href="#/songs/services">${esc(t('svcHistory'))}${AIC.arrow}</a></div>
+    </section>` : `<section class="dsvc"><div class="msg">${esc(t('noOrderYet'))}</div></section>`;
+
+  /* the most recent date attendance was actually taken, split by voice part */
+  const lastEv = S.events.filter(e => hasAtt(e) && past(e)).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0)[0];
+  let att;
+  if (lastEv) {
+    const inIt = members.filter(m => attStatus(lastEv.id, m.id) !== 'na');
+    const here = inIt.filter(m => attStatus(lastEv.id, m.id) === 'present').length;
+    const rate = inIt.length ? Math.round(here / inIt.length * 100) : 0;
+    const bars = PARTS.map(p => {
+      const ps = inIt.filter(m => m.part === p); if (!ps.length) return '';
+      const pc = Math.round(ps.filter(m => attStatus(lastEv.id, m.id) === 'present').length / ps.length * 100);
+      const pn = t(p); return `<div class="prow ${p}"><span><i></i>${esc(pn.charAt(0) + pn.slice(1).toLowerCase())}</span><div class="pbar"><b style="width:${pc}%"></b></div><strong>${pc}%</strong></div>`;
+    }).join('');
+    att = `<section class="dpanel datt${S.ripple ? ' rip' : ''}">
+      <div class="phd"><h2>${esc(t('lastAtt'))}</h2>${AIC.att}</div>
+      <p class="pcap">${esc(lastEv.name || t(lastEv.kind))} · ${esc(fmtLong(lastEv.date))}</p>
+      <div class="donut" style="--p:${rate}%" role="img" aria-label="${rate}% ${esc(t('present'))}"><div><strong>${rate}%</strong><span>${esc(t('present'))}</span></div></div>
+      <div class="akey"><span><i></i><b>${here}</b> ${esc(t('present'))}</span><span><i></i><b>${inIt.length - here}</b> ${esc(t('absent'))}</span></div>
+      <div class="parts">${bars}</div>
+      <div class="pfoot c"><a href="#/attendance/grid">${esc(t('viewAtt'))}${AIC.arrow}</a></div>
+    </section>`;
+  } else att = `<section class="dpanel datt"><div class="phd"><h2>${esc(t('lastAtt'))}</h2>${AIC.att}</div><p class="pcap">${esc(t('noAttYet'))}</p></section>`;
+
+  const res = (href, name, count, ic, tone) => `<a class="res ${tone}" href="${href}"><span class="rico">${ic}</span><strong>${esc(name)}</strong><small>${esc(count)}</small></a>`;
+  const library = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('library'))}</h2><a class="tlink" href="#/sheets">${esc(t('browseAll'))}${AIC.arrow}</a></div>
+      <div class="reslist">
+        ${res('#/sheets', t('tSheets'), t('scoresN')(withPdf), AIC.sheets, 'r1')}
+        ${res('#/sheets/piano', t('tPiano'), t('scoresN')(withPiano), AIC.piano, 'r2')}
+        ${res('#/lyrics', t('tLyrics'), t('textsN')(withLyr), AIC.lyrics, 'r3')}
+      </div>
+    </section>`;
+  const recent = S.events.filter(e => e.kind !== 'rehearsal' && past(e) && hasSongs(e))
+    .sort((a, b) => a.date < b.date ? 1 : -1).slice(0, 3);
+  const recentCard = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('recentSvc'))}</h2><a class="tlink" href="#/songs/services">${esc(t('viewAll'))}${AIC.arrow}</a></div>
+      <div class="recent">${recent.length ? recent.map(e => { const [, m, d] = e.date.split('-').map(Number);
+        return `<a class="rsvc" href="#/sheets/order-${shortId(e.id)}"><span class="mdate"><span>${esc(MON[S.lang][m - 1])}</span><strong>${d}</strong></span>
+          <span class="grow2"><strong>${esc(e.name || t(e.kind))}</strong><small>${esc(t('songsCount')(songsFor(e.id).length))}</small></span>${AIC.chev}</a>`; }).join('')
+        : `<p class="pcap">${esc(t('noSvcYet'))}</p>`}</div>
+    </section>`;
+  const admin = S.session ? `<a class="dadmin" href="#/admin/attendance"><span class="rico">${AIC.admin}</span><span class="grow2"><strong>${esc(t('tAdmin'))}</strong><small>${esc(t('tAdminSub'))}</small></span>${AIC.chev}</a>` : '';
+
+  return `<div class="dtop"></div>
+    <div class="ov">${kpis}
+    <div class="dgrid">${service}${att}</div>
+    <div class="dbottom">${library}${recentCard}</div></div>
+    <div class="ver">v${VERSION} · <a href="#" data-notes>${esc(t('relNotes'))}</a>${S.session ? '' : ` · <a href="#/login">${esc(t('dirSignin'))}</a>`}</div>
     ${S.showNotes ? `<div class="notespanel">
       <div class="nh">${esc(t('relNotes'))} — v${VERSION.split('.')[0]}</div>
       <ul>${((NOTES[VERSION.split('.')[0]] || {})[S.lang] || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>
@@ -2505,7 +3419,7 @@ function adminTabs(active){
   return `<div class="tabs admtabs">
     ${i('#/admin/attendance','att','attendance')}
     ${i('#/admin/songs','songs','songQueue')}
-    ${i('#/admin/songlist','list','allSongs')}
+    ${i('#/admin/songlist','list','repertoire')}
     ${i('#/admin/members','members','members')}
   </div>`;
 }
@@ -2542,6 +3456,7 @@ function rangeCtrl(kind, typeFilter){
 }
 
 const topBar = html => html ? `<div class="topctl">${html}</div>` : '';
+const pageHead = () => '<div class="dtop"></div>';
 /* ---------- public: attendance ---------- */
 function attendanceGrid(top){
   const ev = gridEvents();
@@ -2553,7 +3468,7 @@ function attendanceGrid(top){
     }<div class="tail" style="height:26px;background:var(--paper-2)"></div></div>
     <div class="row hday"><div class="spacer">${esc(t('singer'))}</div>${
       ev.map(e => `<div class="d ${e.kind!=='rehearsal'?'svc':''} ${e.cancelled?'cx':''}"><span>${+e.date.slice(8,10)}</span><em>${esc(evLabel(e))}</em></div>`).join('')
-    }<div class="tail" style="height:40px;border-bottom:2px solid var(--ink)"></div></div>`;
+    }<div class="tail" style="height:40px;border-bottom:1px solid var(--line-strong)"></div></div>`;
 
   const body = PARTS.map(p => {
     const rows = S.singers.filter(s => s.part === p && s.active !== false);
@@ -2564,7 +3479,7 @@ function attendanceGrid(top){
           if (e.cancelled) return `<div class="cell cx">×</div>`;
           const st = attStatus(e.id, s.id);
           return `<div class="cell ${e.kind!=='rehearsal'?'svc':''} ${st==='na'?'na':''}">${
-            st==='absent' ? '<i class="ab">' + esc(S.lang==='en'?'A':'Н') + '</i>' : st==='na' ? '–' : ''}</div>`; }).join('');
+            st==='absent' ? '<i class="ab">' + esc(S.lang==='en'?'A':'Н') + '</i>' : st==='na' ? '–' : '<i class="pr">✓</i>'}</div>`; }).join('');
         const c = attCount(ev, s.id);
         return `<div class="row"><div class="name">${esc(s.name)}</div>
           <div class="tally ${c.pct===null?'':c.pct>=50?'ok':c.pct>=10?'mid':'low'}">${c.of ? c.came + '/' + c.of : '—'}</div>${cells}<div class="tail"></div></div>`;
@@ -2574,7 +3489,7 @@ function attendanceGrid(top){
   if (!ev.length) return (top || '') + `<div class="msg">${esc(t('noEvents'))}</div>`;
   return `<div class="scroll">${topBar(top)}<div class="gwrap">${head}${body}</div>
     <div class="legend endbar">
-      <span><i style="background:var(--surface)"></i> ${esc(t('present'))}</span>
+      <span><i class="pr">✓</i> ${esc(t('present'))}</span>
       <span><i>${S.lang==='en'?'A':'Н'}</i> ${esc(t('absent'))}</span>
       <span><i class="na">–</i> ${esc(t('notListed'))}</span>
       <span><i class="cx"></i> ${esc(t('cancelled'))}</span>
@@ -2587,10 +3502,10 @@ function attendanceSummary(){
     .filter(e => S.sumType === 'all' ? true
       : S.sumType === 'services' ? e.kind !== 'rehearsal' : e.kind === 'rehearsal');
   if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
-  return PARTS.map(p => {
+  return '<div class="sec">' + PARTS.map(p => {
     const rows = S.singers.filter(s => s.part === p && s.active !== false);
     if (!rows.length) return '';
-    return `<div class="sectbar">${esc(t(p))}</div>` + rows.map(s => {
+    return `<div class="sectbar ${p}">${esc(t(p))}</div>` + rows.map(s => {
       const c = attCount(ev, s.id), pct = c.pct;
       if (pct === null) return `<div class="li"><div style="width:44%;font-size:var(--fs-15);color:var(--faint)">${esc(s.name)}</div>
         <div class="bar"></div><div class="cnt">0/0</div><div class="pct" style="color:var(--faint)">—</div></div>`;
@@ -2599,7 +3514,7 @@ function attendanceSummary(){
         <div class="cnt">${c.came}/${c.of}</div>
         <div class="pct" style="color:${pct>=50?'var(--ink)':pct>=10?'var(--gold)':'var(--red)'}">${pct}%</div></div>`;
     }).join('');
-  }).join('');
+  }).join('') + '</div>';
 }
 
 /* ---------- public: songs ---------- */
@@ -2617,7 +3532,7 @@ function songsGrid(top){
     }<div class="tail" style="height:26px;background:var(--paper-2)"></div></div>
     <div class="row hday srow hd"><div class="spacer">${esc(t('song'))}</div>${
       ev.map(e => `<div class="d svc ${e.cancelled?'cx':''}"><span>${+e.date.slice(8,10)}</span><em>${esc(evLabel(e))}</em></div>`).join('')
-    }<div class="tail" style="height:40px;border-bottom:2px solid var(--ink)"></div></div>`;
+    }<div class="tail" style="height:40px;border-bottom:1px solid var(--line-strong)"></div></div>`;
   const body = songs.map(s => {
     const st = songStats(s.id, S.from, S.to);
     return `<div class="row srow"><div class="name">${esc(s.title)}${s.subtitle?`<span class="sub">${esc(s.subtitle)}</span>`:''}</div>
@@ -2632,14 +3547,17 @@ function songsGrid(top){
 function songsByService(){
   const ev = S.events.filter(e => e.kind !== 'rehearsal' && hasSongs(e) && inRange(e.date, S.from, S.to)).slice().reverse();
   if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
-  return ev.map(e => {
+  return `<div class="svcgrid">` + ev.map(e => {
     const list = songsFor(e.id);
-    return `<div class="svc-card"><div class="top"><div class="date">${esc(fmtLong(e.date))}</div>
-      <div class="kind">${esc(e.name || t(e.kind))}${e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</div></div>
-      ${list.length ? list.map((s, i) => `<div class="s"><b>${i + 1}</b><span class="st">${esc(s.title)}</span>${
-                        creditPills(songRow(e.id, s.id))}</div>`).join('')
-                    : `<div class="s" style="color:var(--faint)">—</div>`}</div>`;
-  }).join('');
+    return `<article class="sec svc${e.cancelled ? ' cx' : ''}"><div class="svch">
+        <div class="svct"><div class="svcd">${esc(fmtLong(e.date))}</div>
+          <h3>${esc(e.name || t(e.kind))}${e.cancelled ? ` <span class="svcx">${esc(t('cancelledEvent'))}</span>` : ''}</h3></div>
+        ${list.length && !e.cancelled ? `<a class="mini play" href="#/sheets/order-${shortId(e.id)}">${PLAYSVG}<span>${esc(t('viewSheets'))}</span></a>` : ''}
+      </div>
+      ${list.length ? `<ol class="svcl">${list.map((x, i) => `<li><span class="sno">${String(i + 1).padStart(2, '0')}</span>
+          <span class="sbody"><span class="stl">${esc(x.title)}${pvTag(x)}</span>${creditPills(songRow(e.id, x.id)) ? `<span class="scr">${creditPills(songRow(e.id, x.id))}</span>` : ''}</span></li>`).join('')}</ol>`
+        : `<div class="msg">—</div>`}</article>`;
+  }).join('') + '</div>';
 }
 function songDates(songId){
   return S.eventSongs.filter(x => x.song_id === songId)
@@ -2681,7 +3599,7 @@ function songsPeople(){
   }</div></div>`;
   if (!rows.length) return seg + `<div class="msg">${esc(t('noPeopleYet'))}</div>`;
   const max = Math.max(1, ...rows.map(r => r.c + r.p));
-  return seg + `<div class="li" style="background:var(--surface-2);font-size:var(--fs-12);color:var(--muted)">
+  return seg + '<div class="sec">' + `<div class="li" style="background:var(--surface-2);font-size:var(--fs-12);color:var(--muted)">
       <div style="flex:1">${esc(t('personCol'))}</div><div style="width:54px;text-align:right">${esc(t('times'))}</div>
       <div style="width:84px;text-align:right">${esc(t('lastLed'))}</div><div class="caret"></div></div>` +
     rows.map(r => {
@@ -2705,7 +3623,7 @@ function songsPeople(){
           <div class="dd" style="width:auto;flex:1">${esc(x.s.title)}</div>
           <div class="dk" style="flex:none;text-align:right">${esc(t('ledN')(x.n))} ›</div></div>`).join('')}
       </div>` : '');
-    }).join('');
+    }).join('') + '</div>';
 }
 function songsSummary(){
   const rows = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) &&
@@ -2714,7 +3632,7 @@ function songsSummary(){
     .filter(r => r.st.n > 0).sort((a,b) => b.st.n - a.st.n);
   if (!rows.length) return `<div class="msg">${esc(t('noSongs'))}</div>`;
   const max = Math.max(1, ...rows.map(r => r.st.n));
-  return `<div class="li" style="background:var(--surface-2);font-size:var(--fs-12);color:var(--muted)">
+  return '<div class="sec">' + `<div class="li" style="background:var(--surface-2);font-size:var(--fs-12);color:var(--muted)">
       <div style="flex:1">${esc(t('song'))}</div><div style="width:54px;text-align:right">${esc(t('times'))}</div>
       <div style="width:84px;text-align:right">${esc(t('last'))}</div><div class="caret"></div></div>` +
     rows.map(({s,st}) => {
@@ -2736,10 +3654,22 @@ function songsSummary(){
             e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</div>
           <div class="dc">${creditPills(songRow(e.id, s.id))}</div></div>`).join('')}
       </div>` : '');
-    }).join('');
+    }).join('') + '</div>';
 }
 
 /* ---------- admin ---------- */
+
+/* Director pages share one frame: a title (with its main action on the right),
+   the section tabs, and — for the two recording flows — a three-step trail. */
+function admHead(title, sub, action){
+  return action ? `<div class="admbar"><span></span>${action}</div>` : '<div class="dtop"></div>';
+}
+const admBar = (count, action) => `<div class="admbar"><span class="n">${esc(count)}</span>${action || ''}</div>`;
+function stepper(mode, cur){
+  const names = [t('stEvent'), mode === 'att' ? t('attendance') : t('stSongs'), t('stReview')];
+  return `<ol class="stepper">${names.map((n, i) => `<li class="${i + 1 < cur ? 'done' : i + 1 === cur ? 'on' : ''}">
+      <span class="sn">${i + 1 < cur ? AIC.check : '0' + (i + 1)}</span><span>${esc(n)}</span></li>`).join(`<li class="sx" aria-hidden="true">${AIC.chev}</li>`)}</ol>`;
+}
 function eventPicker(target){
   const kinds = ['rehearsal','morning','evening','other'];
   const inScope = e => target === 'songs'
@@ -2891,6 +3821,7 @@ function editDirty(){
   if (E.newDate) return true;
   return !isAttCancelled(E) && editDelta().n > 0;
 }
+
 function saveBar(mode){
   const isNew = S.edit && S.edit.evId === 'new', dirty = editDirty();
   const n = isAttCancelled(S.edit) ? S.edit.base.size : editDelta().n;
@@ -2956,6 +3887,7 @@ function creditsCard(){
         </div></div>`;
     }).join('') + `</div>`;
 }
+
 function orderCard(){
   const ids = orderedSel();
   if (!ids.length) return '';
@@ -3019,144 +3951,136 @@ function addFold(key, inner, label){
       <i>${open ? '–' : '+'}</i>${esc(t(open ? 'cancel' : (label || 'add')))}</button>` +
     (open ? `<div class="card" style="border-top:1px solid var(--rule)">${inner}</div>` : '');
 }
-function catManager(){
-  const open = S.showCats;
-  return `<button class="fold ${open?'open':''}" data-toggle-cats>
-      <span>${esc(t('categories'))}</span>
-      <em>${S.categories.length} ${open?'▴':'▾'}</em></button>` +
-    (open ? addFold('cat', `<div style="display:flex;gap:8px">
-        <input class="field" id="new-cat-name" placeholder="${esc(t('catName'))}">
-        <button class="mini" style="background:var(--blue);color:var(--white);border-color:var(--blue-text);padding:12px 20px" data-add-cat>${esc(t('add'))}</button>
-      </div>`, 'addCat') +
-      S.categories.map(c => {
-        if (S.editCat === c.id) return `<div class="li" style="background:var(--blue-wash)">
-          <input class="field" id="edit-cat-name" value="${esc(c.name)}">
-          <button class="mini" style="background:var(--blue);color:var(--white);border-color:var(--blue-text)" data-save-cat="${c.id}">${esc(t('save'))}</button>
-          <button class="mini" data-cancel-cat>${esc(t('cancel'))}</button></div>`;
+
+function catCard(){
+  return `<div class="sec">
+      <button class="chd fold2" data-toggle-cats aria-expanded="${S.showCats?'true':'false'}"><h3>${esc(t('categories'))}</h3><span class="n">${S.categories.length}</span><i class="chev${S.showCats?' up':''}"></i></button>
+      ${S.showCats ? S.categories.map(c => {
         const n = S.songs.filter(s => s.category_id === c.id).length;
-        return `<div class="li"><div style="flex:1;min-width:0;font-size:var(--fs-15)">${esc(c.name)}</div>
-          <div style="font-size:var(--fs-13);color:var(--muted);font-variant-numeric:tabular-nums">${n}</div>
-          <button class="mini" data-edit-cat="${c.id}">${esc(t('edit'))}</button>
-          <button class="mini danger" data-del-cat="${c.id}">${esc(t('del'))}</button></div>`;
-      }).join('') : '');
+        return `<div class="li"><span class="grow2" style="font-size:var(--fs-15)">${esc(c.name)}</span>
+          <span class="un">${n}</span>
+          <button class="ibtn" data-edit-cat="${c.id}" aria-label="${esc(t('edit'))}">${PENSVG}</button>
+          <button class="ibtn danger" data-del-cat="${c.id}" aria-label="${esc(t('del'))}">${TRASHSVG}</button></div>`;
+      }).join('') + `<div class="cfoot"><button class="tlink" data-add-open="cat">＋ ${esc(t('addCat'))}</button></div>` : ''}
+    </div>`;
 }
 function manageSongs(){
-  const list = S.songs.filter(s => songMatch(s, S.query));
-  return `<div class="h">${esc(t('songList'))}<span class="n">${esc(t('songsN')(S.songs.length))}</span></div>` +
-    `<div class="sec">` + catManager() + `</div><div class="sec">` + addFold('song', `
-      <input class="field" id="new-song-title" placeholder="${esc(t('songTitle'))}">
-      <div style="display:flex;gap:8px">
-        <input class="field" id="new-song-sub" placeholder="${esc(t('subtitle'))}" style="flex:1;min-width:0">
-        <input class="field" id="new-song-pv" inputmode="numeric" placeholder="№"
-               title="${esc(t('pvLabel'))}" style="width:84px;flex:none;text-align:center">
-      </div>
-      <div style="display:flex;gap:8px">
-        ${S.categories.length ? `<select class="field" id="new-song-cat" style="flex:1;min-width:0">
-          <option value="">${esc(t('noCat'))}</option>
-          ${S.categories.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}
-        </select>` : '<div style="flex:1"></div>'}
-        <button class="mini" style="background:var(--blue);color:var(--white);border-color:var(--blue-text);padding:12px 20px" data-add-song>${esc(t('add'))}</button>
-      </div>`, 'addSong') + `</div><div class="sec"><div class="card">${qField()}</div></div><div class="sec">` +
-    list.map(s => { const st = songStats(s.id);
-      if (S.editSongRow === s.id) return `<div class="li" style="flex-wrap:wrap;background:var(--blue-wash)">
-        <input class="field" id="edit-song-title" value="${esc(s.title)}" style="flex:1 1 100%">
-        <input class="field" id="edit-song-sub" value="${esc(s.subtitle || '')}" placeholder="${esc(t('subtitle'))}" style="flex:1 1 100%">
-        <input class="field" id="edit-song-pv" inputmode="numeric" value="${esc(s.pv_number == null ? '' : s.pv_number)}"
-               placeholder="${esc(t('pvShort'))}" style="flex:1 1 100%">
-        ${S.categories.length ? `<select class="field" id="edit-song-cat" style="flex:1 1 100%">
-          <option value="">${esc(t('noCat'))}</option>
-          ${S.categories.map(c => `<option value="${c.id}"${s.category_id===c.id?' selected':''}>${esc(c.name)}</option>`).join('')}
-        </select>` : ''}
-        <div class="acts" style="flex:1 1 100%;justify-content:flex-end">
-          <button class="mini" style="background:var(--blue);color:var(--white);border-color:var(--blue-text)" data-save-song-row="${s.id}">${esc(t('save'))}</button>
-          <button class="mini" data-cancel-song-row>${esc(t('cancel'))}</button>
-          <button class="mini danger" data-del-song="${s.id}">${esc(t('del'))}</button>
-        </div></div>`;
-      return `<div class="li"><div style="flex:1;min-width:0">
-        <div style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}${pvTag(s)}</div>
-        <div class="sub" style="font-style:normal">${esc((catName(s.category_id) ? catName(s.category_id) + ' · ' : '') + (s.subtitle ? s.subtitle + ' · ' : '') + t('sungN')(st.n, st.last))}</div></div>
-        <button class="mini" data-edit-song="${s.id}">${esc(t('edit'))}</button></div>`;
-    }).join('') + `</div>`;
+  const list = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) && songMatch(s, S.query));
+  return adminTabs('list') + admBar(t('songsN')(S.songs.length), `<button class="pbtn" data-add-open="song">＋ ${esc(t('addSong'))}</button>`) +
+    `<div class="searchrow" style="display:flex;gap:8px">${qField('searchPv')}${catSelect()}</div>
+    <div class="sec">` + (list.length ? list.map(s => { const st = songStats(s.id);
+      const meta = [catName(s.category_id), s.subtitle, t('sungN')(st.n, st.last)].filter(Boolean).join(' · ');
+      return `<div class="li rrow"><span class="ftile">${AIC.music}</span><div style="flex:1;min-width:0">
+        <div class="stl">${esc(s.title)}${pvTag(s)}</div><div class="sub">${esc(meta)}</div></div>
+        <button class="ibtn" data-edit-song="${s.id}" aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
+        <button class="ibtn danger" data-del-song="${s.id}" aria-label="${esc(t('del'))}" title="${esc(t('del'))}">${TRASHSVG}</button></div>`;
+    }).join('') : `<div class="msg">${esc(t('noSongs'))}</div>`) + `</div>` + catCard();
 }
-function personRow(s, note, partPicker){
-  if (S.editPerson === s.id) {
-    const onSingers = S.memTab === 'singers';
-    const archived = s.active === false;
-    return `<div class="li" style="flex-wrap:wrap;background:var(--blue-wash)">
-      <input class="field" id="edit-name" value="${esc(s.name)}" style="flex:1 1 100%">
-      ${onSingers ? `<label style="flex:1 1 100%;display:flex;align-items:center;gap:10px;font-size:var(--fs-13);color:var(--muted)">${esc(t('joinedOn'))}
-        <input class="field" id="edit-joined" type="date" value="${esc(s.joined_on || '')}" style="flex:1;max-width:190px"></label>
-      <div class="sub" style="flex:1 1 100%;font-style:normal;color:var(--faint)">${esc(t('joinedNote'))}</div>` : ''}
-      <div class="acts" style="flex-wrap:wrap;flex:1 1 100%;justify-content:flex-end">
-        <button class="mini" style="background:var(--blue);color:var(--white);border-color:var(--blue-text)" data-save-person="${s.id}">${esc(t('save'))}</button>
-        <button class="mini" data-cancel-person>${esc(t('cancel'))}</button>
-        ${onSingers ? `<button class="mini" data-archive-singer="${s.id}">${esc(archived ? t('restore') : t('archive'))}</button>
-        <button class="mini danger" data-del-singer="${s.id}">${esc(t('del'))}</button>`
-        : `<button class="mini danger" data-drop-role="${s.id}">${esc(t('removeRole'))}</button>`}
-      </div></div>`;
-  }
-  return `<div class="li ${s.active === false ? 'na' : ''}"><div style="flex:1;min-width:0">
-      <div style="font-size:var(--fs-16)">${esc(s.name)}</div>
-      ${note ? `<div class="sub" style="font-style:normal">${esc(note)}</div>` : ''}</div>
-    ${partPicker ? `<select class="mini part" data-set-part="${s.id}" aria-label="${esc(t('voicePart'))}">${
-      PARTS.map(p => `<option value="${p}"${s.part===p?' selected':''}>${esc(t(p))}</option>`).join('')
-    }</select>` : ''}
-    <button class="mini" data-edit-singer="${s.id}">${esc(t('edit'))}</button>
-    ${S.memTab === 'singers' ? '' : `<button class="mini danger" data-del-singer="${s.id}">${esc(t('del'))}</button>`}</div>`;
+const partName = p => { const v = t(p) || ''; return v.charAt(0) + v.slice(1).toLowerCase(); };
+const monYear = iso => { const [y, m] = iso.split('-').map(Number); return MON[S.lang][m - 1] + ' ' + y; };
+const initials = n => String(n || '').trim().split(/\s+/).slice(0, 2).map(w => w[0] || '').join('').toUpperCase();
+function personRow(s, note){
+  const onSingers = S.memTab === 'singers';
+  return `<div class="li mrow ${s.active === false ? 'na' : ''}"><span class="av">${esc(initials(s.name))}</span>
+    <div style="flex:1;min-width:0"><div class="stl">${esc(s.name)}</div>${note ? `<div class="sub">${esc(note)}</div>` : ''}</div>
+    <button class="ibtn" data-edit-singer="${s.id}" aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
+    ${onSingers ? `<button class="tbtn" data-archive-singer="${s.id}">${esc(s.active === false ? t('restore') : t('archive'))}</button>`
+      : `<button class="tbtn" data-drop-role="${s.id}">${esc(t('removeRole'))}</button>`}
+    <button class="ibtn danger" data-del-singer="${s.id}" aria-label="${esc(t('del'))}" title="${esc(t('del'))}">${TRASHSVG}</button></div>`;
 }
 function manageMembers(){
   const tab = S.memTab;
-  const tabs = `<div class="tabs">${[['singers','tSingers'],['pianists','tPianists'],['conductors','tConductors']]
+  const sub = `<div class="subtabs">${[['singers','tSingers'],['pianists','tPianists'],['conductors','tConductors']]
     .map(([v,l]) => `<a href="#/admin/members/${v}" class="${tab===v?'on':''}">${esc(t(l))}</a>`).join('')}</div>`;
-
+  const since = s => s.joined_on ? t('sinceD')(monYear(s.joined_on)) : '';
   if (tab === 'singers') {
     const rows = S.singers.filter(isSinger);
     const arch = rows.filter(s => s.active === false);
-    return tabs + `<div class="h">${esc(t('tSingers'))}<span class="n">${esc(t('singersN')(rows.length - arch.length))}</span></div>
-      <div class="sec">` + addFold('singer', `
-        <input class="field" id="new-singer-name" placeholder="${esc(t('fullName'))}">
-        <div style="display:flex;gap:8px">
-          <select class="field" id="new-singer-part">${PARTS.map(p => `<option value="${p}">${esc(t(p))}</option>`).join('')}</select>
-          <button class="mini" style="background:var(--blue);color:var(--white);border-color:var(--blue-text);padding:12px 20px" data-add-singer>${esc(t('add'))}</button>
-        </div>`, 'addSinger') + `</div><div class="sec">` +
+    return adminTabs('members') + sub + admBar(t('singersN')(rows.length - arch.length), `<button class="pbtn" data-add-open="singer">＋ ${esc(t('addSinger'))}</button>`) + `<div class="sec">` +
       PARTS.map(p => {
         const inPart = rows.filter(s => s.part === p && s.active !== false);
         if (!inPart.length) return '';
         return `<div class="sectbar ${p}">${esc(t(p))}<em>${inPart.length}</em></div>` + inPart.map(s => personRow(s,
-          [s.is_conductor ? t('conductor') : '', s.is_pianist ? t('pianist') : '']
-            .filter(Boolean).join(' · '), true)).join('');
+          [partName(s.part), since(s), s.is_conductor ? t('conductor') : '', s.is_pianist ? t('pianist') : ''].filter(Boolean).join(' · '))).join('');
       }).join('') +
       (arch.length ? `<div class="sectbar">${esc(t('archived'))}<em>${arch.length}</em></div>` +
-        arch.map(s => personRow(s, isSinger(s) ? t(s.part) : '', false)).join('') +
+        arch.map(s => personRow(s, isSinger(s) ? partName(s.part) : '')).join('') +
         `<div class="note">${esc(t('archivedNote'))}</div>` : '') + `</div>`;
   }
-
   const role = tab === 'pianists' ? 'is_pianist' : 'is_conductor';
   const col  = tab === 'pianists' ? 'pianist_id' : 'conductor_id';
-  const rows = rankedBy(role, col);      // most active first, same order as the dropdowns
-  const pool = S.singers.filter(s => !s[role]).sort((a,b) => a.name.localeCompare(b.name, 'ru'));
-  return tabs + `<div class="h">${esc(t(tab === 'pianists' ? 'tPianists' : 'tConductors'))}
-      <span class="n">${esc(t('peopleN')(rows.length))}</span></div>
-    <div class="sec">` + addFold('role', `
-      <div style="display:flex;gap:8px">
-        <input class="field" id="new-role-name" placeholder="${esc(t('fullName'))}">
-        <button class="mini" style="background:var(--blue);color:var(--white);border-color:var(--blue-text);padding:12px 20px"
-          data-add-role="${role}">${esc(t('add'))}</button>
-      </div>
-      ${pool.length ? `<select class="field" data-mark-role="${role}">
-        <option value="">${esc(t('alsoSings'))}…</option>
-        ${pool.map(s => `<option value="${s.id}">${esc(s.name)}${isSinger(s) ? ' · ' + esc(t(s.part)) : ''}</option>`).join('')}
-      </select>` : ''}`, tab === 'pianists' ? 'addPianist' : 'addConductor') + `</div>
-    <div class="note">${esc(t('roleNote'))} ${esc(t('rankNote'))}</div>` +
-    `<div class="sec">` +
+  const rows = rankedBy(role, col);
+  return adminTabs('members') + sub + admBar(t('peopleN')(rows.length), `<button class="pbtn" data-add-open="role">＋ ${esc(t(tab === 'pianists' ? 'addPianist' : 'addConductor'))}</button>`) +
+    `<div class="note" style="padding-top:4px">${esc(t('roleNote'))} ${esc(t('rankNote'))}</div><div class="sec">` +
     (rows.length ? rows.map(({p, n}) => personRow(p,
-        [isSinger(p) ? t(p.part) : t('noVoice'), n ? t('timesN')(n) : ''].filter(Boolean).join(' · '))).join('')
+        [isSinger(p) ? partName(p.part) : t('noVoice'), n ? t('timesN')(n) : ''].filter(Boolean).join(' · '))).join('')
                  : `<div class="msg">${esc(t('noEntries'))}</div>`) + `</div>`;
+}
+/* One dialog for every add/edit form. The fields keep the ids the save handlers
+   already read, so opening a dialog changes how a form looks, not what it does. */
+function adminModal(){
+  if (!S.session || !S.route.startsWith('#/admin')) return '';
+  const cats = sel => S.categories.length ? `<label class="fl"><span>${esc(t('catL'))}</span><select class="field" id="${sel.id}">
+      <option value="">${esc(t('noCat'))}</option>${S.categories.map(c => `<option value="${c.id}"${sel.v === c.id ? ' selected' : ''}>${esc(c.name)}</option>`).join('')}</select></label>` : '';
+  const shell = (title, body, go, wide) => `<div class="mscrim" data-modal-x></div>
+    <div class="modal${wide ? ' wide' : ''}" role="dialog" aria-modal="true" aria-label="${esc(title)}">
+      <div class="mhd"><h2>${esc(title)}</h2><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
+      <div class="mbody">${body}</div>
+      <div class="mfoot"><button class="obtn2" data-modal-x>${esc(t('cancel'))}</button>${go}</div></div>`;
+  const r = S.route;
+  if (r.startsWith('#/admin/songlist')) {
+    if (S.addOpen === 'song') return shell(t('addSong'), `<div class="fgrid">
+        <label class="fl full"><span>${esc(t('titleL'))}</span><input class="field" id="new-song-title" autofocus></label>
+        <label class="fl full"><span>${esc(t('subtitle'))}</span><input class="field" id="new-song-sub"></label>
+        ${cats({ id: 'new-song-cat', v: '' })}
+        <label class="fl"><span>${esc(t('pvL'))}</span><input class="field" id="new-song-pv" inputmode="numeric"></label></div>`,
+      `<button class="pbtn" data-add-song>${esc(t('saveSong'))}</button>`);
+    const s = S.editSongRow && S.songs.find(x => x.id === S.editSongRow);
+    if (s) return shell(t('editSongT'), `<div class="fgrid">
+        <label class="fl full"><span>${esc(t('titleL'))}</span><input class="field" id="edit-song-title" value="${esc(s.title)}"></label>
+        <label class="fl full"><span>${esc(t('subtitle'))}</span><input class="field" id="edit-song-sub" value="${esc(s.subtitle || '')}"></label>
+        ${cats({ id: 'edit-song-cat', v: s.category_id })}
+        <label class="fl"><span>${esc(t('pvL'))}</span><input class="field" id="edit-song-pv" inputmode="numeric" value="${esc(s.pv_number == null ? '' : s.pv_number)}"></label></div>`,
+      `<button class="pbtn" data-save-song-row="${s.id}">${esc(t('saveSong'))}</button>`);
+    if (S.addOpen === 'cat') return shell(t('addCat'), `<label class="fl"><span>${esc(t('catName'))}</span><input class="field" id="new-cat-name"></label>`,
+      `<button class="pbtn" data-add-cat>${esc(t('save'))}</button>`);
+    const c = S.editCat && S.categories.find(x => x.id === S.editCat);
+    if (c) return shell(t('catName'), `<label class="fl"><span>${esc(t('catName'))}</span><input class="field" id="edit-cat-name" value="${esc(c.name)}"></label>`,
+      `<button class="pbtn" data-save-cat="${c.id}">${esc(t('save'))}</button>`);
+  }
+  if (r.startsWith('#/admin/members')) {
+    if (S.addOpen === 'singer') return shell(t('addSinger'), `<div class="fgrid">
+        <label class="fl full"><span>${esc(t('nameL'))}</span><input class="field" id="new-singer-name"></label>
+        <label class="fl full"><span>${esc(t('voicePart'))}</span><select class="field" id="new-singer-part">${PARTS.map(p => `<option value="${p}">${esc(partName(p))}</option>`).join('')}</select></label></div>`,
+      `<button class="pbtn" data-add-singer>${esc(t('save'))}</button>`);
+    if (S.addOpen === 'role') {
+      const role = S.memTab === 'pianists' ? 'is_pianist' : 'is_conductor';
+      const pool = S.singers.filter(s => !s[role]).sort((a,b) => a.name.localeCompare(b.name, 'ru'));
+      return shell(t(S.memTab === 'pianists' ? 'addPianist' : 'addConductor'), `<div class="fgrid">
+        ${pool.length ? `<label class="fl full"><span>${esc(t('fromRoster'))}</span><select class="field" data-mark-role="${role}">
+          <option value="">—</option>${pool.map(s => `<option value="${s.id}">${esc(s.name)}${isSinger(s) ? ' · ' + esc(t(s.part)) : ''}</option>`).join('')}</select></label>
+        <div class="fhint full">${esc(t('orNew'))}</div>` : ''}
+        <label class="fl full"><span>${esc(t('nameL'))}</span><input class="field" id="new-role-name"></label></div>`,
+        `<button class="pbtn" data-add-role="${role}">${esc(t('save'))}</button>`);
+    }
+    const p = S.editPerson && S.singers.find(x => x.id === S.editPerson);
+    if (p) return shell(t('editMemberT'), `<div class="fgrid">
+        <label class="fl full"><span>${esc(t('nameL'))}</span><input class="field" id="edit-name" value="${esc(p.name)}"></label>
+        <label class="fl"><span>${esc(t('voicePart'))}</span><select class="field" id="edit-part">${p.part ? '' : `<option value="">${esc(t('noVoice'))}</option>`}${
+          PARTS.map(x => `<option value="${x}"${p.part === x ? ' selected' : ''}>${esc(partName(x))}</option>`).join('')}</select></label>
+        <label class="fl"><span>${esc(t('joinedOn'))}</span><input class="field" id="edit-joined" type="date" value="${esc(p.joined_on || '')}"></label>
+        <div class="fhint full">${esc(t('joinedNote'))}</div>
+        <label class="ck"><input type="checkbox" id="edit-is-c"${p.is_conductor ? ' checked' : ''}><span>${esc(t('conductor'))}</span></label>
+        <label class="ck"><input type="checkbox" id="edit-is-p"${p.is_pianist ? ' checked' : ''}><span>${esc(t('pianist'))}</span></label></div>`,
+      `<button class="pbtn" data-save-person="${p.id}">${esc(t('save'))}</button>`);
+  }
+  return '';
 }
 function loginPage(){
   return `<div class="loginwrap"><div class="login">
-    <div class="lhead"><div class="lmark"><svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(0 6.5)"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path></g></svg></div>
-      <div class="lt">${esc(t('signin'))}</div></div>
+    <div class="lhead"><div class="lmark">${AIC.user}</div>
+      <div class="lt">${esc(t('dirSignin'))}</div>
+      <p class="lnote">${esc(t('loginNote'))}</p></div>
     ${S.error ? `<div class="err">${esc(S.error)}</div>` : ''}
     <form id="loginform" method="post" action="#/login" autocomplete="on" style="display:grid;gap:14px">
       <div><label for="em">${esc(t('email'))}</label>
@@ -3176,6 +4100,7 @@ const SHEETKIND = {
   sheets: { col: 'pdf_path',   lock: 'pdf_locked',   bucket: 'sheets', title: 'choirSheets', count: 'withPdf' },
   piano:  { col: 'piano_path', lock: 'piano_locked', bucket: 'piano',  title: 'piano',  count: 'withPiano' }
 };
+const PENSVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 3 5 5-12 12-6 1 1-6z"></path><path d="m14 5 5 5"></path></svg>';
 const TRASHSVG = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>';
 const CHEVSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>';
 const SHEETSVG = '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">' +
@@ -3244,20 +4169,20 @@ function sheetsPage(kind){
   if (ordIds) list = ordIds.map(id => list.find(s => s.id === id)).filter(Boolean);
   const withPdf = S.songs.filter(s => s[K.col]).length;
   /* Narrowed to one service's songs, the header and search/category row are noise. */
-  return tabs + bar + (ordEv ? '' : `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>
+  return (ordEv ? '' : `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>`) + tabs + bar + (ordEv ? '' : `
     <div class="searchrow" style="padding-top:12px;display:flex;gap:8px">${qField('searchPv')}${catSelect()}</div>`) +
     list.map((s, i) => {
       const path = s[K.col], locked = !!s[K.lock];
       const busy = S.uploading === kind + ':' + s.id;
       /* narrowed to one service, the list IS the running order — so number it.
          The full song list has no order to speak of and stays unnumbered. */
-      const left = (ordEv ? `<span class="ord">${i + 1}</span>` : '') + `<div style="flex:1;min-width:0">
+      const left = (ordEv ? `<span class="ord">${String(i + 1).padStart(2, '0')}</span>` : `<span class="ftile">${kind === 'piano' ? AIC.piano : AIC.sheets}</span>`) + `<div style="flex:1;min-width:0">
           <div style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}${pvTag(s)}</div>
           ${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}
           ${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}
           ${locked ? `<div class="sub" style="font-style:normal;color:var(--gold)">${esc(t('adminOnly'))}</div>` : ''}
         </div>`;
-      if (busy) return `<div class="li">${left}<div style="color:var(--blue-text);font-weight:600;font-size:var(--fs-14)">${esc(t('uploading'))}</div></div>`;
+      if (busy) return `<div class="sec songc"><div class="li">${left}<div style="color:var(--blue-text);font-weight:600;font-size:var(--fs-14)">${esc(t('uploading'))}</div></div></div>`;
       /* Files are served through short-lived signed URLs, so an admin-only PDF
          cannot be opened by guessing its address. */
       const dl = !path ? ''
@@ -3294,8 +4219,8 @@ function sheetsPage(kind){
          back to the left edge to open them */
       const row = `<div class="li${S.session ? ' tap' : ''}"${S.session ? ` data-adm-row="${s.id}"` : ''}>${left}<div class="acts">${listen}${dl}${lyr}${more}</div></div>`
         + (S.admRow === s.id ? admin : '');
-      if (S.audioEdit !== s.id) return row;
-      return row + `<div class="li audiorow">
+      if (S.audioEdit !== s.id) return `<div class="sec songc">${row}</div>`;
+      return '<div class="sec songc">' + row + `<div class="li audiorow">
           <input class="field" id="audio-${s.id}" type="url" inputmode="url" spellcheck="false"
                  placeholder="${esc(t('audioHint'))}" value="${esc(S.audioDraft)}">
           <div class="acts">
@@ -3304,7 +4229,7 @@ function sheetsPage(kind){
             <button class="mini" data-audio-cancel>${esc(t('cancel'))}</button>
             <button class="mini go" data-audio-save="${s.id}">${esc(t('save'))}</button>
           </div>
-        </div>`;
+        </div></div>`;
     }).join('') + foot +
     (S.session ? `<div class="note">${esc(t('adminOnlyNote'))}</div>` : '');
 }
@@ -3371,43 +4296,35 @@ function lyricsIndex(){
     ${S.session ? `<div class="chips" style="margin:12px 12px 0">
       <button data-lyr-missing="0" class="${S.lyrMissing?'':'on'}">${esc(t('all'))}</button>
       <button data-lyr-missing="1" class="${S.lyrMissing?'on':''}">${esc(t('needsLyrics'))}</button></div>` : ''}
-    ${list.length ? list.map(s => `<a class="li tap" href="#/lyrics/${shortId(s.id)}">
-      <div style="flex:1;min-width:0">
+    ${list.length ? '<div class="sec">' + list.map(s => `<a class="li tap" href="#/lyrics/${shortId(s.id)}">
+      <span class="ftile">${AIC.lyrics}</span><div style="flex:1;min-width:0">
         <div style="font-size:var(--fs-16);line-height:1.2;color:var(--ink)">${esc(s.title)}${pvTag(s)}</div>
-        ${hasLyrics(s) ? (s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : '')
-          : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noLyricsYet'))}</div>`}
+        ${[s.subtitle, catName(s.category_id)].filter(Boolean).length ? `<div class="sub" style="font-style:normal">${esc([s.subtitle, catName(s.category_id)].filter(Boolean).join(' · '))}</div>` : ''}
       </div>
-      ${hasLyrics(s) ? `<span class="mini">${esc(t('lyrView'))}</span>`
-        : S.session ? `<span class="mini">${esc(t('addLyrics'))}</span>` : ''}
-    </a>`).join('') : `<div class="msg">${esc(t('noSongs'))}</div>`}`;
+      <span class="lyrn${hasLyrics(s) ? '' : ' none'}">${esc(hasLyrics(s) ? t('blocksN')(s.lyrics.length) : t('noLyricsYet'))}</span>${AIC.chev}
+    </a>`).join('') + '</div>' : `<div class="msg">${esc(t('noSongs'))}</div>`}`;
 }
 function lyricsView(song){
   const blocks = Array.isArray(song.lyrics) ? song.lyrics : [];
   const labels = blockLabels(blocks);
   const meta = [song.subtitle || '', catName(song.category_id)].filter(Boolean).join(' · ');
-  /* the toolbar owns the top edge and the № the right, so the card reads across
-     its whole width instead of stacking everything against the left margin */
-  const head = `<div class="sec"><div class="lyrhd">
-      <div class="lyrtop">
-        <a class="lyrback" href="#/lyrics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>${esc(t('lyrAll'))}</a>
-        <div class="acts">
-          ${blocks.length ? `<button class="mini go" data-lyr-copy="${song.id}">${COPYSVG}<span>${esc(t('copyLyrics'))}</span></button>` : ''}
-          ${S.session ? `<button class="mini" data-lyr-edit="${song.id}">${esc(blocks.length ? t('editLyrics') : t('addLyrics'))}</button>` : ''}
-        </div>
+  const head = `<a class="lyrback" href="#/lyrics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>${esc(t('lyrAll'))}</a>
+    <div class="lyrhd2">
+      <div class="lyrwho"><h1 class="tl">${esc(song.title)}</h1>${meta ? `<div class="mt">${esc(meta)}</div>` : ''}</div>
+    </div>
+    <div class="lyrbar">
+      ${song.pv_number ? `<span class="pvchip">№ ${esc(song.pv_number)} · Песнь возрождения</span>` : '<span></span>'}
+      <div class="acts">
+        ${blocks.length ? `<button class="mini go" data-lyr-copy="${song.id}">${COPYSVG}<span>${esc(t('copyLyrics'))}</span></button>` : ''}
+        ${S.session ? `<button class="mini" data-lyr-edit="${song.id}">${esc(blocks.length ? t('editLyrics') : t('addLyrics'))}</button>` : ''}
       </div>
-      <div class="lyrtitle">
-        <div class="lyrwho">
-          <div class="tl">${esc(song.title)}</div>
-          ${meta ? `<div class="mt">${esc(meta)}</div>` : ''}
-        </div>
-        ${song.pv_number ? `<div class="pvbig"><span>№</span>${esc(song.pv_number)}</div>` : ''}
-      </div></div></div>`;
+    </div>`;
   const body = blocks.length
-    ? `<div class="sec">${blocks.map((b, i) => `<div class="lyrblk">
+    ? `<article class="paper">${blocks.map((b, i) => `<section class="lyrblk">
         <div class="bl">${esc(labels[i])}</div>
-        <div class="tx">${esc(b.x)}</div></div>`).join('')}</div>`
-    : `<div class="msg">${esc(t('lyrEmpty'))}</div>`;
-  return `<div class="lyrbg"><div class="lyrpage">${head}${body}</div></div>`;
+        <div class="tx">${esc(b.x)}</div></section>`).join('')}</article>`
+    : `<div class="paper"><p class="msg" style="padding:0">${esc(t('lyrEmpty'))}</p></div>`;
+  return `<div class="lyrpage view">${head}${body}</div>`;
 }
 /* The editor is three cards down one column: which number the song carries in the
    book, its blocks in singing order, and the paste-a-whole-text shortcut. Save and
@@ -3621,8 +4538,9 @@ function render(){
   syncDock();
 
   if (S.loading && !onLogin) { document.getElementById('app').innerHTML = html
-    + `<div class="skel" aria-label="${esc(t('loading'))}">` + '<div class="sk"></div>'.repeat(7) + `</div>`;
+    + `<main class="pg"><div class="skel" aria-label="${esc(t('loading'))}">` + '<div class="sk"></div>'.repeat(7) + `</div></main>`;
     wasLoading = true; return; }
+  html += '<main class="pg">';
 
   if (r.startsWith('#/admin')) {
     if (!S.session) { location.hash = '#/login'; return; }
@@ -3635,12 +4553,12 @@ function render(){
       : section === 'songlist' ? 'list'
       : section === 'entries' ? (id === 'songs' ? 'songs' : 'att')
       : 'members';
-    html += publicNav('admin') + adminTabs(admKey);
+    html += publicNav('admin');
     html += `<div class="body adm">`;
-    if (section === 'attendance') html += ev ? markAttendance(ev) : eventPicker('att');
-    else if (section === 'songs') html += ev ? markSongs(ev) : eventPicker('songs');
+    if (section === 'attendance') html += adminTabs('att') + (ev ? markAttendance(ev) : eventPicker('att'));
+    else if (section === 'songs') html += adminTabs('songs') + (ev ? markSongs(ev) : eventPicker('songs'));
     else if (section === 'songlist') html += manageSongs();
-    else if (section === 'entries') html += allEntries(id === 'songs' ? 'songs' : 'att');
+    else if (section === 'entries') html += adminTabs(admKey) + allEntries(id === 'songs' ? 'songs' : 'att');
     else { S.memTab = ['pianists','conductors'].includes(id) ? id : 'singers'; html += manageMembers(); }
     html += `</div>`;
   }
@@ -3666,12 +4584,12 @@ function render(){
       <a href="#/songs/services" class="${tab==='services'?'on':''}">${esc(t('byService'))}</a>
       <a href="#/songs/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a>
       <a href="#/songs/people" class="${tab==='people'?'on':''}">${esc(t('people'))}</a></div>`;
-    html += publicNav('songs');
+    html += publicNav('songs') + pageHead(t('songs'), t('songsSub'));
     if (tab === 'people') html += songTabs + rangeCtrl('sum') + songsPeople();
     else if (tab === 'summary') html += songTabs + rangeCtrl('sum')
       + `<div class="searchrow" style="display:flex;gap:8px">${qField()}${catSelect()}</div>` + songsSummary();
     else if (tab === 'services') html += songTabs + rangeCtrl('grid') + songsByService();
-    else html += songsGrid(songTabs + rangeCtrl('grid')
+    else html += songTabs + songsGrid(rangeCtrl('grid')
       + `<div class="searchrow" style="display:flex;gap:8px">${qField()}${catSelect()}</div>`);
   }
   else {
@@ -3679,16 +4597,17 @@ function render(){
     const attTabs = `<div class="tabs">
       <a href="#/attendance/grid" class="${tab==='grid'?'on':''}">${esc(t('grid'))}</a>
       <a href="#/attendance/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
-    html += publicNav('att');
+    html += publicNav('att') + pageHead(t('attendance'), t('attSub'));
     if (tab === 'summary') html += attTabs + rangeCtrl('sum', true) + attendanceSummary();
-    else html += attendanceGrid(attTabs + rangeCtrl('grid', true));
+    else html += attTabs + attendanceGrid(rangeCtrl('grid', true));
   }
+  html += '</main>';
   const keep = {};
-  ['edit-name','edit-joined','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name','edit-song-pv','em','pw'].forEach(id => {
+  ['tsearch','edit-name','edit-joined','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name','edit-song-pv','em','pw'].forEach(id => {
     const n = document.getElementById(id);
     if (n) keep[id] = { v: n.value, f: n === document.activeElement, p: n.selectionStart };
   });
-  document.getElementById('app').innerHTML = html + toastHTML();
+  document.getElementById('app').innerHTML = html + adminModal() + toastHTML();
   Object.entries(keep).forEach(([id, k]) => {
     const n = document.getElementById(id);
     if (n) { n.value = k.v; if (k.f) { n.focus(); try { n.setSelectionRange(k.p, k.p); } catch (err) {} } }
@@ -3735,6 +4654,7 @@ function fitGrid(){
     if (getComputedStyle(n).position === 'fixed') continue;
     below += n.getBoundingClientRect().height;
   }
+  below += parseFloat(getComputedStyle(sc).marginBottom) || 0;   // the card's own gap to the bottom edge
   sc.style.setProperty('--vw', sc.clientWidth + 'px');
   /* Measure from the top of the PAGE, not the top of the screen: using the on-screen
      position meant a page that had already scrolled produced a taller grid, which made
@@ -3876,6 +4796,10 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('change', e => {
+  if (e.target && e.target.id === 'draft-kind') {
+    const dEl = document.getElementById('draft-date'); if (dEl) S.draft.date = dEl.value;
+    S.draft.kind = e.target.value; return render();
+  }
   if (e.target && e.target.hasAttribute && e.target.hasAttribute('data-move-date') && S.edit) {
     if (e.target.value) { S.edit.newDate = e.target.value; render(); }
   }
@@ -3896,7 +4820,7 @@ document.addEventListener('click', e => {
   if (a && a.dataset.song) track('audio', a.dataset.song);
 }, true);
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -3949,6 +4873,7 @@ document.addEventListener('click', async e => {
     return;
   }
 
+  if (el.hasAttribute('data-modal-x')) { S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
   if (d.toggleAbsent && S.edit) {              // present ↔ absent
     S.toast = ''; S.retry = null;
     S.edit.sel.has(d.toggleAbsent) ? S.edit.sel.delete(d.toggleAbsent)
@@ -4278,7 +5203,7 @@ document.addEventListener('click', async e => {
     const pv_number = pvDigits ? +pvDigits : null;
     const { data, error } = await sb.from('songs').insert({ title, subtitle, category_id, pv_number }).select().single();
     if (error) return fail(error);
-    S.songs.push(data); S.songs.sort((a,b) => a.title.localeCompare(b.title)); return render();
+    S.songs.push(data); S.songs.sort((a,b) => a.title.localeCompare(b.title)); S.addOpen = null; return render();
   }
   if (d.editSong) { S.editSongRow = S.editSongRow === d.editSong ? null : d.editSong; return render(); }
   if (d.delSong) {
@@ -4299,7 +5224,7 @@ document.addEventListener('click', async e => {
     const { data, error } = await sb.from('singers')
       .insert({ name, part: null, [d.addRole]: true }).select().single();
     if (error) return fail(error);
-    S.singers.push(data); return render();
+    S.singers.push(data); S.addOpen = null; return render();
   }
   if (el.hasAttribute('data-add-singer')) {
     const name = document.getElementById('new-singer-name').value.trim();
@@ -4308,7 +5233,7 @@ document.addEventListener('click', async e => {
     const part = document.getElementById('new-singer-part').value;
     const { data, error } = await sb.from('singers').insert({ name, part }).select().single();
     if (error) return fail(error);
-    S.singers.push(data); return render();
+    S.singers.push(data); S.addOpen = null; return render();
   }
   if (d.editSinger) {
     S.editPerson = S.editPerson === d.editSinger ? null : d.editSinger;
@@ -4351,10 +5276,13 @@ document.addEventListener('click', async e => {
     const jd = document.getElementById('edit-joined');   // absent on the role tabs
     const patch = { name: clean };
     if (jd) patch.joined_on = jd.value || null;
+    const pe = document.getElementById('edit-part'), ce = document.getElementById('edit-is-c'), pc = document.getElementById('edit-is-p');
+    if (pe && pe.value) patch.part = pe.value;            // a voice part can change, but not be cleared here — singers keep their history
+    if (ce) patch.is_conductor = ce.checked;
+    if (pc) patch.is_pianist = pc.checked;
     const res = await sb.from('singers').update(patch).eq('id', s.id).select();
     if (!wrote(res)) return render();
-    s.name = clean;
-    if (jd) s.joined_on = patch.joined_on;
+    Object.assign(s, patch);
     S.editPerson = null; return render();
   }
   if (el.hasAttribute('data-cancel-person')) { S.editPerson = null; return render(); }
@@ -4441,7 +5369,7 @@ document.addEventListener('click', async e => {
     const { data, error } = await sb.from('song_categories').insert({ name }).select().single();
     if (error) return fail(error);
     if (inp) inp.value = '';
-    S.categories.push(data);
+    S.categories.push(data); S.addOpen = null;
     S.categories.sort((a,b) => a.name.localeCompare(b.name, 'ru'));
     return render();
   }
@@ -4502,6 +5430,7 @@ document.addEventListener('change', async e => {
   if (el.dataset.markRole) {                    // give an existing person the role
     const role = el.dataset.markRole, id = el.value;
     if (!id) return;
+    S.addOpen = null;
     if (!await ensureSession()) return;
     const res = await sb.from('singers').update({ [role]: true }).eq('id', id).select();
     if (!wrote(res)) return render();
@@ -4548,6 +5477,7 @@ document.addEventListener('input', e => {
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && S.menuOpen) dismissMenu();
+  if (e.key === 'Escape' && (S.addOpen || S.editSongRow || S.editPerson || S.editCat) && document.querySelector('.modal')) { S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; render(); }
 });
 window.addEventListener('hashchange', () => {
   requestAnimationFrame(() => {          // after the route handler paints the new page
@@ -4578,7 +5508,76 @@ window.addEventListener('hashchange', () => {
         {duration:340,delay:60 + i * 45,easing:'cubic-bezier(.2,.7,.3,1)',fill:'backwards'}));
   });
 });
+
+/* ---------- top-bar song search ----------
+   Lives outside render(): typing only redraws the suggestion list, so the field
+   keeps its focus and caret. A pick opens the words if there are any, otherwise
+   the song's row in Choir music. */
+let tsSel = 0;
+function tsList(q){
+  q = (q || '').trim();
+  if (!q) return [];
+  const ql = q.toLowerCase();
+  return S.songs.filter(s => s.active !== false && songMatch(s, q))
+    .sort((a, b) => (a.title.toLowerCase().startsWith(ql) ? 0 : 1) - (b.title.toLowerCase().startsWith(ql) ? 0 : 1)
+      || a.title.localeCompare(b.title, 'ru'))
+    .slice(0, 8);
+}
+function tsDraw(){
+  const inp = document.getElementById('tsearch'), box = document.querySelector('.tsugg');
+  if (!inp || !box) return;
+  const q = inp.value, list = tsList(q);
+  if (!q.trim()) { box.hidden = true; box.innerHTML = ''; inp.setAttribute('aria-expanded', 'false'); return; }
+  tsSel = Math.min(tsSel, Math.max(0, list.length - 1));
+  box.innerHTML = list.length ? list.map((s, i) => `<a href="#" role="option" data-ts="${s.id}" class="${i === tsSel ? 'on' : ''}" aria-selected="${i === tsSel}">
+      <span class="tsi">${hasLyrics(s) ? AIC.lyrics : AIC.sheets}</span>
+      <span class="grow2"><span class="tst">${esc(s.title)}${pvTag(s)}</span>${catName(s.category_id) ? `<span class="tsm">${esc(catName(s.category_id))}</span>` : ''}</span>
+      <em>${esc(hasLyrics(s) ? t('lyrView') : t('tSheets'))}</em></a>`).join('')
+    : `<div class="tsnone">${esc(t('noSongs'))}</div>`;
+  box.hidden = false;
+  inp.setAttribute('aria-expanded', 'true');
+}
+function tsGo(id){
+  const s = S.songs.find(x => x.id === id);
+  if (!s) return;
+  const inp = document.getElementById('tsearch');
+  if (inp) { inp.value = ''; inp.blur(); }
+  if (hasLyrics(s)) { location.hash = '#/lyrics/' + shortId(s.id); return; }
+  S.query = s.title; S.catFilter = 'all';
+  if (location.hash === '#/sheets') render(); else location.hash = '#/sheets';
+}
+document.addEventListener('input', e => { if (e.target.id === 'tsearch') { tsSel = 0; tsDraw(); } });
+document.addEventListener('focusin', e => { if (e.target.id === 'tsearch') tsDraw(); });
+document.addEventListener('focusout', e => {
+  if (e.target.id !== 'tsearch') return;
+  setTimeout(() => { const b = document.querySelector('.tsugg'); if (b && document.activeElement !== e.target) b.hidden = true; }, 120);
+});
+document.addEventListener('mousedown', e => {
+  const a = e.target.closest && e.target.closest('[data-ts]');
+  if (a) { e.preventDefault(); tsGo(a.dataset.ts); }
+});
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('[data-ts]');
+  if (a) { e.preventDefault(); e.stopPropagation(); }
+}, true);
+document.addEventListener('keydown', e => {
+  if (e.target.id !== 'tsearch') return;
+  const list = tsList(e.target.value);
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (!list.length) return;
+    tsSel = (tsSel + (e.key === 'ArrowDown' ? 1 : -1) + list.length) % list.length;
+    tsDraw();
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (list[tsSel]) tsGo(list[tsSel].id);
+  } else if (e.key === 'Escape') {
+    e.target.value = ''; tsDraw(); e.target.blur();
+  }
+});
 window.addEventListener('hashchange', () => {
+  S.reviewKey = null;
+  S.ripple = true;
   S.route = normRoute(location.hash);
   prefetchSheets();
   trackRoute();
