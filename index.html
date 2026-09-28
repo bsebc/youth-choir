@@ -38,6 +38,7 @@
     /* -- brand navy (one true navy + derived) -- */
     --blue:#24346c; --blue-text:#24346c; --blue-hover:#33488f; --blue-hi:#3b4f9e; --blue-rgb:36,52,108;
     --blue-wash:#f2f4fb; --blue-tint:#e7ebf5; --blue-line:#c6cde6;
+    --tool1-bg:#e7ebf5; --tool1-ic:#24346c; --tool2-bg:#eaf4ec; --tool2-ic:#3f7d4e; --tool3-bg:#fbf3dc; --tool3-ic:#9a7614; --tool4-bg:#e6f2f4; --tool4-ic:#1f6b78; --tool5-bg:#f0ecf8; --tool5-ic:#5e4a9a; --tool6-bg:#f7e5e1; --tool6-ic:#b3372f;
     /* -- chrome: the dark navy bars, constant across modes -- */
     --chrome:#17203a; --chrome-rgb:23,32,58; --chrome-hi:#2a3140; --navy-deep:#26325e;
     --chrome-line:#3a4463; --chrome-line-2:#525d7d; --chrome-faint:#6b7590;
@@ -89,7 +90,7 @@
     --ic-bg:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.06)); --ic-line:rgba(255,255,255,.20); --ic-inset:rgba(255,255,255,.12); --tile-line:#8a94b8;
     --rule:#4a5473; --line-strong:#6f7ba6; --line-strong-2:#8a94b8; --card-line:#6f7ba6; --grid-line:#6f7ba6;
     --blue:#5c72b8; --blue-text:#b0bfe8; --blue-hover:#6c81c4; --blue-hi:#6c81c4; --blue-rgb:176,191,232;
-    --blue-wash:#252c47; --blue-tint:#2c3556; --blue-line:#4a5680;
+    --blue-wash:#252c47; --blue-tint:#2c3556; --blue-line:#4a5680; --tool1-bg:#2d2d56; --tool1-ic:#aaa4ff; --tool2-bg:#1f3a3d; --tool2-ic:#73d0ba; --tool3-bg:#3a3022; --tool3-ic:#ebc47d; --tool4-bg:#1e3346; --tool4-ic:#7cc4ee; --tool5-bg:#2c3142; --tool5-ic:#c2c9de; --tool6-bg:#3d2432; --tool6-ic:#fa97ad;
     --gold:#dcbb5c; --gold-hover:#e4c56d; --gold-text:#e5cb7d;
     --gold-soft:#8a7320; --gold-soft-2:#6e5c1f; --gold-bright:#4a3f14;
     --gold-wash:#332c1a; --gold-paper:#2d2718;
@@ -108,7 +109,7 @@
     --ic-bg:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.06)); --ic-line:rgba(255,255,255,.20); --ic-inset:rgba(255,255,255,.12); --tile-line:#8a94b8;
     --rule:#4a5473; --line-strong:#6f7ba6; --line-strong-2:#8a94b8; --card-line:#6f7ba6; --grid-line:#6f7ba6;
     --blue:#5c72b8; --blue-text:#b0bfe8; --blue-hover:#6c81c4; --blue-hi:#6c81c4; --blue-rgb:176,191,232;
-    --blue-wash:#252c47; --blue-tint:#2c3556; --blue-line:#4a5680;
+    --blue-wash:#252c47; --blue-tint:#2c3556; --blue-line:#4a5680; --tool1-bg:#2d2d56; --tool1-ic:#aaa4ff; --tool2-bg:#1f3a3d; --tool2-ic:#73d0ba; --tool3-bg:#3a3022; --tool3-ic:#ebc47d; --tool4-bg:#1e3346; --tool4-ic:#7cc4ee; --tool5-bg:#2c3142; --tool5-ic:#c2c9de; --tool6-bg:#3d2432; --tool6-ic:#fa97ad;
     --gold:#dcbb5c; --gold-hover:#e4c56d; --gold-text:#e5cb7d;
     --gold-soft:#8a7320; --gold-soft-2:#6e5c1f; --gold-bright:#4a3f14;
     --gold-wash:#332c1a; --gold-paper:#2d2718;
@@ -784,8 +785,8 @@
   .searchrow .field{border-radius:var(--r-pill);padding-left:15px}
   .qwrap .field{border-radius:var(--r-pill);padding-left:34px}
   /* search and the category filter sit shallower than a form field */
-  .searchrow .field,.qwrap .field,[data-cat-filter]{padding-top:7px;padding-bottom:7px}
-  @media (max-width:699px){ .searchrow .field,.qwrap .field,[data-cat-filter]{padding-top:6px;padding-bottom:6px} }
+  .searchrow .field,.qwrap .field,[data-cat-filter],[data-song-sort-pick],[data-list-sort]{padding-top:7px;padding-bottom:7px}
+  @media (max-width:699px){ .searchrow .field,.qwrap .field,[data-cat-filter],[data-song-sort-pick],[data-list-sort]{padding-top:6px;padding-bottom:6px} }
   textarea.field,.docedit{border-radius:var(--r-xl)}
   /* segmented controls: grey track, floating white thumb (iOS) */
   .seg{border:0;background:var(--ios-track);padding:3px;border-radius:var(--r-pill);gap:0}
@@ -951,10 +952,10 @@
   }
   
   .dates input{padding-top:6px;padding-bottom:6px}
-  [data-cat-filter]{font-size:var(--fs-14)}
+  [data-cat-filter],[data-song-sort-pick],[data-list-sort]{font-size:var(--fs-14)}
   @media (max-width:699px){
     .dpick span{padding:5px 10px;font-size:var(--fs-12-5)}
-    [data-cat-filter]{font-size:var(--fs-13)}
+    [data-cat-filter],[data-song-sort-pick],[data-list-sort]{font-size:var(--fs-13)}
   }
   /* dark-mode legibility: seams and boundaries that must survive scrolling.
      Light values resolve to the same colors as before. */
@@ -1098,7 +1099,9 @@
   }
   .crumbs{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);white-space:nowrap;min-width:0}
   .crumbs .ai{width:14px;height:14px;color:var(--faint)}
-  .crumbs strong{color:var(--ink);font-weight:600}
+  .crumbs strong{color:var(--ink);font-weight:600;overflow:hidden;text-overflow:ellipsis}
+  .crumbs .cback{color:var(--muted);text-decoration:none;padding:4px 8px;margin:-4px -8px;border-radius:8px;transition:color .15s ease,background-color .15s ease}
+  .crumbs .cback:hover{color:var(--ink);background:var(--paper-2)}
   .tacts{margin-left:auto;display:flex;align-items:center;gap:12px}
   .findsong{display:flex;align-items:center;gap:9px;height:38px;padding:0 14px 0 12px;min-width:210px;border-radius:10px;
     background:var(--surface-2);border:1px solid var(--rule);color:var(--muted);font-size:13px;transition:border-color .15s ease,color .15s ease}
@@ -1358,6 +1361,11 @@
   .akey span + span i{background:var(--line-strong-2)}
   .akey b{color:var(--ink);font-weight:600}
   .parts{border-top:1px solid var(--rule);padding-top:17px;margin-top:auto;display:flex;flex-direction:column;gap:14px}
+  /* the ring sits in the middle of whatever height the card is stretched to */
+  .datt .donut{margin-top:auto}
+  .datt .pcap{margin-bottom:24px}      /* auto margins collapse to 0 when the card isn't stretched (phones) */
+  .datt .akey{margin-bottom:auto}
+  .datt .parts{margin-top:20px}
   .prow{display:grid;grid-template-columns:82px 1fr 40px;align-items:center;gap:12px;font-size:12.5px}
   .prow > span{display:flex;align-items:center;gap:7px;color:var(--muted)}
   .prow i{width:7px;height:7px;border-radius:50%;background:var(--pc)}
@@ -1367,7 +1375,7 @@
   .prow.soprano{--pc:var(--violet)} .prow.alto{--pc:var(--teal)} .prow.tenor{--pc:var(--rose)} .prow.bass{--pc:var(--amber)}
   .dbottom{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:20px}
   .dbottom .phd{margin-bottom:16px}
-  .reslist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;flex:1}
+  .reslist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:1fr;gap:12px;flex:1}
   .reslist .res{display:flex;flex-direction:column;justify-content:flex-end}
   .reslist .res .rico{margin-bottom:auto}
   .reslist .res strong{margin-top:14px}
@@ -1380,6 +1388,14 @@
   .rico .ai{width:18px;height:18px}
   .r2 .rico{background:var(--teal-tint);color:var(--teal)} .r3 .rico{background:var(--violet-wash);color:var(--violet)}
   .r4 .rico{background:var(--amber-wash);color:var(--gold-text)} .r5 .rico{background:var(--rose-wash);color:var(--rose)}
+  .r6 .rico{background:var(--red-wash);color:var(--red)}
+  /* tile icons: one fixed colour per slot in every theme, so no two tiles can collide */
+  .reslist .r1 .rico{background:var(--tool1-bg);color:var(--tool1-ic)}
+  .reslist .r2 .rico{background:var(--tool2-bg);color:var(--tool2-ic)}
+  .reslist .r3 .rico{background:var(--tool3-bg);color:var(--tool3-ic)}
+  .reslist .r4 .rico{background:var(--tool4-bg);color:var(--tool4-ic)}
+  .reslist .r5 .rico{background:var(--tool5-bg);color:var(--tool5-ic)}
+  .reslist .r6 .rico{background:var(--tool6-bg);color:var(--tool6-ic)}
   .res strong{display:block;font-size:13.5px;font-weight:600;line-height:1.3}
   .res small{display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.35}
   .recent{display:flex;flex-direction:column;margin-top:-6px}
@@ -1387,12 +1403,48 @@
   .rsvc:last-child{border-bottom:0;padding-bottom:0}
   .rsvc strong{display:block;font-size:14px;font-weight:600;transition:color .15s ease}
   /* a little tear-off calendar: coloured month band over the day */
-  .rsvc .mdate{position:relative;width:42px;height:46px;flex:none;display:flex;flex-direction:column;overflow:hidden;background:var(--card);
+  .rsvc .mdate,.upc .mdate{position:relative;width:42px;height:46px;flex:none;display:flex;flex-direction:column;overflow:hidden;background:var(--card);
     border:1px solid var(--card-line);border-radius:9px;line-height:1;box-shadow:0 1px 0 var(--card-line),0 3px 8px -5px rgba(var(--shadow-rgb),.35)}
-  .rsvc .mdate span{flex:none;display:block;padding:4px 0 3px;text-align:center;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  .rsvc .mdate span,.upc .mdate span{flex:none;display:block;padding:4px 0 3px;text-align:center;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
     background:#d4372c;color:#fff}
-  .rsvc .mdate strong{flex:1;display:grid;place-items:center;font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .rsvc .mdate strong,.upc .mdate strong{flex:1;display:grid;place-items:center;font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--ink);font-variant-numeric:tabular-nums}
   .rsvc small{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+  @media (max-width:999px){ .recent .rsvc:nth-child(n+4){display:none} .recent .rsvc:nth-child(3){border-bottom:0;padding-bottom:0} }   /* four fit beside the tools on desktop */
+  /* upcoming board */
+  .upboard{display:flex;flex-direction:column;gap:12px;margin:22px 0 16px}
+  .uphd{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:0 2px}
+  .uphd h2{margin:0;font-size:17px;font-weight:650;letter-spacing:-.01em}
+  .uphd span{font-size:12.5px;color:var(--muted)}
+  .upnone{margin:0;padding:18px;border:1px dashed var(--card-line);border-radius:16px;text-align:center;font-size:13.5px;color:var(--muted);text-wrap:pretty}
+  .upgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));grid-auto-rows:1fr;gap:14px;align-items:stretch}
+  .upc{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--card-line);border-radius:18px;box-shadow:var(--shadow-card);overflow:hidden}
+  .upc.live{border-color:var(--blue-line);box-shadow:0 0 0 3px var(--blue-wash),var(--shadow-card)}
+  .upc.demo{border-style:dashed}
+  .upch{display:flex;align-items:center;gap:12px;padding:14px 16px}
+  .upc.live .upch{background:linear-gradient(180deg,var(--blue-wash),transparent)}
+  .upch .grow2{flex:1;min-width:0}
+  .upch .upst{display:inline-block;font-size:11px;font-weight:650;line-height:1;padding:5px 9px;border-radius:999px;background:var(--paper-2);color:var(--text-2);margin-bottom:6px;white-space:nowrap}
+  .upc.live .upst{background:var(--blue);color:#fff}
+  .upch strong{display:block;font-size:16px;font-weight:650;line-height:1.25;text-wrap:balance}
+  .upch small{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+  .upcl{list-style:none;margin:0;padding:0 16px 6px;display:flex;flex-direction:column;counter-reset:none}
+  .upcl li{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-top:1px solid var(--rule)}
+  .upcl .unum{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--ink);color:var(--card);font-size:12.5px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+  .upc.live .upcl .unum{background:var(--blue);color:#fff}
+  .upcl .ub{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;padding-top:4px}
+  .upcl .tl{font-size:14.5px;font-weight:600;line-height:1.3;text-wrap:pretty;overflow-wrap:anywhere}
+  .upcl .ucr{display:flex;flex-wrap:wrap;gap:4px}
+  .upcl .ucr .who{margin:0 !important}
+  .upca{display:flex;align-items:center;gap:8px;margin-top:auto;padding:10px 12px;border-top:1px solid var(--rule);background:var(--surface-2)}
+  .upca .danger{margin-right:auto}
+  .upmv{position:relative;cursor:pointer}
+  .upmv input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;-webkit-appearance:none;appearance:none}
+  .upmore{align-self:center;font-size:12.5px;font-weight:600}
+  .uphr{display:flex;align-items:baseline;gap:12px}
+  .upsample{background:none;border:0;padding:0;font:inherit;font-size:12.5px;font-weight:600;color:var(--blue-text);cursor:pointer}
+  .updemo{margin:0;padding:9px 14px;border-radius:12px;background:var(--blue-wash);color:var(--ink);font-size:12.5px;text-align:center}
+  .upc.demo{border-style:dashed}
+  @media (max-width:699px){ .upgrid{grid-auto-rows:auto} .upch{padding:12px 14px} .upcl{padding:0 14px 4px} }
   .rsvc > .ai{width:16px;height:16px;color:var(--faint)}
   .dadmin{display:flex;align-items:center;gap:14px;margin-top:20px;background:var(--card);border:1px solid var(--card-line);border-radius:16px;
     padding:14px 18px;box-shadow:var(--shadow-card);color:var(--ink)}
@@ -1495,7 +1547,7 @@
   .login input{border-radius:11px;background:var(--surface);border:1px solid var(--line-strong);padding:12px 14px}
   .login .btn{background:linear-gradient(165deg,var(--blue-hi),var(--blue));border-radius:11px;box-shadow:0 12px 26px -12px rgba(var(--blue-rgb),.75)}
   .qwrap .field{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23939bb2' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='m16 16 5 5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:13px center;padding-left:38px;background-color:var(--card);border-color:var(--card-line);box-shadow:var(--shadow-card)}
-  [data-cat-filter]{background-color:var(--card);border-color:var(--card-line);box-shadow:var(--shadow-card)}
+  [data-cat-filter],[data-song-sort-pick],[data-list-sort]{background-color:var(--card);border-color:var(--card-line);box-shadow:var(--shadow-card)}
 
   .findsong{position:relative;cursor:text;width:280px;min-width:0}
   .findsong input{flex:1;min-width:0;border:0;background:transparent;outline:0;padding:0;font-size:13px;color:var(--ink);-webkit-appearance:none;appearance:none}
@@ -1512,6 +1564,144 @@
   .tsm{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
   .tsugg em{flex:none;font-style:normal;font-size:11.5px;font-weight:600;color:var(--blue-text)}
   .tsnone{padding:14px 12px;font-size:13px;color:var(--muted)}
+  /* a song opened from search or View Music stays lit until the reader scrolls on */
+  .songc{transition:box-shadow .45s ease}
+  .songc .li{transition:background-color .45s ease}
+  .songc.hi{box-shadow:0 0 0 2px var(--gold),0 8px 20px -10px var(--gold)}
+  .songc.hi .li{background:var(--gold-wash);border-radius:inherit}
+  /* ---- member report card ---- */
+  /* everything grows in each time the report is drawn */
+  .mpage.rip .donut{animation:donutfill 1.3s cubic-bezier(.3,.7,.2,1) .15s both}
+  .mpage.rip .msplit .pbar b{transform-origin:left;animation:mgrowx .9s cubic-bezier(.3,.7,.2,1) .35s both}
+  .mpage.rip .mtrack b{transform-origin:bottom;animation:mgrowy .9s cubic-bezier(.3,.7,.2,1) both}
+  .mpage.rip .mcol:nth-child(1) b{animation-delay:.25s} .mpage.rip .mcol:nth-child(2) b{animation-delay:.3s}
+  .mpage.rip .mcol:nth-child(3) b{animation-delay:.35s} .mpage.rip .mcol:nth-child(4) b{animation-delay:.4s}
+  .mpage.rip .mcol:nth-child(5) b{animation-delay:.45s} .mpage.rip .mcol:nth-child(6) b{animation-delay:.5s}
+  .mpage.rip .mcol:nth-child(7) b{animation-delay:.55s} .mpage.rip .mcol:nth-child(8) b{animation-delay:.6s}
+  .mpage.rip .mcol:nth-child(9) b{animation-delay:.65s} .mpage.rip .mcol:nth-child(10) b{animation-delay:.7s}
+  .mpage.rip .mcol:nth-child(11) b{animation-delay:.75s} .mpage.rip .mcol:nth-child(n+12) b{animation-delay:.8s}
+  .mpage.rip .mtrack i{animation:mfade .5s ease 1s both}
+  .mpage.rip .mdots span{animation:mpop .45s cubic-bezier(.3,.7,.2,1.2) both;animation-delay:calc(.3s + var(--i,0) * 25ms)}
+  @keyframes mgrowx{from{transform:scaleX(0)}}
+  @keyframes mgrowy{from{transform:scaleY(0)}}
+  @keyframes mfade{from{opacity:0}}
+  @keyframes mpop{from{opacity:0;transform:scale(.85)}}
+  @media (prefers-reduced-motion:reduce){ .mpage.rip *{animation:none !important} }
+  .mpage{display:flex;flex-direction:column;gap:16px;margin:14px 0 8px}
+  .mpage .ctlbar{padding:0}
+  .mback{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;margin-bottom:-4px;padding:6px 12px 6px 6px;border-radius:999px;font-size:13px;font-weight:600;color:var(--text-2);text-decoration:none;transition:background-color .15s ease,color .15s ease}
+  .mback span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--card);border:1px solid var(--card-line);box-shadow:var(--shadow-card)}
+  .mback .ai{width:15px;height:15px}
+  .mback:hover{color:var(--ink);background:var(--paper-2)}
+  .mav{box-shadow:0 0 0 3px var(--card),0 0 0 5.5px var(--tone,var(--blue))}
+  .mverdict{display:inline-flex;align-items:baseline;gap:6px;margin-top:10px;padding:5px 11px 5px 9px;border-radius:999px;font-size:12px}
+  .mverdict b{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+  .mverdict.up{background:var(--green-wash);color:var(--green-text)} .mverdict.dn{background:var(--amber-wash);color:var(--gold-text)}
+  .mring .donut{margin-bottom:10px}
+  .mring .mavg{fill:var(--card);stroke:var(--ink);stroke-width:3}
+  .mpage.rip .mring .mavg{animation:mfade .4s ease 1.3s both}
+  .mavgcap{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;color:var(--muted);margin-bottom:16px}
+  .mavgcap i{width:10px;height:10px;border-radius:50%;background:var(--card);border:2.5px solid var(--ink)}
+  .mavgcap b{color:var(--ink);font-weight:600}
+  .mstat.g{background:var(--green-wash);border-color:transparent} .mstat.r{background:var(--red-wash);border-color:transparent}
+  .mstat.b{background:var(--blue-wash);border-color:transparent} .mstat.y{background:var(--amber-wash);border-color:transparent}
+  .mstat span{color:var(--text-2)}
+  .mtrack{background-color:var(--paper-2);background-image:linear-gradient(to top,transparent calc(25% - .5px),var(--card-line) calc(25% - .5px),var(--card-line) calc(25% + .5px),transparent calc(25% + .5px),transparent calc(50% - .5px),var(--card-line) calc(50% - .5px),var(--card-line) calc(50% + .5px),transparent calc(50% + .5px),transparent calc(75% - .5px),var(--card-line) calc(75% - .5px),var(--card-line) calc(75% + .5px),transparent calc(75% + .5px))}
+  .mchart{align-items:start}
+  .mcol em{color:var(--text-2)}
+  .mpage .mpill .rpill,.mpage .mpill .rpill.open{width:100%;border-radius:var(--r-card,18px)}
+  .mpage .mpill .rhead{min-height:48px}
+  .mhead{flex-direction:row;align-items:center;gap:22px}
+  .mhead .mav{margin-left:4px}
+  .mav{width:56px;height:56px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;font-size:19px;font-weight:650;letter-spacing:.02em}
+  .mhead h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.4px;line-height:1.2;text-wrap:balance}
+  .mmeta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:6px;font-size:12.5px;color:var(--muted)}
+  .mpart{font-size:11px;font-weight:650;padding:4px 9px;border-radius:999px;background:var(--paper-2);color:var(--text-2)}
+  .mpart.soprano{background:var(--violet-wash);color:var(--violet)} .mpart.alto{background:var(--blue-wash);color:var(--blue-text)}
+  .mpart.tenor{background:var(--green-wash);color:var(--green-text)} .mpart.bass{background:var(--amber-wash);color:var(--gold-text)}
+  .mhead .mini{flex:none;gap:6px}
+  .mtop{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+  .mbot{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:start}
+  .mring .donut{margin:10px auto 18px}
+  .mring .donut span{font-size:12.5px}
+  .msplit{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--rule);padding-top:16px;margin-top:auto}
+  .msplit > div{display:grid;grid-template-columns:92px 1fr 40px;align-items:center;gap:12px;font-size:12.5px;color:var(--muted)}
+  .msplit strong{text-align:right;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  .mstats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:16px}
+  .mstat{display:flex;flex-direction:column;justify-content:space-between;gap:4px;padding:16px;border-radius:14px;background:var(--surface-2);border:1px solid var(--rule);min-height:112px}
+  .mstat span{font-size:12.5px;font-weight:600;color:var(--muted)}
+  .mstat strong{font-size:34px;font-weight:700;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums}
+  .mstat small{font-size:11.5px;color:var(--faint)}
+  .mstat.g strong{color:var(--green)} .mstat.r strong{color:var(--red)} .mstat.b strong{color:var(--blue-text)} .mstat.y strong{color:var(--gold-text)}
+  .mlegend,.mlegend2{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted)}
+  .mlegend i{width:14px;height:0;border-top:2px dashed var(--ink);opacity:.55}
+  .mlegend2 i{width:10px;height:10px;border-radius:3px;margin-left:6px} .mlegend2 i.p{background:var(--green)} .mlegend2 i.a{background:var(--red)}
+  .mchart{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:6px;align-items:end;overflow-x:auto;padding-top:6px}
+  .mcol{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:26px}
+  .mtrack{position:relative;width:100%;max-width:34px;height:150px;border-radius:8px;background:var(--paper-2);display:flex;align-items:flex-end;overflow:hidden}
+  .mtrack b{display:block;width:100%;border-radius:8px 8px 4px 4px}
+  .mtrack i{position:absolute;left:-2px;right:-2px;height:0;border-top:2px dashed var(--ink);opacity:.5}
+  .mcol em{font-style:normal;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
+  .mcol span{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+  .mcol small{display:block;height:11px;line-height:11px;font-size:9.5px;color:var(--faint);margin-top:-4px;font-variant-numeric:tabular-nums}
+  .mchart{overflow:visible}
+  .mdots{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:8px}
+  .mdots span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:48px;border-radius:12px;font-variant-numeric:tabular-nums}
+  .mdots span.p{background:var(--green-wash);color:var(--green-text)} .mdots span.a{background:var(--red-wash);color:var(--red)}
+  .mdots span{height:58px}
+  .mdots i{font-style:normal;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;line-height:1;opacity:.85}
+  .mdots b{font-size:15px;font-weight:700;line-height:1} .mdots em{font-style:normal;font-size:10px;font-weight:600;opacity:.8}
+  .mmiss .rsvc{padding:10px 0}
+  .mbot{align-items:stretch}
+  @media (min-width:900px){ .mbot > .dpanel{min-height:460px} }
+  .mbot > .dpanel:last-child .mmiss:not(.all){flex:1 1 0;min-height:0;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 36px),transparent)}
+  .mmiss.nofade{-webkit-mask-image:none !important;mask-image:none !important}
+  .mmore{align-self:center;margin-top:10px;background:none;border:0;padding:6px 10px;font:inherit;font-size:12.5px;font-weight:600;color:var(--blue-text);cursor:pointer}
+  @media (max-width:899px){ .mbot > .dpanel:last-child .mmiss:not(.all){flex:none;max-height:420px} }
+  a.ibtn{display:inline-grid;place-items:center;color:inherit;text-decoration:none}
+  .mrow .ibtn .ai{width:17px;height:17px}
+  @media (max-width:699px){
+    .mrow{gap:8px}
+    .mrow .ibtn{width:34px;height:34px;min-width:34px;margin:0}
+    .mrow .ibtn + .ibtn{margin-left:-4px}
+    .mrow .ibtn .ai{width:16px;height:16px}
+  }
+  .mname{color:inherit} .mname:hover{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px}
+  @media (max-width:899px){ .mtop,.mbot{grid-template-columns:minmax(0,1fr)} }
+  @media (max-width:699px){
+    .mhead{flex-direction:column;align-items:center;text-align:center;gap:14px;padding:22px 18px 18px}
+    .mhead .mav{margin-left:0}
+    .mhead .grow2{flex:none;width:100%}
+    .mhead .mmeta{justify-content:center}
+    .mhead .mini{margin:4px 0 0}
+    .mav{width:60px;height:60px;font-size:20px} .mhead h1{font-size:21px}
+    .mstat{min-height:96px;padding:13px} .mstat strong{font-size:28px}
+    .mtrack{height:120px}
+  }
+  /* phone search: a field that grows out of the search button across the bar */
+  .mast{position:relative}
+  .mast > .lang{margin-left:auto}
+  .mast .themebtn{width:32px;height:32px;border-radius:50%}
+  .mast .themebtn .ai,.mast .themebtn svg{width:15px;height:15px}
+  .msrch{position:absolute;left:0;right:0;bottom:0;height:58px;display:flex;align-items:center;gap:12px;
+    padding:0 calc(var(--gut) + env(safe-area-inset-right)) 0 calc(var(--gut) + env(safe-area-inset-left));background:var(--chrome);
+    opacity:0;pointer-events:none;transition:opacity .2s ease}
+  .msf{flex:1;min-width:0;display:flex;align-items:center;gap:9px;height:40px;padding:0 12px;border-radius:12px;
+    background:rgba(255,255,255,.12);color:var(--chrome-text-2);cursor:text;
+    clip-path:inset(0 0 0 calc(100% - 40px) round 12px);transition:clip-path .34s cubic-bezier(.3,.7,.2,1)}
+  .msf .ai{width:17px;height:17px;flex:none}
+  .msf input{flex:1;min-width:0;border:0;background:transparent;outline:0;padding:0;color:#fff;font:inherit;font-size:16px;-webkit-appearance:none;appearance:none}
+  .msf input::placeholder{color:rgba(255,255,255,.55)}
+  .msf input::-webkit-search-cancel-button{-webkit-appearance:none}
+  .mscancel{flex:none;background:none;border:0;padding:8px 0;font:inherit;font-size:15px;font-weight:500;color:#fff;
+    opacity:0;transform:translateX(10px);transition:opacity .2s ease .08s,transform .3s cubic-bezier(.3,.7,.2,1) .04s}
+  .mast.msopen .msrch{opacity:1;pointer-events:auto}
+  .mast.msopen .msf{clip-path:inset(0 0 0 0 round 12px)}
+  .mast.msopen .mscancel{opacity:1;transform:none}
+  .mast > :not(.msrch){transition:opacity .18s ease}
+  .mast.msopen > :not(.msrch){opacity:0;pointer-events:none}
+  .msrch .tsugg{top:calc(100% + 8px);left:calc(var(--gut) + env(safe-area-inset-left));right:calc(var(--gut) + env(safe-area-inset-right));width:auto;max-height:min(420px,60vh)}
+  @media (prefers-reduced-motion:reduce){ .msrch,.msf,.mscancel,.mast > :not(.msrch){transition:none} }
 
   /* ---- director pages ---- */
   .admh{justify-content:space-between}
@@ -1669,6 +1859,7 @@
   .uwrap .phd .pcap{margin:0}
   .uwrap .uchart{padding:4px 0 0;height:160px;gap:4px}
   .uwrap .uaxis{padding:10px 0 0}
+  @media (max-width:699px){ .sumrow{flex-wrap:wrap} .sumrow > :first-child{flex:1 1 100%} .sumrow select{flex:1 1 0 !important;max-width:none !important;min-width:0} }
   .ugrid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
   @media (max-width:1100px){ .ugrid3{grid-template-columns:repeat(2,minmax(0,1fr))} .ugrid3 > :last-child{grid-column:1 / -1} }
   @media (max-width:699px){ .ugrid3{grid-template-columns:minmax(0,1fr)} .uwrap .uchart{height:120px;gap:2px} }
@@ -1713,7 +1904,7 @@
     --stage:#2b3050; --ic-bg:#302f54; --ic-line:transparent; --ic-inset:transparent; --tile-line:#6b7396;
     --rule:#31375a; --card-line:#343a57; --grid-line:#383f62; --line-strong:#424a6c; --line-strong-2:#59618a;
     --blue:#5751e7; --blue-text:#aaa4ff; --blue-hover:#6560ee; --blue-hi:#7a74f2; --blue-rgb:170,164,255;
-    --blue-wash:#262a4d; --blue-tint:#2d2d56; --blue-line:#45457a;
+    --blue-wash:#262a4d; --blue-tint:#2d2d56; --blue-line:#45457a; --tool1-bg:#2d2d56; --tool1-ic:#aaa4ff; --tool2-bg:#1f3a3d; --tool2-ic:#73d0ba; --tool3-bg:#3a3022; --tool3-ic:#ebc47d; --tool4-bg:#1e3346; --tool4-ic:#7cc4ee; --tool5-bg:#2c3142; --tool5-ic:#c2c9de; --tool6-bg:#3d2432; --tool6-ic:#fa97ad;
     --chrome:#101326; --chrome-rgb:16,19,38; --chrome-hi:#1b1f37; --navy-deep:#1b1f37; --chrome-line:#262b45; --chrome-line-2:#3a4063;
     --chrome-text:#a7aecb; --chrome-text-2:#b9c1df; --chrome-accent:#8e97b8; --chrome-faint:#818aa9;
     --gold:#5350d9; --gold-hover:#5f5be4; --on-gold:#fff; --gold-text:#ebc47d;
@@ -1734,7 +1925,7 @@
     --stage:#2b3050; --ic-bg:#302f54; --ic-line:transparent; --ic-inset:transparent; --tile-line:#6b7396;
     --rule:#31375a; --card-line:#343a57; --grid-line:#383f62; --line-strong:#424a6c; --line-strong-2:#59618a;
     --blue:#5751e7; --blue-text:#aaa4ff; --blue-hover:#6560ee; --blue-hi:#7a74f2; --blue-rgb:170,164,255;
-    --blue-wash:#262a4d; --blue-tint:#2d2d56; --blue-line:#45457a;
+    --blue-wash:#262a4d; --blue-tint:#2d2d56; --blue-line:#45457a; --tool1-bg:#2d2d56; --tool1-ic:#aaa4ff; --tool2-bg:#1f3a3d; --tool2-ic:#73d0ba; --tool3-bg:#3a3022; --tool3-ic:#ebc47d; --tool4-bg:#1e3346; --tool4-ic:#7cc4ee; --tool5-bg:#2c3142; --tool5-ic:#c2c9de; --tool6-bg:#3d2432; --tool6-ic:#fa97ad;
     --chrome:#101326; --chrome-rgb:16,19,38; --chrome-hi:#1b1f37; --navy-deep:#1b1f37; --chrome-line:#262b45; --chrome-line-2:#3a4063;
     --chrome-text:#a7aecb; --chrome-text-2:#b9c1df; --chrome-accent:#8e97b8; --chrome-faint:#818aa9;
     --gold:#5350d9; --gold-hover:#5f5be4; --on-gold:#fff; --gold-text:#ebc47d;
@@ -1841,6 +2032,26 @@
   @media (max-width:999px) and (prefers-reduced-motion:reduce){ .dock{--dk-dur:.2s} }
   /* phones: no scroll indicator, so it feels like an app (Safari 18.2+ honours scrollbar-width) */
   @media (max-width:999px){ html,body,.scroll{scrollbar-width:none} html::-webkit-scrollbar,body::-webkit-scrollbar,.scroll::-webkit-scrollbar{display:none;width:0;height:0} }
+  /* period pill: centred, and it opens by growing in place */
+  .ctlbar,.ctlbar.wide{align-items:center;justify-content:center}
+  .rpill{interpolate-size:allow-keywords;width:fit-content;max-width:100%;background:var(--card);border:1px solid var(--card-line);box-shadow:var(--shadow-card);
+    border-radius:22px;overflow:hidden;transition:width .32s cubic-bezier(.3,.7,.2,1),border-radius .32s ease,border-color .2s ease}
+  .rpill.open{width:min(100%,460px);border-radius:18px;border-color:var(--blue-line)}
+  .rhead{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:40px;padding:8px 16px;background:none;border:0;font:inherit;font-size:var(--fs-13);color:var(--ink);cursor:pointer;white-space:nowrap}
+  .rhead > *{display:inline-flex;align-items:center;line-height:1}
+  .rhead .lb{font-style:normal;font-size:var(--fs-10);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:1px}
+  .rhead .rv{display:block;font-weight:600;line-height:1.2;overflow:hidden;text-overflow:ellipsis}
+  .rhead .rch{display:inline-flex;color:var(--muted);transition:transform .3s ease}
+  .rhead .rch svg{width:12px;height:12px}
+  .rpill.open .rch{transform:rotate(180deg)}
+  .rbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s cubic-bezier(.3,.7,.2,1)}
+  .rpill.open .rbody{grid-template-rows:1fr}
+  .rin{min-height:0;overflow:hidden;opacity:0;transition:opacity .18s ease}
+  .rpill.open .rin{opacity:1;transition:opacity .25s ease .1s}
+  .rin > div{display:flex;flex-direction:column;align-items:center;gap:10px;padding:2px 14px 14px;border-top:1px solid var(--rule);margin:0 14px;padding-left:0;padding-right:0;padding-top:12px}
+  .rin .chips{justify-content:center;flex-wrap:wrap;margin:0}
+  .rin .dates{width:100%;max-width:320px;flex:none}
+  @media (prefers-reduced-motion:reduce){ .rpill,.rbody,.rin,.rhead .rch{transition:none !important} }
   /* printed lyrics: only the sheet, filling the page */
   #lyrprint{position:fixed;left:-10000px;top:0;width:7.25in;visibility:hidden;font-family:inherit;color:#111;--pfs:16px}
   #lyrprint header{text-align:center;margin:0 0 calc(var(--pfs) * 1.4);padding-bottom:calc(var(--pfs) * .7);border-bottom:1.5px solid #b8952a}
@@ -1872,7 +2083,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 /* ---------- i18n ---------- */
 const STR = {
   en:{attendance:'Attendance',songs:'Song history',signin:'Sign in',signout:'Sign out',grid:'Grid',summary:'Summary',
-    bySong:'By song',byService:'Service',all:'All',services:'Services',rehearsals:'Rehearsals',m3:'3 mo',m6:'6 mo',year:'Year',
+    bySong:'By song',byService:'Service',all:'All',services:'Services',rehearsals:'Rehearsals',m1:'1 mo',m3:'3 mo',m6:'6 mo',year:'Year',y2:'2 years',y3:'3 years',rng1:'Past Month',rng24:'Past 2 Years',rng3:'Past 3 Months',rng6:'Past 6 Months',rng12:'Past Year',rng36:'Past 3 Years',rngall:'All Time',
     singer:'Singer',song:'Song',times:'Times',last:'Last sung',present:'present',absent:'absent',notListed:'not in choir yet',service:'service',
     sung:'sung at this service',labels:'M — morning service · E — evening service · R — rehearsal',
     admin:'Admin',songList:'Song list',songQueue:'Plan service',allSongs:'All Songs',members:'Members',whoCame:'Who came',absentN:'absent',whatSang:'What we sang',selected:'selected',
@@ -1935,7 +2146,7 @@ const STR = {
     uDevices:'Devices',uOrders:'Order opens',uSheets:'Sheet opens',uListens:'Recordings',uActivity:'Activity',
     uTopSongs:'Most opened songs',uTopServices:'Most viewed services',
     uLang:'Language',uRecent:'Recent activity',uReturning:n=>n===1?'1 came back':n+' came back',uPerDevice:n=>n+' per device',uDeviceType:'Device type',uAppShare:'Opened from the home-screen icon',uDevNone:'Device types are counted from now on.',uDevSetup:'To count device types, run supabase/usage_log.sql again in the Supabase SQL editor.',uWhen:'When people look',uBusiest:'Busiest',uMorning:'morning',uAfternoon:'afternoon',uEvening:'evening',uNight:'night',uEn:'English',uRu:'Russian',dvIphone:'iPhone',dvIpad:'iPad',dvAndroid:'Android phone',dvAtablet:'Android tablet',dvMac:'Mac',dvWindows:'Windows PC',dvOther:'Other',uPerDay:'by day',uPerWeek:'by week',
-    u7:'7 days',u30:'30 days',u90:'90 days',uAll:'All time',
+    u7:'7 days',u30:'30 days',u90:'90 days',uAll:'All time',uRng7:'Past 7 Days',uRng30:'Past 30 Days',uRng90:'Past 90 Days',uRngall:'All Time',
     kOrder:'Song order',kSheet:'Sheet music',kAudio:'Recording',
     uNow:'just now',uMin:n=>n+' min ago',uHr:n=>n+' h ago',uDay:n=>n+' d ago',listenHere:'View/Listen here:',copied:'Copied — paste it into the chat',
     backupBtn:'Full backup',backupNote:'Downloads every table — singers, events, attendance, songs, categories — as one JSON file. Sheet PDFs are not included.',backupFail:'Backup failed — try again.',
@@ -1947,7 +2158,7 @@ const STR = {
     tPiano:'Piano sheets',tPianoSub:'Accompaniment for each song',piano:'Piano sheets',
     withPiano:n=>n+' with piano sheets',
     tLyrics:'Lyrics',tLyricsSub:'The words as we sing them, ready to copy',
-    lyrWith:n=>n+' with lyrics',noLyricsYet:'No lyrics yet',needsLyrics:'Needs lyrics',lyrHave:'Have lyrics',lyrNeed:'Need lyrics',
+    lyrWith:n=>n+' with lyrics',noLyricsYet:'No lyrics yet',needsLyrics:'Needs lyrics',lyrHave:'Have lyrics',lyrNeed:'Need lyrics',upTitle:'Upcoming services',upDemoOn:'Show a sample',upDemoAct:'This is only a sample. On a real service this button works.',upDemoOff:'Hide sample',upDemoNote:'Sample only: made-up services to show how the board looks. Nothing here is saved or shown to the choir.',pastSvc:'Past Services',upCount:n=>n===1?'1 planned':n+' planned',upNone:'Nothing planned ahead yet. Pick a date below to plan a service.',upLive:'Live now',upThisWeek:'This week',upNoon:'Live from noon',upFrom:d=>'Live from '+d,upMove:'Move',upLater:n=>n+' more planned further ahead',planNew:'Plan a service',upClash:'There is already a service of this kind on that date.',sortBy:'Sort',mTitle:'Attendance report',mSince:d=>'In the choir since '+d,mPresent:'Present',mMissed:'Missed',mOf:(a,b)=>a+' of '+b,mEvents:n=>'of '+n+' counted',mStreak:'Current streak',mBest:'Best streak',mInRow:'in a row',mServices:'Services',mRehearsals:'Rehearsals',mByMonth:'Month by month',mByQuarter:'By quarter',mByYear:'Year by year',mChoirAvg:'Choir average',mBackMembers:'Back to members',mBackAtt:'Back to attendance',mAbove:'points above the choir average',mBelow:'points below the choir average',mRecent:'Recent',mMissedList:'Missed dates',mNoneMissed:'No absences in this period.',mMore:'Show all',mLess:'Show less',mNoData:'No attendance recorded for this period.',mShare:'Share',mLinkCopied:'Link copied',mNotFound:'This member could not be found.',viewMusic:'View Music',lastSungOn:d=>'Last sung '+d,neverSung:'Not sung yet',neverShort:'—',sortAZ:'A–Z',sortTimes:'Most sung',sortOldest:'Longest ago',sortNewest:'Most recent',
     lyrAll:'All lyrics',lyrEmpty:'No lyrics have been added for this song yet.',
     lyrView:'Text',copyLyrics:'Copy text',printLyrics:'Print',lyrCopied:'Text copied.',
     editLyrics:'Edit text',addLyrics:'Add text',lyrSaved:'Text saved.',
@@ -1975,7 +2186,7 @@ const STR = {
     kSingers:'Singers',kParts:n=>n===1?'1 voice part':n+' voice parts',kActive:n=>n===1?'1 active singer':n+' active singers',kRep:'Repertoire',kRepSub:n=>n+' with choir sheets',
     kAtt:'Attendance',kAttSub:'Last 30 days',kSvc:'Services',kSvcSub:n=>n===1?'1 song sung · 12 months':n+' songs sung · 12 months',
     songOrder:'Song order',songsCount:n=>n===1?'1 song':n+' songs',inOrder:'In singing order',svcHistory:'Service history',
-    lastAtt:'Last attendance',viewAtt:'View attendance',library:'Music library',browseAll:'Browse all',recentSvc:'Recent services',viewAll:'View all',
+    lastAtt:'Last attendance',viewAtt:'View attendance',library:'Music library',singerTools:'Singer Tools',toolHistSub:'What we sang and when',browseAll:'Browse all',recentSvc:'Recent services',viewAll:'View all',
     scoresN:n=>n===1?'1 score':n+' scores',textsN:n=>n===1?'1 song':n+' songs',noAttYet:'No attendance recorded yet.',noSvcYet:'No services recorded yet.',
     attSub:'Rehearsals and services',songsSub:'What was sung, and who led it',libPart:'Part',ofChoir:'of the choir',
     home:'Home',homeSub:'Youth choir attendance and song ledger',
@@ -1992,7 +2203,7 @@ const STR = {
     singersN:n=>n+' singers',songsN:n=>n+' songs',sungN:(n,d)=>'sung '+n+'× · last '+(d||'—'),wasPresent:'Present',wasAbsent:'Absent',wasNA:'Not listed',
     tapHint:'Tap a name to mark them absent.',naNote:'“Not listed” means the singer was not in the choir yet — those rehearsals are left out of their percentage.'},
   ru:{attendance:'Посещаемость',songs:'История песен',signin:'Вход',signout:'Выйти',grid:'Сетка',summary:'Сводка',
-    bySong:'По песням',byService:'Служения',all:'Всё',services:'Служения',rehearsals:'Спевки',m3:'3 мес',m6:'Полгода',year:'Год',
+    bySong:'По песням',byService:'Служения',all:'Всё',services:'Служения',rehearsals:'Спевки',m1:'1 мес',m3:'3 мес',m6:'Полгода',year:'Год',y2:'2 года',y3:'3 года',rng1:'Последний месяц',rng24:'Последние 2 года',rng3:'Последние 3 месяца',rng6:'Последние полгода',rng12:'Последние 12 месяцев',rng36:'Последние 3 года',rngall:'За всё время',
     singer:'Хорист',song:'Песня',times:'Всего',last:'Последний',present:'был',absent:'не был',notListed:'ещё не в хоре',service:'служение',
     sung:'пели в это служение',labels:'Ут — утро · Вч — вечер · Сп — спевка',
     admin:'Админка',songList:'Список песен',songQueue:'Служение',allSongs:'Все песни',members:'Состав',whoCame:'Кто был',absentN:'отсутствуют',whatSang:'Что пели',selected:'выбрано',
@@ -2058,7 +2269,7 @@ const STR = {
     uDevices:'Устройств',uOrders:'Открытий порядка',uSheets:'Скачиваний нот',uListens:'Прослушиваний',uActivity:'Активность',
     uTopSongs:'Чаще всего открывали ноты',uTopServices:'Чаще всего смотрели служения',
     uLang:'Язык',uRecent:'Последние действия',uReturning:n=>'вернулись: '+n,uPerDevice:n=>n+' на устройство',uDeviceType:'Тип устройства',uAppShare:'Открывали с иконки на экране',uDevNone:'Тип устройства считается с этого момента.',uDevSetup:'Чтобы считать типы устройств, ещё раз выполните supabase/usage_log.sql в SQL-редакторе Supabase.',uWhen:'Когда смотрят',uBusiest:'Чаще всего',uMorning:'утром',uAfternoon:'днём',uEvening:'вечером',uNight:'ночью',uEn:'Английский',uRu:'Русский',dvIphone:'iPhone',dvIpad:'iPad',dvAndroid:'Android-телефон',dvAtablet:'Android-планшет',dvMac:'Mac',dvWindows:'Компьютер Windows',dvOther:'Другое',uPerDay:'по дням',uPerWeek:'по неделям',
-    u7:'7 дней',u30:'30 дней',u90:'90 дней',uAll:'За всё время',
+    u7:'7 дней',u30:'30 дней',u90:'90 дней',uAll:'За всё время',uRng7:'Последние 7 дней',uRng30:'Последние 30 дней',uRng90:'Последние 90 дней',uRngall:'За всё время',
     kOrder:'Порядок песнопений',kSheet:'Ноты',kAudio:'Запись',
     uNow:'только что',uMin:n=>n+' мин назад',uHr:n=>n+' ч назад',uDay:n=>n+' дн. назад',listenHere:'Смотреть/слушать здесь:',copied:'Скопировано — вставьте в чат',
     backupBtn:'Полная копия',backupNote:'Скачивает все таблицы — хористы, события, посещаемость, песни, категории — одним файлом JSON. PDF-ноты не входят.',backupFail:'Не удалось создать копию — попробуйте ещё раз.',
@@ -2069,7 +2280,7 @@ const STR = {
     kSingers:'Хористы',kParts:n=>n+(n===1?' партия':n<5?' партии':' партий'),kActive:n=>'активных хористов: '+n,kRep:'Репертуар',kRepSub:n=>'с нотами: '+n,
     kAtt:'Посещаемость',kAttSub:'За 30 дней',kSvc:'Служения',kSvcSub:n=>'песен спето: '+n+' · 12 мес.',
     songOrder:'Порядок песен',songsCount:n=>n+' '+(n%10===1&&n%100!==11?'песня':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'песни':'песен'),inOrder:'По порядку исполнения',svcHistory:'История служений',
-    lastAtt:'Последняя отметка',viewAtt:'Открыть посещаемость',library:'Библиотека',browseAll:'Все ноты',recentSvc:'Последние служения',viewAll:'Все',
+    lastAtt:'Последняя отметка',viewAtt:'Открыть посещаемость',library:'Библиотека',singerTools:'Для хористов',toolHistSub:'Что и когда пели',browseAll:'Все ноты',recentSvc:'Последние служения',viewAll:'Все',
     scoresN:n=>'партитур: '+n,textsN:n=>'текстов: '+n,noAttYet:'Посещаемость ещё не отмечалась.',noSvcYet:'Служений пока нет.',
     attSub:'Спевки и служения',songsSub:'Что пели и кто вёл',libPart:'Партия',ofChoir:'хора',
     home:'Главная',homeSub:'Молодёжный хор · посещаемость и песнопения',
@@ -2081,7 +2292,7 @@ const STR = {
     tPiano:'Ноты для фортепиано',tPianoSub:'Аккомпанемент к каждой песне',piano:'Фортепиано',
     withPiano:n=>'с фортепиано: '+n,
     tLyrics:'Тексты песен',tLyricsSub:'Слова так, как мы их поём — готово к копированию',
-    lyrWith:n=>'с текстом: '+n,noLyricsYet:'Текста пока нет',needsLyrics:'Без текста',lyrHave:'С текстом',lyrNeed:'Без текста',
+    lyrWith:n=>'с текстом: '+n,noLyricsYet:'Текста пока нет',needsLyrics:'Без текста',lyrHave:'С текстом',lyrNeed:'Без текста',upTitle:'Предстоящие служения',upDemoOn:'Показать пример',upDemoAct:'Это только пример. У настоящего служения эта кнопка работает.',upDemoOff:'Скрыть пример',upDemoNote:'Только пример: придуманные служения, чтобы показать, как выглядит список. Ничего не сохраняется и хору не показывается.',pastSvc:'Прошедшие служения',upCount:n=>'запланировано: '+n,upNone:'Пока ничего не запланировано заранее. Выберите дату ниже, чтобы спланировать служение.',upLive:'Сейчас на сайте',upThisWeek:'На этой неделе',upNoon:'На сайте с полудня',upFrom:d=>'На сайте с '+d,upMove:'Перенести',upLater:n=>'ещё дальше: '+n,planNew:'Спланировать служение',upClash:'На эту дату уже есть такое служение.',sortBy:'Сортировка',mTitle:'Отчёт о посещаемости',mSince:d=>'В хоре с '+d,mPresent:'Был',mMissed:'Пропустил',mOf:(a,b)=>a+' из '+b,mEvents:n=>'из '+n+' учтённых',mStreak:'Текущая серия',mBest:'Лучшая серия',mInRow:'подряд',mServices:'Служения',mRehearsals:'Спевки',mByMonth:'По месяцам',mByQuarter:'По кварталам',mByYear:'По годам',mChoirAvg:'Среднее по хору',mBackMembers:'К списку хористов',mBackAtt:'К посещаемости',mAbove:'п.п. выше среднего по хору',mBelow:'п.п. ниже среднего по хору',mRecent:'Последние',mMissedList:'Пропуски',mNoneMissed:'В этом периоде пропусков нет.',mMore:'Показать все',mLess:'Свернуть',mNoData:'За этот период посещаемость не отмечалась.',mShare:'Поделиться',mLinkCopied:'Ссылка скопирована',mNotFound:'Участник не найден.',viewMusic:'Открыть ноты',lastSungOn:d=>'Последний раз: '+d,neverSung:'Ещё не пели',neverShort:'—',sortAZ:'А–Я',sortTimes:'Чаще всего',sortOldest:'Давно не пели',sortNewest:'Недавно пели',
     lyrAll:'Все тексты',lyrEmpty:'Для этой песни текст ещё не добавлен.',
     lyrView:'Текст',copyLyrics:'Копировать текст',printLyrics:'Печать',lyrCopied:'Текст скопирован.',
     editLyrics:'Изменить текст',addLyrics:'Добавить текст',lyrSaved:'Текст сохранён.',
@@ -2220,6 +2431,8 @@ function songMatch(s, q){
   const qs = String(q || '').trim().toLowerCase();
   if (!qs) return true;
   if (s.title.toLowerCase().includes(qs)) return true;
+  if (s.subtitle && String(s.subtitle).toLowerCase().includes(qs)) return true;
+  if (s.category_id && typeof catName === 'function') { const c = catName(s.category_id); if (c && String(c).toLowerCase().includes(qs)) return true; }
   const digits = qs.replace(/\D/g, '');
   return !!digits && s.pv_number != null && String(s.pv_number).includes(digits);
 }
@@ -2230,13 +2443,37 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.3.0';
+const VERSION = '5.4.1';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'On computers and iPads, the first step of the top-bar path is clickable and takes you back',
+    'Report cards compare each singer with the choir average, and the monthly bars line up evenly',
+    'Period pills say “Past Year” (and Past 3 Months, Past 30 Days…) instead of “Last”',
+    'Attendance reports: gentler colours, charts that animate in, and Share only for the director',
+    'A shared attendance report opens on the period the director last picked',
+    'Attendance report cards: signed in, tap a name in the attendance summary or the roster for a shareable page with that singer’s attendance, trends and streaks',
+    'A “View Music” link under a song’s lyrics opens it in Choir music, highlighted',
+    'On phones, a search button in the top bar opens song search right there, with the keyboard',
+    'Picking a song in the top search opens Choir music and briefly highlights that song',
+    'The Music library card on the overview is now Singer Tools, with seating chart, song history and choir rules added',
+    'When choosing songs for a service, each song shows when it was last sung',
+    'When choosing songs for a service and on Repertoire: filter by category and sort A–Z, most sung, most recent or longest ago',
+    'Mark attendance starts on the nearest Tuesday rehearsal',
+    'Plan a service starts on the next Sunday that has no song order yet',
+    'Upcoming services has a “Show a sample” preview with made-up services; nothing is saved',
+    'Upcoming services can be deleted right from the board',
+    'On Plan service, Upcoming services sit under the planning form, and Recent entries is now Past Services, showing only services already held',
+    'Plan service opens on an Upcoming board with every order planned ahead; edit or move each one',
+    'The overview shows this week’s order and switches to the next on Monday; on Sundays the morning order shows until noon, then the evening',
+    'The side menu shows counts for piano sheets and lyrics too',
+    'Usage insights and the export card use the same Period pill that opens in place',
+    'The Period pill is centred, reads like “Past 3 Years”, and opens in place to pick a new range; song history now starts at the last 3 years',
+    'Song history has a sort menu beside the category: most sung, most recent or longest ago (tapping the Times or Last sung heading works too)',
+    'Every song search (history, planning, sheets, lyrics, repertoire) also matches the subtitle, category and hymn number',
     'Usage insights redesigned: cards for the numbers, top songs and services, language, device type and the busiest days',
     'Attendance now opens on the summary; the grid is one tab away',
     'The attendance ring on the overview has smooth, rounded ends',
@@ -2268,6 +2505,30 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'На компьютере и iPad первый шаг пути в верхней панели теперь кликабелен и ведёт назад',
+    'В отчётах видно сравнение со средним по хору, а столбцы по месяцам выровнены',
+    'В выборе периода «Последний год» теперь «Последние 12 месяцев»',
+    'Отчёты о посещаемости: мягче цвета, анимация графиков, кнопка «Поделиться» только для регента',
+    'Отправленный отчёт о посещаемости открывается на периоде, который регент выбрал последним',
+    'Отчёт о посещаемости: после входа нажмите на имя в сводке или в составе — откроется страница хориста с посещаемостью, динамикой и сериями, её можно отправить',
+    'Ссылка «Открыть ноты» под текстом песни открывает её в нотах хора с подсветкой',
+    'На телефоне кнопка поиска в верхней панели открывает поиск песен прямо там, вместе с клавиатурой',
+    'Выбор песни в верхнем поиске открывает ноты хора и ненадолго подсвечивает эту песню',
+    'Карточка «Библиотека» на обзоре теперь «Для хористов»: добавлены схема мест, история песен и правила хора',
+    'При выборе песен для служения у каждой песни видно, когда её пели в последний раз',
+    'При выборе песен для служения и в репертуаре: фильтр по категории и сортировка А–Я, чаще всего, недавно, давно не пели',
+    'Отметка посещаемости сразу предлагает ближайшую спевку во вторник',
+    'Планирование служения сразу предлагает ближайшее воскресенье без порядка песен',
+    'В предстоящих служениях есть «Показать пример» с придуманными служениями — ничего не сохраняется',
+    'Предстоящие служения теперь можно удалить прямо из списка',
+    'В разделе «Служение» предстоящие служения теперь под формой, а «Недавние записи» стали «Прошедшими служениями» — только уже прошедшие',
+    'Раздел «Служение» открывается списком предстоящих служений: каждое можно изменить или перенести',
+    'Обзор показывает порядок этой недели и переключается на следующий в понедельник; в воскресенье до полудня — утренний, потом вечерний',
+    'В боковом меню теперь есть счётчики и для нот фортепиано, и для текстов',
+    'В статистике и экспорте теперь такая же кнопка «Период», раскрывающаяся на месте',
+    'Кнопка «Период» по центру, пишет «Последние 3 года» и раскрывается на месте; история песен теперь по умолчанию за 3 года',
+    'В истории песен рядом с категорией появилось меню сортировки: чаще всего, недавно пели, давно не пели (можно и нажатием на «Всего» или «Последний»)',
+    'Любой поиск песен (история, планирование, ноты, тексты, репертуар) ищет и по подзаголовку, категории и номеру',
     'Новый вид статистики: карточки с числами, самые популярные песни и служения, язык, тип устройства и самые активные дни',
     'Посещаемость теперь открывается на сводке; таблица — на соседней вкладке',
     'Кольцо посещаемости на обзоре теперь с ровными скруглёнными краями',
@@ -2578,7 +2839,7 @@ function usagePage(){
   if (!S.session) return note(t('uAdminOnly'));
   const chips = `<div class="chips">${[[7,'u7'],[30,'u30'],[90,'u90'],['all','uAll']].map(([v,l]) =>
       `<button data-uperiod="${v}" class="${String(S.usagePeriod)===String(v)?'on':''}">${esc(t(l))}</button>`).join('')}</div>`;
-  const wrap = body => head + chips + body;
+  const wrap = body => head + `<div class="ctlbar">${periodPill('usage', t('uRng' + S.usagePeriod), chips)}</div>` + body;
   if (S.usageErr) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uSetup'))}</div></div></div>`);
   if (!S.usage) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uLoading'))}</div></div></div>`);
   const u = S.usage;
@@ -2745,10 +3006,20 @@ function normRoute(h){
   const m = (h || '').match(/^#\/o\/([^/?&]+)$/);
   return m ? '#/sheets/order-' + m[1] : (h || '#/home');
 }
-/* newest service that has songs — what the home tile shows */
+/* The order the public sees. Orders can be planned weeks ahead, so only services up
+   to this coming Sunday count; the next week's order appears on Monday. On a day
+   with both, the morning order shows until noon, then the evening one. */
+const kindRank = k => k === 'morning' ? 0 : k === 'evening' ? 2 : 1;
+function weekEnd(iso){ const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + (7 - d.getDay()) % 7); return localISO(d); }
+function weekStart(iso){ const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return localISO(d); }
 function latestService(){
-  return S.events.filter(e => e.kind !== 'rehearsal' && !e.cancelled && songsFor(e.id).length)
-    .slice().sort((a,b) => a.date < b.date ? 1 : -1)[0] || null;
+  const now = today(), end = weekEnd(now);
+  const c = S.events.filter(e => e.kind !== 'rehearsal' && !e.cancelled && e.date <= end && songsFor(e.id).length);
+  if (!c.length) return null;
+  const d = c.reduce((m, e) => e.date > m ? e.date : m, '');
+  const day = c.filter(e => e.date === d).sort((a, b) => kindRank(a.kind) - kindRank(b.kind));
+  const early = d > now || (d === now && new Date().getHours() < 12);
+  return early ? day[0] : day[day.length - 1];
 }
 const inRange  = (d,a,b) => d >= a && d <= b;
 
@@ -2760,14 +3031,17 @@ function gridEvents(){
       : S.typeFilter === 'services' ? e.kind !== 'rehearsal' : e.kind === 'rehearsal');
 }
 function songStats(id, from, to){
+  const now = today();
   const rows = S.eventSongs.filter(x => {
     if (x.song_id !== id) return false;
-    if (!from) return true;
     const e = S.events.find(y => y.id === x.event_id);
+    if (e && e.date > now) return false;          // planned ahead, not sung yet
+    if (!from) return true;
     return e && inRange(e.date, from, to);
   });
   const dates = rows.map(r => (S.events.find(e => e.id === r.event_id) || {}).date).filter(Boolean).sort();
-  return { n: rows.length, last: dates.length ? fmtShort(dates[dates.length-1]) : '' };
+  const lastISO = dates.length ? dates[dates.length-1] : '';
+  return { n: rows.length, lastISO, last: lastISO ? fmtShort(lastISO) : '' };
 }
 
 
@@ -3050,6 +3324,8 @@ const AIC = {
   rules: AI('<path d="M4 3h12l4 4v14H4z"></path><path d="M16 3v4h4"></path><path d="M8 11h8M8 15h8"></path>'),
   user: AI('<circle cx="12" cy="8" r="4"></circle><path d="M4 21v-2a8 8 0 0 1 16 0v2"></path>'),
   admin: AI('<path d="M20 7h-9M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle>'),
+  archive: AI('<rect x="3" y="4" width="18" height="4.5" rx="1.5"></rect><path d="M5 8.5V18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5"></path><path d="M10 12.5h4"></path>'),
+  restore: AI('<path d="M4 12a8 8 0 1 0 2.3-5.6"></path><path d="M4 4v4.5h4.5"></path>'),
   chart: AI('<path d="M4 3v18h17"></path><path d="M8 17v-5M13 17V8M18 17V4"></path>'),
   out: AI('<path d="M9 3H3v18h6"></path><path d="m14 6 6 6-6 6M20 12H8"></path>'),
   music: AI('<path d="M9 18V5l12-2v13"></path><path d="M9 9l12-2"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>'),
@@ -3070,9 +3346,28 @@ const AIC = {
 const LOGOSVG = '<svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(0 6.5)"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path></g></svg>';
 /* which part of the workspace a route belongs to — the sidebar groups and the
    breadcrumb read from the same table */
+/* [section, page, link]: the first crumb links back one step. Deeper pages
+   (a song's words, one report card, one service) point at the page they came from;
+   top-level pages point at the overview. */
+function crumbLink(){
+  const r = S.route || '#/home', seg = r.split('?')[0].split('/');
+  if (r.startsWith('#/member')) return [t('attendance'), '#/attendance/summary'];
+  if (r.startsWith('#/lyrics/') && seg[2]) { const s = songByToken(seg[2]); if (s) return [t('tLyrics'), '#/lyrics', s.title]; }
+  if (/^#\/sheets(\/piano)?\/order-/.test(r)) return [t('recentSvc'), '#/songs/services'];
+  if (r.startsWith('#/admin/songs/') && seg[3]) return [t('planSvc'), '#/admin/songs'];
+  if (r.startsWith('#/admin/attendance/') && seg[3]) return [t('recordAtt'), '#/admin/attendance'];
+  if (r.startsWith('#/home') || r === '#/') return null;
+  return ['', '#/home'];
+}
 function crumbs(){
+  const [sec, page] = crumbsBase(), l = crumbLink();
+  if (!l) return [sec, page, ''];
+  return [l[0] || sec, l[2] || page, l[1]];
+}
+function crumbsBase(){
   const r = S.route || '#/home';
   const W = t('navWork'), L = t('navLib'), C = t('navChoir'), D = t('navDir');
+  if (r.startsWith('#/member')) { const m = findSinger(r.split('/')[2]); return [t('attendance'), m ? m.name : t('mTitle')]; }
   if (r.startsWith('#/attendance')) return [W, t('attendance')];
   if (r.startsWith('#/songs')) return [W, t('songs')];
   if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) return [L, t('tPiano')];
@@ -3094,18 +3389,25 @@ const langSeg = () => `<div class="lang">
     </div>`;
 const themeBtn = () => `<button class="themebtn" data-theme-flip aria-label="${esc(t('appearance'))}" title="${esc(t('appearance'))}">${effTheme()==='dark' ? AIC.sun : AIC.moon}</button>`;
 function mast(){
-  const [sec, page] = crumbs();
-  return `<div class="mast">
+  const [sec, page, back] = crumbs();
+  return `<div class="mast${S.msOpen ? ' msopen' : ''}">
     <a href="#/home" class="mbrand"><span class="bmark">${LOGOSVG}</span>
       <div class="brand">Youth Choir</div>
     </a>
-    ${langSeg()}${themeBtn()}
+    ${langSeg()}
+    <button class="themebtn msbtn" data-msearch-open aria-label="${esc(t('findSong'))}" title="${esc(t('findSong'))}">${AIC.search}</button>
+    ${themeBtn()}
+    <div class="msrch" role="search">
+      <label class="msf">${AIC.search}<input class="tsin" id="msearch" type="search" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" placeholder="${esc(t('findSong'))}" aria-label="${esc(t('findSong'))}" aria-expanded="false" aria-autocomplete="list" tabindex="${S.msOpen ? '0' : '-1'}"></label>
+      <button class="mscancel" data-msearch-close tabindex="${S.msOpen ? '0' : '-1'}">${esc(t('cancel'))}</button>
+      <div class="tsugg" role="listbox" hidden></div>
+    </div>
     <button class="menubtn" data-menu aria-label="Menu" aria-expanded="${S.menuOpen?'true':'false'}">${AIC.more}</button>
   </div>
   <header class="topbar">
-    <div class="crumbs"><span>${esc(sec)}</span>${AIC.chev}<strong>${esc(page)}</strong></div>
+    <div class="crumbs">${back ? `<a class="cback" href="${back}">${esc(sec)}</a>` : `<span>${esc(sec)}</span>`}${AIC.chev}<strong>${esc(page)}</strong></div>
     <div class="tacts">
-      <label class="findsong" role="search">${AIC.search}<input id="tsearch" type="search" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" placeholder="${esc(t('findSong'))}" aria-label="${esc(t('findSong'))}" aria-expanded="false" aria-autocomplete="list"><div class="tsugg" role="listbox" hidden></div></label>
+      <label class="findsong" role="search">${AIC.search}<input class="tsin" id="tsearch" type="search" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" placeholder="${esc(t('findSong'))}" aria-label="${esc(t('findSong'))}" aria-expanded="false" aria-autocomplete="list"><div class="tsugg" role="listbox" hidden></div></label>
       <span class="tdiv"></span>
       ${langSeg()}${themeBtn()}
     </div>
@@ -3141,7 +3443,7 @@ const DKI = {
 /* The phone dock mirrors the five places people actually go; More opens the
    same slide-out menu the desktop sidebar is built from. */
 function dockKey(r){
-  if (r.startsWith('#/attendance')) return 'att';
+  if (r.startsWith('#/attendance') || r.startsWith('#/member')) return 'att';
   if (r.startsWith('#/songs')) return 'songs';
   if (r.startsWith('#/sheets')) return 'music';
   if (r.startsWith('#/home')) return 'home';
@@ -3448,8 +3750,8 @@ function drawerNav(){
     ${it('#/songs/summary', r.startsWith('#/songs'), AIC.hist, t('songs'))}
     ${sec('navLib')}
     ${it('#/sheets', r.startsWith('#/sheets') && !piano, AIC.sheets, t('tSheets'), S.songs.filter(x => x.pdf_path).length)}
-    ${it('#/sheets/piano', piano, AIC.piano, t('tPiano'))}
-    ${it('#/lyrics', r.startsWith('#/lyrics'), AIC.lyrics, t('tLyrics'))}
+    ${it('#/sheets/piano', piano, AIC.piano, t('tPiano'), S.songs.filter(x => x.piano_path).length)}
+    ${it('#/lyrics', r.startsWith('#/lyrics'), AIC.lyrics, t('tLyrics'), S.songs.filter(hasLyrics).length)}
     ${sec('navChoir')}
     ${it('#/seating', r.startsWith('#/seating'), AIC.seat, t('tSeating'))}
     ${it('#/rules', r.startsWith('#/rules'), AIC.rules, t('tRules'))}
@@ -3609,17 +3911,20 @@ function homePage(){
     </section>`;
   } else att = `<section class="dpanel datt"><div class="phd"><h2>${esc(t('lastAtt'))}</h2>${AIC.att}</div><p class="pcap">${esc(t('noAttYet'))}</p></section>`;
 
-  const res = (href, name, count, ic, tone) => `<a class="res ${tone}" href="${href}"><span class="rico">${ic}</span><strong>${esc(name)}</strong><small>${esc(count)}</small></a>`;
+  const res = (href, name, count, ic, tone) => `<a class="res ${tone}" href="${href}"><span class="rico">${ic}</span><strong>${esc(name)}</strong>${count ? `<small>${esc(count)}</small>` : ''}</a>`;
   const library = `<section class="dpanel">
-      <div class="phd"><h2>${esc(t('library'))}</h2><a class="tlink" href="#/sheets">${esc(t('browseAll'))}${AIC.arrow}</a></div>
+      <div class="phd"><h2>${esc(t('singerTools'))}</h2></div>
       <div class="reslist">
         ${res('#/sheets', t('tSheets'), t('scoresN')(withPdf), AIC.sheets, 'r1')}
         ${res('#/sheets/piano', t('tPiano'), t('scoresN')(withPiano), AIC.piano, 'r2')}
         ${res('#/lyrics', t('tLyrics'), t('textsN')(withLyr), AIC.lyrics, 'r3')}
+        ${res('#/seating', t('tSeating'), '', AIC.seat, 'r4')}
+        ${res('#/songs/summary', t('songs'), '', AIC.hist, 'r5')}
+        ${res('#/rules', t('tRules'), '', AIC.rules, 'r6')}
       </div>
     </section>`;
   const recent = S.events.filter(e => e.kind !== 'rehearsal' && past(e) && hasSongs(e))
-    .sort((a, b) => a.date < b.date ? 1 : -1).slice(0, 3);
+    .sort((a, b) => a.date < b.date ? 1 : -1).slice(0, 4);
   const recentCard = `<section class="dpanel">
       <div class="phd"><h2>${esc(t('recentSvc'))}</h2><a class="tlink" href="#/songs/services">${esc(t('viewAll'))}${AIC.arrow}</a></div>
       <div class="recent">${recent.length ? recent.map(e => { const [, m, d] = e.date.split('-').map(Number);
@@ -3660,9 +3965,19 @@ function adminTabs(active){
     ${i('#/admin/members','members','members')}
   </div>`;
 }
+/* the same growing pill for any period picker; key names its open state */
+function periodPill(key, val, inner){
+  const open = key ? !!(S.pillOpen || {})[key] : S.showRange;
+  return `<div class="rpill${open ? ' open' : ''}">
+      <button class="rhead" data-toggle-range="${key || ''}" aria-expanded="${open ? 'true' : 'false'}">
+        <em class="lb">${esc(t('period'))}</em><span class="rv">${esc(val)}</span><span class="rch">${CHEVSVG}</span>
+      </button>
+      <div class="rbody"><div class="rin"><div>${inner}</div></div></div>
+    </div>`;
+}
 function rangeCtrl(kind, typeFilter){
   const from = S.from, to = S.to;
-  const presets = [['3',t('m3')],['6',t('m6')],['12',t('year')],['all',t('all')]];
+  const presets = [['3',t('m3')],['6',t('m6')],['12',t('year')],['36',t('y3')],['all',t('all')]];
   const cur = kind==='sum' ? S.sumType : S.typeFilter;
   const seg = typeFilter ? `<div class="seg tiny">${
       [['all','all'],['services','services'],['rehearsals','rehearsals']].map(([v,l]) =>
@@ -3682,14 +3997,13 @@ function rangeCtrl(kind, typeFilter){
 
   /* Every width gets the same collapsing pill; wide screens just lay the bar and
      the panel out as rows. */
+  /* a round preset reads as words ("Last 3 years"); anything else shows the dates */
+  const pn = S.preset || (to === today() ? ['3','6','12','36'].find(n => from === shift(+n)) : null);
+  const val = pn ? t('rng' + pn) : fmtPill(from) + ' – ' + fmtPill(to);
   return `<div class="ctlbar${isWide() ? ' wide' : ''}">
-      <button class="rangebtn ${S.showRange?'open':''}" data-toggle-range>
-        <em class="lb">${esc(t('period'))}</em>
-        <span class="rv">${esc(fmtPill(from))} – ${esc(fmtPill(to))}</span>
-        <em class="ed">${esc(t('changePeriod'))} ${S.showRange?'▴':'▾'}</em>
-      </button>
+      ${periodPill('', val, chips + dates)}
       ${seg}
-    </div>${S.showRange ? `<div class="panel">${chips}${dates}</div>` : ''}`;
+    </div>`;
 }
 
 const topBar = html => html ? `<div class="topctl">${html}</div>` : '';
@@ -3734,6 +4048,119 @@ function attendanceGrid(top){
     </div>
     <div class="legend endbar" style="padding-top:0">${esc(t('labels'))}</div></div>`;
 }
+/* ---------- member report card ----------
+   '#/member/<short id>': one singer's attendance over a chosen period. Linked from
+   the attendance summary and the director's roster; the link itself can be shared. */
+const findSinger = tok => { tok = (tok || '').split('?')[0]; return tok ? (S.singers.find(s => String(s.id) === tok) || S.singers.find(s => String(s.id).startsWith(tok))) : null; };
+const M_PRESETS = ['1','3','6','12','24','36','all'];
+/* a shared link carries its period (?p=36); otherwise the director's last pick, then a year */
+const memberPreset = () => { const q = ((S.route || '').split('?')[1] || '').match(/(?:^|&)p=([^&]+)/);
+  if (q && M_PRESETS.includes(q[1])) return q[1];
+  const saved = (() => { try { return localStorage.getItem('mPreset'); } catch (_) { return null; } })();
+  return M_PRESETS.includes(S.mPreset) ? S.mPreset : M_PRESETS.includes(saved) ? saved : '12'; };
+const memberLink = s => '#/member/' + shortId(s.id);
+/* green above 60% or above the choir's own average for the same events */
+const pctTone = (p, avg) => p === null ? 'var(--faint)' : (p > 60 || (avg != null && p > avg)) ? 'var(--green)' : p > 20 ? 'var(--gold)' : 'var(--red)';
+/* the missed list is clipped to the Recent card's height; offer "Show all" only when it overflows */
+function fitMissed(){
+  const l = document.querySelector('.mmiss'), b = document.querySelector('[data-mmiss]');
+  if (!l || !b) return;
+  const over = l.scrollHeight > l.clientHeight + 2;
+  b.hidden = !(over || S.mMissAll);
+  l.classList.toggle('nofade', !over);
+}
+window.addEventListener('resize', () => requestAnimationFrame(fitMissed));
+/* director only: back to the list the report was opened from */
+function mBack(){
+  if (!S.session) return '';
+  const from = S.memberFrom || '#/admin/members';
+  const k = from.startsWith('#/admin/members') ? 'mBackMembers' : from.startsWith('#/attendance') ? 'mBackAtt' : 'back';
+  return `<a class="mback" href="${esc(from)}"><span>${AI('<path d="M19 12H5M11 6l-6 6 6 6"></path>')}</span>${esc(t(k))}</a>`;
+}
+function memberPage(tok){
+  const s = findSinger(tok);
+  if (!s) return `<div class="msg">${esc(S.events.length ? t('mNotFound') : t('loading'))}</div>`;
+  const p = memberPreset(), now = today();
+  const firstEv = S.events.filter(hasAtt).reduce((m, e) => e.date < m ? e.date : m, now);
+  const from = p === 'all' ? (s.joined_on && s.joined_on > firstEv ? s.joined_on : firstEv) : shift(+p);
+  const ev = S.events.filter(e => hasAtt(e) && !e.cancelled && e.date >= from && e.date <= now)
+    .sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : kindRank(a.kind) - kindRank(b.kind));
+  const st = e => attStatus(e.id, s.id);                 // 'present' | 'absent' | 'na'
+  const counted = ev.filter(e => st(e) !== 'na');
+  const came = counted.filter(e => st(e) === 'present').length, of = counted.length;
+  const pct = of ? Math.round(came / of * 100) : null;
+  const part = (pred) => { const c = counted.filter(pred), k = c.filter(e => st(e) === 'present').length; return { k, n: c.length, p: c.length ? Math.round(k / c.length * 100) : null }; };
+  const svc = part(e => e.kind !== 'rehearsal'), reh = part(e => e.kind === 'rehearsal');
+  const choirAll = S.singers.filter(x => x.part && x.active !== false);
+  const avgOf = list => { let c = 0, o = 0; choirAll.forEach(x => { const r = attCount(list, x.id); c += r.came; o += r.of; }); return o ? Math.round(c / o * 100) : null; };
+  const avgAll = avgOf(ev);
+  svc.avg = avgOf(ev.filter(e => e.kind !== 'rehearsal')); reh.avg = avgOf(ev.filter(e => e.kind === 'rehearsal'));
+  /* streaks over counted events, newest first for the current one */
+  let cur = 0; for (let i = counted.length - 1; i >= 0 && st(counted[i]) === 'present'; i--) cur++;
+  let best = 0, run = 0; counted.forEach(e => { run = st(e) === 'present' ? run + 1 : 0; if (run > best) best = run; });
+  /* month by month, with the choir's average for the same events */
+  const choir = S.singers.filter(x => x.part && x.active !== false);
+  /* month by month while it fits; longer periods fold into quarters, then years */
+  const maxBars = isWide() ? 24 : 12;
+  const span = new Set(counted.map(e => e.date.slice(0, 7))).size;
+  const quarters = new Set(counted.map(e => e.date.slice(0, 4) + Math.ceil(+e.date.slice(5, 7) / 3))).size;
+  const unit = span <= maxBars ? 'm' : quarters <= maxBars ? 'q' : 'y';
+  const keyOf = d => unit === 'm' ? d.slice(0, 7) : unit === 'q' ? d.slice(0, 4) + '-Q' + Math.ceil(+d.slice(5, 7) / 3) : d.slice(0, 4);
+  const months = [];
+  counted.forEach(e => { const k = keyOf(e.date); let m = months[months.length - 1]; if (!m || m.k !== k) months.push(m = { k, ev: [], came: 0 }); m.ev.push(e); if (st(e) === 'present') m.came++; });
+  months.forEach(m => { m.p = Math.round(m.came / m.ev.length * 100);
+    let c = 0, o = 0; choir.forEach(x => { const r = attCount(m.ev, x.id); c += r.came; o += r.of; }); m.avg = o ? Math.round(c / o * 100) : null; });
+  const presets = [['1','m1'],['3','m3'],['6','m6'],['12','year'],['24','y2'],['36','y3'],['all','all']];
+  const pill = `<div class="ctlbar mpill">${periodPill('member', t('rng' + p), `<div class="chips">${presets.map(([v, l]) =>
+      `<button data-mpreset="${v}" class="${p === v ? 'on' : ''}">${esc(t(l))}</button>`).join('')}</div>`)}</div>`;
+  const head = `<section class="dpanel mhead">
+      <span class="mav" style="--tone:${pctTone(pct, avgAll)}">${esc(initials(s.name))}</span>
+      <div class="grow2"><h1>${esc(s.name)}</h1>
+        <div class="mmeta">${s.part ? `<span class="mpart ${s.part}">${esc(t(s.part))}</span>` : ''}${s.joined_on ? `<span>${esc(t('mSince')(monYear(s.joined_on)))}</span>` : ''}</div>
+        ${pct !== null && avgAll !== null ? `<div class="mverdict ${pct >= avgAll ? 'up' : 'dn'}"><b>${pct >= avgAll ? '+' : '−'}${Math.abs(pct - avgAll)}</b><span>${esc(t(pct >= avgAll ? 'mAbove' : 'mBelow'))}</span></div>` : ''}</div>
+      ${S.session ? `<button class="mini" data-share-member="${s.id}">${SHARESVG}<span>${esc(t('mShare'))}</span></button>` : ''}
+    </section>`;
+  if (!of) return `<div class="mpage">${mBack()}${head}${pill}<div class="dpanel"><p class="pcap" style="margin:0">${esc(t('mNoData'))}</p></div></div>`;
+  const ring = `<section class="dpanel mring">
+      <div class="phd"><h2>${esc(t('attendance'))}</h2></div>
+      <div class="donut" style="--pn:${pct}" role="img" aria-label="${pct}%"><svg viewBox="0 0 184 184" aria-hidden="true"><circle class="trk" cx="92" cy="92" r="84"></circle>${pct ? `<circle class="val" cx="92" cy="92" r="84" pathLength="100" style="stroke:${pctTone(pct, avgAll)}"></circle>` : ''}${avgAll !== null ? (() => { const a = avgAll / 100 * 2 * Math.PI; return `<circle class="mavg" cx="${(92 + 84 * Math.cos(a)).toFixed(1)}" cy="${(92 + 84 * Math.sin(a)).toFixed(1)}" r="6.5"></circle>`; })() : ''}</svg><div><strong>${pct}%</strong><span>${esc(t('mOf')(came, of))}</span></div></div>
+      ${avgAll !== null ? `<div class="mavgcap"><i></i>${esc(t('mChoirAvg'))} <b>${avgAll}%</b></div>` : ''}
+      <div class="msplit">
+        ${[[t('mServices'), svc], [t('mRehearsals'), reh]].map(([l, v]) => `<div><span>${esc(l)}</span><div class="pbar"><b style="width:${v.p || 0}%;background:${pctTone(v.p, v.avg)}"></b></div><strong>${v.p === null ? '—' : v.p + '%'}</strong></div>`).join('')}
+      </div></section>`;
+  const stat = (label, val, sub, tone) => `<div class="mstat ${tone}"><span>${esc(label)}</span><strong>${val}</strong><small>${esc(sub)}</small></div>`;
+  const stats = `<section class="dpanel mstats">
+      ${stat(t('mPresent'), came, t('mEvents')(of), 'g')}
+      ${stat(t('mMissed'), of - came, t('mEvents')(of), 'r')}
+      ${stat(t('mStreak'), cur, t('mInRow'), 'b')}
+      ${stat(t('mBest'), best, t('mInRow'), 'y')}
+    </section>`;
+  const chart = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t(unit === 'm' ? 'mByMonth' : unit === 'q' ? 'mByQuarter' : 'mByYear'))}</h2><span class="mlegend"><i></i>${esc(t('mChoirAvg'))}</span></div>
+      <div class="mchart" style="--n:${months.length}">${months.map((m, i) => {
+        const y = m.k.slice(0, 4), prevY = i ? months[i - 1].k.slice(0, 4) : '';
+        const lab = unit === 'y' ? y : unit === 'q' ? m.k.slice(5) : MON[S.lang][+m.k.slice(5, 7) - 1];
+        const full = unit === 'y' ? y : unit === 'q' ? m.k.slice(5) + ' ' + y : MON[S.lang][+m.k.slice(5, 7) - 1] + ' ' + y;
+        const yTag = `<small>${unit !== 'y' && y !== prevY && i ? '’' + y.slice(2) : ''}</small>`;
+        return `<div class="mcol" title="${esc(full)}: ${m.came}/${m.ev.length}">
+          <div class="mtrack"><b style="height:${Math.max(3, m.p)}%;background:${pctTone(m.p, m.avg)}"></b>${m.avg !== null ? `<i style="bottom:${m.avg}%"></i>` : ''}</div>
+          <em>${m.p}%</em><span>${esc(lab)}</span>${yTag}</div>`; }).join('')}</div>
+    </section>`;
+  const last = counted.slice(-24);
+  const strip = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('mRecent'))}</h2><span class="mlegend2"><i class="p"></i>${esc(t('mPresent'))}<i class="a"></i>${esc(t('mMissed'))}</span></div>
+      <div class="mdots">${last.map((e, i) => `<span style="--i:${i}" class="${st(e) === 'present' ? 'p' : 'a'}" title="${esc(fmtPill(e.date) + ' · ' + (e.name || t(e.kind)))}"><i>${esc(MON[S.lang][+e.date.slice(5, 7) - 1])}</i><b>${+e.date.slice(8)}</b><em>${esc(evLabel(e))}</em></span>`).join('')}</div>
+    </section>`;
+  const missed = counted.filter(e => st(e) === 'absent').reverse();
+  const miss = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('mMissedList'))}</h2>${missed.length ? `<span class="pcap" style="margin:0">${missed.length}</span>` : ''}</div>
+      ${missed.length ? `<div class="mmiss${S.mMissAll ? ' all' : ''}">${missed.map(e => { const [, mo, d] = e.date.split('-').map(Number);
+        return `<div class="rsvc"><span class="mdate"><span>${esc(MON[S.lang][mo - 1])}</span><strong>${d}</strong></span><span class="grow2"><strong>${esc(e.name || t(e.kind))}</strong><small>${esc(dayShort(e.date))}</small></span></div>`; }).join('')}</div>
+        <button class="mmore" data-mmiss hidden>${esc(t(S.mMissAll ? 'mLess' : 'mMore'))}</button>`
+        : `<p class="pcap" style="margin:0">${esc(t('mNoneMissed'))}</p>`}
+    </section>`;
+  return `<div class="mpage rip">${mBack()}${head}${pill}<div class="mtop">${ring}${stats}</div>${chart}<div class="mbot">${strip}${miss}</div></div>`;
+}
 function attendanceSummary(){
   const ev = S.events.filter(hasAtt).filter(e => inRange(e.date, S.from, S.to))
     .filter(e => S.sumType === 'all' ? true
@@ -3744,9 +4171,10 @@ function attendanceSummary(){
     if (!rows.length) return '';
     return `<div class="sectbar ${p}">${esc(t(p))}</div>` + rows.map(s => {
       const c = attCount(ev, s.id), pct = c.pct;
-      if (pct === null) return `<div class="li"><div style="width:44%;font-size:var(--fs-15);color:var(--faint)">${esc(s.name)}</div>
+      const nm = S.session ? `<a class="mname" href="${memberLink(s)}">${esc(s.name)}</a>` : esc(s.name);
+      if (pct === null) return `<div class="li"><div style="width:44%;font-size:var(--fs-15);color:var(--faint)">${nm}</div>
         <div class="bar"></div><div class="cnt">0/0</div><div class="pct" style="color:var(--faint)">—</div></div>`;
-      return `<div class="li"><div style="width:44%;font-size:var(--fs-15)">${esc(s.name)}</div>
+      return `<div class="li"><div style="width:44%;font-size:var(--fs-15)">${nm}</div>
         <div class="bar"><i style="width:${pct}%;background:${pct>=50?'var(--green)':pct>=10?'var(--gold)':'var(--red)'}"></i></div>
         <div class="cnt">${c.came}/${c.of}</div>
         <div class="pct" style="color:${pct>=50?'var(--ink)':pct>=10?'var(--gold)':'var(--red)'}">${pct}%</div></div>`;
@@ -3759,7 +4187,7 @@ function songsGrid(top){
   const ev = S.events.filter(e => e.kind !== 'rehearsal' && hasSongs(e) && inRange(e.date, S.from, S.to));
   const songs = S.songs.filter(s => s.active !== false &&
     (S.catFilter === 'all' || s.category_id === S.catFilter) &&
-    (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
+    songMatch(s, S.query));
   if (!ev.length) return (top || '') + `<div class="msg">${esc(t('noEvents'))}</div>`;
   const months = [];
   ev.forEach(e => { const k = monthKey(e.date); const last = months[months.length-1];
@@ -3862,16 +4290,43 @@ function songsPeople(){
       </div>` : '');
     }).join('') + '</div>';
 }
+/* compact sort picker beside the category filter; the column headings do the same */
+const sortSelect = () => `<select class="field" style="width:auto;flex:0 1 auto;max-width:40%" data-song-sort-pick aria-label="${esc(t('sortBy'))}">${
+  [['n','sortTimes'],['new','sortNewest'],['old','sortOldest']].map(([v, k]) =>
+    `<option value="${v}" ${(S.songSort || 'n') === v ? 'selected' : ''}>${esc(t(k))}</option>`).join('')}</select>`;
+/* alphabetical by default; the same three history orders as song history */
+const listSortSelect = key => { const v = (S.listSort || {})[key] || 'az';
+  return `<select class="field" style="width:auto;flex:0 1 auto;max-width:40%" data-list-sort="${key}" aria-label="${esc(t('sortBy'))}">${
+    [['az','sortAZ'],['n','sortTimes'],['new','sortNewest'],['old','sortOldest']].map(([o, k]) =>
+      `<option value="${o}" ${v === o ? 'selected' : ''}>${esc(t(k))}</option>`).join('')}</select>`; };
+function sortSongList(list, key){
+  const mode = (S.listSort || {})[key] || 'az', az = (a, b) => a.title.localeCompare(b.title, 'ru');
+  if (mode === 'az') return list.slice().sort(az);
+  const st = new Map(list.map(s => [s.id, songStats(s.id)]));
+  const L = s => st.get(s.id).lastISO, N = s => st.get(s.id).n;
+  return list.slice().sort(mode === 'n' ? (a, b) => N(b) - N(a) || az(a, b)
+    : mode === 'new' ? (a, b) => (L(b) || '').localeCompare(L(a) || '') || az(a, b)       // never sung goes last
+    : (a, b) => (L(a) || '').localeCompare(L(b) || '') || az(a, b));                       // never sung comes first
+}
 function songsSummary(){
   const rows = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) &&
-      (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())))
+      songMatch(s, S.query))
     .map(s => ({ s, st: songStats(s.id, S.from, S.to) }))
-    .filter(r => r.st.n > 0).sort((a,b) => b.st.n - a.st.n);
+    .filter(r => r.st.n > 0);
+  const srt = S.songSort || 'n', ttl = (a, b) => a.s.title.localeCompare(b.s.title, 'ru');
+  rows.sort(srt === 'old' ? (a, b) => (a.st.lastISO < b.st.lastISO ? -1 : a.st.lastISO > b.st.lastISO ? 1 : 0) || ttl(a, b)
+    : srt === 'new' ? (a, b) => (a.st.lastISO > b.st.lastISO ? -1 : a.st.lastISO < b.st.lastISO ? 1 : 0) || ttl(a, b)
+    : (a, b) => b.st.n - a.st.n || ttl(a, b));
   if (!rows.length) return `<div class="msg">${esc(t('noSongs'))}</div>`;
+  /* the column headers are the sort: Times = most sung, Last flips oldest/newest */
+  const hb = 'background:none;border:0;padding:0;font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:3px;';
+  const on = 'color:var(--ink);font-weight:600;', off = 'color:inherit;';
+  const hTimes = `<button data-song-sort="n" style="${hb}${srt === 'n' ? on : off}" title="${esc(t('sortTimes'))}">${esc(t('times'))}${srt === 'n' ? ' ↓' : ''}</button>`;
+  const hLast = `<button data-song-sort="${srt === 'old' ? 'new' : 'old'}" style="${hb}${srt !== 'n' ? on : off}" title="${esc(t(srt === 'old' ? 'sortNewest' : 'sortOldest'))}">${esc(t('last'))}${srt === 'old' ? ' ↑' : srt === 'new' ? ' ↓' : ''}</button>`;
   const max = Math.max(1, ...rows.map(r => r.st.n));
   return '<div class="sec">' + `<div class="li" style="background:var(--surface-2);font-size:var(--fs-12);color:var(--muted)">
-      <div style="flex:1">${esc(t('song'))}</div><div style="width:54px;text-align:right">${esc(t('times'))}</div>
-      <div style="width:84px;text-align:right">${esc(t('last'))}</div><div class="caret"></div></div>` +
+      <div style="flex:1">${esc(t('song'))}</div><div style="width:54px;display:flex;justify-content:flex-end">${hTimes}</div>
+      <div style="width:84px;display:flex;justify-content:flex-end">${hLast}</div><div class="caret"></div></div>` +
     rows.map(({s,st}) => {
       const open = S.openSong === s.id;
       const dates = open ? songDates(s.id) : [];
@@ -3907,13 +4362,100 @@ function stepper(mode, cur){
   return `<ol class="stepper">${names.map((n, i) => `<li class="${i + 1 < cur ? 'done' : i + 1 === cur ? 'on' : ''}">
       <span class="sn">${i + 1 < cur ? AIC.check : '0' + (i + 1)}</span><span>${esc(n)}</span></li>`).join(`<li class="sx" aria-hidden="true">${AIC.chev}</li>`)}</ol>`;
 }
+/* ---------- upcoming board: every service planned ahead, in date order ---------- */
+const UP_WEEKS = 8;
+const WDS = { en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], ru:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'] };
+const dayShort = iso => { const d = new Date(iso + 'T12:00:00'); return WDS[S.lang][d.getDay()] + ', ' + MON[S.lang][d.getMonth()] + ' ' + d.getDate(); };
+function upcomingBoard(){
+  const now = today(), live = latestService();
+  const lim = new Date(); lim.setDate(lim.getDate() + UP_WEEKS * 7); const limit = localISO(lim);
+  const all = S.events.filter(e => e.kind !== 'rehearsal' && !e.cancelled && e.date >= now && hasSongs(e))
+    .sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : kindRank(a.kind) - kindRank(b.kind));
+  let list = all.filter(e => e.date <= limit), later = all.length - list.length;
+  /* sample mode: made-up services from real songs and people, shown only here, never saved */
+  const demo = !!S.upDemo, demoSongs = {}, demoRows = {};
+  let liveId = live && live.id;
+  if (demo) {
+    const pool = S.songs.slice(), cs = conductors().map(x => x.p.id), ps = pianists().map(x => x.p.id);
+    const sun0 = weekEnd(now), plan = [[0,'morning',4],[0,'evening',3],[1,'morning',4],[2,'evening',3],[3,'morning',4]];
+    let k = 7;
+    list = plan.map(([w, kind, n], i) => {
+      const d = new Date(sun0 + 'T12:00:00'); d.setDate(d.getDate() + w * 7);
+      const id = 'demo' + i; demoSongs[id] = []; demoRows[id] = {};
+      for (let j = 0; j < n && pool.length; j++) { const s = pool[(k = (k * 31 + 17) % pool.length)];
+        if (demoSongs[id].includes(s)) continue; demoSongs[id].push(s);
+        demoRows[id][s.id] = { conductor_id: cs.length ? cs[(i + j) % cs.length] : null, pianist_id: ps.length && j % 2 === 0 ? ps[(i + j) % ps.length] : null }; }
+      return { id, date: localISO(d), kind, name: null };
+    });
+    later = 0; liveId = 'demo' + (new Date().getDay() === 0 && new Date().getHours() >= 12 ? 1 : 0);
+  }
+  const songsOf = e => demo ? demoSongs[e.id] : songsFor(e.id);
+  const rowOf = (e, x) => demo ? demoRows[e.id][x.id] : songRow(e.id, x.id);
+  const status = e => {
+    if (e.id === liveId) return t('upLive');
+    const from = weekStart(e.date);
+    if (from <= now) return e.date === now && e.kind === 'evening' ? t('upNoon') : t('upThisWeek');
+    return t('upFrom')(dayShort(from));
+  };
+  const card = e => { const [, m, d] = e.date.split('-').map(Number), songs = songsOf(e), isLive = e.id === liveId;
+    const act = demo ? ' data-up-demo-act' : '';
+    return `<section class="upc${isLive ? ' live' : ''}${demo ? ' demo' : ''}">
+      <div class="upch"><span class="mdate"><span>${esc(MON[S.lang][m - 1])}</span><strong>${d}</strong></span>
+        <span class="grow2"><span class="upst">${esc(status(e))}</span><strong>${esc(e.name || t(e.kind))}</strong><small>${esc(dayShort(e.date))} · ${esc(t('songsCount')(songs.length))}</small></span></div>
+      <ol class="upcl">${songs.map((x, i) => { const cp = creditPills(rowOf(e, x));
+        return `<li><span class="unum">${i + 1}</span><span class="ub"><span class="tl">${esc(x.title)}</span>${cp ? `<span class="ucr">${cp}</span>` : ''}</span></li>`; }).join('')}</ol>
+      <div class="upca">
+        <button class="mini danger"${demo ? act : ` data-del-event="${e.id}"`}>${esc(t('del'))}</button>
+        ${demo ? `<button class="mini"${act}>${esc(t('upMove'))}</button><button class="mini go"${act}>${esc(t('edit'))}</button>`
+          : `<label class="mini upmv"><span>${esc(t('upMove'))}</span><input type="date" min="${now}" value="${e.date}" data-plan-move="${e.id}" aria-label="${esc(t('upMove'))}"></label>
+        <a class="mini go" href="#/admin/songs/${e.id}">${esc(t('edit'))}</a>`}
+      </div></section>`; };
+  return `<div class="upboard">
+      <div class="uphd"><h2>${esc(t('upTitle'))}</h2><span class="uphr">${list.length && !demo ? `<span>${esc(t('upCount')(list.length))}</span>` : ''}<button class="upsample" data-up-demo>${esc(t(demo ? 'upDemoOff' : 'upDemoOn'))}</button></span></div>
+      ${demo ? `<p class="updemo">${esc(t('upDemoNote'))}</p>` : ''}
+      ${list.length ? `<div class="upgrid">${list.map(card).join('')}</div>` : `<p class="upnone">${esc(t('upNone'))}</p>`}
+      ${later ? `<a class="upmore" href="#/admin/entries/songs">${esc(t('upLater')(later))}</a>` : ''}
+    </div>`;
+}
+async function planMove(id, date){
+  const ev = S.events.find(x => x.id === id);
+  if (!ev || !date || date === ev.date) return;
+  if (S.events.some(x => x.id !== id && x.date === date && x.kind === ev.kind && (x.name || '') === (ev.name || ''))) { alert(t('upClash')); return render(); }
+  if (!await ensureSession()) return render();
+  const res = await sb.from('events').update({ date }).eq('id', id).select();
+  if (!wrote(res)) return render();
+  ev.date = date; S.events.sort((a, b) => a.date < b.date ? -1 : 1);
+  return render();
+}
+/* first Sunday slot (morning, then evening) from this week on with no song order yet */
+function nextOpenSunday(){
+  const now = today(), pm = new Date().getHours() >= 12;
+  let d = weekEnd(now);
+  for (let w = 0; w < 104; w++) {
+    for (const kind of ['morning', 'evening']) {
+      if (d === now && kind === 'morning' && pm) continue;
+      const ev = S.events.find(e => e.date === d && e.kind === kind && !e.name);
+      if (!ev || !hasSongs(ev)) return { date: d, kind };
+    }
+    const n = new Date(d + 'T12:00:00'); n.setDate(n.getDate() + 7); d = localISO(n);
+  }
+  return { date: weekEnd(now), kind: 'morning' };
+}
 function eventPicker(target){
   const kinds = ['rehearsal','morning','evening','other'];
+  if (!S.draftTouched) {           // until the director picks something, suggest a sensible slot
+    if (target === 'songs') Object.assign(S.draft, nextOpenSunday());
+    else {                          // attendance: the nearest Tuesday rehearsal, today if it is Tuesday
+      const d = new Date(); d.setDate(d.getDate() + (9 - d.getDay()) % 7);
+      S.draft.date = localISO(d); S.draft.kind = 'rehearsal';
+    }
+  }
   const inScope = e => target === 'songs'
     ? (e.kind !== 'rehearsal' || hasSongs(e))
     : (hasAtt(e) || !hasSongs(e));
-  const recent = S.events.slice().reverse().filter(inScope).slice(0,4);
-  return `<div class="sec"><div class="card">
+  const pastOnly = e => target !== 'songs' || e.date <= today();   // planned-ahead services live on the board
+  const recent = S.events.slice().reverse().filter(inScope).filter(pastOnly).slice(0,4);
+  return (target === 'songs' ? `<div class="uphd" style="margin:14px 0 10px"><h2>${esc(t('planNew'))}</h2></div>` : '') + `<div class="sec"><div class="card">
       <div class="step">${esc(t('date'))}</div>
       <input class="field" type="date" id="draft-date" value="${S.draft.date}">
       <div class="step" style="margin-top:8px">${esc(t('event'))}</div>
@@ -3925,21 +4467,21 @@ function eventPicker(target){
         <input class="field" id="draft-label" style="width:96px;flex:none;text-align:center" placeholder="${esc(t('shortLabel'))}" value="${esc(S.draft.label)}">
       </div><div style="font-size:var(--fs-12);color:var(--faint)">${esc(t('labelHint'))}</div>` : ''}
       <button class="btn" style="margin-top:8px" data-go="${target}">${esc(t(target==='att'?'markAtt':'chooseSongs'))}</button>
-    </div></div>
+    </div></div>${target === 'songs' ? upcomingBoard() : ''}
     <div class="sec"><div class="pad" style="${S.recentOpen?'':'padding-bottom:14px'}">
-      <button class="step fold" data-recent-toggle aria-expanded="${S.recentOpen?'true':'false'}" style="margin-bottom:${S.recentOpen?'8px':'0'}">${esc(t('recent'))}
+      <button class="step fold" data-recent-toggle aria-expanded="${S.recentOpen?'true':'false'}" style="margin-bottom:${S.recentOpen?'8px':'0'}">${esc(t(target === 'songs' ? 'pastSvc' : 'recent'))}
         <i class="chev${S.recentOpen?' up':''}"></i></button>
       ${S.recentOpen ? `<div data-fold="recent">${recent.map(e => entryRow(e, target)).join('')}
-      ${S.events.filter(inScope).length > recent.length
+      ${S.events.filter(inScope).filter(pastOnly).length > recent.length
         ? `<a class="mini" style="display:flex;justify-content:center" href="#/admin/entries/${target}">${esc(t('olderEntries'))}</a>`
         : ''}</div>` : ''}
     </div></div>
     <div class="sec"><div class="pad" style="${S.exportOpen?'':'padding-bottom:14px'}">
       <button class="step fold" data-export-toggle aria-expanded="${S.exportOpen?'true':'false'}" style="margin-bottom:${S.exportOpen?'8px':'0'}">${esc(t('exportTitle'))}
         <i class="chev${S.exportOpen?' up':''}"></i></button>
-      ${S.exportOpen ? `<div data-fold="export"><div class="chips" style="padding:0 0 10px">
-        ${[['6','exp6'],['12','exp12'],['all','expAll']].map(([v,l]) =>
-          `<button class="${S.exportPreset===v?'on':''}" data-export-preset="${v}">${esc(t(l))}</button>`).join('')}
+      ${S.exportOpen ? `<div data-fold="export"><div style="display:flex;justify-content:center;padding:0 0 12px">${periodPill('export', t('rng' + S.exportPreset),
+        `<div class="chips">${[['6','exp6'],['12','exp12'],['all','expAll']].map(([v,l]) =>
+          `<button class="${S.exportPreset===v?'on':''}" data-export-preset="${v}">${esc(t(l))}</button>`).join('')}</div>`)}
       </div>
       <div style="display:flex;gap:8px">
         <button class="xbtn" data-export="att">${esc(t('exportAtt'))}</button>
@@ -4144,8 +4686,7 @@ function orderCard(){
 function markSongs(ev){
   const E = editFor('songs', ev);
   const picked = E.sel.size;
-  const list = S.songs.filter(s => s.active !== false &&
-    (!S.query || s.title.toLowerCase().includes(S.query.toLowerCase())));
+  const list = sortSongList(S.songs.filter(s => s.active !== false && (S.catFilter === 'all' || s.category_id === S.catFilter) && songMatch(s, S.query)), 'pick');
   /* A 160-song list is a long scroll past the running order, so it folds itself
      away once three songs are picked. S.pickOpen overrides in both directions. */
   const open = S.pickOpen === null ? picked < 3 : S.pickOpen;
@@ -4160,7 +4701,7 @@ function markSongs(ev){
       <span>${esc(t('chooseFrom'))}</span>
       <em>${open ? esc(t('hideList')) : esc(t('showList')(list.length))} ${open?'▴':'▾'}</em>
     </button>` +
-    (open ? `<div class="card">${qField()}</div>` +
+    (open ? `<div class="card"><div class="searchrow sumrow" style="display:flex;gap:8px;padding:0 !important">${qField()}${catSelect()}${listSortSelect('pick')}</div></div>` +
       list.map(s => {
         const on = E.sel.has(s.id);
         return `<div class="li tap ${on?'on':''}" data-toggle-song="${s.id}" data-event="${ev.id}">
@@ -4168,7 +4709,9 @@ function markSongs(ev){
           <div style="flex:1;min-width:0"><div style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}</div>
           ${s.subtitle?`<div class="sub">${esc(s.subtitle)}</div>`:''}
           ${recent[s.id]?`<div class="sub" style="font-style:normal;color:var(--gold-text)">${esc(t('lastSungAgo')(recent[s.id]))}</div>`:''}</div>
-          <div style="font-size:var(--fs-14);color:var(--muted)">${songStats(s.id).n}</div></div>`;
+          ${(() => { const w = lastSungBefore(s.id, ev.date, ev.id);
+            return `<div style="flex:none;margin-left:16px;text-align:right;font-size:var(--fs-12-5);line-height:1.3;font-variant-numeric:tabular-nums;color:${!w ? 'var(--faint)' : recent[s.id] ? 'var(--gold-text)' : 'var(--muted)'}">${esc(w ? fmtShort(w) : t('neverShort'))}</div>`; })()}
+          <div style="flex:none;width:28px;margin-left:14px;text-align:right;font-size:var(--fs-14);font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums">${songStats(s.id).n}</div></div>`;
       }).join('') : '');
   const prev = picked ? null : S.events
     .filter(x => x.kind !== 'rehearsal' && !x.cancelled && x.id !== ev.id && hasSongs(x) && x.date <= ev.date)
@@ -4179,7 +4722,7 @@ function markSongs(ev){
   return `<div class="h"><button class="back" data-cancel-marks="songs">‹</button>
       ${dateBadge(ev)} <span class="n" style="color:var(--blue-text)">${picked}</span>
       <span style="font-size:var(--fs-13);color:var(--muted)">${esc(t('selected'))}</span></div>` +
-    copyBtn + `<div class="sec">` + chooser + `</div>` + orderCard() + creditsCard() +
+    `<div class="sec">` + chooser + `</div>` + orderCard() + creditsCard() +
     saveBar('songs');
 }
 function addFold(key, inner, label){
@@ -4202,9 +4745,9 @@ function catCard(){
     </div>`;
 }
 function manageSongs(){
-  const list = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) && songMatch(s, S.query));
+  const list = sortSongList(S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) && songMatch(s, S.query)), 'rep');
   return adminTabs('list') + admBar(t('songsN')(S.songs.length), `<button class="pbtn" data-add-open="song">＋ ${esc(t('addSong'))}</button>`) +
-    `<div class="searchrow" style="display:flex;gap:8px">${qField('searchPv')}${catSelect()}</div>
+    `<div class="searchrow sumrow" style="display:flex;gap:8px">${qField('searchPv')}${catSelect()}${listSortSelect('rep')}</div>
     <div class="sec">` + (list.length ? list.map(s => { const st = songStats(s.id);
       const meta = [catName(s.category_id), s.subtitle, t('sungN')(st.n, st.last)].filter(Boolean).join(' · ');
       return `<div class="li rrow"><span class="ftile">${AIC.music}</span><div style="flex:1;min-width:0">
@@ -4219,9 +4762,10 @@ const initials = n => String(n || '').trim().split(/\s+/).slice(0, 2).map(w => w
 function personRow(s, note){
   const onSingers = S.memTab === 'singers';
   return `<div class="li mrow ${s.active === false ? 'na' : ''}"><span class="av">${esc(initials(s.name))}</span>
-    <div style="flex:1;min-width:0"><div class="stl">${esc(s.name)}</div>${note ? `<div class="sub">${esc(note)}</div>` : ''}</div>
+    <div style="flex:1;min-width:0"><div class="stl">${onSingers && s.part ? `<a class="mname" href="${memberLink(s)}">${esc(s.name)}</a>` : esc(s.name)}</div>${note ? `<div class="sub">${esc(note)}</div>` : ''}</div>
+    ${onSingers && s.part ? `<a class="ibtn" href="${memberLink(s)}" aria-label="${esc(t('mTitle'))}" title="${esc(t('mTitle'))}">${AIC.chart || AIC.att}</a>` : ''}
     <button class="ibtn" data-edit-singer="${s.id}" aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
-    ${onSingers ? `<button class="tbtn" data-archive-singer="${s.id}">${esc(s.active === false ? t('restore') : t('archive'))}</button>`
+    ${onSingers ? `<button class="ibtn" data-archive-singer="${s.id}" aria-label="${esc(s.active === false ? t('restore') : t('archive'))}" title="${esc(s.active === false ? t('restore') : t('archive'))}">${s.active === false ? AIC.restore : AIC.archive}</button>`
       : `<button class="tbtn" data-drop-role="${s.id}">${esc(t('removeRole'))}</button>`}
     <button class="ibtn danger" data-del-singer="${s.id}" aria-label="${esc(t('del'))}" title="${esc(t('del'))}">${TRASHSVG}</button></div>`;
 }
@@ -4444,7 +4988,7 @@ function sheetsPage(kind){
           ${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}
           ${locked ? `<div class="sub" style="font-style:normal;color:var(--gold)">${esc(t('adminOnly'))}</div>` : ''}
         </div>`;
-      if (busy) return `<div class="sec songc"><div class="li">${left}<div style="color:var(--blue-text);font-weight:600;font-size:var(--fs-14)">${esc(t('uploading'))}</div></div></div>`;
+      if (busy) return `<div class="sec songc${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}"><div class="li">${left}<div style="color:var(--blue-text);font-weight:600;font-size:var(--fs-14)">${esc(t('uploading'))}</div></div></div>`;
       /* Files are served through short-lived signed URLs, so an admin-only PDF
          cannot be opened by guessing its address. */
       const dl = !path ? ''
@@ -4481,8 +5025,8 @@ function sheetsPage(kind){
          back to the left edge to open them */
       const row = `<div class="li${S.session ? ' tap' : ''}"${S.session ? ` data-adm-row="${s.id}"` : ''}>${left}<div class="acts">${listen}${dl}${lyr}${more}</div></div>`
         + (S.admRow === s.id ? admin : '');
-      if (S.audioEdit !== s.id) return `<div class="sec songc">${row}</div>`;
-      return '<div class="sec songc">' + row + `<div class="li audiorow">
+      if (S.audioEdit !== s.id) return `<div class="sec songc${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}">${row}</div>`;
+      return `<div class="sec songc${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}">` + row + `<div class="li audiorow">
           <input class="field" id="audio-${s.id}" type="url" inputmode="url" spellcheck="false"
                  placeholder="${esc(t('audioHint'))}" value="${esc(S.audioDraft)}">
           <div class="acts">
@@ -4585,7 +5129,8 @@ function lyricsView(song){
         <div class="bl">${esc(labels[i])}</div>
         <div class="tx">${esc(b.x)}</div></section>`).join('')}</article>`
     : `<div class="paper"><p class="msg" style="padding:0">${esc(t('lyrEmpty'))}</p></div>`;
-  return `<div class="lyrpage view">${head}${body}</div>`;
+  const toMusic = `<div style="display:flex;justify-content:center;margin:26px 0 6px"><a class="tlink" href="#/sheets" data-view-music="${song.id}">${esc(t('viewMusic'))}${AIC.arrow}</a></div>`;
+  return `<div class="lyrpage view">${head}${body}${toMusic}</div>`;
 }
 /* The editor is three cards down one column: which number the song carries in the
    book, its blocks in singing order, and the paste-a-whole-text shortcut. Save and
@@ -4829,6 +5374,7 @@ function render(){
   }
   else if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) { html += publicNav('piano') + sheetsPage('piano'); }
   else if (r.startsWith('#/sheets')) { html += publicNav('sheets') + sheetsPage('sheets'); }
+  else if (r.startsWith('#/member')) { html += memberPage(r.split('/')[2]); }
   else if (r.startsWith('#/lyrics')) { html += publicNav('lyrics') + lyricsRoute(); }
   else if (r.startsWith('#/usage')) {
     if (S.session && !S.usageLoading && (S.usage === null || String(S.usageFor) !== String(S.usagePeriod))) loadUsage();
@@ -4838,7 +5384,7 @@ function render(){
   else if (r.startsWith('#/seating')) { html += publicNav('seating') + seatingPage(); }
   else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
   else if (r.startsWith('#/songs')) {
-    if (!S.rangeSet && S.preset !== '12') { S.preset = '12'; S.from = shift(12); S.to = today(); }
+    if (!S.rangeSet && S.preset !== '36') { S.preset = '36'; S.from = shift(36); S.to = today(); }
     const tab = r.split('/')[2] || 'summary';      // song history opens on the summary
     const songTabs = `<div class="tabs">
       <a href="#/songs/grid" class="${tab==='grid'?'on':''}">${esc(t('bySong'))}</a>
@@ -4848,7 +5394,7 @@ function render(){
     html += publicNav('songs') + pageHead(t('songs'), t('songsSub'));
     if (tab === 'people') html += songTabs + rangeCtrl('sum') + songsPeople();
     else if (tab === 'summary') html += songTabs + rangeCtrl('sum')
-      + `<div class="searchrow" style="display:flex;gap:8px">${qField()}${catSelect()}</div>` + songsSummary();
+      + `<div class="searchrow sumrow" style="display:flex;gap:8px">${qField()}${catSelect()}${sortSelect()}</div>` + songsSummary();
     else if (tab === 'services') html += songTabs + rangeCtrl('grid') + songsByService();
     else html += songTabs + songsGrid(rangeCtrl('grid')
       + `<div class="searchrow" style="display:flex;gap:8px">${qField()}${catSelect()}</div>`);
@@ -4869,6 +5415,7 @@ function render(){
     if (n) keep[id] = { v: n.value, f: n === document.activeElement, p: n.selectionStart };
   });
   document.getElementById('app').innerHTML = html + adminModal() + toastHTML();
+  requestAnimationFrame(fitMissed);
   Object.entries(keep).forEach(([id, k]) => {
     const n = document.getElementById(id);
     if (n) { n.value = k.v; if (k.f) { n.focus(); try { n.setSelectionRange(k.p, k.p); } catch (err) {} } }
@@ -5057,6 +5604,10 @@ function fail(error, retry){
 
 /* ---------- events ---------- */
 document.addEventListener('change', e => {
+  if (e.target.matches && e.target.matches('[data-song-sort-pick]')) { S.songSort = e.target.value; return render(); }
+  if (e.target.matches && e.target.matches('[data-list-sort]')) { S.listSort = S.listSort || {}; S.listSort[e.target.dataset.listSort] = e.target.value; return render(); }
+  if (e.target.matches && e.target.matches('[data-plan-move]')) { planMove(e.target.dataset.planMove, e.target.value); return; }
+  if (e.target && e.target.id === 'draft-date') { S.draft.date = e.target.value; S.draftTouched = true; return; }
   if (e.target && e.target.id === 'draft-kind') {
     const dEl = document.getElementById('draft-date'); if (dEl) S.draft.date = dEl.value;
     S.draft.kind = e.target.value; return render();
@@ -5081,7 +5632,7 @@ document.addEventListener('click', e => {
   if (a && a.dataset.song) track('audio', a.dataset.song);
 }, true);
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -5091,7 +5642,17 @@ document.addEventListener('click', async e => {
 
   if (d.themeSet) { S.theme = d.themeSet; localStorage.setItem('bsebc-youth-theme', d.themeSet); return paint(render); }
 
-  if (el.hasAttribute('data-toggle-range')) { S.showRange = !S.showRange; return render(); }
+  if (el.hasAttribute('data-toggle-range')) {
+    // open in place so the pill itself grows; no re-render, so it animates both ways
+    const key = el.dataset.toggleRange;
+    let open;
+    if (key) { S.pillOpen = S.pillOpen || {}; open = S.pillOpen[key] = !S.pillOpen[key]; }
+    else open = S.showRange = !S.showRange;
+    const p = el.closest('.rpill');
+    if (!p) return render();
+    p.classList.toggle('open', open); el.setAttribute('aria-expanded', open ? 'true' : 'false');
+    return;
+  }
   if (d.preset) {
     // "All" starts at the earliest entry rather than centuries back
     const first = S.events.reduce((m, e) => e.date < m ? e.date : m, today());
@@ -5108,6 +5669,25 @@ document.addEventListener('click', async e => {
   }
   if (d.peopleRole) { S.peopleRole = d.peopleRole; S.openPerson = null; return render(); }
   if (d.person) { S.openPerson = S.openPerson === d.person ? null : d.person; return render(); }
+  if (d.mpreset) {
+    S.mPreset = d.mpreset; S.mMissAll = false;
+    try { localStorage.setItem('mPreset', d.mpreset); } catch (_) {}
+    const base = (S.route || '').split('?')[0], nr = base + '?p=' + d.mpreset;
+    S.route = nr; history.replaceState(null, '', nr);          // the address bar (and any copy of it) keeps the period
+    return render();
+  }
+  if (el.hasAttribute('data-mmiss')) { S.mMissAll = !S.mMissAll; return render(); }
+  if (d.shareMember) {
+    const s = S.singers.find(x => x.id === d.shareMember); if (!s) return;
+    const url = pageURL(memberLink(s) + '?p=' + memberPreset()), title = s.name + ' · ' + t('mTitle');
+    if (navigator.share) { navigator.share({ title, url }).catch(() => {}); return; }
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(() => okToast(t('mLinkCopied')), () => { legacyCopy(url); okToast(t('mLinkCopied')); });
+    else { legacyCopy(url); okToast(t('mLinkCopied')); }
+    return;
+  }
+  if (el.hasAttribute('data-up-demo-act')) { e.preventDefault(); alert(t('upDemoAct')); return; }
+  if (el.hasAttribute('data-up-demo')) { S.upDemo = !S.upDemo; return render(); }
+  if (d.songSort) { S.songSort = d.songSort; return render(); }
   if (d.songDates) { S.openSong = S.openSong === d.songDates ? null : d.songDates; return render(); }
   if (d.entType) { S.entType = d.entType; S.entPage = 0; return render(); }
   if (d.entYear) { S.entYear = d.entYear; S.entPage = 0; return render(); }
@@ -5116,7 +5696,7 @@ document.addEventListener('click', async e => {
     window.scrollTo(0, 0);
     return render();
   }
-  if (d.kind) { S.draft.kind = d.kind; return render(); }
+  if (d.kind) { const dEl = document.getElementById('draft-date'); if (dEl) S.draft.date = dEl.value; S.draft.kind = d.kind; S.draftTouched = true; return render(); }
 
   if (d.go) {
     const dateEl = document.getElementById('draft-date');
@@ -5129,6 +5709,7 @@ document.addEventListener('click', async e => {
     const row = { date: S.draft.date, kind: S.draft.kind, label, name: S.draft.kind === 'other' ? S.draft.name : null };
     const ev = S.events.find(x => x.date === row.date && x.kind === row.kind && (x.name || '') === (row.name || ''));
     S.pending = ev ? null : row;          // written only when Save is pressed
+    S.draftTouched = false;               // next visit suggests the next open Sunday again
     S.edit = null; S.pickOpen = null; S.query = '';
     location.hash = '#/admin/' + (d.go === 'att' ? 'attendance' : 'songs') + '/' + (ev ? ev.id : 'new');
     return;
@@ -5773,8 +6354,7 @@ window.addEventListener('hashchange', () => {
 
 /* ---------- top-bar song search ----------
    Lives outside render(): typing only redraws the suggestion list, so the field
-   keeps its focus and caret. A pick opens the words if there are any, otherwise
-   the song's row in Choir music. */
+   keeps its focus and caret. A pick opens Choir music and flashes the song's row. */
 let tsSel = 0;
 function tsList(q){
   q = (q || '').trim();
@@ -5785,16 +6365,18 @@ function tsList(q){
       || a.title.localeCompare(b.title, 'ru'))
     .slice(0, 8);
 }
+const tsInput = () => { const a = document.activeElement;
+  return a && a.classList && a.classList.contains('tsin') ? a : document.getElementById(S.msOpen ? 'msearch' : 'tsearch'); };
 function tsDraw(){
-  const inp = document.getElementById('tsearch'), box = document.querySelector('.tsugg');
+  const inp = tsInput(), box = inp && inp.closest('.findsong,.msrch') ? inp.closest('.findsong,.msrch').querySelector('.tsugg') : null;
   if (!inp || !box) return;
   const q = inp.value, list = tsList(q);
   if (!q.trim()) { box.hidden = true; box.innerHTML = ''; inp.setAttribute('aria-expanded', 'false'); return; }
   tsSel = Math.min(tsSel, Math.max(0, list.length - 1));
   box.innerHTML = list.length ? list.map((s, i) => `<a href="#" role="option" data-ts="${s.id}" class="${i === tsSel ? 'on' : ''}" aria-selected="${i === tsSel}">
-      <span class="tsi">${hasLyrics(s) ? AIC.lyrics : AIC.sheets}</span>
+      <span class="tsi">${AIC.sheets}</span>
       <span class="grow2"><span class="tst">${esc(s.title)}${pvTag(s)}</span>${catName(s.category_id) ? `<span class="tsm">${esc(catName(s.category_id))}</span>` : ''}</span>
-      <em>${esc(hasLyrics(s) ? t('lyrView') : t('tSheets'))}</em></a>`).join('')
+      <em>${esc(t('tSheets'))}</em></a>`).join('')
     : `<div class="tsnone">${esc(t('noSongs'))}</div>`;
   box.hidden = false;
   inp.setAttribute('aria-expanded', 'true');
@@ -5802,18 +6384,68 @@ function tsDraw(){
 function tsGo(id){
   const s = S.songs.find(x => x.id === id);
   if (!s) return;
-  const inp = document.getElementById('tsearch');
-  if (inp) { inp.value = ''; inp.blur(); }
-  if (hasLyrics(s)) { location.hash = '#/lyrics/' + shortId(s.id); return; }
-  S.query = s.title; S.catFilter = 'all';
-  if (location.hash === '#/sheets') render(); else location.hash = '#/sheets';
+  document.querySelectorAll('.tsin').forEach(i => { i.value = ''; i.blur(); });
+  msClose();
+  showInSheets(id);
 }
-document.addEventListener('input', e => { if (e.target.id === 'tsearch') { tsSel = 0; tsDraw(); } });
-document.addEventListener('focusin', e => { if (e.target.id === 'tsearch') tsDraw(); });
+/* open Choir music with the whole list, bring the song's row into view and keep it
+   highlighted. The highlight is state (S.hiSong) rendered as a class, so a redraw
+   while the page loads can't wipe it; it clears once the reader scrolls on. */
+function showInSheets(id){
+  S.query = ''; S.catFilter = 'all'; S.hiSong = id;
+  if (location.hash === '#/sheets') render(); else location.hash = '#/sheets';
+  let tries = 0;
+  const find = () => {
+    const row = document.querySelector('[data-srow="' + id + '"]');
+    if (!row) { if (++tries < 30) setTimeout(find, 60); return; }
+    requestAnimationFrame(() => {
+      const r = row.getBoundingClientRect();
+      window.scrollTo({ top: Math.max(0, window.scrollY + r.top - window.innerHeight / 2 + r.height / 2), behavior: 'smooth' });
+      setTimeout(() => {
+        const base = window.scrollY;
+        const onScroll = () => {
+          if (S.hiSong !== id) return window.removeEventListener('scroll', onScroll);
+          if (Math.abs(window.scrollY - base) > 80) { clearHi(); window.removeEventListener('scroll', onScroll); }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }, 1000);                                  // after the smooth scroll has settled
+    });
+  };
+  setTimeout(find, 80);
+}
+function clearHi(){ S.hiSong = null; document.querySelectorAll('[data-srow].hi').forEach(r => r.classList.remove('hi')); }
+const isTs = el => el && el.classList && el.classList.contains('tsin');
+document.addEventListener('input', e => { if (isTs(e.target)) { tsSel = 0; tsDraw(); } });
+document.addEventListener('focusin', e => { if (isTs(e.target)) tsDraw(); });
 document.addEventListener('focusout', e => {
-  if (e.target.id !== 'tsearch') return;
-  setTimeout(() => { const b = document.querySelector('.tsugg'); if (b && document.activeElement !== e.target) b.hidden = true; }, 120);
+  if (!isTs(e.target)) return;
+  const b = e.target.closest('.findsong,.msrch') && e.target.closest('.findsong,.msrch').querySelector('.tsugg');
+  setTimeout(() => { if (b && document.activeElement !== e.target) b.hidden = true; }, 120);
 });
+/* phone search: the field grows out of the button in place, so opening it focuses
+   the input inside the same tap (that is what brings the keyboard up on iOS) */
+function msOpen(){
+  const m = document.querySelector('.mast'), i = document.getElementById('msearch');
+  if (!m || !i) return;
+  S.msOpen = true; m.classList.add('msopen');
+  m.querySelectorAll('.msrch [tabindex]').forEach(x => x.tabIndex = 0);
+  i.focus({ preventScroll: true });
+}
+function msClose(){
+  const m = document.querySelector('.mast'), i = document.getElementById('msearch');
+  S.msOpen = false;
+  if (i) { i.value = ''; i.blur(); }
+  if (m) { m.classList.remove('msopen'); m.querySelectorAll('.msrch [tabindex]').forEach(x => x.tabIndex = -1);
+    const b = m.querySelector('.tsugg'); if (b) { b.hidden = true; b.innerHTML = ''; } }
+}
+document.addEventListener('click', e => {
+  const v = e.target.closest && e.target.closest('[data-view-music]');
+  if (v) { e.preventDefault(); e.stopPropagation(); showInSheets(v.dataset.viewMusic); return; }
+  const o = e.target.closest && e.target.closest('[data-msearch-open],[data-msearch-close]');
+  if (!o) return;
+  e.preventDefault(); e.stopPropagation();
+  if (o.hasAttribute('data-msearch-open')) msOpen(); else msClose();
+}, true);
 document.addEventListener('mousedown', e => {
   const a = e.target.closest && e.target.closest('[data-ts]');
   if (a) { e.preventDefault(); tsGo(a.dataset.ts); }
@@ -5823,7 +6455,7 @@ document.addEventListener('click', e => {
   if (a) { e.preventDefault(); e.stopPropagation(); }
 }, true);
 document.addEventListener('keydown', e => {
-  if (e.target.id !== 'tsearch') return;
+  if (!isTs(e.target)) return;
   const list = tsList(e.target.value);
   if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
     e.preventDefault();
@@ -5834,18 +6466,21 @@ document.addEventListener('keydown', e => {
     e.preventDefault();
     if (list[tsSel]) tsGo(list[tsSel].id);
   } else if (e.key === 'Escape') {
+    if (e.target.id === 'msearch') return msClose();
     e.target.value = ''; tsDraw(); e.target.blur();
   }
 });
 window.addEventListener('hashchange', () => {
   S.reviewKey = null;
   S.ripple = true;
-  const prevPage = (S.route || '').split('?')[0];
+  const prevPage = (S.route || '').split('?')[0], prevFull = S.route || '';
   S.route = normRoute(location.hash);
+  if (S.route.startsWith('#/member') && prevFull && !prevFull.startsWith('#/member')) S.memberFrom = prevFull;   // where the report card was opened from
   if (S.route.split('?')[0] !== prevPage) window.scrollTo(0, 0);
   prefetchSheets();
   trackRoute();
-  S.menuOpen = false;
+  S.menuOpen = false; S.msOpen = false;
+  if (!S.route.startsWith('#/sheets')) S.hiSong = null;
   document.body.classList.remove('mlock');
   if (!/^#\/admin\/(attendance|songs)\/.+/.test(S.route)) { S.edit = null; S.pending = null; }
   if (!S.route.startsWith('#/seating')) { S.seatEdit = null; S.seatSel = null; }
