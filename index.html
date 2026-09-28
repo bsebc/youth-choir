@@ -250,6 +250,15 @@
   .s .st{vertical-align:middle}
   .subrow .dc{flex:none;text-align:right}
   .subrow .dc .who{margin-left:6px}
+  .subrow .dr{align-items:center}
+  .subrow .dk{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .subrow .dc{display:flex;gap:6px;flex:none}
+  .subrow .dd2{flex:none;font-size:var(--fs-13);font-variant-numeric:tabular-nums;color:var(--ink)}
+  .subrow .kb{display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;font-size:11px;font-weight:600;line-height:1.3;padding:2px 7px;border-radius:6px;background:var(--surface);border:1px solid var(--card-line);color:var(--text-2)}
+  .subrow .kb.cx{color:var(--red)}
+  .subrow .sm{display:none}
+  @media (max-width:699px){ .subrow .dr{gap:8px} .subrow .lg{display:none} .subrow .sm{display:inline} .subrow .dc{flex:0 1 auto;min-width:0;overflow:hidden} }
+  .subrow .dc .who{margin-left:0 !important}
   .dpick{position:relative;flex:1;min-width:0;display:block}
   .dpick span{display:block;border:1px solid var(--rule);border-radius:var(--r-md);background:var(--surface-2);
     padding:10px 11px;font-size:var(--fs-15);line-height:1.2;color:var(--ink);text-align:center;
@@ -1327,16 +1336,20 @@
   .pcap{margin:2px 0 0;font-size:12.5px;color:var(--muted);line-height:1.5}
   /* the ring and the part bars fill in each time the overview is opened */
   @property --p{syntax:'<percentage>';inherits:false;initial-value:0%}
+  @property --pn{syntax:'<number>';inherits:true;initial-value:0}
   .datt.rip .donut{animation:donutfill 1.3s cubic-bezier(.3,.7,.2,1) .2s both}
-  @keyframes donutfill{from{--p:0%}}
+  @keyframes donutfill{from{--pn:0}}
   .datt.rip .pbar b{animation:barfill 1s cubic-bezier(.3,.7,.2,1) both}
   .datt.rip .prow:nth-child(1) .pbar b{animation-delay:.55s} .datt.rip .prow:nth-child(2) .pbar b{animation-delay:.65s}
   .datt.rip .prow:nth-child(3) .pbar b{animation-delay:.75s} .datt.rip .prow:nth-child(4) .pbar b{animation-delay:.85s}
   @keyframes barfill{from{width:0}}
   @media (prefers-reduced-motion:reduce){ .datt.rip .donut,.datt.rip .pbar b{animation:none} }
-  .donut{--p:0%;width:184px;height:184px;flex:none;border-radius:50%;margin:24px auto 16px;display:grid;place-items:center;
-    background:conic-gradient(from -90deg,var(--blue-hover) 0%,var(--blue) var(--p),var(--paper) var(--p) 100%)}
-  .donut > div{width:152px;height:152px;border-radius:50%;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .donut{width:184px;height:184px;flex:none;border-radius:50%;margin:24px auto 16px;display:grid;place-items:center;position:relative}
+  .donut svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
+  .donut circle{fill:none;stroke-width:16}
+  .donut .trk{stroke:var(--paper)}
+  .donut .val{stroke:var(--blue);stroke-linecap:round;stroke-dasharray:calc(var(--pn) * 1px) 200px}
+  .donut > div{position:relative;width:152px;height:152px;border-radius:50%;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center}
   .donut strong{font-size:38px;font-weight:650;letter-spacing:-1.3px;line-height:1.1;font-variant-numeric:tabular-nums}
   .donut span{font-size:12px;color:var(--muted);margin-top:3px}
   .akey{display:flex;justify-content:center;gap:20px;font-size:12px;color:var(--muted);margin-bottom:18px}
@@ -1372,11 +1385,13 @@
   .recent{display:flex;flex-direction:column;margin-top:-6px}
   .rsvc{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--rule);color:var(--ink)}
   .rsvc:last-child{border-bottom:0;padding-bottom:0}
-  .mdate{width:40px;height:44px;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface-2);
-    border:1px solid var(--card-line);border-radius:9px;line-height:1.15}
-  .mdate span{font-size:9.5px;text-transform:uppercase;color:var(--muted);letter-spacing:.04em}
-  .mdate strong{font-size:16px;font-weight:650}
   .rsvc strong{display:block;font-size:14px;font-weight:600;transition:color .15s ease}
+  /* a little tear-off calendar: coloured month band over the day */
+  .rsvc .mdate{position:relative;width:42px;height:46px;flex:none;display:flex;flex-direction:column;overflow:hidden;background:var(--card);
+    border:1px solid var(--card-line);border-radius:9px;line-height:1;box-shadow:0 1px 0 var(--card-line),0 3px 8px -5px rgba(var(--shadow-rgb),.35)}
+  .rsvc .mdate span{flex:none;display:block;padding:4px 0 3px;text-align:center;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+    background:var(--blue);color:#fff}
+  .rsvc .mdate strong{flex:1;display:grid;place-items:center;font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--ink);font-variant-numeric:tabular-nums}
   .rsvc small{display:block;font-size:12px;color:var(--muted);margin-top:3px}
   .rsvc > .ai{width:16px;height:16px;color:var(--faint)}
   .dadmin{display:flex;align-items:center;gap:14px;margin-top:20px;background:var(--card);border:1px solid var(--card-line);border-radius:16px;
@@ -1396,7 +1411,7 @@
   @media (min-width:700px) and (max-width:1399px){ .dbottom .dadm{grid-column:1 / -1} }
   .dadm .phd{margin-bottom:16px}
   .reslist.four{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .reslist.four .res strong{margin-top:0}
+  .reslist.four .res strong{margin-top:12px}
   .dadm.out{display:flex;flex-direction:row;align-items:center;gap:14px;padding:16px 18px}
   .dadm.out .grow2{flex:1;min-width:0}
   .dadm.out .rico{margin:0;flex:none}
@@ -1785,6 +1800,21 @@
   @media (max-width:999px) and (prefers-reduced-motion:reduce){ .dock{--dk-dur:.2s} }
   /* phones: no scroll indicator, so it feels like an app (Safari 18.2+ honours scrollbar-width) */
   @media (max-width:999px){ html,body,.scroll{scrollbar-width:none} html::-webkit-scrollbar,body::-webkit-scrollbar,.scroll::-webkit-scrollbar{display:none;width:0;height:0} }
+  /* printed lyrics: only the sheet, filling the page */
+  #lyrprint{position:fixed;left:-10000px;top:0;width:7.25in;visibility:hidden;font-family:inherit;color:#111;--pfs:16px}
+  #lyrprint header{text-align:center;margin:0 0 calc(var(--pfs) * 1.4);padding-bottom:calc(var(--pfs) * .7);border-bottom:1.5px solid #b8952a}
+  #lyrprint h1{margin:0;font-size:calc(var(--pfs) * 1.8);font-weight:700;letter-spacing:-.01em;line-height:1.15;text-wrap:balance}
+  #lyrprint header p{margin:calc(var(--pfs) * .35) 0 0;font-size:calc(var(--pfs) * .72);color:#555}
+  #lyrprint .pb{column-gap:.45in}
+  #lyrprint section{break-inside:avoid;margin:0 0 calc(var(--pfs) * 1.05)}
+  #lyrprint .bl{font-size:calc(var(--pfs) * .62);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a6d12;margin-bottom:calc(var(--pfs) * .2)}
+  #lyrprint .tx{font-size:var(--pfs);line-height:1.45;white-space:pre-wrap}
+  @media print{
+    @page{margin:.5in}
+    html,body{background:#fff !important}
+    body > *:not(#lyrprint){display:none !important}
+    #lyrprint{position:static;visibility:visible;width:auto}
+  }
 </style>
 </head>
 <body>
@@ -1878,7 +1908,7 @@ const STR = {
     tLyrics:'Lyrics',tLyricsSub:'The words as we sing them, ready to copy',
     lyrWith:n=>n+' with lyrics',noLyricsYet:'No lyrics yet',needsLyrics:'Needs lyrics',lyrHave:'Have lyrics',lyrNeed:'Need lyrics',
     lyrAll:'All lyrics',lyrEmpty:'No lyrics have been added for this song yet.',
-    lyrView:'Text',copyLyrics:'Copy text',lyrCopied:'Text copied.',
+    lyrView:'Text',copyLyrics:'Copy text',printLyrics:'Print',lyrCopied:'Text copied.',
     editLyrics:'Edit text',addLyrics:'Add text',lyrSaved:'Text saved.',
     bkVerse:'Verse',bkChorus:'Chorus',bkBridge:'Bridge',bkEnd:'Ending',
     dupBlock:'Duplicate',delBlockQ:'Delete this block?',
@@ -2012,7 +2042,7 @@ const STR = {
     tLyrics:'Тексты песен',tLyricsSub:'Слова так, как мы их поём — готово к копированию',
     lyrWith:n=>'с текстом: '+n,noLyricsYet:'Текста пока нет',needsLyrics:'Без текста',lyrHave:'С текстом',lyrNeed:'Без текста',
     lyrAll:'Все тексты',lyrEmpty:'Для этой песни текст ещё не добавлен.',
-    lyrView:'Текст',copyLyrics:'Копировать текст',lyrCopied:'Текст скопирован.',
+    lyrView:'Текст',copyLyrics:'Копировать текст',printLyrics:'Печать',lyrCopied:'Текст скопирован.',
     editLyrics:'Изменить текст',addLyrics:'Добавить текст',lyrSaved:'Текст сохранён.',
     bkVerse:'Куплет',bkChorus:'Припев',bkBridge:'Бридж',bkEnd:'Концовка',
     dupBlock:'Дублировать',delBlockQ:'Удалить этот блок?',
@@ -2159,13 +2189,17 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.1.14';
+const VERSION = '5.2.2';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Attendance now opens on the summary; the grid is one tab away',
+    'The attendance ring on the overview has smooth, rounded ends',
+    'A Print button on each song’s lyrics: a clean sheet with the words sized to fill the page',
+    'In song history, each service is one line: the date, a small service badge, then the conductor and pianist',
     'In Russian, Sunday services are now called “Воскресенье Утро” and “Воскресенье Вечер” everywhere',
     'On phones the grey scroll bar on the side is hidden',
     'On iPhone the tab bar now responds right away, even while the page is still scrolling',
@@ -2192,6 +2226,10 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'Посещаемость теперь открывается на сводке; таблица — на соседней вкладке',
+    'Кольцо посещаемости на обзоре теперь с ровными скруглёнными краями',
+    'Кнопка «Печать» на странице текста песни: аккуратный лист, где слова заполняют всю страницу',
+    'В истории песен каждое служение — одна строка: дата, небольшой значок служения, дирижёр и пианист',
     'Воскресные служения теперь везде называются «Воскресенье Утро» и «Воскресенье Вечер»',
     'На телефоне серая полоса прокрутки сбоку скрыта',
     'На iPhone нижняя панель теперь срабатывает сразу, даже пока страница ещё прокручивается',
@@ -2921,6 +2959,7 @@ const AIC = {
   share: AI('<path d="M12 15V2M8 6l4-4 4 4"></path><path d="M7 9H4v12h16V9h-3"></path>'),
   cal: AI('<rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path>'),
   check: AI('<path d="m4 12 5 5L20 6"></path>'),
+  plan: AI('<path d="M4 6h11M4 11h11M4 16h6"></path><path d="M18 18V7.5l3 1.2"></path><circle cx="16" cy="18" r="2.2"></circle>'),
   headphones: AI('<path d="M3 15v-3a9 9 0 0 1 18 0v3"></path><rect x="3" y="12" width="4" height="8" rx="2"></rect><rect x="17" y="12" width="4" height="8" rx="2"></rect>'),
   more: '<svg class="ai" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="19" cy="12" r="1.7"></circle></svg>',
   sun: AI('<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"></path>'),
@@ -3014,7 +3053,7 @@ function dock(){
   const a = (href, key, label) => `<a href="${href}" data-tab="${key}" class="${k===key?'on':''}" aria-label="${esc(label)}">${ic(key)}<em class="dkl">${esc(label)}</em></a>`;
   return `<nav class="dock" aria-label="Tabs"><i class="dpill" aria-hidden="true"></i>
     ${a('#/home','home', t('home'))}
-    ${a('#/attendance/grid','att', t('attendance'))}
+    ${a('#/attendance/summary','att', t('attendance'))}
     ${a('#/songs/summary','songs', t('dkSongs'))}
     ${a('#/sheets','music', t('dkMusic'))}
     <button data-menu class="${S.menuOpen || k==='more'?'on':''}" aria-label="${esc(t('more'))}" aria-expanded="${S.menuOpen?'true':'false'}">${ic('more')}<em class="dkl">${esc(t('more'))}</em></button>
@@ -3304,7 +3343,7 @@ function drawerNav(){
     <div class="dchurch"><span class="demb">${esc(CHURCH.mark)}</span><div><strong>${esc(CHURCH.name)}</strong></div></div>
     ${sec('navWork')}
     ${it('#/home', r.startsWith('#/home'), AIC.home, t('overview'))}
-    ${it('#/attendance/grid', r.startsWith('#/attendance'), AIC.att, t('attendance'))}
+    ${it('#/attendance/summary', r.startsWith('#/attendance'), AIC.att, t('attendance'))}
     ${it('#/songs/summary', r.startsWith('#/songs'), AIC.hist, t('songs'))}
     ${sec('navLib')}
     ${it('#/sheets', r.startsWith('#/sheets') && !piano, AIC.sheets, t('tSheets'), S.songs.filter(x => x.pdf_path).length)}
@@ -3462,7 +3501,7 @@ function homePage(){
     att = `<section class="dpanel datt${S.ripple ? ' rip' : ''}">
       <div class="phd"><h2>${esc(t('lastAtt'))}</h2>${AIC.att}</div>
       <p class="pcap">${esc(lastEv.name || t(lastEv.kind))} · ${esc(fmtLong(lastEv.date))}</p>
-      <div class="donut" style="--p:${rate}%" role="img" aria-label="${rate}% ${esc(t('present'))}"><div><strong>${rate}%</strong><span>${esc(t('present'))}</span></div></div>
+      <div class="donut" style="--pn:${rate}" role="img" aria-label="${rate}% ${esc(t('present'))}"><svg viewBox="0 0 184 184" aria-hidden="true"><circle class="trk" cx="92" cy="92" r="84"></circle>${rate ? '<circle class="val" cx="92" cy="92" r="84" pathLength="100"></circle>' : ''}</svg><div><strong>${rate}%</strong><span>${esc(t('present'))}</span></div></div>
       <div class="akey"><span><i></i><b>${here}</b> ${esc(t('present'))}</span><span><i></i><b>${inIt.length - here}</b> ${esc(t('absent'))}</span></div>
       <div class="parts">${bars}</div>
       <div class="pfoot c"><a href="#/attendance/grid">${esc(t('viewAtt'))}${AIC.arrow}</a></div>
@@ -3492,7 +3531,7 @@ function homePage(){
       <div class="phd"><h2>${esc(t('dirWs'))}</h2><a class="tlink" href="#/admin/attendance">${esc(t('tAdmin'))}${AIC.arrow}</a></div>
       <div class="reslist four">
         ${qa('#/admin/attendance', 'attendance', AIC.att, 'r1')}
-        ${qa('#/admin/songs', 'songQueue', AIC.hist, 'r2')}
+        ${qa('#/admin/songs', 'songQueue', AIC.plan, 'r2')}
         ${qa('#/admin/songlist', 'repertoire', AIC.music, 'r3')}
         ${qa('#/admin/members', 'members', AIC.user, 'r4')}
       </div>
@@ -3746,9 +3785,9 @@ function songsSummary(){
       (open ? `<div class="subrow">
         <div class="dh">${esc(t('songDates'))} <span>${esc(t('inRangeN')(dates.length))}</span></div>
         ${dates.map(e => `<div class="dr">
-          <div class="dd">${esc(fmtLong(e.date))}</div>
-          <div class="dk ${e.cancelled?'cx':''}">${esc(e.name || t(e.kind))}${
-            e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</div>
+          <div class="dd2"><span class="lg">${esc(fmtPill(e.date))}</span><span class="sm">${esc(MON[S.lang][+e.date.slice(5,7)-1] + ' ' + +e.date.slice(8))}</span></div>
+          <div class="dk"><span class="kb${e.cancelled?' cx':''}"><span class="lg">${esc(e.name || t(e.kind))}</span><span class="sm">${esc(e.name || (KBSHORT[S.lang] || {})[e.kind] || t(e.kind))}</span>${
+            e.cancelled ? ' · ' + esc(t('cancelledEvent')) : ''}</span></div>
           <div class="dc">${creditPills(songRow(e.id, s.id))}</div></div>`).join('')}
       </div>` : '');
     }).join('') + '</div>';
@@ -4221,6 +4260,30 @@ function fmtShareDate(iso){ const [y,m,d] = iso.split('-').map(Number);
    (Воскресенье Вечер) rather than the adjectival form the UI uses elsewhere. */
 const SHKIND = { ru:{ morning:'Воскресенье Утро', evening:'Воскресенье Вечер' } };
 function kindWord(ev){ const map = SHKIND[S.lang] || {}; return map[ev.kind] || t(ev.kind); }
+const KBSHORT = { en:{ morning:'Morning', evening:'Evening' }, ru:{ morning:'Утро', evening:'Вечер' } };
+const PRINTSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"></path><rect x="3" y="9" width="18" height="8" rx="2"></rect><path d="M7 14h10v7H7z"></path></svg>';
+/* Printing a song: a clean sheet built outside the app, sized to fill one page.
+   The text is measured at page size in one and two columns and the larger type wins. */
+function printLyrics(song){
+  const blocks = Array.isArray(song.lyrics) ? song.lyrics : [];
+  if (!blocks.length) return;
+  const labels = blockLabels(blocks);
+  const meta = [song.pv_number ? '№ ' + song.pv_number + ' · Песнь возрождения' : '', song.subtitle || ''].filter(Boolean).join(' · ');
+  let pr = document.getElementById('lyrprint'); if (pr) pr.remove();
+  pr = document.createElement('div'); pr.id = 'lyrprint';
+  pr.innerHTML = `<header><h1>${esc(song.title)}</h1>${meta ? `<p>${esc(meta)}</p>` : ''}</header>
+    <div class="pb">${blocks.map((b, i) => `<section><div class="bl">${esc(labels[i])}</div><div class="tx">${esc(b.x)}</div></section>`).join('')}</div>`;
+  document.body.appendChild(pr);
+  const H = 9.7 * 96, body = pr.querySelector('.pb');
+  const fits = (fs, cols) => { pr.style.setProperty('--pfs', fs + 'px'); body.style.columnCount = cols; return pr.scrollHeight <= H; };
+  const best = cols => { let lo = 9, hi = 30; while (hi - lo > 0.25) { const m = (lo + hi) / 2; if (fits(m, cols)) lo = m; else hi = m; } return lo; };
+  const one = best(1), two = best(2);
+  const cols = two > one * 1.2 ? 2 : 1, fs = cols === 2 ? two : one;
+  fits(fs, cols);
+  const done = () => { pr.remove(); window.removeEventListener('afterprint', done); };
+  window.addEventListener('afterprint', done);
+  window.print();
+}
 function shareWhen(ev){
   const kind = ev.kind === 'other' ? (ev.name || ev.label || t('other')) : kindWord(ev);
   return kind + ', ' + fmtShareDate(ev.date);
@@ -4411,6 +4474,7 @@ function lyricsView(song){
       <div class="lyrwho"><h1 class="tl">${esc(song.title)}</h1>${meta ? `<div class="mt">${esc(meta)}</div>` : ''}</div>
       <div class="acts">
         ${blocks.length ? `<button class="mini go" data-lyr-copy="${song.id}">${COPYSVG}<span>${esc(t('copyLyrics'))}</span></button>` : ''}
+        ${blocks.length ? `<button class="mini" data-lyr-print="${song.id}">${PRINTSVG}<span>${esc(t('printLyrics'))}</span></button>` : ''}
         ${S.session ? `<button class="mini" data-lyr-edit="${song.id}">${esc(blocks.length ? t('editLyrics') : t('addLyrics'))}</button>` : ''}
       </div>
     </div>
@@ -4689,7 +4753,7 @@ function render(){
       + `<div class="searchrow" style="display:flex;gap:8px">${qField()}${catSelect()}</div>`);
   }
   else {
-    const tab = r.split('/')[2] || 'grid';
+    const tab = r.split('/')[2] || 'summary';
     const attTabs = `<div class="tabs">
       <a href="#/attendance/grid" class="${tab==='grid'?'on':''}">${esc(t('grid'))}</a>
       <a href="#/attendance/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
@@ -4916,7 +4980,7 @@ document.addEventListener('click', e => {
   if (a && a.dataset.song) track('audio', a.dataset.song);
 }, true);
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -5205,6 +5269,7 @@ document.addEventListener('click', async e => {
     if (lyrDirty() && !confirm(t('discardQ'))) return;
     S.lyrFor = null; S.lyrDraft = null; return render();
   }
+  if (d.lyrPrint) { const song = S.songs.find(x => x.id === d.lyrPrint); if (song) printLyrics(song); return; }
   if (d.lyrCopy) {
     const song = S.songs.find(x => x.id === d.lyrCopy);
     if (!song || !hasLyrics(song)) return;
