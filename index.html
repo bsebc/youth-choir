@@ -1783,6 +1783,8 @@
     .wrap{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
   }
   @media (max-width:999px) and (prefers-reduced-motion:reduce){ .dock{--dk-dur:.2s} }
+  /* phones: no scroll indicator, so it feels like an app (Safari 18.2+ honours scrollbar-width) */
+  @media (max-width:999px){ html,body,.scroll{scrollbar-width:none} html::-webkit-scrollbar,body::-webkit-scrollbar,.scroll::-webkit-scrollbar{display:none;width:0;height:0} }
 </style>
 </head>
 <body>
@@ -1921,14 +1923,14 @@ const STR = {
   ru:{attendance:'Посещаемость',songs:'История песен',signin:'Вход',signout:'Выйти',grid:'Сетка',summary:'Сводка',
     bySong:'По песням',byService:'Служения',all:'Всё',services:'Служения',rehearsals:'Спевки',m3:'3 мес',m6:'Полгода',year:'Год',
     singer:'Хорист',song:'Песня',times:'Всего',last:'Последний',present:'был',absent:'не был',notListed:'ещё не в хоре',service:'служение',
-    sung:'пели в это служение',labels:'Ут — утреннее · Вч — вечернее · Сп — спевка',
+    sung:'пели в это служение',labels:'Ут — утро · Вч — вечер · Сп — спевка',
     admin:'Админка',songList:'Список песен',songQueue:'Служение',allSongs:'Все песни',members:'Состав',whoCame:'Кто был',absentN:'отсутствуют',whatSang:'Что пели',selected:'выбрано',
     autosave:'Ничего не сохраняется, пока вы не нажмёте «Сохранить».',done:'Готово',date:'1 · ДАТА',event:'2 · СОБЫТИЕ',
     save:'Сохранить',cancel:'Отмена',savedOk:'Сохранено.',
     unsavedN:n=>n+(n===1?' несохранённое изменение':n<5?' несохранённых изменения':' несохранённых изменений'),
     noChanges:'Изменений пока нет',newEntry:'Новая запись — ещё не сохранена',
     discardQ:'Выйти без сохранения? Отметки на этой странице будут потеряны.',
-    rehearsal:'Спевка',morning:'Воскресное утреннее',evening:'Воскресное вечернее',other:'Другое событие',
+    rehearsal:'Спевка',morning:'Воскресенье Утро',evening:'Воскресенье Вечер',other:'Другое событие',
     eventName:'Название события',shortLabel:'Метка',labelHint:'Короткая метка показывается под датой в сетке — 1–2 буквы.',
     changeDate:'Изменить дату',markAtt:'Отметить посещаемость →',chooseSongs:'Выбрать песни →',recent:'ПОСЛЕДНИЕ ЗАПИСИ',edit:'Изм.',del:'Удал.',
     allEntries:'Все записи',olderEntries:'Более ранние записи →',entriesN:n=>'записей: '+n,noEntries:'Пока ничего не записано',
@@ -2157,13 +2159,15 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.1.12';
+const VERSION = '5.1.14';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'In Russian, Sunday services are now called “Воскресенье Утро” and “Воскресенье Вечер” everywhere',
+    'On phones the grey scroll bar on the side is hidden',
     'On iPhone the tab bar now responds right away, even while the page is still scrolling',
     'The phone tab bar is a little slimmer',
     'On a song’s lyrics page, Copy text and Edit text now sit beside the title',
@@ -2188,6 +2192,8 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'Воскресные служения теперь везде называются «Воскресенье Утро» и «Воскресенье Вечер»',
+    'На телефоне серая полоса прокрутки сбоку скрыта',
     'На iPhone нижняя панель теперь срабатывает сразу, даже пока страница ещё прокручивается',
     'Нижняя панель на телефоне стала чуть ниже',
     'На странице текста песни кнопки «Копировать» и «Изменить» теперь рядом с названием',
