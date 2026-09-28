@@ -1386,6 +1386,23 @@
   .dadmin small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
   .dadmin > .ai{width:16px;height:16px;color:var(--faint)}
   .ver{padding:26px 0 10px}
+  @media (min-width:1400px){
+    .dbottom{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) minmax(0,.85fr)}
+    .dbottom .reslist.four{grid-template-columns:repeat(2,minmax(0,1fr));flex:1}
+    .dbottom .dadm.out{flex-direction:column;align-items:flex-start;gap:12px}
+    .dbottom .dadm.out .grow2{flex:0 0 auto}
+    .dbottom .dadm.out .abtn{margin-top:auto;align-self:stretch;justify-content:center}
+  }
+  @media (min-width:700px) and (max-width:1399px){ .dbottom .dadm{grid-column:1 / -1} }
+  .dadm .phd{margin-bottom:16px}
+  .reslist.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .reslist.four .res strong{margin-top:0}
+  .dadm.out{display:flex;flex-direction:row;align-items:center;gap:14px;padding:16px 18px}
+  .dadm.out .grow2{flex:1;min-width:0}
+  .dadm.out .rico{margin:0;flex:none}
+  .dadm.out strong{display:block;font-size:14px;font-weight:600}
+  .dadm.out small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+  .abtn{flex:none;background:var(--blue);color:#fff;border-radius:999px;padding:10px 18px;font-size:13.5px;font-weight:600;min-height:40px;display:inline-flex;align-items:center}
   @media (max-width:1200px){ .kpis{gap:12px} .kv{font-size:30px} .dgrid,.dbottom{gap:16px} .dbottom{margin-top:16px} }
   @media (max-width:860px){ .dgrid,.dbottom{grid-template-columns:minmax(0,1fr)} }
   /* phones: the numbers follow the library, just above recent services */
@@ -1396,8 +1413,10 @@
     .ov .dbottom > :first-child{order:2}
     .ov .datt{order:3}
     .ov .kpis{order:4;margin:0}
-    .ov .dbottom > :last-child{order:5}
+    .ov .dbottom > :nth-child(2){order:5}
     .ov .dbottom{margin:0}
+    .ov .dadm{order:6}
+    .reslist.four{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
   @media (max-width:699px){
     .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:16px}
@@ -1423,6 +1442,10 @@
   .lyrbg{background:transparent}
   .lyrpage.view{max-width:820px;margin:0 auto;padding:22px 0 30px;width:100%;display:block}
   .lyrpage.view .lyrback{margin:0 0 18px}
+  .lyrhd2{display:flex;align-items:flex-start;gap:14px}
+  .lyrhd2 .lyrwho{flex:1;min-width:0}
+  .lyrhd2 .acts{flex:none;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:4px}
+  .lyrhd2 .mini{gap:6px}
   .lyrhd2 .tl{margin:0;font-size:32px;font-weight:650;letter-spacing:-1px;line-height:1.15;text-wrap:balance}
   .lyrhd2 .mt{margin-top:8px;font-size:13.5px;color:var(--muted)}
   .lyrbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:18px 0}
@@ -1435,7 +1458,7 @@
   .paper .bl{font-size:11px;letter-spacing:1.6px;color:var(--blue-text);margin-bottom:10px}
   .paper .tx{font-size:20px;line-height:1.72;color:var(--ink);max-width:none}
   .lyrpage .h{padding-left:0;padding-right:0}
-  @media (max-width:699px){ .paper{padding:28px 22px 30px;border-radius:16px} .paper .tx{font-size:17.5px} .lyrhd2 .tl{font-size:26px} }
+  @media (max-width:699px){ .paper{padding:28px 22px 30px;border-radius:16px} .paper .tx{font-size:17.5px} .lyrhd2 .tl{font-size:26px} .lyrhd2{flex-wrap:wrap} .lyrhd2 .acts{flex-basis:100%;justify-content:flex-start;margin-top:4px} }
   /* ---- choir rules: the same page ---- */
   .doc{background:transparent;padding:6px 0 40px}
   .pg > .tabs:first-child{margin-top:20px}
@@ -1707,6 +1730,7 @@
     .topbar .lang button:hover:not(.on){color:var(--ink)}
     .tlink:hover,.pfoot a:hover{color:var(--blue-hover)}
     .dadmin:hover{border-color:var(--blue-line)}
+    .abtn:hover{background:var(--blue-hover)}
     .login .btn:hover{background:var(--blue-hover)}
     .li.tap:hover{background:var(--surface-2)}
   }
@@ -1716,7 +1740,7 @@
   :root[data-theme="dark"]{ --dk-rim-top:rgba(255,255,255,.2); --dk-rim-bot:rgba(0,0,0,.35); --dk-sheen:rgba(255,255,255,.06); --dk-bg:rgba(34,38,60,.9); --dk-line:rgba(255,255,255,.09); --dk-pill:#3a3f5c; --dk-pill-drag:#454b6b; --dk-ink:#fff; --dk-ink2:#c3c8de; }
   @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --dk-rim-top:rgba(255,255,255,.2); --dk-rim-bot:rgba(0,0,0,.35); --dk-sheen:rgba(255,255,255,.06); --dk-bg:rgba(34,38,60,.9); --dk-line:rgba(255,255,255,.09); --dk-pill:#3a3f5c; --dk-pill-drag:#454b6b; --dk-ink:#fff; --dk-ink2:#c3c8de; } }
   @media (max-width:999px){
-    .dock{--dk-ease:cubic-bezier(.32,.72,0,1);--dk-dur:.46s;left:12px;right:12px;height:64px;padding:6px;gap:0;
+    .dock{--dk-ease:cubic-bezier(.32,.72,0,1);--dk-dur:.46s;left:12px;right:12px;height:56px;padding:5px;gap:0;
       background:var(--dk-bg);border:0;-webkit-backdrop-filter:blur(22px) saturate(1.8);backdrop-filter:blur(22px) saturate(1.8);
       box-shadow:0 14px 36px -14px rgba(var(--shadow-rgb),.38),0 2px 6px -2px rgba(var(--shadow-rgb),.1),0 0 0 1px var(--dk-line)}
     .dock::after{display:none}
@@ -1737,7 +1761,7 @@
       transition:max-width var(--dk-dur) var(--dk-ease),margin var(--dk-dur) var(--dk-ease),opacity .14s ease}
     .dock .on .dkl{max-width:var(--lw,90px);margin-left:8px;opacity:1;
       transition:max-width var(--dk-dur) var(--dk-ease),margin var(--dk-dur) var(--dk-ease),opacity .3s ease .12s}
-    .dock .dpill{top:6px;bottom:6px;height:auto;left:0;background:var(--dk-pill);box-shadow:none;border:0;
+    .dock .dpill{top:5px;bottom:5px;height:auto;left:0;background:var(--dk-pill);box-shadow:none;border:0;
       transition:transform var(--dk-dur) var(--dk-ease),width var(--dk-dur) var(--dk-ease),opacity .2s ease}
     .dock.dragging .dpill{background:var(--dk-pill-drag);box-shadow:0 8px 20px -10px rgba(var(--shadow-rgb),.4);
       transition:width var(--dk-dur) var(--dk-ease),background .2s ease}
@@ -1799,7 +1823,7 @@ const STR = {
     archivedNote:'Archived singers keep all their history in the database but are hidden from the grids and summaries. Restore brings them back.',
     copyLast:'Copy last service',
     categories:'Categories',addSong:'Add song',addCat:'Add category',addSinger:'Add singer',
-    more:'More',dkSongs:'History',dkMusic:'Sheets',
+    more:'More',dkSongs:'History',dkMusic:'Songs',
     appearance:'Appearance',thAuto:'Auto',thLight:'Light',thDark:'Dark',
     addPianist:'Add pianist',addConductor:'Add conductor',catName:'Category name',allCats:'All categories',noCat:'No category',
     deleteCat:'Delete this category? Songs and their history stay — only the label goes.',
@@ -1850,7 +1874,7 @@ const STR = {
     tPiano:'Piano sheets',tPianoSub:'Accompaniment for each song',piano:'Piano sheets',
     withPiano:n=>n+' with piano sheets',
     tLyrics:'Lyrics',tLyricsSub:'The words as we sing them, ready to copy',
-    lyrWith:n=>n+' with lyrics',noLyricsYet:'No lyrics yet',needsLyrics:'Needs lyrics',
+    lyrWith:n=>n+' with lyrics',noLyricsYet:'No lyrics yet',needsLyrics:'Needs lyrics',lyrHave:'Have lyrics',lyrNeed:'Need lyrics',
     lyrAll:'All lyrics',lyrEmpty:'No lyrics have been added for this song yet.',
     lyrView:'Text',copyLyrics:'Copy text',lyrCopied:'Text copied.',
     editLyrics:'Edit text',addLyrics:'Add text',lyrSaved:'Text saved.',
@@ -1920,7 +1944,7 @@ const STR = {
     archivedNote:'Архивные хористы сохраняют всю историю в базе, но не показываются в сетках и сводках. «Вернуть» возвращает их.',
     copyLast:'Скопировать прошлое служение',
     categories:'Категории',addSong:'Добавить песню',addCat:'Добавить категорию',addSinger:'Добавить хориста',
-    more:'Ещё',dkSongs:'Песни',dkMusic:'Ноты',
+    more:'Ещё',dkSongs:'История',dkMusic:'Песни',
     appearance:'Оформление',thAuto:'Авто',thLight:'День',thDark:'Ночь',
     addPianist:'Добавить пианиста',addConductor:'Добавить дирижёра',catName:'Название категории',allCats:'Все категории',noCat:'Без категории',
     deleteCat:'Удалить категорию? Песни и их история останутся — исчезнет только метка.',
@@ -1984,7 +2008,7 @@ const STR = {
     tPiano:'Ноты для фортепиано',tPianoSub:'Аккомпанемент к каждой песне',piano:'Фортепиано',
     withPiano:n=>'с фортепиано: '+n,
     tLyrics:'Тексты песен',tLyricsSub:'Слова так, как мы их поём — готово к копированию',
-    lyrWith:n=>'с текстом: '+n,noLyricsYet:'Текста пока нет',needsLyrics:'Без текста',
+    lyrWith:n=>'с текстом: '+n,noLyricsYet:'Текста пока нет',needsLyrics:'Без текста',lyrHave:'С текстом',lyrNeed:'Без текста',
     lyrAll:'Все тексты',lyrEmpty:'Для этой песни текст ещё не добавлен.',
     lyrView:'Текст',copyLyrics:'Копировать текст',lyrCopied:'Текст скопирован.',
     editLyrics:'Изменить текст',addLyrics:'Добавить текст',lyrSaved:'Текст сохранён.',
@@ -2089,7 +2113,7 @@ const S = {
   audioEdit: null, audioDraft: '',   // song whose recording link is being edited, and the typed value
   lyrFor: null, lyrDraft: null, lyrPv: '', lyrWas: '',   // song being worded, its blocks, its № and the saved shape
   lyrPasteOpen: false, lyrPasteTxt: '',   // the paste-a-whole-text importer
-  lyrMissing: false,              // lyrics index: show only the songs still without words
+  lyrMissing: '0',                // lyrics index: show only the songs still without words
   admRow: null,                   // song whose admin strip is open on the music page
   stageKey: '', stageLeft: 0,   // sideways scroll of the seating stage
   loginSig: '',                   // what the sign-in screen was last drawn from     // the rules document and its draft while editing   // seating chart: pending moves, selection, block filter
@@ -2133,13 +2157,28 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.0.2';
+const VERSION = '5.1.12';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'On iPhone the tab bar now responds right away, even while the page is still scrolling',
+    'The phone tab bar is a little slimmer',
+    'On a song’s lyrics page, Copy text and Edit text now sit beside the title',
+    'On a phone, More is highlighted in the tab bar while you are on any page from the More menu',
+    'The lyrics filter has three options: All, Have lyrics and Need lyrics',
+    'On the lyrics page the All / Needs lyrics switch now comes first, then the search, then the count',
+    'The Sheets tab in the phone tab bar is now called Songs',
+    'The History icon in the phone tab bar is clearer when selected',
+    'On smaller laptop screens the director card goes back under the library, so nothing gets cut off',
+    'On a computer the director card now sits beside the library and recent services, in one row of three',
+    'The director sign-in card on the overview now sits on one tidy row',
+    'On the lyrics page the count of songs with lyrics moved under the search',
+    'A director card at the bottom of the overview: a sign-in button, or quick links to attendance, song order, repertoire and members once signed in',
+    'On the sheet music pages the Choir/Piano switcher sits at the top; the file count moved under the search',
+    'Opening another page now starts at the top instead of where the last page was scrolled to',
     'Light mode is now the default, day or night; dark mode stays one tap away. On iPhone the navy header runs up behind Safari’s address bar',
     'A new look across the whole site: cards on a soft canvas, navy and gold in light mode, deep indigo in dark mode',
     'The home page is now an overview: choir numbers, the latest song order, last attendance by part, the music library and recent services',
@@ -2149,6 +2188,21 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'На iPhone нижняя панель теперь срабатывает сразу, даже пока страница ещё прокручивается',
+    'Нижняя панель на телефоне стала чуть ниже',
+    'На странице текста песни кнопки «Копировать» и «Изменить» теперь рядом с названием',
+    'На телефоне вкладка «Ещё» подсвечивается, когда открыта любая страница из этого меню',
+    'Фильтр на странице текстов получил три варианта: «Все», «С текстом», «Без текста»',
+    'На странице текстов сначала переключатель «Все / Без текста», затем поиск и число песен',
+    'Вкладки в нижней панели на телефоне теперь называются «История» и «Песни»',
+    'Значок «История» в нижней панели на телефоне стал чётче, когда выбран',
+    'На небольших экранах ноутбуков карточка регента снова под библиотекой, чтобы ничего не обрезалось',
+    'На компьютере карточка регента теперь стоит рядом с библиотекой и последними служениями — три в ряд',
+    'Карточка входа для регента на обзоре теперь в одну аккуратную строку',
+    'На странице текстов число песен с текстом теперь под поиском',
+    'Внизу обзора — карточка регента: кнопка входа, а после входа — быстрые ссылки на посещаемость, порядок песен, репертуар и хористов',
+    'На страницах нот переключатель Хор/Фортепиано теперь вверху, а число файлов — под поиском',
+    'Новая страница теперь открывается с начала, а не с того места, до которого была прокручена предыдущая',
     'Светлая тема теперь по умолчанию в любое время суток; тёмная — по нажатию. На iPhone тёмно-синяя шапка продолжается под адресной строкой Safari',
     'Новый вид всего сайта: карточки на светлом фоне, тёмно-синий с золотом днём и глубокий индиго ночью',
     'Главная теперь — обзор: цифры хора, последний порядок песен, посещаемость по партиям, библиотека нот и последние служения',
@@ -2932,7 +2986,7 @@ const DKI = {
   att: [DKSVG('<rect x="3.5" y="5" width="17" height="16" rx="4.5"></rect><path d="M8 3v3.5M16 3v3.5"></path><path d="m8.8 13.7 2.2 2.2 4.3-4.4"></path>'),
         DKSVG('<rect x="3.5" y="5" width="17" height="16" rx="4.5" fill="currentColor"></rect><path d="M8 3v3.5M16 3v3.5"></path><path class="cut" d="m8.8 13.7 2.2 2.2 4.3-4.4"></path>')],
   songs: [DKSVG('<path d="M3.6 12a8.4 8.4 0 1 0 2.4-5.9"></path><path d="M3.4 4.4v4.5h4.5"></path><path d="M12 7.8V12l3 2"></path>'),
-          DKSVG('<path d="M3.6 12a8.4 8.4 0 1 0 2.4-5.9" fill="currentColor"></path><path d="M3.4 4.4v4.5h4.5"></path><path class="cut" d="M12 7.8V12l3 2"></path>')],
+          DKSVG('<path d="M3.6 12a8.4 8.4 0 1 0 2.4-5.9"></path><path d="M3.4 4.4v4.5h4.5"></path><circle cx="12" cy="12" r="5.6" fill="currentColor" stroke="none"></circle><path class="cut" d="M12 9.2V12l2.1 1.4"></path>')],
   music: [DKSVG('<path d="M4 6.5h10M4 11.5h10M4 16.5h5"></path><path d="M18.6 17.4V6.2l2.6 1.1"></path><circle cx="16.2" cy="17.4" r="2.5"></circle>'),
           DKSVG('<path d="M4 6.5h10M4 11.5h10M4 16.5h5"></path><path d="M18.6 17.4V6.2l2.6 1.1"></path><circle cx="16.2" cy="17.4" r="2.5" fill="currentColor"></circle>')],
   more: [DKSVG('<rect x="4" y="4" width="6.6" height="6.6" rx="2.2"></rect><rect x="13.4" y="4" width="6.6" height="6.6" rx="2.2"></rect><rect x="4" y="13.4" width="6.6" height="6.6" rx="2.2"></rect><rect x="13.4" y="13.4" width="6.6" height="6.6" rx="3.3"></rect>'),
@@ -2945,7 +2999,7 @@ function dockKey(r){
   if (r.startsWith('#/songs')) return 'songs';
   if (r.startsWith('#/sheets')) return 'music';
   if (r.startsWith('#/home')) return 'home';
-  return '';
+  return 'more';                  // everything else lives in the More menu
 }
 /* Icons only, except the selected tab: its pill widens to carry the label. */
 function dock(){
@@ -2957,7 +3011,7 @@ function dock(){
     ${a('#/attendance/grid','att', t('attendance'))}
     ${a('#/songs/summary','songs', t('dkSongs'))}
     ${a('#/sheets','music', t('dkMusic'))}
-    <button data-menu class="${S.menuOpen?'on':''}" aria-label="${esc(t('more'))}" aria-expanded="${S.menuOpen?'true':'false'}">${ic('more')}<em class="dkl">${esc(t('more'))}</em></button>
+    <button data-menu class="${S.menuOpen || k==='more'?'on':''}" aria-label="${esc(t('more'))}" aria-expanded="${S.menuOpen?'true':'false'}">${ic('more')}<em class="dkl">${esc(t('more'))}</em></button>
   </nav>`;
 }
 /* The dock lives outside #app, so moving between pages never rebuilds it: the
@@ -3013,8 +3067,8 @@ function layoutDock(dk, idx, instant){
 }
 function dockIndex(dk){
   const items = [...dk.querySelectorAll('[data-tab],[data-menu]')];
-  if (S.menuOpen) return items.findIndex(it => it.hasAttribute('data-menu'));
   const k = dockKey(S.route || '#/home');
+  if (S.menuOpen || k === 'more') return items.findIndex(it => it.hasAttribute('data-menu'));
   return items.findIndex(it => it.dataset.tab === k);
 }
 let dockW = 0;
@@ -3121,6 +3175,26 @@ function wireDockDrag(host){
   };
   host.addEventListener('pointerup', end);
   host.addEventListener('pointercancel', end);
+  /* iOS swallows the first tap while the page is still coasting from a flick (the
+     tap only stops the scroll, no click follows). Treat a short, still touch on a
+     tab as the tap itself, and cancel the click so it can't fire twice. */
+  let tap = null;
+  host.addEventListener('touchstart', e => {
+    const it = e.target.closest && e.target.closest('.dock [data-tab],.dock [data-menu]');
+    const p = e.touches[0];
+    tap = it && e.touches.length === 1 ? { it, x: p.clientX, y: p.clientY } : null;
+  }, { passive: true });
+  host.addEventListener('touchmove', e => {
+    if (!tap) return;
+    const p = e.touches[0];
+    if (Math.abs(p.clientX - tap.x) > 8 || Math.abs(p.clientY - tap.y) > 8) tap = null;
+  }, { passive: true });
+  host.addEventListener('touchend', e => {
+    const t0 = tap; tap = null;
+    if (!t0 || dockNoClick || !t0.it.isConnected) return;
+    e.preventDefault();
+    t0.it.click();
+  }, { passive: false });
   host.addEventListener('click', e => {
     if (!dockNoClick) return;
     e.preventDefault(); e.stopPropagation();
@@ -3407,13 +3481,24 @@ function homePage(){
           <span class="grow2"><strong>${esc(e.name || t(e.kind))}</strong><small>${esc(t('songsCount')(songsFor(e.id).length))}</small></span>${AIC.chev}</a>`; }).join('')
         : `<p class="pcap">${esc(t('noSvcYet'))}</p>`}</div>
     </section>`;
-  const admin = S.session ? `<a class="dadmin" href="#/admin/attendance"><span class="rico">${AIC.admin}</span><span class="grow2"><strong>${esc(t('tAdmin'))}</strong><small>${esc(t('tAdminSub'))}</small></span>${AIC.chev}</a>` : '';
+  const qa = (href, name, ic, tone) => `<a class="res ${tone}" href="${href}"><span class="rico">${ic}</span><strong>${esc(t(name))}</strong></a>`;
+  const admin = S.session ? `<section class="dpanel dadm">
+      <div class="phd"><h2>${esc(t('dirWs'))}</h2><a class="tlink" href="#/admin/attendance">${esc(t('tAdmin'))}${AIC.arrow}</a></div>
+      <div class="reslist four">
+        ${qa('#/admin/attendance', 'attendance', AIC.att, 'r1')}
+        ${qa('#/admin/songs', 'songQueue', AIC.hist, 'r2')}
+        ${qa('#/admin/songlist', 'repertoire', AIC.music, 'r3')}
+        ${qa('#/admin/members', 'members', AIC.user, 'r4')}
+      </div>
+    </section>` : `<section class="dpanel dadm out"><span class="rico">${AIC.admin}</span>
+      <span class="grow2"><strong>${esc(t('dirSignin'))}</strong><small>${esc(t('dirSigninSub'))}</small></span>
+      <a class="abtn" href="#/login">${esc(t('tSignIn'))}</a></section>`;
 
   return `<div class="dtop"></div>
     <div class="ov">${kpis}
     <div class="dgrid">${service}${att}</div>
-    <div class="dbottom">${library}${recentCard}</div></div>
-    <div class="ver">v${VERSION} · <a href="#" data-notes>${esc(t('relNotes'))}</a>${S.session ? '' : ` · <a href="#/login">${esc(t('dirSignin'))}</a>`}</div>
+    <div class="dbottom">${library}${recentCard}${admin}</div></div>
+    <div class="ver">v${VERSION} · <a href="#" data-notes>${esc(t('relNotes'))}</a></div>
     ${S.showNotes ? `<div class="notespanel">
       <div class="nh">${esc(t('relNotes'))} — v${VERSION.split('.')[0]}</div>
       <ul>${((NOTES[VERSION.split('.')[0]] || {})[S.lang] || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>
@@ -4175,8 +4260,9 @@ function sheetsPage(kind){
   if (ordIds) list = ordIds.map(id => list.find(s => s.id === id)).filter(Boolean);
   const withPdf = S.songs.filter(s => s[K.col]).length;
   /* Narrowed to one service's songs, the header and search/category row are noise. */
-  return (ordEv ? '' : `<div class="h">${esc(t(K.title))}<span class="n">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</span></div>`) + tabs + bar + (ordEv ? '' : `
-    <div class="searchrow" style="padding-top:12px;display:flex;gap:8px">${qField('searchPv')}${catSelect()}</div>`) +
+  return tabs + bar + (ordEv ? '' : `
+    <div class="searchrow" style="padding-top:12px;display:flex;gap:8px">${qField('searchPv')}${catSelect()}</div>
+    <div style="padding:8px 2px 2px;font-size:var(--fs-12-5);color:var(--muted)">${esc(t(K.count)(withPdf + '/' + S.songs.length))}</div>`) +
     list.map((s, i) => {
       const path = s[K.col], locked = !!s[K.lock];
       const busy = S.uploading === kind + ':' + s.id;
@@ -4296,12 +4382,12 @@ function lyricsRoute(){
 function lyricsIndex(){
   const withL = S.songs.filter(hasLyrics).length;
   let list = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) && songMatch(s, S.query));
-  if (S.lyrMissing) list = list.filter(s => !hasLyrics(s));
-  return `<div class="h">${esc(t('tLyrics'))}<span class="n">${esc(t('lyrWith')(withL + '/' + S.songs.length))}</span></div>
+  if (S.lyrMissing === '1') list = list.filter(s => !hasLyrics(s));
+  if (S.lyrMissing === '2') list = list.filter(hasLyrics);
+  const lc = (v, k) => `<button data-lyr-missing="${v}" class="${S.lyrMissing===v?'on':''}">${esc(t(k))}</button>`;
+  return `${S.session ? `<div class="chips" style="margin:12px 12px 8px">${lc('0','all')}${lc('2','lyrHave')}${lc('1','lyrNeed')}</div>` : ''}
     <div class="searchrow" style="padding-top:12px;display:flex;gap:8px">${qField('searchPv')}${catSelect()}</div>
-    ${S.session ? `<div class="chips" style="margin:12px 12px 0">
-      <button data-lyr-missing="0" class="${S.lyrMissing?'':'on'}">${esc(t('all'))}</button>
-      <button data-lyr-missing="1" class="${S.lyrMissing?'on':''}">${esc(t('needsLyrics'))}</button></div>` : ''}
+    <div style="padding:8px 2px 2px;font-size:var(--fs-12-5);color:var(--muted)">${esc(t('lyrWith')(withL + '/' + S.songs.length))}</div>
     ${list.length ? '<div class="sec">' + list.map(s => `<a class="li tap" href="#/lyrics/${shortId(s.id)}">
       <span class="ftile">${AIC.lyrics}</span><div style="flex:1;min-width:0">
         <div style="font-size:var(--fs-16);line-height:1.2;color:var(--ink)">${esc(s.title)}${pvTag(s)}</div>
@@ -4317,14 +4403,12 @@ function lyricsView(song){
   const head = `<a class="lyrback" href="#/lyrics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>${esc(t('lyrAll'))}</a>
     <div class="lyrhd2">
       <div class="lyrwho"><h1 class="tl">${esc(song.title)}</h1>${meta ? `<div class="mt">${esc(meta)}</div>` : ''}</div>
-    </div>
-    <div class="lyrbar">
-      ${song.pv_number ? `<span class="pvchip">№ ${esc(song.pv_number)} · Песнь возрождения</span>` : '<span></span>'}
       <div class="acts">
         ${blocks.length ? `<button class="mini go" data-lyr-copy="${song.id}">${COPYSVG}<span>${esc(t('copyLyrics'))}</span></button>` : ''}
         ${S.session ? `<button class="mini" data-lyr-edit="${song.id}">${esc(blocks.length ? t('editLyrics') : t('addLyrics'))}</button>` : ''}
       </div>
-    </div>`;
+    </div>
+    ${song.pv_number ? `<div class="lyrbar"><span class="pvchip">№ ${esc(song.pv_number)} · Песнь возрождения</span></div>` : '<div style="height:18px"></div>'}`;
   const body = blocks.length
     ? `<article class="paper">${blocks.map((b, i) => `<section class="lyrblk">
         <div class="bl">${esc(labels[i])}</div>
@@ -5105,7 +5189,7 @@ document.addEventListener('click', async e => {
     if (S.admRow) pendingReveal = '.admstrip';
     return render();
   }
-  if (d.lyrMissing) { S.lyrMissing = d.lyrMissing === '1'; return render(); }
+  if (d.lyrMissing) { S.lyrMissing = d.lyrMissing; return render(); }
   if (d.lyrEdit) {
     startLyrDraft(d.lyrEdit); S.lyrFor = d.lyrEdit; S.admRow = null;
     if (el.tagName === 'A') return;      // the link changes the hash, which redraws
@@ -5584,7 +5668,9 @@ document.addEventListener('keydown', e => {
 window.addEventListener('hashchange', () => {
   S.reviewKey = null;
   S.ripple = true;
+  const prevPage = (S.route || '').split('?')[0];
   S.route = normRoute(location.hash);
+  if (S.route.split('?')[0] !== prevPage) window.scrollTo(0, 0);
   prefetchSheets();
   trackRoute();
   S.menuOpen = false;
