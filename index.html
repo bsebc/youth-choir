@@ -1390,7 +1390,7 @@
   .rsvc .mdate{position:relative;width:42px;height:46px;flex:none;display:flex;flex-direction:column;overflow:hidden;background:var(--card);
     border:1px solid var(--card-line);border-radius:9px;line-height:1;box-shadow:0 1px 0 var(--card-line),0 3px 8px -5px rgba(var(--shadow-rgb),.35)}
   .rsvc .mdate span{flex:none;display:block;padding:4px 0 3px;text-align:center;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
-    background:var(--blue);color:#fff}
+    background:#d4372c;color:#fff}
   .rsvc .mdate strong{flex:1;display:grid;place-items:center;font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--ink);font-variant-numeric:tabular-nums}
   .rsvc small{display:block;font-size:12px;color:var(--muted);margin-top:3px}
   .rsvc > .ai{width:16px;height:16px;color:var(--faint)}
@@ -1661,6 +1661,47 @@
     .mx:hover{color:var(--ink);border-color:var(--line-strong)}
     .erow-main:hover strong{color:var(--blue-text)}
   }
+  /* ---- usage, card layout ---- */
+  .uwrap{display:flex;flex-direction:column;gap:16px;margin-top:14px}
+  .uwrap .kpis{margin:0}
+  .uwrap .ugrid{margin:0;gap:16px}
+  .uwrap .dpanel .phd{margin-bottom:14px}
+  .uwrap .phd .pcap{margin:0}
+  .uwrap .uchart{padding:4px 0 0;height:160px;gap:4px}
+  .uwrap .uaxis{padding:10px 0 0}
+  .ugrid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  @media (max-width:1100px){ .ugrid3{grid-template-columns:repeat(2,minmax(0,1fr))} .ugrid3 > :last-child{grid-column:1 / -1} }
+  @media (max-width:699px){ .ugrid3{grid-template-columns:minmax(0,1fr)} .uwrap .uchart{height:120px;gap:2px} }
+  .urank{display:flex;flex-direction:column;gap:14px}
+  .urow{display:grid;grid-template-columns:18px minmax(0,1fr) auto;column-gap:10px;row-gap:6px;align-items:center}
+  .urow .ui{font-size:12px;font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums}
+  .urow .un2{font-size:14px;font-weight:550;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .urow .ucnt{height:24px;min-width:28px;font-size:12px}
+  .urow .ubar{grid-column:2 / -1;margin:0}
+  .donut.sm{width:150px;height:150px;margin:6px auto 16px}
+  .donut.sm > div{width:124px;height:124px}
+  .donut.sm strong{font-size:30px}
+  .ulk{margin:0}
+  .ulk span:first-child i{background:var(--blue)} .ulk span:last-child i{background:var(--paper)}
+  .udev{border-top:0;padding-top:4px;margin-top:0;gap:12px}
+  .udev .prow{grid-template-columns:minmax(0,120px) 1fr 32px}
+  .udev .prow > span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ufact{margin-top:auto;padding-top:14px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--muted)}
+  .udev + .ufact{margin-top:16px}
+  .ufact b{color:var(--ink);font-weight:600;text-align:right}
+  .uweek{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;height:112px;margin-bottom:16px}
+  .uweek div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;min-height:0}
+  .uweek i{width:100%;max-width:28px;border-radius:6px 6px 3px 3px;background:var(--blue-tint)}
+  .uweek i.hi{background:var(--blue)}
+  .uweek span{font-size:11px;color:var(--muted)}
+  .urecent{display:flex;flex-direction:column}
+  .urec{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule)}
+  .urec:last-child{border-bottom:0;padding-bottom:0}
+  .urec .rico{width:34px;height:34px;margin:0;flex:none}
+  .urec .rico .ai{width:16px;height:16px}
+  .urec strong{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .urec small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+  .urec .un{flex:none;font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums}
   /* ---- usage (older) ---- */
   .ustats{padding:12px 0 2px}
   .ustat{border-radius:14px;box-shadow:var(--shadow-card)}
@@ -1893,7 +1934,7 @@ const STR = {
     uSetup:'The usage table is not set up yet. Run supabase/usage_log.sql in the Supabase SQL editor, then reload this page.',
     uDevices:'Devices',uOrders:'Order opens',uSheets:'Sheet opens',uListens:'Recordings',uActivity:'Activity',
     uTopSongs:'Most opened songs',uTopServices:'Most viewed services',
-    uLang:'Language',uRecent:'Recent activity',uPerDay:'by day',uPerWeek:'by week',
+    uLang:'Language',uRecent:'Recent activity',uReturning:n=>n===1?'1 came back':n+' came back',uPerDevice:n=>n+' per device',uDeviceType:'Device type',uAppShare:'Opened from the home-screen icon',uDevNone:'Device types are counted from now on.',uDevSetup:'To count device types, run supabase/usage_log.sql again in the Supabase SQL editor.',uWhen:'When people look',uBusiest:'Busiest',uMorning:'morning',uAfternoon:'afternoon',uEvening:'evening',uNight:'night',uEn:'English',uRu:'Russian',dvIphone:'iPhone',dvIpad:'iPad',dvAndroid:'Android phone',dvAtablet:'Android tablet',dvMac:'Mac',dvWindows:'Windows PC',dvOther:'Other',uPerDay:'by day',uPerWeek:'by week',
     u7:'7 days',u30:'30 days',u90:'90 days',uAll:'All time',
     kOrder:'Song order',kSheet:'Sheet music',kAudio:'Recording',
     uNow:'just now',uMin:n=>n+' min ago',uHr:n=>n+' h ago',uDay:n=>n+' d ago',listenHere:'View/Listen here:',copied:'Copied — paste it into the chat',
@@ -2016,7 +2057,7 @@ const STR = {
     uSetup:'Таблица статистики ещё не создана. Выполните supabase/usage_log.sql в SQL-редакторе Supabase и обновите страницу.',
     uDevices:'Устройств',uOrders:'Открытий порядка',uSheets:'Скачиваний нот',uListens:'Прослушиваний',uActivity:'Активность',
     uTopSongs:'Чаще всего открывали ноты',uTopServices:'Чаще всего смотрели служения',
-    uLang:'Язык',uRecent:'Последние действия',uPerDay:'по дням',uPerWeek:'по неделям',
+    uLang:'Язык',uRecent:'Последние действия',uReturning:n=>'вернулись: '+n,uPerDevice:n=>n+' на устройство',uDeviceType:'Тип устройства',uAppShare:'Открывали с иконки на экране',uDevNone:'Тип устройства считается с этого момента.',uDevSetup:'Чтобы считать типы устройств, ещё раз выполните supabase/usage_log.sql в SQL-редакторе Supabase.',uWhen:'Когда смотрят',uBusiest:'Чаще всего',uMorning:'утром',uAfternoon:'днём',uEvening:'вечером',uNight:'ночью',uEn:'Английский',uRu:'Русский',dvIphone:'iPhone',dvIpad:'iPad',dvAndroid:'Android-телефон',dvAtablet:'Android-планшет',dvMac:'Mac',dvWindows:'Компьютер Windows',dvOther:'Другое',uPerDay:'по дням',uPerWeek:'по неделям',
     u7:'7 дней',u30:'30 дней',u90:'90 дней',uAll:'За всё время',
     kOrder:'Порядок песнопений',kSheet:'Ноты',kAudio:'Запись',
     uNow:'только что',uMin:n=>n+' мин назад',uHr:n=>n+' ч назад',uDay:n=>n+' дн. назад',listenHere:'Смотреть/слушать здесь:',copied:'Скопировано — вставьте в чат',
@@ -2189,13 +2230,14 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.2.2';
+const VERSION = '5.3.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Usage insights redesigned: cards for the numbers, top songs and services, language, device type and the busiest days',
     'Attendance now opens on the summary; the grid is one tab away',
     'The attendance ring on the overview has smooth, rounded ends',
     'A Print button on each song’s lyrics: a clean sheet with the words sized to fill the page',
@@ -2226,6 +2268,7 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'Новый вид статистики: карточки с числами, самые популярные песни и служения, язык, тип устройства и самые активные дни',
     'Посещаемость теперь открывается на сводке; таблица — на соседней вкладке',
     'Кольцо посещаемости на обзоре теперь с ровными скруглёнными краями',
     'Кнопка «Печать» на странице текста песни: аккуратный лист, где слова заполняют всю страницу',
@@ -2474,10 +2517,25 @@ function visitorId(){
     return v;
   } catch (_) { return null; }
 }
+/* what kind of device, from the browser's own description; no fingerprinting */
+function deviceKind(){
+  const ua = navigator.userAgent || '';
+  if (/iPhone|iPod/.test(ua)) return 'iphone';
+  if (/iPad/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) return 'ipad';
+  if (/Android/.test(ua)) return /Mobile/.test(ua) ? 'android' : 'atablet';
+  if (/Macintosh|Mac OS X/.test(ua)) return 'mac';
+  if (/Windows/.test(ua)) return 'windows';
+  return 'other';
+}
+const isHomeApp = () => { try { return !!(navigator.standalone || matchMedia('(display-mode: standalone)').matches); } catch (_) { return false; } };
+let usageLite = false;   // the table predates the device columns: log without them
 function track(kind, ref){
   if (S.session) return;
-  try { sb.from('usage_log').insert({ kind, ref: ref || null, lang: S.lang, vid: visitorId() })
-    .then(() => {}, () => {}); } catch (_) {}
+  const row = { kind, ref: ref || null, lang: S.lang, vid: visitorId() };
+  const send = full => sb.from('usage_log').insert(full ? Object.assign({ device: deviceKind(), app: isHomeApp() }, row) : row);
+  try {
+    send(!usageLite).then(r => { if (r && r.error && !usageLite) { usageLite = true; send(false).then(() => {}, () => {}); } }, () => {});
+  } catch (_) {}
 }
 function trackRoute(){
   const m = S.route.match(/order-([^/?&]+)/);
@@ -2489,9 +2547,11 @@ async function loadUsage(){
   if (S.usageLoading) return;
   S.usageLoading = true;
   const want = S.usagePeriod;
-  let q = sb.from('usage_log').select('kind,ref,vid,lang,at').order('at', { ascending: false }).limit(20000);
-  if (want !== 'all') q = q.gte('at', new Date(Date.now() - want * 86400000).toISOString());
-  const r = await q;
+  const ask = cols => { let q = sb.from('usage_log').select(cols).order('at', { ascending: false }).limit(20000);
+    if (want !== 'all') q = q.gte('at', new Date(Date.now() - want * 86400000).toISOString()); return q; };
+  let r = await ask('kind,ref,vid,lang,at,device,app');
+  S.usageNoDevice = false;
+  if (r.error) { const r2 = await ask('kind,ref,vid,lang,at'); if (!r2.error) { r = r2; S.usageNoDevice = true; } }
   S.usageLoading = false;
   S.usageErr = r.error ? r.error.message : '';
   S.usage = r.error ? [] : (r.data || []);
@@ -2524,55 +2584,96 @@ function usagePage(){
   const u = S.usage;
   if (!u.length) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uNone'))}</div></div></div>`);
   const n = k => u.filter(x => x.kind === k).length;
-  const stats = `<div class="ustats">${[
-      [new Set(u.map(x => x.vid).filter(Boolean)).size, 'uDevices'],
-      [n('order'), 'uOrders'], [n('sheet'), 'uSheets'], [n('audio'), 'uListens']
-    ].map(([v, l]) => `<div class="ustat"><b>${v}</b><span>${esc(t(l))}</span></div>`).join('')}</div>`;
+  const vids = new Set(u.map(x => x.vid).filter(Boolean));
+  const dayOf = x => localISO(new Date(x.at));
+  const daysBy = {};
+  u.forEach(x => { if (x.vid) (daysBy[x.vid] = daysBy[x.vid] || new Set()).add(dayOf(x)); });
+  const returning = Object.values(daysBy).filter(s => s.size > 1).length;
+  const per = v => vids.size ? (Math.round(v / vids.size * 10) / 10).toLocaleString(S.lang) : '0';
+  const kpi = (label, value, foot, ic, tone) => `<div class="kpi ${tone}">
+      <div class="kl"><span>${esc(label)}</span><span class="ki">${ic}</span></div>
+      <div class="kv">${value}</div><div class="kf">${esc(foot)}</div></div>`;
+  const kpis = `<div class="kpis ukpis">
+    ${kpi(t('uDevices'), vids.size, t('uReturning')(returning), AIC.user, 'k1')}
+    ${kpi(t('uOrders'), n('order'), t('uPerDevice')(per(n('order'))), AIC.plan, 'k2')}
+    ${kpi(t('uSheets'), n('sheet'), t('uPerDevice')(per(n('sheet'))), AIC.sheets, 'k3')}
+    ${kpi(t('uListens'), n('audio'), t('uPerDevice')(per(n('audio'))), AIC.headphones, 'k4')}
+  </div>`;
   const { arr, step } = usageBuckets(u);
   const max = Math.max(1, ...arr.map(b => b.n));
-  const chart = `<div class="sec">
-      <div class="chd"><h3>${esc(t('uActivity'))}</h3><span class="n">${esc(t(step === 1 ? 'uPerDay' : 'uPerWeek'))}</span></div>
+  const chart = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('uActivity'))}</h2><span class="pcap">${esc(t(step === 1 ? 'uPerDay' : 'uPerWeek'))}</span></div>
       <div class="uchart">${arr.map(b =>
-        `<i class="${b.n === max && b.n ? 'hi' : ''}" style="height:${Math.round(b.n / max * 100)}%"></i>`).join('')}</div>
-      <div class="uaxis"><span>${esc(fmtShort(localISO(new Date(arr[0].at))))}</span>
-        <span>${esc(t(step === 1 ? 'uPerDay' : 'uPerWeek'))}</span>
-        <span>${esc(fmtShort(today()))}</span></div>
-    </div>`;
-  const rank = (rows, label) => rows.length ? `<div class="sec">
-      <div class="chd"><h3>${esc(label)}</h3></div>
-      ${rows.map(([name, c]) => `<div class="li"><div style="flex:1;min-width:0;font-size:var(--fs-15)">${esc(name)}</div><span class="ucnt">${c}</span></div>`).join('')}
-    </div>` : '';
+        `<i class="${b.n === max && b.n ? 'hi' : ''}" style="height:${Math.round(b.n / max * 100)}%" title="${b.n}"></i>`).join('')}</div>
+      <div class="uaxis"><span>${esc(fmtPill(localISO(new Date(arr[0].at))))}</span><span>${esc(fmtPill(today()))}</span></div>
+    </section>`;
   const tally = (pred, name) => {
     const m = {};
     u.filter(pred).forEach(x => { if (x.ref) m[x.ref] = (m[x.ref] || 0) + 1; });
     return Object.entries(m).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([id, c]) => [name(id), c]);
   };
+  const rank = (rows, label, ic) => `<section class="dpanel">
+      <div class="phd"><h2>${esc(label)}</h2>${ic}</div>
+      ${rows.length ? `<div class="urank">${rows.map(([name, c], i) => `<div class="urow">
+        <span class="ui">${i + 1}</span><span class="un2">${esc(name)}</span><span class="ucnt">${c}</span>
+        <div class="ubar"><em style="width:${Math.round(c / rows[0][1] * 100)}%"></em></div></div>`).join('')}</div>`
+        : `<p class="pcap">${esc(t('uNone'))}</p>`}
+    </section>`;
   const songRank = tally(x => x.kind !== 'order', id => (S.songs.find(y => y.id === id) || {}).title || '—');
   const svcRank = tally(x => x.kind === 'order', id => {
     const e = findEvent(id);
-    return e ? (e.name || kindWord(e)) + ' · ' + fmtShort(e.date) : '—';
+    return e ? (e.name || kindWord(e)) + ' · ' + fmtPill(e.date) : '—';
   });
+  /* language: a small ring, share of Russian */
   const ru = u.filter(x => x.lang === 'ru').length, en = u.filter(x => x.lang === 'en').length;
-  const both = Math.max(1, ru + en);
-  const lang = (ru + en) ? `<div class="sec">
-      <div class="chd"><h3>${esc(t('uLang'))}</h3></div>
-      <div class="usplit"><span style="width:${Math.round(en / both * 100)}%;background:var(--blue)"></span><span style="flex:1;background:var(--gold)"></span></div>
-      <div class="ukey"><span><i style="background:var(--blue)"></i>EN <b>${en}</b></span>
-        <span><i style="background:var(--gold)"></i>RU <b>${ru}</b></span></div>
-    </div>` : '';
+  const ruPct = (ru + en) ? Math.round(ru / (ru + en) * 100) : 0;
+  const lang = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('uLang'))}</h2></div>
+      ${(ru + en) ? `<div class="donut sm" style="--pn:${ruPct}" role="img" aria-label="${ruPct}% ${esc(t('uRu'))}"><svg viewBox="0 0 184 184" aria-hidden="true"><circle class="trk" cx="92" cy="92" r="84"></circle>${ruPct ? '<circle class="val" cx="92" cy="92" r="84" pathLength="100"></circle>' : ''}</svg><div><strong>${ruPct}%</strong><span>${esc(t('uRu'))}</span></div></div>
+      <div class="akey ulk"><span><i></i>${esc(t('uRu'))} <b>${ru}</b></span><span><i></i>${esc(t('uEn'))} <b>${en}</b></span></div>`
+        : `<p class="pcap">${esc(t('uNone'))}</p>`}
+    </section>`;
+  /* device type: one vote per device, its latest reading */
+  const DV = [['iphone','dvIphone','var(--blue)'],['ipad','dvIpad','var(--teal)'],['android','dvAndroid','var(--green)'],['atablet','dvAtablet','var(--violet)'],['mac','dvMac','var(--amber)'],['windows','dvWindows','var(--rose)'],['other','dvOther','var(--faint)']];
+  const byVid = {};
+  u.forEach(x => { if (x.vid && x.device && !byVid[x.vid]) byVid[x.vid] = x; });   // newest first
+  const dv = Object.values(byVid), dvN = dv.length;
+  const appN = dv.filter(x => x.app).length;
+  const devRows = DV.map(([k, l, c]) => [l, c, dv.filter(x => x.device === k).length]).filter(r => r[2]);
+  const devices = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('uDeviceType'))}</h2></div>
+      ${S.usageNoDevice ? `<p class="pcap">${esc(t('uDevSetup'))}</p>`
+        : !dvN ? `<p class="pcap">${esc(t('uDevNone'))}</p>`
+        : `<div class="parts udev">${devRows.map(([l, c, v]) => `<div class="prow" style="--pc:${c}"><span><i></i>${esc(t(l))}</span><div class="pbar"><b style="width:${Math.round(v / dvN * 100)}%"></b></div><strong>${v}</strong></div>`).join('')}</div>
+        <div class="ufact"><span>${esc(t('uAppShare'))}</span><b>${Math.round(appN / dvN * 100)}%</b></div>`}
+    </section>`;
+  /* when: weekday bars (Monday first) and the busiest part of the day */
+  const wk = [0,0,0,0,0,0,0], tod = [0,0,0,0];
+  u.forEach(x => { const d = new Date(x.at); wk[(d.getDay() + 6) % 7]++; const h = d.getHours(); tod[h < 5 ? 3 : h < 12 ? 0 : h < 17 ? 1 : h < 22 ? 2 : 3]++; });
+  const wmax = Math.max(1, ...wk), wTop = wk.indexOf(Math.max(...wk)), tTop = tod.indexOf(Math.max(...tod));
+  const WD = S.lang === 'ru' ? ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'] : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const when = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('uWhen'))}</h2></div>
+      <div class="uweek">${wk.map((v, i) => `<div><i class="${i === wTop && v ? 'hi' : ''}" style="height:${Math.max(4, Math.round(v / wmax * 100))}%" title="${v}"></i><span>${WD[i]}</span></div>`).join('')}</div>
+      <div class="ufact"><span>${esc(t('uBusiest'))}</span><b>${esc(WD[wTop])} · ${esc(t(['uMorning','uAfternoon','uEvening','uNight'][tTop]))}</b></div>
+    </section>`;
   const kindName = k => t(k === 'order' ? 'kOrder' : k === 'sheet' ? 'kSheet' : 'kAudio');
+  const kindIc = k => k === 'order' ? AIC.plan : k === 'sheet' ? AIC.sheets : AIC.headphones;
   const refName = x => {
-    if (x.kind === 'order') { const e = findEvent(x.ref); return e ? fmtShort(e.date) : '—'; }
+    if (x.kind === 'order') { const e = findEvent(x.ref); return e ? (e.name || kindWord(e)) + ' · ' + fmtPill(e.date) : '—'; }
     return (S.songs.find(y => y.id === x.ref) || {}).title || '—';
   };
-  const recent = `<div class="sec">
-      <div class="chd"><h3>${esc(t('uRecent'))}</h3></div>
-      ${u.slice(0, 12).map(x => `<div class="li"><div style="flex:1;min-width:0">
-        <div style="font-size:var(--fs-15)">${esc(refName(x))}</div>
-        <div class="sub" style="font-style:normal">${esc(kindName(x.kind))}</div></div>
-        <div class="un">${esc(agoShort(x.at))}</div></div>`).join('')}
-    </div>`;
-  return wrap(stats + chart + `<div class="ugrid">` + rank(songRank, t('uTopSongs')) + rank(svcRank, t('uTopServices')) + `</div><div class="ugrid">` + lang + recent + `</div>`);
+  const recent = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('uRecent'))}</h2></div>
+      <div class="urecent">${u.slice(0, 10).map(x => `<div class="urec ${x.kind === 'order' ? 'r2' : x.kind === 'sheet' ? 'r1' : 'r5'}">
+        <span class="rico">${kindIc(x.kind)}</span>
+        <span class="grow2"><strong>${esc(refName(x))}</strong><small>${esc(kindName(x.kind))}</small></span>
+        <span class="un">${esc(agoShort(x.at))}</span></div>`).join('')}</div>
+    </section>`;
+  return wrap(`<div class="uwrap">${kpis}${chart}
+    <div class="ugrid">${rank(songRank, t('uTopSongs'), AIC.sheets)}${rank(svcRank, t('uTopServices'), AIC.plan)}</div>
+    <div class="ugrid3">${lang}${devices}${when}</div>
+    ${recent}</div>`);
 }
 const SHEETCACHE = 'bsebc-sheets-v1';
 function sheetKey(kind, id){ return './offline-sheet/' + kind + '/' + id; }
@@ -3353,8 +3454,8 @@ function drawerNav(){
     ${it('#/seating', r.startsWith('#/seating'), AIC.seat, t('tSeating'))}
     ${it('#/rules', r.startsWith('#/rules'), AIC.rules, t('tRules'))}
     ${S.session ? sec('navDir') + it('#/admin/attendance', r.startsWith('#/admin/attendance') || r.startsWith('#/admin/entries/att'), AIC.att, t('recordAtt'))
-        + it('#/admin/songs', r.startsWith('#/admin/songs') || r.startsWith('#/admin/entries/songs'), AIC.music, t('planSvc'))
-        + it('#/admin/songlist', r.startsWith('#/admin/songlist'), AIC.sheets, t('repertoire'))
+        + it('#/admin/songs', r.startsWith('#/admin/songs') || r.startsWith('#/admin/entries/songs'), AIC.plan, t('planSvc'))
+        + it('#/admin/songlist', r.startsWith('#/admin/songlist'), AIC.music, t('repertoire'))
         + it('#/admin/members', r.startsWith('#/admin/members'), AIC.user, t('members'))
         + it('#/usage', r.startsWith('#/usage'), AIC.chart, t('usageIns')) : ''}
     <div class="grow"></div>
