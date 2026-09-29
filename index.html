@@ -1478,11 +1478,11 @@
     .ov > .dgrid,.ov > .dbottom{display:contents}
     .ov .dsvc{order:1}
     .ov .dbottom > :first-child{order:2}
-    .ov .datt{order:3}
-    .ov .kpis{order:4;margin:0}
-    .ov .dbottom > :nth-child(2){order:5}
+    .ov .datt{order:4}
+    .ov .kpis{order:5;margin:0}
+    .ov .dbottom > :nth-child(2){order:6}
     .ov .dbottom{margin:0}
-    .ov .dadm{order:6}
+    .ov .dadm{order:7}
     .reslist.four{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
   @media (max-width:699px){
@@ -1724,7 +1724,18 @@
   .bmini.silver{--m1:#fff;--m2:#dfe3e9;--m3:#a8b0bc;--m4:#6f7885;--ink:#2e3640}
   .bmini.bronze{--m1:#ffe2c4;--m2:#dd9b62;--m3:#a9652f;--m4:#6f3d17;--ink:#3f1f08}
   @media (prefers-reduced-motion:reduce){ .bface::after{display:none} }
-  @media (max-width:699px){ .bgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 8px} .bmed{width:58px;height:58px;padding:4px} .bface .ai{width:22px;height:22px} }
+  @media (max-width:699px){
+    /* phones: four to a row, smaller medals, the detail clipped to two short lines */
+    .bgrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 6px;padding-top:6px}
+    .bdg{gap:2px;padding:2px 0}
+    .bmed{width:46px;height:46px;padding:3px;margin:10px 0 5px}
+    .bmed::before{top:-12px;width:24px;height:22px}
+    .bface .ai{width:18px;height:18px} .byr{font-size:11.5px}
+    .bdg strong{font-size:11.5px;line-height:1.2}
+    .bdg small{font-size:10px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .bgroup + .bgroup{margin-top:14px;padding-top:12px}
+    .mbadges .phd{margin-bottom:4px}
+  }
   /* ---- leaderboard ---- */
   .mtl{--m1:#fff4c2;--m2:#f2c94c;--m3:#c9971d;--m4:#8a620a;color:#5b3c00;
     background:radial-gradient(circle at 34% 28%,var(--m1),var(--m2) 45%,var(--m3) 80%,var(--m4)) !important;box-shadow:inset 0 1px 1px rgba(255,255,255,.75),inset 0 -1px 2px rgba(0,0,0,.25),0 1px 3px rgba(0,0,0,.3)}
@@ -2005,8 +2016,8 @@
   }
   /* phones and small tablets: a header bar with a round arrow, the podium across the full width, two fact chips */
   @media (max-width:899px){
-    .lbtile{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "pod" "facts";gap:18px;padding:18px 16px 16px;justify-items:stretch;text-align:left}
-    .lbmini{margin-top:10px}
+    .lbtile{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "facts" "pod";gap:16px;padding:18px 16px 0;justify-items:stretch;text-align:left}
+    .lbmini{margin-top:6px}   /* the podium stands on the card's bottom edge */
     .lbt{grid-area:head;display:flex;align-items:center;gap:10px;min-width:0}
     .lbt h2{flex:none;font-size:17px;justify-content:flex-start}
     .lbt p{flex:1 1 auto;min-width:0;margin:1px 0 0;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2026,7 +2037,7 @@
   }
 
   @media (prefers-reduced-motion:reduce){ .lbglow{animation:none;display:none} }
-  @media (max-width:699px){ .ov .lbtile{order:3;margin:0} }
+  @media (max-width:699px){ .ov .lbtile{order:3;margin:0} .mpage .mbadges{order:9} }
   /* phone search: a field that grows out of the search button across the bar */
   .mast{position:relative}
   .mast > .lang{margin-left:auto}
@@ -2801,13 +2812,16 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.8.7';
+const VERSION = '5.8.10';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Badges on phones are more compact: four to a row with smaller medals',
+    'On phones the Leaderboard tile shows streak and section first, with the podium rising from the bottom edge',
+    'On phones: the Leaderboard tile sits right under Singer Tools, and badges come last on the report card',
     'Report card streak now matches the leaderboard; cancelled services no longer count toward how often a song was sung',
     'Printed lyrics leave out the browser’s page address, date and title, and drop the Verse/Chorus titles: choruses are indented instead',
     'Printed lyrics keep to one page unless a song is very long, with a smaller, quieter title and no rule under it',
@@ -2874,6 +2888,9 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'Награды на телефоне компактнее: по четыре в ряд, медали меньше',
+    'На телефоне в плитке «Лидеры» сначала серия и партия, а пьедестал стоит на нижнем краю',
+    'На телефоне: плитка «Лидеры» сразу под инструментами певца, а награды в конце отчёта',
     'Серия в отчёте теперь совпадает с таблицей лидеров; отменённые служения больше не учитываются в том, сколько раз пели песню',
     'На напечатанном тексте больше нет адреса страницы, даты и заголовка браузера, а также подписей «Куплет/Припев»: припев печатается с отступом',
     'Напечатанный текст помещается на одну страницу, если песня не очень длинная; заголовок меньше и спокойнее, без линии под ним',
