@@ -1678,6 +1678,355 @@
     .mstat{min-height:96px;padding:13px} .mstat strong{font-size:28px}
     .mtrack{height:120px}
   }
+  /* badges: struck medals on a ribbon — a bevelled rim, a domed face, an engraved icon */
+  .bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:22px 12px;padding-top:10px}
+  .bdg{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:4px 2px}
+  .bmed{--m1:#fff4c2;--m2:#f2c94c;--m3:#c9971d;--m4:#8a620a;--ink:#5b3c00;--rb1:#24346c;--rb2:#c9a227;
+    position:relative;isolation:isolate;width:66px;height:66px;margin:12px 0 8px;border-radius:50%;padding:5px;
+    background:conic-gradient(from 210deg,var(--m4),var(--m2) 12%,var(--m1) 22%,var(--m3) 34%,var(--m4) 46%,var(--m2) 60%,var(--m1) 70%,var(--m3) 82%,var(--m4));
+    box-shadow:0 6px 12px -5px rgba(0,0,0,.45),0 0 0 1px rgba(0,0,0,.18)}
+  .bmed::before{content:"";position:absolute;z-index:-1;left:50%;top:-16px;width:32px;height:30px;transform:translateX(-50%);
+    background:linear-gradient(90deg,var(--rb1) 0 36%,var(--rb2) 36% 64%,var(--rb1) 64%);
+    clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%);filter:brightness(.95)}
+  .bface{position:relative;overflow:hidden;width:100%;height:100%;border-radius:50%;display:grid;place-items:center;color:var(--ink);
+    background:radial-gradient(circle at 34% 28%,var(--m1) 0,var(--m2) 42%,var(--m3) 78%,var(--m4) 100%);
+    box-shadow:inset 0 2px 2px rgba(255,255,255,.7),inset 0 -3px 5px rgba(0,0,0,.28),0 0 0 1.5px rgba(0,0,0,.16)}
+  .bface::before{content:"";position:absolute;inset:4px;border-radius:50%;border:1px solid rgba(0,0,0,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+  .bface::after{content:"";position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.65) 50%,transparent 58%);transform:translateX(-60%)}
+  .bface .ai{position:relative;width:26px;height:26px;stroke-width:2.2;filter:drop-shadow(0 1px 0 rgba(255,255,255,.55)) drop-shadow(0 -1px 0 rgba(0,0,0,.2))}
+  .bdg.silver .bmed{--m1:#ffffff;--m2:#dfe3e9;--m3:#a8b0bc;--m4:#6f7885;--ink:#2e3640;--rb1:#24346c;--rb2:#e8ebf0}
+  .bdg.bronze .bmed{--m1:#ffe2c4;--m2:#dd9b62;--m3:#a9652f;--m4:#6f3d17;--ink:#3f1f08;--rb1:#7a2e2a;--rb2:#d9a066}
+  .bdg.locked .bmed{background:none;box-shadow:none;padding:0;border:2px dashed var(--card-line)}
+  .bdg.locked .bmed::before{display:none}
+  .bdg.locked .bface{background:var(--paper-2);box-shadow:none;color:var(--faint)}
+  .bdg.locked .bface::before,.bdg.locked .bface::after{display:none}
+  .bdg.locked .bface .ai{filter:none;stroke-width:1.9}
+  .bgroup + .bgroup{margin-top:20px;padding-top:18px;border-top:1px solid var(--rule)}
+  .bgh{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px}
+  .bgh span{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
+  .bgh small{font-size:12px;color:var(--muted)}
+  .byr{position:relative;font-size:14.5px;font-weight:800;letter-spacing:-.3px;line-height:1;color:inherit;font-variant-numeric:tabular-nums;
+    text-shadow:0 1px 0 rgba(255,255,255,.55),0 -1px 0 rgba(0,0,0,.22)}
+  .bdg.locked .byr{text-shadow:none}
+  .bdg strong{font-size:13px;font-weight:650;line-height:1.25;text-wrap:balance}
+  .bdg small{font-size:11.5px;line-height:1.3;color:var(--muted);text-wrap:pretty}
+  .bdg.locked strong{color:var(--muted)} .bdg.locked small{color:var(--faint)}
+  .mpage.rip .bdg:not(.locked) .bmed{animation:mpop .5s cubic-bezier(.3,.7,.2,1.3) both;animation-delay:calc(.4s + var(--i,0) * 60ms)}
+  .mpage.rip .bdg:not(.locked) .bface::after{animation:bshine 1.1s ease-out both;animation-delay:calc(.8s + var(--i,0) * 60ms)}
+  .bdg:not(.locked):hover .bface::after{animation:bshine .9s ease-out}
+  @keyframes bshine{from{transform:translateX(-60%)}to{transform:translateX(60%)}}
+  .mpage.rip .bdg.locked{animation:mfade .5s ease .5s both}
+  .bminis{display:inline-flex;gap:3px;margin-left:7px;vertical-align:-3px}
+  .bmini{--m1:#fff4c2;--m2:#f2c94c;--m3:#c9971d;--m4:#8a620a;--ink:#5b3c00;width:18px;height:18px;border-radius:50%;padding:1.5px;display:inline-grid;
+    background:conic-gradient(from 210deg,var(--m4),var(--m1) 20%,var(--m3) 40%,var(--m4) 55%,var(--m1) 72%,var(--m3) 88%,var(--m4));box-shadow:0 1px 2px rgba(0,0,0,.3)}
+  .bmini > .ai{width:100%;height:100%;padding:2.5px;box-sizing:border-box;border-radius:50%;color:var(--ink);stroke-width:2.6;
+    background:radial-gradient(circle at 34% 28%,var(--m1),var(--m2) 45%,var(--m3))}
+  .bmini.silver{--m1:#fff;--m2:#dfe3e9;--m3:#a8b0bc;--m4:#6f7885;--ink:#2e3640}
+  .bmini.bronze{--m1:#ffe2c4;--m2:#dd9b62;--m3:#a9652f;--m4:#6f3d17;--ink:#3f1f08}
+  @media (prefers-reduced-motion:reduce){ .bface::after{display:none} }
+  @media (max-width:699px){ .bgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 8px} .bmed{width:58px;height:58px;padding:4px} .bface .ai{width:22px;height:22px} }
+  /* ---- leaderboard ---- */
+  .mtl{--m1:#fff4c2;--m2:#f2c94c;--m3:#c9971d;--m4:#8a620a;color:#5b3c00;
+    background:radial-gradient(circle at 34% 28%,var(--m1),var(--m2) 45%,var(--m3) 80%,var(--m4)) !important;box-shadow:inset 0 1px 1px rgba(255,255,255,.75),inset 0 -1px 2px rgba(0,0,0,.25),0 1px 3px rgba(0,0,0,.3)}
+  .mtl.silver{--m1:#fff;--m2:#dfe3e9;--m3:#a8b0bc;--m4:#6f7885;color:#2e3640}
+  .mtl.bronze{--m1:#ffe2c4;--m2:#dd9b62;--m3:#a9652f;--m4:#6f3d17;color:#3f1f08}
+  .lbpage{display:flex;flex-direction:column;gap:16px;margin:14px 0 8px}
+  .lbpage .ctlbar{padding:0}
+  .lbpage .dpanel > .phd{margin-bottom:18px}
+  .lbg2{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px}
+  .lbg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .lbg2b{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .lbg1{display:grid;gap:16px}
+  @media (max-width:1100px){ .lbg3{grid-template-columns:repeat(2,minmax(0,1fr))} .lbg3 > :last-child{grid-column:1 / -1} }
+  @media (max-width:899px){ .lbg2,.lbg2b,.lbg3{grid-template-columns:minmax(0,1fr)} .lbg3 > :last-child{grid-column:auto} }
+  .lbwho{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+  .lbwho:hover .lbn{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px}
+  .lbwho.col{flex-direction:column;gap:7px;text-align:center;width:100%}
+  .lbwho .bminis{margin-left:0;flex:none}
+  .lbn{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .lbav{position:relative;flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:12.5px;font-weight:700;letter-spacing:.02em;background:var(--paper-2);color:var(--text-2)}
+  .lbav .ai{width:17px;height:17px}
+  .lbav.soprano{background:var(--violet-wash);color:var(--violet)} .lbav.alto{background:var(--blue-wash);color:var(--blue-text)}
+  .lbav.tenor{background:var(--green-wash);color:var(--green-text)} .lbav.bass{background:var(--amber-wash);color:var(--gold-text)}
+  .pmed{position:absolute;right:-4px;bottom:-4px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800;outline:2px solid var(--card)}
+  /* hero stage */
+  .lbhero{position:relative;overflow:hidden;isolation:isolate;border-radius:22px;padding:22px 22px 0;color:#fff;border:1px solid rgba(201,162,39,.5);border-bottom:3px solid var(--gold);
+    background:
+      radial-gradient(ellipse 46% 85% at 50% 104%,rgba(255,255,255,.06),transparent 70%),
+      radial-gradient(circle at 10% 20%,rgba(255,255,255,.16) 0 1.5px,transparent 2px),radial-gradient(circle at 86% 24%,rgba(240,240,238,.5) 0 1.5px,transparent 2.2px),
+      radial-gradient(circle at 24% 66%,rgba(255,255,255,.09) 0 1px,transparent 1.5px),radial-gradient(circle at 74% 70%,rgba(240,240,238,.35) 0 1px,transparent 1.6px),
+      radial-gradient(circle at 60% 30%,rgba(255,255,255,.1) 0 1px,transparent 1.5px),
+      var(--chrome);
+    box-shadow:0 22px 50px -26px rgba(23,35,77,.85),inset 0 1px 0 rgba(255,255,255,.08)}
+  .lbhh{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px 16px}
+  .lbhh h1{margin:0;font-size:22px;font-weight:750;letter-spacing:-.4px;display:flex;align-items:center;gap:10px}
+  .lbhh h1::before{content:"";width:26px;height:26px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff4c2,#f2c94c 45%,#c9971d 80%,#8a620a);box-shadow:inset 0 1px 1px rgba(255,255,255,.7),0 1px 3px rgba(0,0,0,.35)}
+  .lbhh span{font-size:13px;color:rgba(255,255,255,.72)}
+  .lbt h2::before,.lbhh h1::before{content:none !important}
+  .lbtro{flex:none;display:inline-grid;place-items:center;color:#f2c94c;filter:drop-shadow(0 1px 0 rgba(0,0,0,.35)) drop-shadow(0 0 8px rgba(242,201,76,.35))}
+  .lbtro .ai{width:22px;height:22px;stroke-width:2}
+  .lbhh .lbtro .ai{width:26px;height:26px}
+  .lbper{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 12px;margin:18px auto 0}
+  .lbper > span{font-size:13px;font-weight:600;color:rgba(255,255,255,.8)}
+  .lbper b{font-weight:inherit} .lbshort{display:none}
+  .lbseg{display:inline-flex;gap:2px;padding:4px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18)}
+  .lbseg button{border:0;background:none;padding:8px 15px;border-radius:999px;font:inherit;font-size:13.5px;font-weight:600;color:rgba(255,255,255,.88);cursor:pointer;white-space:nowrap;transition:background-color .15s ease,color .15s ease}
+  .lbseg button:not(.on):hover{background:rgba(255,255,255,.12);color:#fff}
+  .lbseg button.on{background:linear-gradient(180deg,#f8df8c,#e2b33a);color:#3a2a00;box-shadow:0 2px 8px -2px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.6)}
+  .lbempty{padding-bottom:26px}
+  .lbemptyp{margin:20px 0 0;text-align:center;font-size:14px;color:rgba(255,255,255,.8)}
+  .podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:14px;width:100%;max-width:620px;margin:22px auto 0}
+  .pstep{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
+  .pwho{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;min-width:0}
+  .pavs{display:flex;justify-content:center}
+  .pavs .lbav{border:0;padding:0;font-family:inherit;font-weight:700;cursor:pointer}
+  .pstep.multi .pavs{gap:6px;flex-wrap:nowrap}
+  .pstep.multi.tgold .lbav.big{box-shadow:0 0 0 2px #f2c94c} .pstep.multi.tsilver .lbav.big{box-shadow:0 0 0 2px #dfe3e9} .pstep.multi.tbronze .lbav.big{box-shadow:0 0 0 2px #dd9b62}
+  .pstep.s1.multi .pavs{filter:drop-shadow(0 0 12px rgba(242,201,76,.35))}
+  .pstep.multi .lbav.big{width:46px;height:46px;font-size:14.5px} .pstep.s1.multi .lbav.big{width:56px;height:56px;font-size:17px}
+  .pavs{max-width:100%;flex-wrap:wrap;row-gap:6px}
+  .lbav.big.more{background:rgba(255,255,255,.24);font-size:15px}
+  .pnames{display:flex;flex-direction:column;align-items:center;gap:3px;max-width:100%;min-width:0}
+  .pname{max-width:100%;background:none;border:0;padding:0;font:inherit;font-size:14.5px;font-weight:600;line-height:1.25;color:#fff;text-wrap:balance;cursor:pointer}
+  .multi .pname{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pname:hover{text-decoration:underline;text-underline-offset:3px}
+  .ptie{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;max-width:620px;margin:16px auto 0}
+  .ptie > span{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#f2c94c;margin-right:4px}
+  .ptchip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:999px;padding:5px 11px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+  .ptchip:hover{background:rgba(255,255,255,.2)}
+  .ptx{width:26px;height:26px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:16px;line-height:1;cursor:pointer}
+  .pstep .lbn{max-width:100%;white-space:normal;line-height:1.25;text-wrap:balance;color:#fff;font-size:14.5px}
+  .pstep .lbav.big{width:70px;height:70px;font-size:22px;background:rgba(255,255,255,.14);color:#fff}
+  .s1 .lbav.big{width:88px;height:88px;font-size:28px}
+  .tgold .lbav.big{box-shadow:0 0 0 3px #f2c94c,0 0 26px -2px rgba(242,201,76,.7)} .tsilver .lbav.big{box-shadow:0 0 0 3px #dfe3e9} .tbronze .lbav.big{box-shadow:0 0 0 3px #dd9b62}
+  .pcrown{display:grid;place-items:center;height:26px;margin-bottom:-6px;color:#f2c94c;filter:drop-shadow(0 2px 6px rgba(242,201,76,.6))}
+  .pcrown .ai{width:30px;height:30px;stroke-width:2}
+  .lbpct{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:15px;font-weight:750;color:#f2c94c;font-variant-numeric:tabular-nums}
+  .lbpct small{font-size:11px;font-weight:500;color:rgba(255,255,255,.62)}
+  .pblock{width:100%;display:grid;place-items:start center;padding-top:10px;border-radius:14px 14px 0 0;box-shadow:inset 0 2px 0 rgba(255,255,255,.6),inset 0 -10px 18px rgba(0,0,0,.1)}
+  .pblock b{font-size:34px;font-weight:800;line-height:1;color:rgba(0,0,0,.26);text-shadow:0 1px 0 rgba(255,255,255,.55)}
+  .s1 .pblock{height:120px} .s2 .pblock{height:88px} .s3 .pblock{height:66px}
+  .tgold .pblock{background:linear-gradient(180deg,#f8df8c,#d9aa2c)}
+  .tsilver .pblock{background:linear-gradient(180deg,#eef0f4,#aeb5c0)}
+  .tbronze .pblock{background:linear-gradient(180deg,#f2c9a3,#c47f45)}
+  /* lists */
+  .lbrank{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+  .lbrank li{display:grid;grid-template-columns:26px minmax(0,1fr) minmax(56px,28%) 40px;align-items:center;gap:10px}
+  .lbbar{display:block;height:8px;border-radius:999px;background:var(--paper-2);overflow:hidden}
+  .lbbar b{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--blue-hover),var(--blue))}
+  .lbrank strong{text-align:right;font-size:13px;font-weight:650;font-variant-numeric:tabular-nums}
+  .lbstreaks,.lbimp{display:flex;flex-direction:column;gap:12px}
+  .lbsrow,.lbir{display:flex;align-items:center;gap:10px} .lbsrow .lbwho,.lbir .lbwho{flex:1}
+  .lbfire{flex:none;display:inline-flex;align-items:center;gap:5px;padding:5px 11px 5px 8px;border-radius:999px;font-size:13px;font-weight:750;font-variant-numeric:tabular-nums;
+    background:linear-gradient(90deg,#ffe9cc,#ffd29e);color:#933705}
+  .lbfire.h2{background:linear-gradient(90deg,#ffd29e,#ffa55c);color:#7a2700}
+  .lbfire.h3{background:linear-gradient(90deg,#ffab5e,#ff6a3d);color:#fff;box-shadow:0 4px 12px -4px rgba(255,106,61,.7)}
+  .lbfire .ai{width:15px;height:15px;stroke-width:2.2}
+  .lbfire.lead .ai{animation:lbflick 1.6s ease-in-out infinite;transform-origin:50% 90%}
+  @keyframes lbflick{0%,100%{transform:scale(1) rotate(0)}40%{transform:scale(1.14) rotate(-5deg)}70%{transform:scale(.96) rotate(3deg)}}
+  .lbup{flex:none;display:inline-flex;align-items:center;gap:5px;padding:5px 11px 5px 9px;border-radius:999px;background:var(--green-wash);color:var(--green-text);font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+  .lbup .ai{width:14px;height:14px}
+  .lbcold,.lbdown{flex:none;display:inline-flex;align-items:center;gap:5px;padding:5px 11px 5px 9px;border-radius:999px;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .lbcold{background:var(--blue-wash);color:var(--blue-text)} .lbdown{background:var(--red-wash);color:var(--red)}
+  .lbcold .ai,.lbdown .ai{width:14px;height:14px}
+  .lbfoot{margin:auto 0 0;padding-top:16px;font-size:12px;color:var(--muted);text-wrap:pretty}
+  /* section race: each part's leader rides the end of its bar */
+  .lbsec{display:flex;flex-direction:column;gap:18px}
+  .lbsrh{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+  .lbpart{font-size:13px;font-weight:650;color:var(--text-2)}
+  .lbsrh strong{margin-left:auto;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+  .lbcrown{display:grid;place-items:center;color:var(--gold-text);font-style:normal} .lbcrown .ai{width:16px;height:16px}
+  .lbtrack{position:relative;height:10px;margin:0 14px 0 0;border-radius:999px;background:var(--paper-2)}
+  .lbtrack b{display:block;height:100%;border-radius:999px}
+  /* soprano yellow, alto light blue, tenor green, bass dark blue — read the same in light and dark */
+  .lbsr.soprano .lbtrack b{background:#e8b923} .lbsr.alto .lbtrack b{background:#6aaee8} .lbsr.tenor .lbtrack b{background:var(--tool2-ic)} .lbsr.bass .lbtrack b{background:#3552b0}
+  .lbrider{position:absolute;top:50%;width:28px;height:28px;transform:translate(-50%,-50%);border-radius:50%;border:2.5px solid var(--card);padding:0;display:grid;place-items:center;
+    font:inherit;font-size:10px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+  .lbsr.soprano .lbrider{background:#e8b923;color:#3a2a00} .lbsr.alto .lbrider{background:#6aaee8;color:#0e2a45}
+  .lbsr.tenor .lbrider{background:var(--tool2-ic);color:var(--surface)} .lbsr.bass .lbrider{background:#3552b0;color:#fff}
+  .lbsr.win .lbrider{box-shadow:0 0 0 2px #f2c94c,0 2px 8px rgba(0,0,0,.3)}
+  .lbsr small{display:flex;gap:4px;min-width:0;margin-top:9px;font-size:11.5px;color:var(--muted)}
+  .lbname{background:none;border:0;padding:0;font:inherit;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .lbname:hover{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px}
+  .lbchips{display:flex;flex-wrap:wrap;gap:8px}
+  .lbchip{display:inline-flex;align-items:center;gap:7px;padding:4px 6px 4px 4px;border-radius:999px;background:var(--surface-2);border:1px solid var(--rule);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
+  .lbchip .lbav{width:24px;height:24px;font-size:9.5px}
+  .lbchip:hover{border-color:var(--blue-line)}
+  .lbok{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 34% 28%,#fff4c2,#f2c94c 45%,#c9971d);color:#5b3c00}
+  .lbok .ai{width:11px;height:11px;stroke-width:3}
+  .lbyr{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:12px 18px}
+  .lbg1 .lbyr{grid-template-columns:repeat(2,minmax(0,1fr))}
+  @media (max-width:699px){ .lbg1 .lbyr{grid-template-columns:minmax(0,1fr)} }
+  .lbyr li{display:flex;align-items:center;gap:10px;min-width:0}
+  .lbyr li.out{opacity:.66}
+  .lbyr .lbwho{flex:1}
+  .lbyr em{flex:none;font-style:normal;font-size:12.5px;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums}
+  .rk{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;font-weight:800;background:var(--paper-2);color:var(--muted);font-variant-numeric:tabular-nums}
+  /* rank medals in the Top 10 lists: a bevelled rim, a domed face, the number struck in, a short ribbon */
+  .lbyr li{padding-top:4px}
+  .rk.mtl{position:relative;isolation:isolate;width:30px;height:30px;padding:2.5px;box-sizing:border-box;font-size:12px;font-weight:800;
+    background:radial-gradient(circle at 34% 28%,var(--m1) 0,var(--m2) 42%,var(--m3) 80%,var(--m4) 100%) content-box,
+      conic-gradient(from 210deg,var(--m4),var(--m2) 12%,var(--m1) 22%,var(--m3) 34%,var(--m4) 46%,var(--m2) 60%,var(--m1) 70%,var(--m3) 82%,var(--m4)) border-box !important;
+    box-shadow:0 2px 4px -1px rgba(0,0,0,.4),0 0 0 .5px rgba(0,0,0,.25) !important;
+    text-shadow:0 1px 0 rgba(255,255,255,.6),0 -1px 0 rgba(0,0,0,.18)}
+  .rk.mtl::after{content:"";position:absolute;inset:5px;border-radius:50%;border:1px solid rgba(0,0,0,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.5);pointer-events:none}
+  .rk.mtl::before{content:"";position:absolute;z-index:-1;left:50%;top:-7px;width:16px;height:14px;transform:translateX(-50%);
+    background:linear-gradient(90deg,#24346c 0 36%,var(--m2) 36% 64%,#24346c 64%);clip-path:polygon(0 0,100% 0,100% 100%,50% 70%,0 100%)}
+  .lbyr .rk{width:30px;height:30px}
+  .rk.mtl{color:#5b3c00} .rk.mtl.silver{color:#2e3640} .rk.mtl.bronze{color:#3f1f08}
+  .pmed.mtl{color:#5b3c00} .pmed.mtl.silver{color:#2e3640} .pmed.mtl.bronze{color:#3f1f08}
+  .rk.mtl.bronze::before{background:linear-gradient(90deg,#7a2e2a 0 36%,#d9a066 36% 64%,#7a2e2a 64%)}
+  .lbdays{flex:none;font-size:11.5px;font-weight:650;padding:5px 10px;border-radius:999px;background:var(--blue-wash);color:var(--blue-text)}
+  .lbcut{display:flex;align-items:center;gap:10px;margin:14px 0 12px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-text)}
+  .lbcut::before,.lbcut::after{content:"";flex:1;border-top:1.5px dashed var(--gold)}
+  .lbhof{background:linear-gradient(180deg,var(--amber-wash),var(--card) 62%);border-color:rgba(201,151,29,.4)}
+  .lbhof .phd h2{display:flex;align-items:center;gap:8px}
+  .lbhof .phd h2::before{content:"";width:20px;height:20px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff4c2,#f2c94c 45%,#c9971d 80%,#8a620a);box-shadow:inset 0 1px 1px rgba(255,255,255,.7),0 1px 2px rgba(0,0,0,.3)}
+  .lbpy{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--rule);font-size:13px}
+  .lbpy span{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-text)}
+  /* entrance */
+  .lbpage.rip .pblock{transform-origin:bottom;animation:mgrowy .8s cubic-bezier(.3,.7,.2,1) both}
+  .lbpage.rip .s3 .pblock{animation-delay:.1s} .lbpage.rip .s2 .pblock{animation-delay:.22s} .lbpage.rip .s1 .pblock{animation-delay:.34s}
+  .lbpage.rip .pwho{animation:mpop .55s cubic-bezier(.3,.7,.2,1.3) both}
+  .lbpage.rip .s3 .pwho{animation-delay:.45s} .lbpage.rip .s2 .pwho{animation-delay:.58s} .lbpage.rip .s1 .pwho{animation-delay:.72s}
+  .lbpage.rip .pcrown{animation:lbdrop .6s cubic-bezier(.3,.7,.2,1.4) 1.05s both}
+  @keyframes lbdrop{from{opacity:0;transform:translateY(-14px) scale(.8)}}
+  .lbpage.rip .lbbar b{transform-origin:left;animation:mgrowx .9s cubic-bezier(.3,.7,.2,1) .35s both}
+  .lbpage.rip .lbtrack b{transform-origin:left;animation:mgrowx 1s cubic-bezier(.3,.7,.2,1) .35s both}
+  .lbpage.rip .lbrider{animation:lbride 1s cubic-bezier(.3,.7,.2,1) .35s both}
+  @keyframes lbride{from{left:0}}
+  @media (prefers-reduced-motion:reduce){ .lbpage.rip *,.lbfire.lead .ai{animation:none !important} }
+  @media (max-width:699px){
+    .lbhero{padding:18px 12px 0;border-radius:20px}
+    .lbhh{flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:10px}
+    .lbhh > span{flex:none;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.85)}
+    .lbhh h1{font-size:20px}
+    .lbper{flex-direction:row;flex-wrap:nowrap;justify-content:center;margin-top:14px;width:100%}
+    .lbper > span{display:none}
+    .lbfull{display:none} .lbshort{display:inline !important}
+    .lbseg{display:inline-flex;max-width:100%}
+    .lbseg button{flex:0 0 auto;padding:7px 13px;font-size:12.5px}
+    .podium{gap:6px;margin-top:18px}
+    .pstep{gap:10px}
+    .pstep .lbav.big{width:54px;height:54px;font-size:17px} .s1 .lbav.big{width:68px;height:68px;font-size:22px}
+    .pname{font-size:12.5px} .multi .pname{font-size:11px} .lbpct{font-size:13.5px} .lbpct small{font-size:10px}
+    .pstep.multi .lbav.big{width:32px;height:32px;font-size:11px} .pstep.s1.multi .lbav.big{width:38px;height:38px;font-size:12.5px}
+    .pstep.multi .pavs{gap:4px}
+    .pcrown .ai{width:24px;height:24px}
+    .s1 .pblock{height:92px} .s2 .pblock{height:68px} .s3 .pblock{height:50px}
+    .pblock b{font-size:24px}
+    .lbrank li{grid-template-columns:26px minmax(0,1fr) 40px} .lbrank .lbbar{display:none}
+  }
+  .lbscrim{position:fixed;inset:0;z-index:300;background:rgba(10,14,30,.45);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);animation:mfade .2s ease both}
+  .lbsheet{position:fixed;z-index:301;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 32px));max-height:min(82vh,720px);overflow:auto;
+    background:var(--card);border:1px solid var(--card-line);border-radius:22px;box-shadow:0 28px 70px -24px rgba(0,0,0,.55);padding:22px;animation:lbin .28s cubic-bezier(.3,.7,.2,1) both}
+  @keyframes lbin{from{opacity:0;transform:translate(-50%,-46%) scale(.97)}}
+  .lbx{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;border:0;background:var(--paper-2);color:var(--text-2);font-size:20px;line-height:1;cursor:pointer}
+  .lbsh{display:flex;align-items:center;gap:16px;margin:0 44px 8px 0}
+  .lbsh .lbav.big{width:66px;height:66px;font-size:21px}
+  .lbsh h3{margin:0;font-size:20px;font-weight:700;letter-spacing:-.3px;line-height:1.2}
+  .lbsheet .bgh{margin-top:16px} .lbsheet .bgrid{padding-top:14px}
+  .lbrep{display:flex;justify-content:center;margin-top:20px}
+  @media (max-width:699px){
+    .lbsheet{left:0;right:0;top:auto;bottom:0;transform:none;width:auto;max-height:86vh;border-radius:22px 22px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom));animation:lbsl .3s cubic-bezier(.3,.7,.2,1) both}
+    @keyframes lbsl{from{transform:translateY(100%)}}
+  }
+  /* accent: a sky of small pale dots, a few of them twinkling, thinner toward the middle */
+  .lbtile,.lbhero{contain:paint}
+  .lbtw{position:absolute;inset:0;z-index:-1;pointer-events:none}
+  .lbtw i{position:absolute;width:3px;height:3px;border-radius:50%;background:#f0f0ee;box-shadow:0 0 6px 1px rgba(240,240,238,.55);opacity:.3;animation:lbtw 4.4s ease-in-out infinite;will-change:opacity,transform}
+  @keyframes lbtw{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.3)}}
+  @media (prefers-reduced-motion:reduce){ .lbtw i{animation:none} }
+  .lbhero::before,.lbtile::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22240%22%20height%3D%22180%22%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2230%22%20r%3D%221.4%22%20fill%3D%22%23f0f0ee%22%20opacity%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%2296%22%20cy%3D%2214%22%20r%3D%220.9%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%22168%22%20cy%3D%2252%22%20r%3D%221.8%22%20fill%3D%22%23f0f0ee%22%20opacity%3D%220.75%22%2F%3E%3Ccircle%20cx%3D%22214%22%20cy%3D%22120%22%20r%3D%221%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%2258%22%20cy%3D%22108%22%20r%3D%221.2%22%20fill%3D%22%23f0f0ee%22%20opacity%3D%220.55%22%2F%3E%3Ccircle%20cx%3D%22130%22%20cy%3D%22150%22%20r%3D%221.5%22%20fill%3D%22%23f0f0ee%22%20opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%22190%22%20cy%3D%22166%22%20r%3D%220.8%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%22160%22%20r%3D%220.9%22%20fill%3D%22%23f0f0ee%22%20opacity%3D%220.45%22%2F%3E%3C%2Fsvg%3E") 0 0/240px 180px,url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22330%22%20height%3D%22250%22%3E%3Ccircle%20cx%3D%2244%22%20cy%3D%2270%22%20r%3D%220.8%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%2236%22%20r%3D%220.7%22%20fill%3D%22%23f0f0ee%22%20opacity%3D%220.35%22%2F%3E%3Ccircle%20cx%3D%22262%22%20cy%3D%2290%22%20r%3D%221.1%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%2296%22%20cy%3D%22200%22%20r%3D%220.8%22%20fill%3D%22%23f0f0ee%22%20opacity%3D%220.35%22%2F%3E%3Ccircle%20cx%3D%22220%22%20cy%3D%22214%22%20r%3D%220.6%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.3%22%2F%3E%3Ccircle%20cx%3D%22300%22%20cy%3D%2220%22%20r%3D%220.7%22%20fill%3D%22%23f0f0ee%22%20opacity%3D%220.35%22%2F%3E%3C%2Fsvg%3E") 70px 40px/330px 250px;
+    -webkit-mask-image:radial-gradient(ellipse 80% 90% at 50% 60%,rgba(0,0,0,.25) 25%,#000 95%);mask-image:radial-gradient(ellipse 80% 90% at 50% 60%,rgba(0,0,0,.25) 25%,#000 95%)}
+  /* overview tile: a night-navy stage with a gold spotlight on the podium */
+  .lbtile{position:relative;overflow:hidden;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px;margin-top:20px;
+    color:#fff;text-decoration:none;border:1px solid rgba(201,162,39,.5);border-bottom:2px solid var(--gold);
+    background:
+      radial-gradient(ellipse 46% 85% at 50% 108%,rgba(255,255,255,.06),transparent 70%),
+      radial-gradient(circle at 10% 20%,rgba(255,255,255,.16) 0 1.5px,transparent 2px),radial-gradient(circle at 86% 24%,rgba(240,240,238,.5) 0 1.5px,transparent 2.2px),
+      radial-gradient(circle at 24% 66%,rgba(255,255,255,.09) 0 1px,transparent 1.5px),radial-gradient(circle at 74% 70%,rgba(240,240,238,.35) 0 1px,transparent 1.6px),
+      radial-gradient(circle at 60% 30%,rgba(255,255,255,.1) 0 1px,transparent 1.5px),
+      var(--chrome);
+    box-shadow:none;transition:transform .2s ease,border-color .2s ease}
+  .lbtile:hover{transform:translateY(-2px);box-shadow:none;border-color:rgba(201,162,39,.75)}
+  .lbglow{position:absolute;inset:-60%;z-index:-1;pointer-events:none;background:linear-gradient(115deg,transparent 44%,rgba(255,255,255,.11) 50%,transparent 56%);
+    animation:lbsweep 7s ease-in-out 1.2s infinite}
+  @keyframes lbsweep{0%{transform:translateX(-40%)}35%,100%{transform:translateX(40%)}}
+  .lbt h2{margin:0;font-size:19px;font-weight:700;letter-spacing:-.2px;color:#fff;display:flex;align-items:center;gap:8px}
+  .lbt h2::before{content:"";width:22px;height:22px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff4c2,#f2c94c 45%,#c9971d 80%,#8a620a);box-shadow:inset 0 1px 1px rgba(255,255,255,.7),0 1px 3px rgba(0,0,0,.35)}
+  .lbt p{margin:6px 0 14px;font-size:13px;color:rgba(255,255,255,.72)}
+  .lbtile .tlink{color:#f2c94c}
+  .lbmini{display:flex;align-items:flex-end;gap:10px}
+  .lbm{display:flex;flex-direction:column;align-items:center;gap:6px;width:92px}
+  .lbtile .lbm .lbav{width:46px;height:46px;font-size:15px;background:rgba(255,255,255,.14);color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.22)}
+  .lbtile .lbm.s1 .lbav{width:60px;height:60px;font-size:19px;box-shadow:0 0 0 2.5px #f2c94c,0 0 22px -2px rgba(242,201,76,.65)}
+  .lbm .pmed{width:20px;height:20px;font-size:10px;right:-3px;bottom:-3px;outline-color:#24346c}
+  .lbavs{position:relative;display:flex;justify-content:center}
+  .lbrkc{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;color:#5b3c00;margin-bottom:2px}
+  .lbrkc.silver{color:#2e3640} .lbrkc.bronze{color:#3f1f08}
+  .lbm.s1 .lbrkc{width:36px;height:36px;font-size:15px;box-shadow:0 0 16px -2px rgba(242,201,76,.6),inset 0 1px 1px rgba(255,255,255,.75) !important}
+  .lbm.multi .lbmns{gap:2px}
+  .lbm.multi .lbplus{margin:2px 0 0}
+  .lbm.multi{width:auto;min-width:92px}
+  .lbtile .lbm.multi .lbav{box-shadow:0 0 0 1.5px rgba(255,255,255,.3)} .lbtile .lbm.s1.multi .lbav{box-shadow:0 0 0 2px #f2c94c}
+  .lbtile .lbm.multi .lbav{width:34px;height:34px;font-size:11.5px} .lbtile .lbm.s1.multi .lbav{width:40px;height:40px;font-size:13px}
+  .lbtile .lbav.more{background:rgba(255,255,255,.26)}
+  .lbmns{display:flex;flex-direction:column;align-items:center;gap:1px;max-width:100%;min-width:0}
+  .lbmn{display:flex;gap:3px;max-width:100%;min-width:0;font-size:12.5px;font-weight:600;color:#fff}
+  .lbm.multi .lbmn{font-size:11.5px}
+  .lbplus{flex:none;margin-left:2px;padding:0 5px;border-radius:999px;background:rgba(255,255,255,.18);font-size:10.5px;line-height:16px}
+  .lbsn{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lbin{flex:none}
+  .lbm b{font-size:12px;font-weight:700;color:#f2c94c;font-variant-numeric:tabular-nums}
+  .lbstep{display:block;width:100%;border-radius:8px 8px 2px 2px;margin-top:2px;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55)}
+  .lbm.s1 .lbstep{height:48px} .lbm.s2 .lbstep{height:38px} .lbm.s3 .lbstep{height:32px}
+  .lbstep{display:grid !important;place-items:start center;padding-top:5px;box-sizing:border-box}
+  .lbstep b{font-style:normal;position:relative;width:24px;height:24px;padding:2px;box-sizing:border-box;border-radius:50%;display:grid;place-items:center;
+    font-size:11.5px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 1px 0 rgba(255,255,255,.6),0 -1px 0 rgba(0,0,0,.18)}
+  .lbstep b.mtl{background:radial-gradient(circle at 34% 28%,var(--m1) 0,var(--m2) 42%,var(--m3) 80%,var(--m4) 100%) content-box,
+      conic-gradient(from 210deg,var(--m4),var(--m2) 12%,var(--m1) 22%,var(--m3) 34%,var(--m4) 46%,var(--m2) 60%,var(--m1) 70%,var(--m3) 82%,var(--m4)) border-box !important;
+    box-shadow:0 1px 3px rgba(0,0,0,.4) !important;color:#5b3c00}
+  .lbstep b.mtl.silver{color:#2e3640} .lbstep b.mtl.bronze{color:#3f1f08}
+  .lbm.s1 .lbstep b{width:28px;height:28px;font-size:13px}
+  .lbstep.tgold{background:linear-gradient(180deg,#f8df8c,#d9aa2c)} .lbstep.tsilver{background:linear-gradient(180deg,#eef0f4,#aeb5c0)} .lbstep.tbronze{background:linear-gradient(180deg,#f2c9a3,#c47f45)}
+  .lbfacts{display:flex;flex-direction:column;gap:12px;justify-self:end;min-width:0}
+  .lbfact{display:flex;align-items:center;gap:10px;min-width:0;padding:8px 12px 8px 8px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
+  .lbfact small{display:block;font-size:11.5px;color:rgba(255,255,255,.66)} .lbfact strong{display:block;font-size:13.5px;font-weight:650;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lbfact .lbav{background:rgba(242,201,76,.2);color:#f2c94c}
+  /* wide screens: the podium stands on the card's bottom edge, the steps rising from the gold line */
+  @media (min-width:900px){
+    .lbtile{padding:22px 24px 0;align-items:stretch}
+    .lbt,.lbfacts{align-self:center;padding-bottom:22px}
+    .lbmini{align-self:end;padding-top:18px}
+    .lbstep{margin-top:4px;border-radius:10px 10px 0 0}
+    .lbm.s1 .lbstep{height:66px} .lbm.s2 .lbstep{height:50px} .lbm.s3 .lbstep{height:38px}
+  }
+  /* phones and small tablets: a header bar with a round arrow, the podium across the full width, two fact chips */
+  @media (max-width:899px){
+    .lbtile{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "pod" "facts";gap:18px;padding:18px 16px 16px;justify-items:stretch;text-align:left}
+    .lbmini{margin-top:10px}
+    .lbt{grid-area:head;display:flex;align-items:center;gap:10px;min-width:0}
+    .lbt h2{flex:none;font-size:17px;justify-content:flex-start}
+    .lbt p{flex:1 1 auto;min-width:0;margin:1px 0 0;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .lbtile .tlink{margin-left:auto;width:36px;height:36px;padding:0;gap:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0;line-height:0;background:rgba(255,255,255,.1);border:1px solid rgba(242,201,76,.35)}
+    .lbtile .tlink > *{margin:0 !important;transform:none !important;flex:none}
+    .lbtile .tlink .ai,.lbtile .tlink svg{width:16px;height:16px}
+    .lbmini{grid-area:pod;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:8px}
+    .lbm,.lbm.multi{width:auto;min-width:0}
+    .lbfacts{grid-area:facts;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;justify-self:stretch;min-width:0;text-align:left}
+    .lbfact{min-width:0;overflow:hidden}
+    .lbfact > span:last-child{min-width:0;flex:1 1 auto;overflow:hidden}
+    .lbfacts > :only-child{grid-column:1 / -1}
+    .lbfact{padding:8px 10px 8px 8px;gap:8px}
+    .lbfact .lbav{width:28px;height:28px}
+    .lbfact .lbfire{padding:4px 8px 4px 6px;font-size:12px}
+    .lbfact small{font-size:10.5px} .lbfact strong{font-size:12.5px}
+  }
+
+  @media (prefers-reduced-motion:reduce){ .lbglow{animation:none;display:none} }
+  @media (max-width:699px){ .ov .lbtile{order:3;margin:0} }
   /* phone search: a field that grows out of the search button across the bar */
   .mast{position:relative}
   .mast > .lang{margin-left:auto}
@@ -1811,6 +2160,12 @@
   .rrow .sub,.mrow .sub{font-style:normal;color:var(--muted);margin-top:3px}
   .av{width:40px;height:40px;flex:none;border-radius:11px;background:var(--blue-tint);color:var(--blue-text);display:grid;place-items:center;font-size:12.5px;font-weight:650;letter-spacing:.02em}
   .mrow.na .av{background:var(--surface-2);color:var(--faint)}
+  .avimg{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+  .mrow.na .av .avimg{filter:grayscale(1);opacity:.6}
+  .phrow{display:flex;align-items:center;gap:14px}
+  .phav{width:64px;height:64px;border-radius:50%;font-size:19px}
+  .phbtns{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .phbtns label.mini{cursor:pointer}
   .subtabs{display:flex;gap:6px;margin:4px 0 4px;flex-wrap:wrap}
   .subtabs a{padding:8px 14px;border-radius:10px;font-size:13.5px;font-weight:600;color:var(--muted)}
   .subtabs a.on{background:var(--blue-tint);color:var(--blue-text)}
@@ -2158,9 +2513,9 @@ const STR = {
     tPiano:'Piano sheets',tPianoSub:'Accompaniment for each song',piano:'Piano sheets',
     withPiano:n=>n+' with piano sheets',
     tLyrics:'Lyrics',tLyricsSub:'The words as we sing them, ready to copy',
-    lyrWith:n=>n+' with lyrics',noLyricsYet:'No lyrics yet',needsLyrics:'Needs lyrics',lyrHave:'Have lyrics',lyrNeed:'Need lyrics',upTitle:'Upcoming services',upDemoOn:'Show a sample',upDemoAct:'This is only a sample. On a real service this button works.',upDemoOff:'Hide sample',upDemoNote:'Sample only: made-up services to show how the board looks. Nothing here is saved or shown to the choir.',pastSvc:'Past Services',upCount:n=>n===1?'1 planned':n+' planned',upNone:'Nothing planned ahead yet. Pick a date below to plan a service.',upLive:'Live now',upThisWeek:'This week',upNoon:'Live from noon',upFrom:d=>'Live from '+d,upMove:'Move',upLater:n=>n+' more planned further ahead',planNew:'Plan a service',upClash:'There is already a service of this kind on that date.',sortBy:'Sort',mTitle:'Attendance report',mSince:d=>'In the choir since '+d,mPresent:'Present',mMissed:'Missed',mOf:(a,b)=>a+' of '+b,mEvents:n=>'of '+n+' counted',mStreak:'Current streak',mBest:'Best streak',mInRow:'in a row',mServices:'Services',mRehearsals:'Rehearsals',mByMonth:'Month by month',mByQuarter:'By quarter',mByYear:'Year by year',mChoirAvg:'Choir average',mBackMembers:'Back to members',mBackAtt:'Back to attendance',mAbove:'points above the choir average',mBelow:'points below the choir average',mRecent:'Recent',mMissedList:'Missed dates',mNoneMissed:'No absences in this period.',mMore:'Show all',mLess:'Show less',mNoData:'No attendance recorded for this period.',mShare:'Share',mLinkCopied:'Link copied',mNotFound:'This member could not be found.',viewMusic:'View Music',lastSungOn:d=>'Last sung '+d,neverSung:'Not sung yet',neverShort:'—',sortAZ:'A–Z',sortTimes:'Most sung',sortOldest:'Longest ago',sortNewest:'Most recent',
+    lyrWith:n=>n+' with lyrics',noLyricsYet:'No lyrics yet',needsLyrics:'Needs lyrics',lyrHave:'Have lyrics',lyrNeed:'Need lyrics',upTitle:'Upcoming services',upDemoOn:'Show a sample',upDemoAct:'This is only a sample. On a real service this button works.',upDemoOff:'Hide sample',upDemoNote:'Sample only: made-up services to show how the board looks. Nothing here is saved or shown to the choir.',pastSvc:'Past Services',upCount:n=>n===1?'1 planned':n+' planned',upNone:'Nothing planned ahead yet. Pick a date below to plan a service.',upLive:'Live now',upThisWeek:'This week',upNoon:'Live from noon',upFrom:d=>'Live from '+d,upMove:'Move',upLater:n=>n+' more planned further ahead',planNew:'Plan a service',upClash:'There is already a service of this kind on that date.',sortBy:'Sort',mTitle:'Attendance report',mSince:d=>'In the choir since '+d,mPresent:'Present',mMissed:'Missed',mOf:(a,b)=>a+' of '+b,mEvents:n=>'of '+n+' counted',mStreak:'Current streak',mBest:'Best streak',mInRow:'in a row',mServices:'Services',mRehearsals:'Rehearsals',mByMonth:'Month by month',mByQuarter:'By quarter',mByYear:'Year by year',mChoirAvg:'Choir average',phAdd:'Add photo',phChange:'Change photo',phRemove:'Remove photo',phBusy:'Uploading…',phBad:'That file could not be read as a picture.',lbTitle:'Leaderboard',lbCold:'Cold streaks',lbColdSub:'Missed lately — we miss you',lbColdN:n=>n+' missed in a row',lbDown:d=>'−'+Math.abs(d)+' pts',lbNoCold:'Nobody is on a cold streak. Keep it up!',lbShow:'Showing the past',lbShowShort:'Past',lbPs1:'1 mo',lbPs3:'3 mo',lbPs6:'6 mo',lbPs12:'12 mo',lbP1:'1 month',lbP3:'3 months',lbP6:'6 months',lbP12:'12 months',lbTied:n=>n+' tied',lbTiedFor:r=>'Tied for #'+r,lbRanked:n=>n+' ranked',lbChase:'Chasing the podium',lbCut:'Top 10 line',lbSub:'Who shows up the most',lbSee:'See the leaderboard',lbLeaders:'Top attendance',lbStreaks:'Hot streaks',lbStreakFoot:'Events in a row, still going. One miss starts it over.',lbNoStreak:'No streaks of 5 or more right now.',lbSections:'Section race',lbLeads:'Leads',lbImproved:'Most improved',lbImprovedSub:'vs the period before',lbNoImproved:'Nobody is up 10 points or more yet.',lbPerfect:'Perfect attendance',lbPerfectSub:n=>n===1?'1 singer':n+' singers',lbNoPerfect:'Nobody has a perfect record for this period yet.',lbRace:y=>'Race for Top 10 of '+y,lbDaysLeft:n=>n===1?'1 day to go':n+' days to go',lbHof:y=>'Top 10 of '+y,lbNone:'Not enough attendance recorded for this period yet.',lbNoBadges:'No badges right now.',lbPts:d=>'+'+d+' pts',lbMore:n=>'and '+n+' more',lbClose:'Close',lbTileStreak:'Longest streak',lbTileSection:'Leading section',bTitle:'Badges',bHall:'Hall of fame',bHallSub:'Year-end awards, kept for good',bNowTitle:'Right now',bNowSub:'Based on the period above',bCapped:'Based on the past 12 months',bYearTop:y=>'Top 10 of '+y,bPerfectYear:y=>'Perfect '+y,bAllN:n=>'All '+n+' events',bYearIn:r=>'Now #'+r+' · decided Dec 31',bYearNow:r=>'Now #'+r+' · top 10 needed',bYearNeed:'Attend half the events to rank',bEarned:(a,b)=>a+' of '+b+' earned',bTop5:'Top 5',bTop10:'Top 10',bTopPart:'Top of the section',bStreak:'On a roll',bPerfect:'Perfect month',bComeback:'Comeback',bImproved:'Most improved',bSunday:'Every Sunday',bRehearsal:'Rehearsal regular',bAbove:'Above average',bVeteran:'Veteran',bRank:(r,n)=>'#'+r+' of '+n,bNow:r=>'Now #'+r,bTop5Need:'Finish in the top 5',bTop10Need:'Finish in the top 10',bPartOf:(p,n)=>'#1 of '+n+' · '+p.charAt(0)+p.slice(1).toLowerCase(),bPartNeed:'Be #1 in your section',bStreakGot:n=>n+' in a row and counting',bStreakNow:n=>'Now '+n+' in a row · goal 10',bStreakNeed:'10 in a row',bPerfectGot:n=>n===1?'1 month, no misses':n+' months, no misses',bPerfectNeed:'3 full months with no misses',bPerfectSome:n=>n+' so far · goal 3',bNeedPeriod:'Pick a shorter period',bPlus:d=>'+'+d+' points on the period before',bComebackNeed:'From below average to above it, +25 points',bPlusMost:d=>'+'+d+' points, the most in the choir',bImprovedNeed:'Improve the most in the choir',bSundayGot:n=>'All '+n+' services',bSundayNeed:'No missed services (8+)',bSundayMore:'No misses yet · needs 8 services',bRehGot:p=>p+'% of rehearsals',bRehNeed:'95% of 10+ rehearsals',bAboveGot:n=>n+' months in a row',bAboveNeed:'6 months in a row above the choir average',bYears:y=>y===1?'1 year in the choir':y+' years in the choir',bVetNeed:'Two years in the choir',bVetNoDate:'Needs a join date',mBackMembers:'Back to members',mBackAtt:'Back to attendance',mAbove:'points above the choir average',mBelow:'points below the choir average',mRecent:'Recent',mMissedList:'Missed dates',mNoneMissed:'No absences in this period.',mMore:'Show all',mLess:'Show less',mNoData:'No attendance recorded for this period.',mShare:'Share',mLinkCopied:'Link copied',mNotFound:'This member could not be found.',viewMusic:'View Music',lastSungOn:d=>'Last sung '+d,neverSung:'Not sung yet',neverShort:'—',sortAZ:'A–Z',sortTimes:'Most sung',sortOldest:'Longest ago',sortNewest:'Most recent',
     lyrAll:'All lyrics',lyrEmpty:'No lyrics have been added for this song yet.',
-    lyrView:'Text',copyLyrics:'Copy text',printLyrics:'Print',lyrCopied:'Text copied.',
+    lyrView:'Text',copyLyrics:'Copy text',printLyrics:'Print',printHint:'If no print window opens, use Share → Print',lyrCopied:'Text copied.',
     editLyrics:'Edit text',addLyrics:'Add text',lyrSaved:'Text saved.',
     bkVerse:'Verse',bkChorus:'Chorus',bkBridge:'Bridge',bkEnd:'Ending',
     dupBlock:'Duplicate',delBlockQ:'Delete this block?',
@@ -2292,9 +2647,9 @@ const STR = {
     tPiano:'Ноты для фортепиано',tPianoSub:'Аккомпанемент к каждой песне',piano:'Фортепиано',
     withPiano:n=>'с фортепиано: '+n,
     tLyrics:'Тексты песен',tLyricsSub:'Слова так, как мы их поём — готово к копированию',
-    lyrWith:n=>'с текстом: '+n,noLyricsYet:'Текста пока нет',needsLyrics:'Без текста',lyrHave:'С текстом',lyrNeed:'Без текста',upTitle:'Предстоящие служения',upDemoOn:'Показать пример',upDemoAct:'Это только пример. У настоящего служения эта кнопка работает.',upDemoOff:'Скрыть пример',upDemoNote:'Только пример: придуманные служения, чтобы показать, как выглядит список. Ничего не сохраняется и хору не показывается.',pastSvc:'Прошедшие служения',upCount:n=>'запланировано: '+n,upNone:'Пока ничего не запланировано заранее. Выберите дату ниже, чтобы спланировать служение.',upLive:'Сейчас на сайте',upThisWeek:'На этой неделе',upNoon:'На сайте с полудня',upFrom:d=>'На сайте с '+d,upMove:'Перенести',upLater:n=>'ещё дальше: '+n,planNew:'Спланировать служение',upClash:'На эту дату уже есть такое служение.',sortBy:'Сортировка',mTitle:'Отчёт о посещаемости',mSince:d=>'В хоре с '+d,mPresent:'Был',mMissed:'Пропустил',mOf:(a,b)=>a+' из '+b,mEvents:n=>'из '+n+' учтённых',mStreak:'Текущая серия',mBest:'Лучшая серия',mInRow:'подряд',mServices:'Служения',mRehearsals:'Спевки',mByMonth:'По месяцам',mByQuarter:'По кварталам',mByYear:'По годам',mChoirAvg:'Среднее по хору',mBackMembers:'К списку хористов',mBackAtt:'К посещаемости',mAbove:'п.п. выше среднего по хору',mBelow:'п.п. ниже среднего по хору',mRecent:'Последние',mMissedList:'Пропуски',mNoneMissed:'В этом периоде пропусков нет.',mMore:'Показать все',mLess:'Свернуть',mNoData:'За этот период посещаемость не отмечалась.',mShare:'Поделиться',mLinkCopied:'Ссылка скопирована',mNotFound:'Участник не найден.',viewMusic:'Открыть ноты',lastSungOn:d=>'Последний раз: '+d,neverSung:'Ещё не пели',neverShort:'—',sortAZ:'А–Я',sortTimes:'Чаще всего',sortOldest:'Давно не пели',sortNewest:'Недавно пели',
+    lyrWith:n=>'с текстом: '+n,noLyricsYet:'Текста пока нет',needsLyrics:'Без текста',lyrHave:'С текстом',lyrNeed:'Без текста',upTitle:'Предстоящие служения',upDemoOn:'Показать пример',upDemoAct:'Это только пример. У настоящего служения эта кнопка работает.',upDemoOff:'Скрыть пример',upDemoNote:'Только пример: придуманные служения, чтобы показать, как выглядит список. Ничего не сохраняется и хору не показывается.',pastSvc:'Прошедшие служения',upCount:n=>'запланировано: '+n,upNone:'Пока ничего не запланировано заранее. Выберите дату ниже, чтобы спланировать служение.',upLive:'Сейчас на сайте',upThisWeek:'На этой неделе',upNoon:'На сайте с полудня',upFrom:d=>'На сайте с '+d,upMove:'Перенести',upLater:n=>'ещё дальше: '+n,planNew:'Спланировать служение',upClash:'На эту дату уже есть такое служение.',sortBy:'Сортировка',mTitle:'Отчёт о посещаемости',mSince:d=>'В хоре с '+d,mPresent:'Был',mMissed:'Пропустил',mOf:(a,b)=>a+' из '+b,mEvents:n=>'из '+n+' учтённых',mStreak:'Текущая серия',mBest:'Лучшая серия',mInRow:'подряд',mServices:'Служения',mRehearsals:'Спевки',mByMonth:'По месяцам',mByQuarter:'По кварталам',mByYear:'По годам',mChoirAvg:'Среднее по хору',phAdd:'Добавить фото',phChange:'Сменить фото',phRemove:'Удалить фото',phBusy:'Загрузка…',phBad:'Этот файл не удалось открыть как изображение.',lbTitle:'Лидеры',lbCold:'Холодные серии',lbColdSub:'Давно не были — ждём вас',lbColdN:n=>'пропусков подряд: '+n,lbDown:d=>'−'+Math.abs(d)+' п.п.',lbNoCold:'Холодных серий нет — так держать!',lbShow:'За последние',lbShowShort:'За',lbPs1:'1 мес',lbPs3:'3 мес',lbPs6:'6 мес',lbPs12:'12 мес',lbP1:'1 месяц',lbP3:'3 месяца',lbP6:'6 месяцев',lbP12:'12 месяцев',lbTied:n=>'разделили: '+n,lbTiedFor:r=>'Разделили №'+r,lbRanked:n=>'в рейтинге: '+n,lbChase:'На подходе к пьедесталу',lbCut:'Граница топ-10',lbSub:'Кто приходит чаще всех',lbSee:'Все лидеры',lbLeaders:'Лучшая посещаемость',lbStreaks:'Горячие серии',lbStreakFoot:'Событий подряд без пропусков. Один пропуск — и серия заново.',lbNoStreak:'Сейчас нет серий от 5 подряд.',lbSections:'Гонка партий',lbLeads:'Лидер',lbImproved:'Главный рывок',lbImprovedSub:'к прошлому периоду',lbNoImproved:'Пока никто не вырос на 10 п.п.',lbPerfect:'Без пропусков',lbPerfectSub:n=>'хористов: '+n,lbNoPerfect:'За этот период пока ни у кого нет идеальной посещаемости.',lbRace:y=>'Гонка за Топ-10 '+y,lbDaysLeft:n=>'осталось дней: '+n,lbHof:y=>'Топ-10 '+y,lbNone:'За этот период пока мало отметок.',lbNoBadges:'Сейчас наград нет.',lbPts:d=>'+'+d+' п.п.',lbMore:n=>'и ещё '+n,lbClose:'Закрыть',lbTileStreak:'Самая длинная серия',lbTileSection:'Лидирует партия',bTitle:'Награды',bHall:'Зал славы',bHallSub:'Итоги года — остаются навсегда',bNowTitle:'Сейчас',bNowSub:'По выбранному периоду',bCapped:'За последние 12 месяцев',bYearTop:y=>'Топ-10 '+y,bPerfectYear:y=>'Идеальный '+y,bAllN:n=>'все '+n+' событий',bYearIn:r=>'Сейчас №'+r+' · итоги 31 декабря',bYearNow:r=>'Сейчас №'+r+' · нужен топ-10',bYearNeed:'Посетите половину событий, чтобы попасть в рейтинг',bEarned:(a,b)=>'получено '+a+' из '+b,bTop5:'Топ-5',bTop10:'Топ-10',bTopPart:'Лучший в партии',bStreak:'Без пропусков',bPerfect:'Идеальный месяц',bComeback:'Возвращение',bImproved:'Главный рывок',bSunday:'Каждое воскресенье',bRehearsal:'Верен спевкам',bAbove:'Выше среднего',bVeteran:'Ветеран',bRank:(r,n)=>'№'+r+' из '+n,bNow:r=>'Сейчас №'+r,bTop5Need:'Войти в пятёрку лучших',bTop10Need:'Войти в десятку лучших',bPartOf:(p,n)=>'№1 из '+n+' · '+p.charAt(0)+p.slice(1).toLowerCase(),bPartNeed:'Стать первым в своей партии',bStreakGot:n=>n+' подряд — и дальше',bStreakNow:n=>'Сейчас '+n+' подряд · цель 10',bStreakNeed:'10 раз подряд',bPerfectGot:n=>n===1?'1 месяц без пропусков':'месяцев без пропусков: '+n,bPerfectNeed:'3 полных месяца без пропусков',bPerfectSome:n=>'пока '+n+' · цель 3',bNeedPeriod:'Выберите период короче',bPlus:d=>'+'+d+' п.п. к прошлому периоду',bComebackNeed:'Из-под среднего — выше него, +25 п.п.',bPlusMost:d=>'+'+d+' п.п., больше всех в хоре',bImprovedNeed:'Вырасти больше всех в хоре',bSundayGot:n=>'Все '+n+' служений',bSundayNeed:'Ни одного пропуска (от 8 служений)',bSundayMore:'Пропусков нет · нужно 8 служений',bRehGot:p=>p+'% спевок',bRehNeed:'95% из 10+ спевок',bAboveGot:n=>'месяцев подряд: '+n,bAboveNeed:'6 месяцев подряд выше среднего по хору',bYears:y=>'лет в хоре: '+y,bVetNeed:'Два года в хоре',bVetNoDate:'Нужна дата вступления',mBackMembers:'К списку хористов',mBackAtt:'К посещаемости',mAbove:'п.п. выше среднего по хору',mBelow:'п.п. ниже среднего по хору',mRecent:'Последние',mMissedList:'Пропуски',mNoneMissed:'В этом периоде пропусков нет.',mMore:'Показать все',mLess:'Свернуть',mNoData:'За этот период посещаемость не отмечалась.',mShare:'Поделиться',mLinkCopied:'Ссылка скопирована',mNotFound:'Участник не найден.',viewMusic:'Открыть ноты',lastSungOn:d=>'Последний раз: '+d,neverSung:'Ещё не пели',neverShort:'—',sortAZ:'А–Я',sortTimes:'Чаще всего',sortOldest:'Давно не пели',sortNewest:'Недавно пели',
     lyrAll:'Все тексты',lyrEmpty:'Для этой песни текст ещё не добавлен.',
-    lyrView:'Текст',copyLyrics:'Копировать текст',printLyrics:'Печать',lyrCopied:'Текст скопирован.',
+    lyrView:'Текст',copyLyrics:'Копировать текст',printLyrics:'Печать',printHint:'Если окно печати не открылось: Поделиться → Напечатать',lyrCopied:'Текст скопирован.',
     editLyrics:'Изменить текст',addLyrics:'Добавить текст',lyrSaved:'Текст сохранён.',
     bkVerse:'Куплет',bkChorus:'Припев',bkBridge:'Бридж',bkEnd:'Концовка',
     dupBlock:'Дублировать',delBlockQ:'Удалить этот блок?',
@@ -2443,13 +2798,20 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.4.1';
+const VERSION = '5.8.3';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Printing lyrics works on iPhone and iPad, including from the home-screen app',
+    'On phones, tapping More opens the menu every time, including on pages where More is already highlighted',
+    'Badges, report cards and the leaderboard update straight after attendance or member edits; lighter twinkle on the leaderboard cards for smoother scrolling on phones',
+    'Member photos: the director can add a photo when editing a member; it shows in every round avatar, with initials when there is none',
+    'New Leaderboard: top attendance with a podium, hot streaks, the section race, most improved, perfect attendance, the race for this year’s Top 10 and last year’s Hall of fame; tap a name to see their badges. A leaderboard card on the overview links to it',
+    'Badges: a Hall of fame keeps year-end Top 10 and Perfect year awards for good; the other badges follow the past 12 months and can be lost; On a roll counts the streak still going; Veteran removed',
+    'Attendance badges: medals on each report card for top 5, top 10, streaks, perfect months, comebacks and more; earned medals also show beside names in the attendance summary',
     'On computers and iPads, the first step of the top-bar path is clickable and takes you back',
     'Report cards compare each singer with the choir average, and the monthly bars line up evenly',
     'Period pills say “Past Year” (and Past 3 Months, Past 30 Days…) instead of “Last”',
@@ -2505,6 +2867,13 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'Печать текстов работает на iPhone и iPad, в том числе из приложения на главном экране',
+    'На телефоне кнопка «Ещё» теперь всегда открывает меню, в том числе на страницах, где она уже подсвечена',
+    'Награды, отчёты и лидеры обновляются сразу после изменения посещаемости или состава; облегчённое мерцание на карточках лидеров — плавнее прокрутка на телефоне',
+    'Фото хористов: регент может добавить фото при редактировании; оно видно во всех круглых аватарах, а без фото — инициалы',
+    'Новая страница «Лидеры»: пьедестал лучшей посещаемости, горячие серии, гонка партий, главный рывок, без пропусков, гонка за Топ-10 года и Зал славы; нажмите на имя, чтобы увидеть награды. На обзоре — карточка со ссылкой',
+    'Награды: в «Зале славы» навсегда остаются итоги года — Топ-10 и Идеальный год; остальные награды считаются за последние 12 месяцев и могут пропасть; «Без пропусков» — текущая серия; «Ветеран» убран',
+    'Награды за посещаемость: медали в отчёте хориста — топ-5, топ-10, серии, идеальные месяцы, возвращение и другие; полученные медали видны и рядом с именами в сводке',
     'На компьютере и iPad первый шаг пути в верхней панели теперь кликабелен и ведёт назад',
     'В отчётах видно сравнение со средним по хору, а столбцы по месяцам выровнены',
     'В выборе периода «Последний год» теперь «Последние 12 месяцев»',
@@ -3321,6 +3690,7 @@ const AIC = {
   piano: AI('<rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M7.5 4v16M12 4v16M16.5 4v16"></path><path d="M6 4v8h3V4M15 4v8h3V4"></path>'),
   lyrics: AI('<path d="M4 5h16M12 5v15M8 20h8M4 5v3M20 5v3"></path>'),
   seat: AI('<path d="M5 12V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7"></path><path d="M4 12h16v6H4z"></path><path d="M6 18v3M18 18v3"></path>'),
+  trophy: AI('<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"></path><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path>'),
   rules: AI('<path d="M4 3h12l4 4v14H4z"></path><path d="M16 3v4h4"></path><path d="M8 11h8M8 15h8"></path>'),
   user: AI('<circle cx="12" cy="8" r="4"></circle><path d="M4 21v-2a8 8 0 0 1 16 0v2"></path>'),
   admin: AI('<path d="M20 7h-9M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle>'),
@@ -3373,6 +3743,7 @@ function crumbsBase(){
   if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) return [L, t('tPiano')];
   if (r.startsWith('#/sheets')) return [L, t('tSheets')];
   if (r.startsWith('#/lyrics')) return [L, t('tLyrics')];
+  if (r.startsWith('#/leaders')) return [C, t('lbTitle')];
   if (r.startsWith('#/seating')) return [C, t('tSeating')];
   if (r.startsWith('#/rules')) return [C, t('tRules')];
   if (r.startsWith('#/usage')) return [D, t('usageIns')];
@@ -3573,7 +3944,6 @@ function wireDockDrag(host){
            /* hold the pill by the point that was grabbed, as a fraction of its width,
               so it stays under the finger while it resizes */
            frac: Math.min(1, Math.max(0, (e.clientX - pb.left) / pb.width)) };
-    try { host.setPointerCapture(e.pointerId); } catch (_) {}
   });
   host.addEventListener('pointermove', e => {
     if (!st || e.pointerId !== st.id) return;
@@ -3581,6 +3951,7 @@ function wireDockDrag(host){
     if (!st.moved) {
       if (Math.abs(dx) < 6 || Math.abs(dx) <= Math.abs(dy)) return;   // vertical swipes scroll
       st.moved = true;
+      try { host.setPointerCapture(e.pointerId); } catch (_) {}
       const dk0 = dockOf(); if (dk0) dk0.classList.add('dragging');
     }
     e.preventDefault();
@@ -3753,6 +4124,7 @@ function drawerNav(){
     ${it('#/sheets/piano', piano, AIC.piano, t('tPiano'), S.songs.filter(x => x.piano_path).length)}
     ${it('#/lyrics', r.startsWith('#/lyrics'), AIC.lyrics, t('tLyrics'), S.songs.filter(hasLyrics).length)}
     ${sec('navChoir')}
+    ${it('#/leaders', r.startsWith('#/leaders'), AIC.trophy, t('lbTitle'))}
     ${it('#/seating', r.startsWith('#/seating'), AIC.seat, t('tSeating'))}
     ${it('#/rules', r.startsWith('#/rules'), AIC.rules, t('tRules'))}
     ${S.session ? sec('navDir') + it('#/admin/attendance', r.startsWith('#/admin/attendance') || r.startsWith('#/admin/entries/att'), AIC.att, t('recordAtt'))
@@ -3945,9 +4317,28 @@ function homePage(){
       <span class="grow2"><strong>${esc(t('dirSignin'))}</strong><small>${esc(t('dirSigninSub'))}</small></span>
       <a class="abtn" href="#/login">${esc(t('tSignIn'))}</a></section>`;
 
+  /* the leaderboard, in brief: top three of the past 3 months, the longest streak, the leading section */
+  const leadersCard = (() => {
+    const T = choirTable(shift(3), today()), G = podGroups(T.ranked);
+    if (!G.length) return '';
+    const hot = hotStreaks(5)[0], sec = sectionRace(T)[0];
+    return `<a class="dpanel lbtile" href="#/leaders"><span class="lbglow" aria-hidden="true"></span><span class="lbtw" aria-hidden="true"><i style="left:13%;top:24%"></i><i style="left:84%;top:17%;animation-delay:1.4s"></i><i style="left:70%;top:70%;animation-delay:2.6s"></i><i style="left:27%;top:62%;animation-delay:3.3s"></i></span>
+      <div class="lbt"><h2><span class="lbtro">${AIC.trophy}</span>${esc(t('lbTitle'))}</h2><p>${esc(t('rng3'))}</p><span class="tlink">${esc(t('lbSee'))}${AIC.arrow}</span></div>
+      <div class="lbmini">${[G[1], G[0], G[2]].map((g, i) => { if (!g) return ''; const L = g.list, r0 = L[0];
+        /* a tie shows its names stacked under one rank medal, no circles */
+        /* the place number lives in the step, so it sits level whatever stands above it */
+        const head = L.length > 1 ? '' : `<span class="lbavs"><span class="lbav">${avIn(r0.s)}</span></span>`;
+        const names = L.slice(0, 3).map(r => `<span class="lbmn">${lbName(r.s.name)}</span>`).join('') + (L.length > 3 ? `<span class="lbplus">+${L.length - 3}</span>` : '');
+        return `<div class="lbm s${[2, 1, 3][i]}${L.length > 1 ? ' multi' : ''}">${head}
+        <span class="lbmns">${names}</span><b>${Math.round(r0.pct)}%</b><i class="lbstep t${rankTier(g.rank)}"><b class="mtl ${rankTier(g.rank)}">${g.rank}</b></i></div>`; }).join('')}</div>
+      <div class="lbfacts">
+        ${hot ? `<div class="lbfact"><span class="lbfire">${BI.streak}<b>${hot.n}</b></span><span><small>${esc(t('lbTileStreak'))}</small><strong>${esc(hot.s.name)}</strong></span></div>` : ''}
+        ${sec ? `<div class="lbfact"><span class="lbav ${sec.part}">${BI.part}</span><span><small>${esc(t('lbTileSection'))}</small><strong>${esc(partName(sec.part))} · ${sec.p}%</strong></span></div>` : ''}
+      </div></a>`;
+  })();
   return `<div class="dtop"></div>
     <div class="ov">${kpis}
-    <div class="dgrid">${service}${att}</div>
+    <div class="dgrid">${service}${att}</div>${leadersCard}
     <div class="dbottom">${library}${recentCard}${admin}</div></div>
     <div class="ver">v${VERSION} · <a href="#" data-notes>${esc(t('relNotes'))}</a></div>
     ${S.showNotes ? `<div class="notespanel">
@@ -4062,6 +4453,329 @@ const memberLink = s => '#/member/' + shortId(s.id);
 /* green above 60% or above the choir's own average for the same events */
 const pctTone = (p, avg) => p === null ? 'var(--faint)' : (p > 60 || (avg != null && p > avg)) ? 'var(--green)' : p > 20 ? 'var(--gold)' : 'var(--red)';
 /* the missed list is clipped to the Recent card's height; offer "Show all" only when it overflows */
+/* ---------- attendance badges ----------
+   Worked out from attendance already recorded. Rankings, perfect months, comeback
+   and the like use the period on screen; streak and veteran are all-time. */
+const BI = {
+  top5: AI('<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"></path><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path>'),
+  top10: AI('<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"></path>'),
+  part: AI('<path d="m3 8 4.5 4L12 5l4.5 7L21 8l-2 11H5z"></path>'),
+  streak: AI('<path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.3 1.2-3.8 2.5-5 .3 1.8 1.2 2.7 2 3 0-3-.5-5.5.5-8z"></path>'),
+  perfect: AI('<rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path><path d="m9 16 2 2 4-4"></path>'),
+  comeback: AI('<path d="m3 17 6-6 4 4 8-8"></path><path d="M15 7h6v6"></path>'),
+  improved: AI('<path d="M12 20V5M6 11l6-6 6 6"></path><path d="M5 21h14"></path>'),
+  sunday: AI('<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"></path>'),
+  rehearsal: AI('<path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>'),
+  above: AI('<path d="M4 20h16"></path><path d="M7 16v-4M12 16V8M17 16V5"></path>'),
+  snow: AI('<path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7"></path><path d="m9 4 3 2 3-2M9 20l3-2 3 2"></path>'),
+  down: AI('<path d="m3 7 6 6 4-4 8 8"></path><path d="M15 17h6v-6"></path>'),
+  veteran: AI('<path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"></path><path d="m9 12 2 2 4-4"></path>')
+};
+const TIERW = { gold: 3, silver: 2, bronze: 1 };
+let _bx = null, renderTick = 0;
+function bIndex(){
+  const key = renderTick + ':' + today();          // one build per render: cheap, and never stale after an edit
+  if (_bx && _bx.key === key) return _bx;
+  const abs = new Map(); S.absences.forEach(a => abs.set(a.event_id + '|' + a.singer_id, a.status === 'not_listed' ? 'na' : 'absent'));
+  const taken = new Set(S.absences.map(a => a.event_id));
+  const now = today();
+  const all = S.events.filter(e => !e.cancelled && e.date <= now && (e.attendance_taken || taken.has(e.id)))
+    .sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : kindRank(a.kind) - kindRank(b.kind));
+  _bx = { key, abs, all, memo: new Map(), streak: new Map() };
+  return _bx;
+}
+const bSt = (X, e, s) => X.abs.get(e.id + '|' + s.id) || (s.joined_on && e.date < s.joined_on ? 'na' : 'present');
+const dayShift = (iso, n) => { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return localISO(d); };
+function bRow(X, ev, s){
+  const r = { s, came: 0, of: 0, sc: 0, so: 0, rc: 0, ro: 0, mon: {} };
+  ev.forEach(e => { const st = bSt(X, e, s); if (st === 'na') return; const ok = st === 'present';
+    r.of++; if (ok) r.came++;
+    if (e.kind === 'rehearsal') { r.ro++; if (ok) r.rc++; }
+    else if (e.kind === 'morning' || e.kind === 'evening') { r.so++; if (ok) r.sc++; }   // Sunday services only
+    const m = e.date.slice(0, 7), c = r.mon[m] = r.mon[m] || [0, 0]; c[1]++; if (ok) c[0]++; });
+  r.pct = r.of ? r.came / r.of * 100 : null;
+  return r;
+}
+function choirTable(from, to, withArchived){
+  const X = bIndex(), k = from + '~' + to + (withArchived ? '~a' : '');
+  if (X.memo.has(k)) return X.memo.get(k);
+  const ev = X.all.filter(e => (!from || e.date >= from) && e.date <= to);
+  const rows = new Map();
+  S.singers.filter(x => x.part && (withArchived || x.active !== false)).forEach(s => rows.set(s.id, bRow(X, ev, s)));
+  const need = Math.max(3, Math.ceil(ev.length * .5));
+  /* ties on the percentage go to whoever attended more; only a true tie shares a place */
+  const same = (a, b) => Math.round(a.pct * 10) === Math.round(b.pct * 10) && a.came === b.came;
+  const ranked = [...rows.values()].filter(r => r.of >= need).sort((a, b) => b.pct - a.pct || b.came - a.came);
+  ranked.forEach((r, i) => { r.rank = i && same(ranked[i - 1], r) ? ranked[i - 1].rank : i + 1; });
+  const byPart = {};
+  ranked.forEach(r => (byPart[r.s.part] = byPart[r.s.part] || []).push(r));
+  Object.values(byPart).forEach(l => l.forEach((r, i) => { r.prank = i && same(l[i - 1], r) ? l[i - 1].prank : i + 1; r.pn = l.length; }));
+  const mAvg = {};
+  rows.forEach(r => Object.entries(r.mon).forEach(([m, [c, o]]) => { const a = mAvg[m] = mAvg[m] || [0, 0]; a[0] += c; a[1] += o; }));
+  let c = 0, o = 0; rows.forEach(r => { c += r.came; o += r.of; });
+  const out = { ev, rows, ranked, mAvg, avg: o ? c / o * 100 : null };
+  X.memo.set(k, out); return out;
+}
+/* the run still going: counted events back from the latest, until the first miss */
+function curStreak(s){
+  const X = bIndex();
+  if (X.streak.has(s.id)) return X.streak.get(s.id);
+  let run = 0;
+  for (let i = X.all.length - 1; i >= 0; i--) { const st = bSt(X, X.all[i], s); if (st === 'na') continue; if (st !== 'present') break; run++; }
+  X.streak.set(s.id, run); return run;
+}
+/* misses in a row, counted back from the latest event */
+function curMiss(s){
+  const X = bIndex(); let run = 0;
+  for (let i = X.all.length - 1; i >= 0; i--) { const st = bSt(X, X.all[i], s); if (st === 'na') continue; if (st !== 'absent') break; run++; }
+  return run;
+}
+/* never listed on the cold card */
+const COLD_SKIP = [['григоренко', 'диана'], ['григоренко', 'роман'], ['григоренко', 'рома'], ['grigorenko', 'diana'], ['grigorenko', 'roman'], ['grigorenko', 'roma']];
+const coldSkip = s => { const w = String(s.name || '').toLowerCase().replace(/ё/g, 'е').split(/\s+/); return COLD_SKIP.some(([a, b]) => w.includes(a) && w.includes(b)); };
+/* Badges for right now: they follow recent attendance and can be lost. The window is
+   the period on screen, never more than the past 12 months, so years of history
+   don't pile up medals. Long service is shown in the header, not as a badge. */
+const B_MAX = 12;
+const bWindow = from => { const cap = shift(B_MAX); return !from || from < cap ? cap : from; };
+function badgesFor(s, from, to){
+  to = to || today(); from = bWindow(from);
+  const cur = choirTable(from, to), me = cur.rows.get(s.id) || bRow(bIndex(), cur.ev, s);
+  const B = [];
+  const add = (id, name, earned, tier, sub) => B.push({ id, name: t(name), earned: !!earned, tier: earned ? tier : null, sub });
+  const ranked = me.rank != null;
+  const n = cur.ranked.length;
+  add('top5', 'bTop5', ranked && me.rank <= 5, 'gold', ranked && me.rank <= 5 ? t('bRank')(me.rank, n) : t('bTop5Need'));
+  if (!(ranked && me.rank <= 5)) add('top10', 'bTop10', ranked && me.rank <= 10, 'silver', ranked && me.rank <= 10 ? t('bRank')(me.rank, n) : ranked ? t('bNow')(me.rank) : t('bTop10Need'));
+  const partOk = ranked && me.prank === 1 && me.pn >= 3;
+  add('part', 'bTopPart', partOk, 'gold', partOk ? t('bPartOf')(t(s.part), me.pn) : t('bPartNeed'));
+  const sb = curStreak(s);
+  add('streak', 'bStreak', sb >= 10, sb >= 40 ? 'gold' : sb >= 20 ? 'silver' : 'bronze', sb >= 10 ? t('bStreakGot')(sb) : sb ? t('bStreakNow')(sb) : t('bStreakNeed'));
+  /* whole calendar months only: not the month the period starts part-way through, not the month still under way */
+  const nowM = today().slice(0, 7), fromM = from.slice(8) === '01' ? from.slice(0, 7) : dayShift(from.slice(0, 7) + '-28', 7).slice(0, 7);
+  const perfect = Object.entries(me.mon).filter(([m, [c, o]]) => m < nowM && m >= fromM && o >= 4 && c === o).length;
+  add('perfect', 'bPerfect', perfect >= 3, perfect >= 8 ? 'gold' : perfect >= 5 ? 'silver' : 'bronze', perfect >= 3 ? t('bPerfectGot')(perfect) : perfect ? t('bPerfectSome')(perfect) : t('bPerfectNeed'));
+  /* the same length of time just before, for comeback and most improved */
+  const len = Math.round((new Date(to + 'T12:00:00') - new Date(from + 'T12:00:00')) / 864e5);
+  const pTo = dayShift(from, -1), prev = choirTable(dayShift(pTo, -len), pTo);
+  const delta = r => { if (!r || r.rank == null) return null; const p = prev.rows.get(r.s.id); return p && p.of >= 5 ? Math.round(r.pct - p.pct) : null; };
+  const d = delta(me), pRow = prev.rows.get(s.id);
+  /* a comeback climbs from below the choir average back above it */
+  const cbOk = d !== null && d >= 25 && me.of >= 5 && pRow && prev.avg !== null && pRow.pct < prev.avg && cur.avg !== null && me.pct >= cur.avg;
+  add('comeback', 'bComeback', cbOk, d >= 40 ? 'gold' : 'silver', cbOk ? t('bPlus')(d) : t('bComebackNeed'));
+  let top = null; cur.ranked.forEach(r => { const x = delta(r); if (x !== null && x >= 10 && (top === null || x > top)) top = x; });
+  add('improved', 'bImproved', d !== null && top !== null && d === top, 'gold', d !== null && d === top ? t('bPlusMost')(d) : t('bImprovedNeed'));
+  add('sunday', 'bSunday', me.so >= 8 && me.sc === me.so, 'gold', me.so >= 8 && me.sc === me.so ? t('bSundayGot')(me.so) : me.so < 8 && me.sc === me.so ? t('bSundayMore') : t('bSundayNeed'));
+  const rp = me.ro ? Math.round(me.rc / me.ro * 100) : 0;
+  add('rehearsal', 'bRehearsal', me.ro >= 10 && rp >= 95, rp === 100 ? 'gold' : 'silver', me.ro >= 10 && rp >= 95 ? t('bRehGot')(rp) : t('bRehNeed'));
+  let run = 0, bestRun = 0, lastM = '';
+  const nextM = m => dayShift(m + '-28', 7).slice(0, 7);
+  Object.keys(me.mon).sort().forEach(m => { const [c, o] = me.mon[m], a = cur.mAvg[m];
+    if (lastM && nextM(lastM) !== m) run = 0;                // a gap month breaks the run
+    run = a && a[1] && c / o > a[0] / a[1] ? run + 1 : 0; lastM = m; if (run > bestRun) bestRun = run; });
+  add('above', 'bAbove', bestRun >= 6, bestRun >= 9 ? 'gold' : 'silver', bestRun >= 6 ? t('bAboveGot')(bestRun) : t('bAboveNeed'));
+  return B.sort((a, b) => (TIERW[b.tier] || 0) - (TIERW[a.tier] || 0));
+}
+/* Hall of fame: decided once a calendar year is over and kept for good.
+   Top 10 of the year (#1–3 gold, #4–10 silver) and a Perfect year (every event, 20+).
+   Everyone who sang that year is ranked, including singers archived since. */
+const Y_MIN_EVENTS = 12;
+function yearAwards(s){
+  const X = bIndex(), yNow = +today().slice(0, 4), won = [];
+  const years = [...new Set(X.all.map(e => +e.date.slice(0, 4)))].filter(y => y < yNow).sort((a, b) => b - a);
+  years.forEach(y => {
+    const T = choirTable(y + '-01-01', y + '-12-31', true);
+    if (T.ev.length < Y_MIN_EVENTS) return;
+    const r = T.rows.get(s.id);
+    if (!r) return;
+    if (r.rank != null && r.rank <= 10) won.push({ id: 'year', year: y, name: t('bYearTop')(y), earned: true, tier: r.rank <= 3 ? 'gold' : 'silver', sub: t('bRank')(r.rank, T.ranked.length) });
+    if (r.of >= 20 && r.came === r.of) won.push({ id: 'pyear', year: y, name: t('bPerfectYear')(y), earned: true, tier: 'gold', sub: t('bAllN')(r.of) });
+  });
+  let live = null;
+  if (s.active !== false) {
+    const T = choirTable(yNow + '-01-01', today()), r = T.rows.get(s.id);
+    live = { id: 'year', year: yNow, name: t('bYearTop')(yNow), earned: false, tier: null, live: true,
+      sub: r && r.rank != null ? t(r.rank <= 10 ? 'bYearIn' : 'bYearNow')(r.rank) : t('bYearNeed') };
+  }
+  return { won, live };
+}
+const medal = (b, i) => `<div class="bdg ${b.earned ? b.tier : 'locked'}${b.year ? ' yr' : ''}" style="--i:${i}" title="${esc(b.name + ' · ' + b.sub)}">
+        <span class="bmed"><span class="bface">${b.year ? `<b class="byr">${b.year}</b>` : BI[b.id]}</span></span><strong>${esc(b.name)}</strong><small>${esc(b.sub)}</small></div>`;
+function badgePanel(s, from){
+  const capped = !from || from < shift(B_MAX);
+  const B = badgesFor(s, from), got = B.filter(b => b.earned).length, Y = yearAwards(s);
+  const hall = Y.won.concat(Y.live ? [Y.live] : []);
+  return `<section class="dpanel mbadges">
+      <div class="phd"><h2>${esc(t('bTitle'))}</h2></div>
+      ${hall.length ? `<div class="bgroup"><div class="bgh"><span>${esc(t('bHall'))}</span><small>${esc(t('bHallSub'))}</small></div>
+        <div class="bgrid">${hall.map(medal).join('')}</div></div>` : ''}
+      <div class="bgroup"><div class="bgh"><span>${esc(t('bNowTitle'))}</span><small>${esc(t(capped ? 'bCapped' : 'bNowSub'))} · ${esc(t('bEarned')(got, B.length))}</small></div>
+        <div class="bgrid">${B.map((b, i) => medal(b, i + hall.length)).join('')}</div></div>
+    </section>`;
+}
+/* up to three medals next to a name: year-end trophies first, then current gold down */
+function bMinis(s, from, to, max){
+  const Y = yearAwards(s).won.map(b => Object.assign({}, b, { id: 'top5' }));
+  const B = Y.concat(badgesFor(s, from, to || undefined).filter(b => b.earned)).slice(0, max || 3);
+  return B.length ? `<span class="bminis">${B.map(b => `<span class="bmini ${b.tier}" title="${esc(b.name + ' · ' + b.sub)}">${BI[b.id]}</span>`).join('')}</span>` : '';
+}
+/* ---------- leaderboard ----------
+   Public, and it only ever celebrates: the top of each list, streaks still going,
+   sections racing each other. Nobody's misses or low numbers are shown. */
+const LB_PRESETS = ['1', '3', '6', '12'];
+/* names are stored surname first; surname + initial tells siblings apart ("Акулова Д.") */
+/* surname (clipped if long) + first initial, so the initial always shows */
+const lbName = n => { const b = String(n || '').trim().split(/\s+/);
+  return `<span class="lbsn">${esc(b[0] || '')}</span>${b.length > 1 ? `<span class="lbin">${esc(b[1][0])}.</span>` : ''}`; };
+const rankTier = r => r === 1 ? 'gold' : r === 2 ? 'silver' : 'bronze';
+/* podium places by rank, ties kept together: ranks 1,1,3 give two groups (#1 and #3) */
+/* places for the podium: singers with the same result share a place, and the next
+   result takes the next place (1, 1, 2, 3), so there is always a gold, silver and bronze */
+function podGroups(ranked){
+  const g = [];
+  ranked.forEach(r => { const last = g[g.length - 1], a = last && last.list[0];
+    if (a && Math.round(a.pct * 10) === Math.round(r.pct * 10) && a.came === r.came) last.list.push(r);
+    else g.push({ rank: g.length + 1, list: [r] }); });
+  return g;
+}
+const lbShortTxt = n => { const b = String(n || '').trim().split(/\s+/); return b.length < 2 ? b[0] || '' : b[0] + ' ' + b[1][0] + '.'; };
+function sectionRace(T){
+  return PARTS.map(part => { let c = 0, o = 0; T.rows.forEach(r => { if (r.s.part === part) { c += r.came; o += r.of; } });
+    return { part, p: o ? Math.round(c / o * 100) : null, lead: T.ranked.find(r => r.s.part === part) }; })
+    .filter(x => x.p !== null).sort((a, b) => b.p - a.p);
+}
+const hotStreaks = min => S.singers.filter(x => x.part && x.active !== false).map(s => ({ s, n: curStreak(s) }))
+  .filter(x => x.n >= min).sort((a, b) => b.n - a.n || a.s.name.localeCompare(b.s.name, 'ru'));
+function leaderPage(){
+  const p = LB_PRESETS.includes(S.lbPreset) ? S.lbPreset : '3', from = shift(+p), to = today();
+  const rip = S.lbSeen !== p; S.lbSeen = p;
+  const T = choirTable(from, to);
+  /* the period is always on show, inside the stage: "Past [1 month] [3 months] …" */
+  const picker = `<div class="lbper"><span><b class="lbfull">${esc(t('lbShow'))}</b><b class="lbshort">${esc(t('lbShowShort'))}</b></span><div class="lbseg" role="group" aria-label="${esc(t('period'))}">${LB_PRESETS.map(v =>
+    `<button data-lbpreset="${v}" class="${p === v ? 'on' : ''}" aria-pressed="${p === v}"><b class="lbfull">${esc(t('lbP' + v))}</b><b class="lbshort">${esc(t('lbPs' + v))}</b></button>`).join('')}</div></div>`;
+  if (!T.ranked.length) return `<div class="lbpage"><section class="lbhero lbempty"><div class="lbhh"><h1><span class="lbtro">${AIC.trophy}</span>${esc(t('lbLeaders'))}</h1></div>${picker}<p class="lbemptyp">${esc(t('lbNone'))}</p></section></div>`;
+  const av = (s, cls) => `<span class="lbav ${s.part || ''} ${cls || ''}">${avIn(s)}</span>`;
+  const who = (s, coins) => `<button class="lbwho" data-lbwho="${s.id}">${av(s)}<span class="lbn">${esc(s.name)}</span>${coins === 0 ? '' : bMinis(s, from, null, coins)}</button>`;
+  const groups = podGroups(T.ranked), pod = groups.slice(0, 3);
+  /* the stage: three steps, the rank struck into each block, a crown over first place */
+  /* one step per rank; singers who tie share it (up to three shown by name, more fold into "+N") */
+  const step = (g, pos) => {
+    if (!g) return '<div class="pstep"></div>';
+    const L = g.list, one = L.length === 1, r0 = L[0];
+    const shown = L.length > 3 ? 2 : L.length;          // never more than three circles on a step
+    const avs = L.slice(0, shown).map(r => `<button class="lbav big" data-lbwho="${r.s.id}" aria-label="${esc(r.s.name)}">${avIn(r.s)}</button>`).join('')
+      + (L.length > 3 ? `<button class="lbav big more" data-lbtie="${g.rank}">+${L.length - shown}</button>` : '');
+    const names = L.length <= 3 ? L.map(r => `<button class="pname" data-lbwho="${r.s.id}">${esc(one ? r.s.name : lbShortTxt(r.s.name))}</button>`).join('')
+      : `<button class="pname" data-lbtie="${g.rank}">${esc(t('lbTied')(L.length))}</button>`;
+    return `<div class="pstep s${pos} t${rankTier(g.rank)}${one ? '' : ' multi'}">
+      <div class="pwho">${g.rank === 1 ? `<span class="pcrown">${BI.part}</span>` : ''}<div class="pavs">${avs}</div>
+        <div class="pnames">${names}</div>
+        <span class="lbpct">${Math.round(r0.pct)}%<small>${esc(t('mOf')(r0.came, r0.of))}</small></span></div>
+      <div class="pblock"><b>${g.rank}</b></div></div>`;
+  };
+  const tieG = pod.find(g => g.rank === S.lbTie && g.list.length > 3);
+  const tieStrip = tieG ? `<div class="ptie"><span>${esc(t('lbTiedFor')(tieG.rank))}</span>${tieG.list.map(r => `<button class="ptchip" data-lbwho="${r.s.id}">${esc(r.s.name)}</button>`).join('')}<button class="ptx" data-lbtie="0" aria-label="${esc(t('lbClose'))}">×</button></div>` : '';
+  const hero = `<section class="lbhero"><span class="lbglow" aria-hidden="true"></span><span class="lbtw" aria-hidden="true"><i style="left:13%;top:24%"></i><i style="left:84%;top:17%;animation-delay:1.4s"></i><i style="left:70%;top:70%;animation-delay:2.6s"></i><i style="left:27%;top:62%;animation-delay:3.3s"></i></span>
+      <div class="lbhh"><h1><span class="lbtro">${AIC.trophy}</span>${esc(t('lbLeaders'))}</h1><span>${esc(t('lbRanked')(T.ranked.length))}</span></div>
+      ${picker}
+      ${tieStrip}<div class="podium">${step(pod[1], 2)}${step(pod[0], 1)}${step(pod[2], 3)}</div>
+    </section>`;
+  const rest = groups.slice(3).flatMap(g => g.list.map(r => ({ r, place: g.rank }))).slice(0, 6);   // six rows is enough
+  const chase = rest.length ? `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('lbChase'))}</h2></div>
+      <ol class="lbrank">${rest.map(({ r, place }) => `<li><span class="rk">${place}</span>${who(r.s, 1)}
+        <span class="lbbar"><b style="width:${Math.round(r.pct)}%"></b></span><strong>${Math.round(r.pct)}%</strong></li>`).join('')}</ol>
+    </section>` : '';
+  const heat = n => n >= 20 ? 'h3' : n >= 10 ? 'h2' : 'h1';
+  const st = hotStreaks(5).slice(0, 6);
+  const streaks = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('lbStreaks'))}</h2></div>
+      ${st.length ? `<div class="lbstreaks">${st.map((x, i) => `<div class="lbsrow">${who(x.s, 1)}<span class="lbfire ${heat(x.n)}${i === 0 ? ' lead' : ''}">${BI.streak}<b>${x.n}</b></span></div>`).join('')}</div>`
+        : `<p class="pcap" style="margin:0">${esc(t('lbNoStreak'))}</p>`}
+      <p class="lbfoot">${esc(t('lbStreakFoot'))}</p>
+    </section>`;
+  const sec = sectionRace(T);
+  const sections = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('lbSections'))}</h2></div>
+      <div class="lbsec">${sec.map((x, i) => `<div class="lbsr ${x.part}${i === 0 ? ' win' : ''}">
+        <div class="lbsrh"><span class="lbpart">${esc(partName(x.part))}</span>${i === 0 ? `<i class="lbcrown">${BI.part}</i>` : ''}<strong>${x.p}%</strong></div>
+        <div class="lbtrack"><b style="width:${x.p}%"></b>${x.lead ? `<button class="lbrider" data-lbwho="${x.lead.s.id}" style="left:${x.p}%" title="${esc(x.lead.s.name)}" aria-label="${esc(x.lead.s.name)}">${avIn(x.lead.s)}</button>` : ''}</div>
+        ${x.lead ? `<small>${esc(t('lbLeads'))}: <button class="lbname" data-lbwho="${x.lead.s.id}">${esc(x.lead.s.name)}</button></small>` : ''}</div>`).join('')}</div>
+    </section>`;
+  const len = Math.round((new Date(to + 'T12:00:00') - new Date(from + 'T12:00:00')) / 864e5);
+  const pTo = dayShift(from, -1), P = choirTable(dayShift(pTo, -len), pTo);
+  const imp = T.ranked.map(r => { const q = P.rows.get(r.s.id); return q && q.of >= 5 ? { s: r.s, d: Math.round(r.pct - q.pct) } : null; })
+    .filter(x => x && x.d >= 10).sort((a, b) => b.d - a.d).slice(0, 4);
+  const improved = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('lbImproved'))}</h2><span class="pcap" style="margin:0">${esc(t('lbImprovedSub'))}</span></div>
+      ${imp.length ? `<div class="lbimp">${imp.map(x => `<div class="lbir">${who(x.s, 1)}<span class="lbup">${BI.comeback}${esc(t('lbPts')(x.d))}</span></div>`).join('')}</div>`
+        : `<p class="pcap" style="margin:0">${esc(t('lbNoImproved'))}</p>`}
+    </section>`;
+  const perf = T.ranked.filter(r => r.came === r.of);
+  const perfect = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('lbPerfect'))}</h2>${perf.length ? `<span class="pcap" style="margin:0">${esc(t('lbPerfectSub')(perf.length))}</span>` : ''}</div>
+      ${perf.length ? `<div class="lbchips">${perf.slice(0, 18).map(r => `<button class="lbchip" data-lbwho="${r.s.id}">${av(r.s)}${esc(r.s.name)}<span class="lbok">${AIC.check}</span></button>`).join('')}
+        ${perf.length > 18 ? `<span class="pcap" style="margin:0;align-self:center">${esc(t('lbMore')(perf.length - 18))}</span>` : ''}</div>`
+        : `<p class="pcap" style="margin:0">${esc(t('lbNoPerfect'))}</p>`}
+    </section>`;
+  /* the one sober card: misses in a row right now, or a clear drop on the period before */
+  const cold = S.singers.filter(x => x.part && x.active !== false && !coldSkip(x)).map(s => {
+    const miss = curMiss(s), r = T.rows.get(s.id), q = P.rows.get(s.id);
+    const d = r && q && r.of >= 5 && q.of >= 5 ? Math.round(r.pct - q.pct) : null;
+    return { s, miss, d };
+  }).filter(x => x.miss >= 3 || (x.d !== null && x.d <= -15))
+    .sort((a, b) => b.miss - a.miss || (a.d ?? 0) - (b.d ?? 0)).slice(0, 6);
+  const coldCard = `<section class="dpanel lbcoldc">
+      <div class="phd"><h2>${esc(t('lbCold'))}</h2><span class="pcap" style="margin:0">${esc(t('lbColdSub'))}</span></div>
+      ${cold.length ? `<div class="lbimp">${cold.map(x => `<div class="lbir">${who(x.s, 0)}${x.miss >= 3
+          ? `<span class="lbcold">${BI.snow}${esc(t('lbColdN')(x.miss))}</span>`
+          : `<span class="lbdown">${BI.down}${esc(t('lbDown')(x.d))}</span>`}</div>`).join('')}</div>`
+        : `<p class="pcap" style="margin:0">${esc(t('lbNoCold'))}</p>`}
+    </section>`;
+  /* this year's race, with the few just outside the Top 10 shown below the line */
+  const yNow = +to.slice(0, 4), Y = choirTable(yNow + '-01-01', to);
+  const left = Math.max(0, Math.round((new Date(yNow + '-12-31T12:00:00') - new Date(to + 'T12:00:00')) / 864e5));
+  const yr = Y.ranked.filter(r => r.rank <= 10).slice(0, 12), next = Y.ranked.filter(r => r.rank > 10).slice(0, 3);
+  const yrow = (r, out) => `<li class="${out ? 'out' : ''}"><span class="rk ${!out && r.rank <= 3 ? 'mtl ' + rankTier(r.rank) : ''}">${r.rank}</span>${who(r.s, 0)}<em>${Math.round(r.pct)}%</em></li>`;
+  const race = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('lbRace')(yNow))}</h2><span class="lbdays">${esc(t('lbDaysLeft')(left))}</span></div>
+      ${yr.length ? `<ol class="lbyr">${yr.map(r => yrow(r)).join('')}</ol>
+        ${next.length ? `<div class="lbcut"><span>${esc(t('lbCut'))}</span></div><ol class="lbyr">${next.map(r => yrow(r, true)).join('')}</ol>` : ''}`
+        : `<p class="pcap" style="margin:0">${esc(t('lbNone'))}</p>`}
+    </section>`;
+  const X = bIndex(), years = [...new Set(X.all.map(e => +e.date.slice(0, 4)))].filter(y => y < yNow).sort((a, b) => b - a);
+  let hof = '';
+  for (const y of years) { const H = choirTable(y + '-01-01', y + '-12-31', true); if (H.ev.length < Y_MIN_EVENTS) continue;
+    const l = H.ranked.filter(r => r.rank <= 10), py = H.ranked.filter(r => r.of >= 20 && r.came === r.of);
+    hof = `<section class="dpanel lbhof">
+      <div class="phd"><h2>${esc(t('lbHof')(y))}</h2><span class="pcap" style="margin:0">${esc(t('bHall'))}</span></div>
+      <ol class="lbyr">${l.map(r => `<li><span class="rk mtl ${r.rank <= 3 ? 'gold' : 'silver'}">${r.rank}</span>${who(r.s, 0)}</li>`).join('')}</ol>
+      ${py.length ? `<div class="lbpy"><span>${esc(t('bPerfectYear')(y))}</span>${py.map(r => `<button class="lbname" data-lbwho="${r.s.id}">${esc(r.s.name)}</button>`).join('')}</div>` : ''}
+    </section>`; break; }
+  return `<div class="lbpage${rip ? ' rip' : ''}">${hero}
+      <div class="${chase ? 'lbg2' : 'lbg1'}">${chase}${streaks}</div>
+      <div class="lbg2b">${sections}${perfect}</div>
+      <div class="lbg2b">${improved}${coldCard}</div>
+      <div class="${hof ? 'lbg2b' : 'lbg1'}">${race}${hof}</div>
+    </div>${lbSheet(from, p)}`;
+}
+/* tapping a name: every badge that person holds right now, and their year-end trophies */
+function lbSheet(from, p){
+  const s = S.lbWho && S.singers.find(x => x.id === S.lbWho);
+  if (!s) return '';
+  const B = badgesFor(s, from).filter(b => b.earned), Y = yearAwards(s).won;
+  return `<div class="lbscrim" data-lbclose></div>
+    <div class="lbsheet" role="dialog" aria-modal="true" aria-label="${esc(s.name)}">
+      <button class="lbx" data-lbclose aria-label="${esc(t('lbClose'))}">×</button>
+      <div class="lbsh"><span class="lbav big ${s.part || ''}">${avIn(s)}</span>
+        <div><h3>${esc(s.name)}</h3><div class="mmeta">${s.part ? `<span class="mpart ${s.part}">${esc(t(s.part))}</span>` : ''}</div></div></div>
+      ${Y.length ? `<div class="bgh"><span>${esc(t('bHall'))}</span></div><div class="bgrid">${Y.map(medal).join('')}</div>` : ''}
+      <div class="bgh"><span>${esc(t('bNowTitle'))}</span><small>${esc(t('rng' + p))}</small></div>
+      ${B.length ? `<div class="bgrid">${B.map(medal).join('')}</div>` : `<p class="pcap" style="margin:10px 0 0">${esc(t('lbNoBadges'))}</p>`}
+      ${S.session ? `<a class="mini go lbrep" href="${memberLink(s)}">${esc(t('mTitle'))}</a>` : ''}
+    </div>`;
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.lbWho) { S.lbWho = null; render(); } });
 function fitMissed(){
   const l = document.querySelector('.mmiss'), b = document.querySelector('[data-mmiss]');
   if (!l || !b) return;
@@ -4114,7 +4828,7 @@ function memberPage(tok){
   const pill = `<div class="ctlbar mpill">${periodPill('member', t('rng' + p), `<div class="chips">${presets.map(([v, l]) =>
       `<button data-mpreset="${v}" class="${p === v ? 'on' : ''}">${esc(t(l))}</button>`).join('')}</div>`)}</div>`;
   const head = `<section class="dpanel mhead">
-      <span class="mav" style="--tone:${pctTone(pct, avgAll)}">${esc(initials(s.name))}</span>
+      <span class="mav" style="--tone:${pctTone(pct, avgAll)}">${avIn(s)}</span>
       <div class="grow2"><h1>${esc(s.name)}</h1>
         <div class="mmeta">${s.part ? `<span class="mpart ${s.part}">${esc(t(s.part))}</span>` : ''}${s.joined_on ? `<span>${esc(t('mSince')(monYear(s.joined_on)))}</span>` : ''}</div>
         ${pct !== null && avgAll !== null ? `<div class="mverdict ${pct >= avgAll ? 'up' : 'dn'}"><b>${pct >= avgAll ? '+' : '−'}${Math.abs(pct - avgAll)}</b><span>${esc(t(pct >= avgAll ? 'mAbove' : 'mBelow'))}</span></div>` : ''}</div>
@@ -4159,7 +4873,7 @@ function memberPage(tok){
         <button class="mmore" data-mmiss hidden>${esc(t(S.mMissAll ? 'mLess' : 'mMore'))}</button>`
         : `<p class="pcap" style="margin:0">${esc(t('mNoneMissed'))}</p>`}
     </section>`;
-  return `<div class="mpage rip">${mBack()}${head}${pill}<div class="mtop">${ring}${stats}</div>${chart}<div class="mbot">${strip}${miss}</div></div>`;
+  return `<div class="mpage rip">${mBack()}${head}${pill}<div class="mtop">${ring}${stats}</div>${badgePanel(s, p === 'all' ? '' : shift(+p))}${chart}<div class="mbot">${strip}${miss}</div></div>`;
 }
 function attendanceSummary(){
   const ev = S.events.filter(hasAtt).filter(e => inRange(e.date, S.from, S.to))
@@ -4171,7 +4885,7 @@ function attendanceSummary(){
     if (!rows.length) return '';
     return `<div class="sectbar ${p}">${esc(t(p))}</div>` + rows.map(s => {
       const c = attCount(ev, s.id), pct = c.pct;
-      const nm = S.session ? `<a class="mname" href="${memberLink(s)}">${esc(s.name)}</a>` : esc(s.name);
+      const nm = (S.session ? `<a class="mname" href="${memberLink(s)}">${esc(s.name)}</a>` : esc(s.name)) + bMinis(s, S.from || '', S.to || today());
       if (pct === null) return `<div class="li"><div style="width:44%;font-size:var(--fs-15);color:var(--faint)">${nm}</div>
         <div class="bar"></div><div class="cnt">0/0</div><div class="pct" style="color:var(--faint)">—</div></div>`;
       return `<div class="li"><div style="width:44%;font-size:var(--fs-15)">${nm}</div>
@@ -4759,9 +5473,40 @@ function manageSongs(){
 const partName = p => { const v = t(p) || ''; return v.charAt(0) + v.slice(1).toLowerCase(); };
 const monYear = iso => { const [y, m] = iso.split('-').map(Number); return MON[S.lang][m - 1] + ' ' + y; };
 const initials = n => String(n || '').trim().split(/\s+/).slice(0, 2).map(w => w[0] || '').join('').toUpperCase();
+/* a member's photo if the director added one, otherwise their initials */
+const photoURL = s => s && s.photo_path ? SUPABASE_URL + '/storage/v1/object/public/photos/' + s.photo_path : '';
+const avIn = s => { const u = photoURL(s); return u ? `<img class="avimg" src="${esc(u)}" alt="" loading="lazy" decoding="async">` : esc(initials(s && s.name)); };
+/* square, centred, small: a phone photo becomes a ~40 KB JPEG before it is uploaded */
+async function squareJpeg(file, size){
+  size = size || 320;
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = url; });
+    const m = Math.min(img.naturalWidth, img.naturalHeight), c = document.createElement('canvas');
+    c.width = c.height = size;
+    c.getContext('2d').drawImage(img, (img.naturalWidth - m) / 2, (img.naturalHeight - m) / 2, m, m, 0, 0, size, size);
+    return await new Promise(ok => c.toBlob(ok, 'image/jpeg', .86));
+  } finally { URL.revokeObjectURL(url); }
+}
+async function uploadPhoto(s, file){
+  if (!await ensureSession()) return;
+  S.photoBusy = s.id; render();
+  try {
+    const blob = await squareJpeg(file);
+    if (!blob) throw new Error(t('phBad'));
+    const path = s.id + '/' + Date.now() + '.jpg', old = s.photo_path;
+    const up = await sb.storage.from('photos').upload(path, blob, { contentType: 'image/jpeg', upsert: true });
+    if (up.error) { S.photoBusy = null; return fail(up.error); }
+    const res = await sb.from('singers').update({ photo_path: path }).eq('id', s.id).select();
+    if (!wrote(res)) { await sb.storage.from('photos').remove([path]); S.photoBusy = null; return render(); }
+    s.photo_path = path;
+    if (old) sb.storage.from('photos').remove([old]).then(() => {}, () => {});
+  } catch (e) { S.photoBusy = null; return fail(e); }
+  S.photoBusy = null; render();
+}
 function personRow(s, note){
   const onSingers = S.memTab === 'singers';
-  return `<div class="li mrow ${s.active === false ? 'na' : ''}"><span class="av">${esc(initials(s.name))}</span>
+  return `<div class="li mrow ${s.active === false ? 'na' : ''}"><span class="av">${avIn(s)}</span>
     <div style="flex:1;min-width:0"><div class="stl">${onSingers && s.part ? `<a class="mname" href="${memberLink(s)}">${esc(s.name)}</a>` : esc(s.name)}</div>${note ? `<div class="sub">${esc(note)}</div>` : ''}</div>
     ${onSingers && s.part ? `<a class="ibtn" href="${memberLink(s)}" aria-label="${esc(t('mTitle'))}" title="${esc(t('mTitle'))}">${AIC.chart || AIC.att}</a>` : ''}
     <button class="ibtn" data-edit-singer="${s.id}" aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
@@ -4846,6 +5591,10 @@ function adminModal(){
     }
     const p = S.editPerson && S.singers.find(x => x.id === S.editPerson);
     if (p) return shell(t('editMemberT'), `<div class="fgrid">
+        <div class="fl full phrow"><span class="av phav">${avIn(p)}</span><div class="phbtns">
+          <label class="mini"><input type="file" accept="image/*" data-photo-for="${p.id}" hidden>${esc(t(p.photo_path ? 'phChange' : 'phAdd'))}</label>
+          ${p.photo_path ? `<button class="mini" data-photo-del="${p.id}">${esc(t('phRemove'))}</button>` : ''}
+          ${S.photoBusy === p.id ? `<span class="pcap" style="margin:0">${esc(t('phBusy'))}</span>` : ''}</div></div>
         <label class="fl full"><span>${esc(t('nameL'))}</span><input class="field" id="edit-name" value="${esc(p.name)}"></label>
         <label class="fl"><span>${esc(t('voicePart'))}</span><select class="field" id="edit-part">${p.part ? '' : `<option value="">${esc(t('noVoice'))}</option>`}${
           PARTS.map(x => `<option value="${x}"${p.part === x ? ' selected' : ''}>${esc(partName(x))}</option>`).join('')}</select></label>
@@ -4925,9 +5674,40 @@ function printLyrics(song){
   const one = best(1), two = best(2);
   const cols = two > one * 1.2 ? 2 : 1, fs = cols === 2 ? two : one;
   fits(fs, cols);
-  const done = () => { pr.remove(); window.removeEventListener('afterprint', done); };
-  window.addEventListener('afterprint', done);
-  window.print();
+  /* iPhone and iPad: Safari prints before an in-page sheet is ready, and the home-screen
+     app can't print the page at all, so the song opens as its own small page there. */
+  const ua = navigator.userAgent || '';
+  const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  if (ios) {
+    const w = window.open('', '_blank');
+    if (w) {
+      const ff = getComputedStyle(document.body).fontFamily || '-apple-system,system-ui,sans-serif';
+      w.document.open();
+      w.document.write(`<!doctype html><html lang="${S.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(song.title)}</title><style>
+@page{margin:.5in}
+html,body{margin:0;background:#fff;color:#111;font-family:${ff.replace(/</g, '')}}
+.bar{position:sticky;top:0;z-index:2;display:flex;flex-wrap:wrap;gap:8px 12px;justify-content:center;align-items:center;padding:12px 14px;padding-top:calc(12px + env(safe-area-inset-top));background:#17203a;color:#fff;font:600 15px/1.2 -apple-system,system-ui,sans-serif}
+.bar button{font:inherit;padding:10px 22px;border-radius:999px;border:0;background:#c9a227;color:#17203a;cursor:pointer}
+.bar small{font-size:12.5px;font-weight:500;opacity:.8;text-align:center}
+.sheet{--pfs:${fs}px;width:7.25in;max-width:100%;margin:0 auto;padding:24px 18px 40px;box-sizing:border-box}
+header{text-align:center;margin:0 0 calc(var(--pfs)*1.4);padding-bottom:calc(var(--pfs)*.7);border-bottom:1.5px solid #b8952a}
+h1{margin:0;font-size:calc(var(--pfs)*1.8);font-weight:700;letter-spacing:-.01em;line-height:1.15}
+header p{margin:calc(var(--pfs)*.35) 0 0;font-size:calc(var(--pfs)*.72);color:#555}
+.pb{column-count:${cols};column-gap:.45in}
+section{break-inside:avoid;margin:0 0 calc(var(--pfs)*1.05)}
+.bl{font-size:calc(var(--pfs)*.62);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a6d12;margin-bottom:calc(var(--pfs)*.2)}
+.tx{font-size:var(--pfs);line-height:1.45;white-space:pre-wrap}
+@media screen and (max-width:600px){.pb{column-count:1}}
+@media print{.bar{display:none}.sheet{padding:0;width:auto}}
+</style></head><body><div class="bar"><button onclick="window.print()">${esc(t('printLyrics'))}</button><small>${esc(t('printHint'))}</small></div><div class="sheet">${pr.innerHTML}</div>
+<script>setTimeout(function(){try{window.print()}catch(e){}},500)<\/script></body></html>`);
+      w.document.close();
+      return;
+    }
+  }
+  /* elsewhere the sheet stays in the page (hidden on screen) until the next print, so
+     a print dialog that finishes late still has something to print */
+  requestAnimationFrame(() => window.print());
 }
 function shareWhen(ev){
   const kind = ev.kind === 'other' ? (ev.name || ev.label || t('other')) : kindWord(ev);
@@ -5327,6 +6107,7 @@ function hideToast(){
 
 /* ---------- render ---------- */
 function render(){
+  renderTick++;
   captureThumbs();
   document.documentElement.lang = S.lang;
   if (S.theme === 'dark' || S.theme === 'light') document.documentElement.dataset.theme = S.theme; else delete document.documentElement.dataset.theme;
@@ -5381,6 +6162,7 @@ function render(){
     html += publicNav('usage') + usagePage();
   }
   else if (r.startsWith('#/rules')) { html += publicNav('rules') + rulesPage(); }
+  else if (r.startsWith('#/leaders')) { html += publicNav('leaders') + leaderPage(); }
   else if (r.startsWith('#/seating')) { html += publicNav('seating') + seatingPage(); }
   else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
   else if (r.startsWith('#/songs')) {
@@ -5632,7 +6414,7 @@ document.addEventListener('click', e => {
   if (a && a.dataset.song) track('audio', a.dataset.song);
 }, true);
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -5669,6 +6451,10 @@ document.addEventListener('click', async e => {
   }
   if (d.peopleRole) { S.peopleRole = d.peopleRole; S.openPerson = null; return render(); }
   if (d.person) { S.openPerson = S.openPerson === d.person ? null : d.person; return render(); }
+  if (d.lbpreset) { S.lbPreset = d.lbpreset; S.lbTie = 0; return render(); }
+  if (d.lbtie !== undefined) { const k = +d.lbtie; S.lbTie = k && S.lbTie !== k ? k : 0; return render(); }
+  if (d.lbwho) { S.lbWho = d.lbwho; return render(); }
+  if (el.hasAttribute('data-lbclose')) { S.lbWho = null; return render(); }
   if (d.mpreset) {
     S.mPreset = d.mpreset; S.mMissAll = false;
     try { localStorage.setItem('mPreset', d.mpreset); } catch (_) {}
@@ -5918,6 +6704,9 @@ document.addEventListener('click', async e => {
     return render();
   }
   if (el.hasAttribute('data-menu')) {
+    const now = Date.now();
+    if (now - (window.__menuTap || 0) < 400) return;
+    window.__menuTap = now;
     if (S.menuOpen) return dismissMenu();
     menuClosing = false;                    // re-opened mid-exit: let it land open
     S.menuOpen = true; document.body.classList.add('mlock'); return render();
@@ -6128,6 +6917,17 @@ document.addEventListener('click', async e => {
     Object.assign(s, patch);
     S.editPerson = null; return render();
   }
+  if (d.photoDel) {
+    const s = S.singers.find(x => x.id === d.photoDel);
+    if (!s || !s.photo_path) return;
+    if (!await ensureSession()) return;
+    const old = s.photo_path;
+    const res = await sb.from('singers').update({ photo_path: null }).eq('id', s.id).select();
+    if (!wrote(res)) return render();
+    s.photo_path = null;
+    sb.storage.from('photos').remove([old]).then(() => {}, () => {});
+    return render();
+  }
   if (el.hasAttribute('data-cancel-person')) { S.editPerson = null; return render(); }
   if (d.archiveSinger) {
     const s = S.singers.find(x => x.id === d.archiveSinger);
@@ -6245,6 +7045,12 @@ document.addEventListener('click', async e => {
 
 document.addEventListener('change', async e => {
   const el = e.target;
+  if (el.dataset && el.dataset.photoFor) {
+    const s = S.singers.find(x => x.id === el.dataset.photoFor), file = el.files && el.files[0];
+    el.value = '';
+    if (s && file) uploadPhoto(s, file);
+    return;
+  }
   if (el.dataset.setPart) {
     const s = S.singers.find(x => x.id === el.dataset.setPart);
     const was = s.part, next = el.value;
@@ -6475,11 +7281,12 @@ window.addEventListener('hashchange', () => {
   S.ripple = true;
   const prevPage = (S.route || '').split('?')[0], prevFull = S.route || '';
   S.route = normRoute(location.hash);
-  if (S.route.startsWith('#/member') && prevFull && !prevFull.startsWith('#/member')) S.memberFrom = prevFull;   // where the report card was opened from
+  if (S.route.startsWith('#/member') && prevFull && !prevFull.startsWith('#/member')) S.memberFrom = prevFull;
+  if (S.route.split('?')[0] !== prevPage) S.mMissAll = false;   // where the report card was opened from
   if (S.route.split('?')[0] !== prevPage) window.scrollTo(0, 0);
   prefetchSheets();
   trackRoute();
-  S.menuOpen = false; S.msOpen = false;
+  S.menuOpen = false; S.msOpen = false; S.lbWho = null; S.lbSeen = null; S.lbTie = 0;
   if (!S.route.startsWith('#/sheets')) S.hiSong = null;
   document.body.classList.remove('mlock');
   if (!/^#\/admin\/(attendance|songs)\/.+/.test(S.route)) { S.edit = null; S.pending = null; }
