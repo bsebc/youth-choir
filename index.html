@@ -1838,11 +1838,11 @@
   .lbcrown{display:grid;place-items:center;color:var(--gold-text);font-style:normal} .lbcrown .ai{width:16px;height:16px}
   .lbtrack{position:relative;height:10px;margin:0 14px 0 0;border-radius:999px;background:var(--paper-2)}
   .lbtrack b{display:block;height:100%;border-radius:999px}
-  /* soprano yellow, alto light blue, tenor green, bass dark blue — read the same in light and dark */
-  .lbsr.soprano .lbtrack b{background:#e8b923} .lbsr.alto .lbtrack b{background:#6aaee8} .lbsr.tenor .lbtrack b{background:var(--tool2-ic)} .lbsr.bass .lbtrack b{background:#3552b0}
+  /* soprano yellow, alto pink, tenor green, bass dark blue — read the same in light and dark */
+  .lbsr.soprano .lbtrack b{background:#e8b923} .lbsr.alto .lbtrack b{background:#ec7fb2} .lbsr.tenor .lbtrack b{background:var(--tool2-ic)} .lbsr.bass .lbtrack b{background:#3552b0}
   .lbrider{position:absolute;top:50%;width:28px;height:28px;transform:translate(-50%,-50%);border-radius:50%;border:2.5px solid var(--card);padding:0;display:grid;place-items:center;
     font:inherit;font-size:10px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-  .lbsr.soprano .lbrider{background:#e8b923;color:#3a2a00} .lbsr.alto .lbrider{background:#6aaee8;color:#0e2a45}
+  .lbsr.soprano .lbrider{background:#e8b923;color:#3a2a00} .lbsr.alto .lbrider{background:#ec7fb2;color:#4a1030}
   .lbsr.tenor .lbrider{background:var(--tool2-ic);color:var(--surface)} .lbsr.bass .lbrider{background:#3552b0;color:#fff}
   .lbsr.win .lbrider{box-shadow:0 0 0 2px #f2c94c,0 2px 8px rgba(0,0,0,.3)}
   .lbsr small{display:flex;gap:4px;min-width:0;margin-top:9px;font-size:11.5px;color:var(--muted)}
@@ -2409,18 +2409,21 @@
   @media (prefers-reduced-motion:reduce){ .rpill,.rbody,.rin,.rhead .rch{transition:none !important} }
   /* printed lyrics: only the sheet, filling the page */
   #lyrprint{position:fixed;left:-10000px;top:0;width:7.25in;visibility:hidden;font-family:inherit;color:#111;--pfs:16px}
-  #lyrprint header{text-align:center;margin:0 0 calc(var(--pfs) * 1.4);padding-bottom:calc(var(--pfs) * .7);border-bottom:1.5px solid #b8952a}
-  #lyrprint h1{margin:0;font-size:calc(var(--pfs) * 1.8);font-weight:700;letter-spacing:-.01em;line-height:1.15;text-wrap:balance}
+  #lyrprint header{text-align:center;margin:0 0 calc(var(--pfs) * 1.1)}
+  #lyrprint h1{margin:0;font-size:calc(var(--pfs) * 1.3);font-weight:650;color:#333;letter-spacing:-.005em;line-height:1.2;text-wrap:balance}
   #lyrprint header p{margin:calc(var(--pfs) * .35) 0 0;font-size:calc(var(--pfs) * .72);color:#555}
   #lyrprint .pb{column-gap:.45in}
-  #lyrprint section{break-inside:avoid;margin:0 0 calc(var(--pfs) * 1.05)}
+  #lyrprint section{break-inside:avoid;margin:0 0 calc(var(--pfs) * 1.6)}
+  #lyrprint section.ch{padding-left:calc(var(--pfs) * 2)}   /* no block titles in print: the chorus is simply set in */
   #lyrprint .bl{font-size:calc(var(--pfs) * .62);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a6d12;margin-bottom:calc(var(--pfs) * .2)}
   #lyrprint .tx{font-size:var(--pfs);line-height:1.45;white-space:pre-wrap}
+  /* no page margin means no room for the browser's header and footer (address, date, title);
+     the white space lives inside the sheet instead */
   @media print{
-    @page{margin:.5in}
-    html,body{background:#fff !important}
+    @page{margin:0}
+    html,body{background:#fff !important;margin:0 !important}
     body > *:not(#lyrprint){display:none !important}
-    #lyrprint{position:static;visibility:visible;width:auto}
+    #lyrprint{position:static;visibility:visible;width:auto;padding:.5in;box-sizing:border-box}
   }
 </style>
 </head>
@@ -2798,13 +2801,17 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.8.3';
+const VERSION = '5.8.7';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Report card streak now matches the leaderboard; cancelled services no longer count toward how often a song was sung',
+    'Printed lyrics leave out the browser’s page address, date and title, and drop the Verse/Chorus titles: choruses are indented instead',
+    'Printed lyrics keep to one page unless a song is very long, with a smaller, quieter title and no rule under it',
+    'From the home-screen app on iPhone, Print makes a one-page PDF of the lyrics and opens the share sheet, where you can print it',
     'Printing lyrics works on iPhone and iPad, including from the home-screen app',
     'On phones, tapping More opens the menu every time, including on pages where More is already highlighted',
     'Badges, report cards and the leaderboard update straight after attendance or member edits; lighter twinkle on the leaderboard cards for smoother scrolling on phones',
@@ -2867,6 +2874,10 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'Серия в отчёте теперь совпадает с таблицей лидеров; отменённые служения больше не учитываются в том, сколько раз пели песню',
+    'На напечатанном тексте больше нет адреса страницы, даты и заголовка браузера, а также подписей «Куплет/Припев»: припев печатается с отступом',
+    'Напечатанный текст помещается на одну страницу, если песня не очень длинная; заголовок меньше и спокойнее, без линии под ним',
+    'В приложении на главном экране iPhone кнопка «Печать» создаёт PDF с текстом на одну страницу и открывает меню «Поделиться», откуда его можно напечатать',
     'Печать текстов работает на iPhone и iPad, в том числе из приложения на главном экране',
     'На телефоне кнопка «Ещё» теперь всегда открывает меню, в том числе на страницах, где она уже подсвечена',
     'Награды, отчёты и лидеры обновляются сразу после изменения посещаемости или состава; облегчённое мерцание на карточках лидеров — плавнее прокрутка на телефоне',
@@ -3404,9 +3415,8 @@ function songStats(id, from, to){
   const rows = S.eventSongs.filter(x => {
     if (x.song_id !== id) return false;
     const e = S.events.find(y => y.id === x.event_id);
-    if (e && e.date > now) return false;          // planned ahead, not sung yet
-    if (!from) return true;
-    return e && inRange(e.date, from, to);
+    if (!e || e.cancelled || e.date > now) return false;   // planned ahead or called off: not sung
+    return !from || inRange(e.date, from, to);
   });
   const dates = rows.map(r => (S.events.find(e => e.id === r.event_id) || {}).date).filter(Boolean).sort();
   const lastISO = dates.length ? dates[dates.length-1] : '';
@@ -4810,8 +4820,10 @@ function memberPage(tok){
   const avgAll = avgOf(ev);
   svc.avg = avgOf(ev.filter(e => e.kind !== 'rehearsal')); reh.avg = avgOf(ev.filter(e => e.kind === 'rehearsal'));
   /* streaks over counted events, newest first for the current one */
-  let cur = 0; for (let i = counted.length - 1; i >= 0 && st(counted[i]) === 'present'; i--) cur++;
+  /* current run is all-time, so it matches the leaderboard; best never reads below it */
+  const cur = curStreak(s);
   let best = 0, run = 0; counted.forEach(e => { run = st(e) === 'present' ? run + 1 : 0; if (run > best) best = run; });
+  best = Math.max(best, cur);
   /* month by month, with the choir's average for the same events */
   const choir = S.singers.filter(x => x.part && x.active !== false);
   /* month by month while it fits; longer periods fold into quarters, then years */
@@ -5666,39 +5678,53 @@ function printLyrics(song){
   let pr = document.getElementById('lyrprint'); if (pr) pr.remove();
   pr = document.createElement('div'); pr.id = 'lyrprint';
   pr.innerHTML = `<header><h1>${esc(song.title)}</h1>${meta ? `<p>${esc(meta)}</p>` : ''}</header>
-    <div class="pb">${blocks.map((b, i) => `<section><div class="bl">${esc(labels[i])}</div><div class="tx">${esc(b.x)}</div></section>`).join('')}</div>`;
+    <div class="pb">${blocks.map(b => `<section${b.t === 'c' ? ' class="ch"' : ''}><div class="tx">${esc(b.x)}</div></section>`).join('')}</div>`;
   document.body.appendChild(pr);
-  const H = 9.7 * 96, body = pr.querySelector('.pb');
+  const H = 9.3 * 96, MIN = 12, body = pr.querySelector('.pb');   // a touch under a Letter/A4 page, so printer margins never push it over
   const fits = (fs, cols) => { pr.style.setProperty('--pfs', fs + 'px'); body.style.columnCount = cols; return pr.scrollHeight <= H; };
-  const best = cols => { let lo = 9, hi = 30; while (hi - lo > 0.25) { const m = (lo + hi) / 2; if (fits(m, cols)) lo = m; else hi = m; } return lo; };
+  const best = cols => { let lo = 8, hi = 16; /* capped: even a short song prints at a comfortable reading size */ while (hi - lo > 0.25) { const m = (lo + hi) / 2; if (fits(m, cols)) lo = m; else hi = m; } return lo; };
   const one = best(1), two = best(2);
-  const cols = two > one * 1.2 ? 2 : 1, fs = cols === 2 ? two : one;
+  let cols = two > one * 1.2 ? 2 : 1, fs = cols === 2 ? two : one;
+  if (fs < MIN) { cols = 2; fs = MIN; }        // a very long song: keep the type readable and let it run onto a second page
   fits(fs, cols);
   /* iPhone and iPad: Safari prints before an in-page sheet is ready, and the home-screen
      app can't print the page at all, so the song opens as its own small page there. */
   const ua = navigator.userAgent || '';
   const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  if (ios && isHomeApp()) {
+    /* the home-screen app has no print or share of its own: make a one-page PDF of the
+       sheet and hand it to the share sheet, which offers Print, Save to Files and AirDrop */
+    try {
+      const pdf = lyricsPdf(song, blocks, labels, meta, fs * .97, cols);
+      const file = new File([pdf], (song.title || 'lyrics').replace(/[\\/:*?"<>|]+/g, ' ').trim() + '.pdf', { type: 'application/pdf' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { navigator.share({ files: [file], title: song.title }).catch(() => {}); return; }
+      window.open(URL.createObjectURL(pdf), '_blank');
+      return;
+    } catch (_) { /* fall through to the page below */ }
+  }
   if (ios) {
     const w = window.open('', '_blank');
     if (w) {
       const ff = getComputedStyle(document.body).fontFamily || '-apple-system,system-ui,sans-serif';
       w.document.open();
-      w.document.write(`<!doctype html><html lang="${S.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(song.title)}</title><style>
-@page{margin:.5in}
+      const fontLinks = [...document.querySelectorAll('link[rel="stylesheet"],link[rel="preconnect"]')].filter(l => /font/i.test(l.href)).map(l => l.outerHTML).join('');
+      w.document.write(`<!doctype html><html lang="${S.lang}"><head><meta charset="utf-8">${fontLinks}<meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(song.title)}</title><style>
+@page{margin:0}
 html,body{margin:0;background:#fff;color:#111;font-family:${ff.replace(/</g, '')}}
 .bar{position:sticky;top:0;z-index:2;display:flex;flex-wrap:wrap;gap:8px 12px;justify-content:center;align-items:center;padding:12px 14px;padding-top:calc(12px + env(safe-area-inset-top));background:#17203a;color:#fff;font:600 15px/1.2 -apple-system,system-ui,sans-serif}
 .bar button{font:inherit;padding:10px 22px;border-radius:999px;border:0;background:#c9a227;color:#17203a;cursor:pointer}
 .bar small{font-size:12.5px;font-weight:500;opacity:.8;text-align:center}
 .sheet{--pfs:${fs}px;width:7.25in;max-width:100%;margin:0 auto;padding:24px 18px 40px;box-sizing:border-box}
-header{text-align:center;margin:0 0 calc(var(--pfs)*1.4);padding-bottom:calc(var(--pfs)*.7);border-bottom:1.5px solid #b8952a}
-h1{margin:0;font-size:calc(var(--pfs)*1.8);font-weight:700;letter-spacing:-.01em;line-height:1.15}
+header{text-align:center;margin:0 0 calc(var(--pfs)*1.1)}
+h1{margin:0;font-size:calc(var(--pfs)*1.3);font-weight:650;color:#333;letter-spacing:-.005em;line-height:1.2}
 header p{margin:calc(var(--pfs)*.35) 0 0;font-size:calc(var(--pfs)*.72);color:#555}
 .pb{column-count:${cols};column-gap:.45in}
-section{break-inside:avoid;margin:0 0 calc(var(--pfs)*1.05)}
+section{break-inside:avoid;margin:0 0 calc(var(--pfs)*1.6)}
+section.ch{padding-left:calc(var(--pfs)*2)}
 .bl{font-size:calc(var(--pfs)*.62);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a6d12;margin-bottom:calc(var(--pfs)*.2)}
 .tx{font-size:var(--pfs);line-height:1.45;white-space:pre-wrap}
 @media screen and (max-width:600px){.pb{column-count:1}}
-@media print{.bar{display:none}.sheet{padding:0;width:auto}}
+@media print{.bar{display:none}.sheet{padding:.5in;width:auto}}
 </style></head><body><div class="bar"><button onclick="window.print()">${esc(t('printLyrics'))}</button><small>${esc(t('printHint'))}</small></div><div class="sheet">${pr.innerHTML}</div>
 <script>setTimeout(function(){try{window.print()}catch(e){}},500)<\/script></body></html>`);
       w.document.close();
@@ -5708,6 +5734,72 @@ section{break-inside:avoid;margin:0 0 calc(var(--pfs)*1.05)}
   /* elsewhere the sheet stays in the page (hidden on screen) until the next print, so
      a print dialog that finishes late still has something to print */
   requestAnimationFrame(() => window.print());
+}
+/* Letter pages: the sheet drawn on canvases at 150 dpi, then wrapped in a tiny PDF.
+   Normally one page; a very long song carries on to the next. */
+function lyricsPdf(song, blocks, labels, meta, fsCss, cols){
+  const DPI = 150, K = DPI / 96, W = Math.round(8.5 * DPI), H = Math.round(11 * DPI), M = Math.round(.5 * DPI);
+  const cw = W - 2 * M, fs = fsCss * K, gap = .45 * DPI, colW = cols === 2 ? (cw - gap) / 2 : cw;
+  const ff = getComputedStyle(document.body).fontFamily || 'sans-serif';
+  const pages = [];
+  let x;
+  const page = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; x = c.getContext('2d');
+    x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.textBaseline = 'top'; pages.push(c); };
+  const font = (wt, px) => { x.font = wt + ' ' + px + 'px ' + ff; };
+  const wrap = (text, width) => {
+    const out = []; let line = '';
+    String(text).split(/\s+/).filter(Boolean).forEach(w => {
+      const test = line ? line + ' ' + w : w;
+      if (line && x.measureText(test).width > width) { out.push(line); line = w; } else line = test;
+    });
+    out.push(line); return out;
+  };
+  page();
+  let y = M;
+  x.textAlign = 'center'; x.fillStyle = '#333'; font(650, fs * 1.3);
+  wrap(song.title, cw).forEach(l => { x.fillText(l, W / 2, y); y += fs * 1.3 * 1.2; });
+  if (meta) { y += fs * .2; font(400, fs * .7); x.fillStyle = '#777'; x.fillText(meta, W / 2, y); y += fs * .7 * 1.3; }
+  y += fs * 1.1;
+  x.textAlign = 'left';
+  let top = y, col = 0;
+  const lh = fs * 1.45, lab = fs * .62;
+  blocks.forEach((b, i) => {
+    font(400, fs);
+    const ind = b.t === 'c' ? fs * 2 : 0;                  // choruses are set in; no block titles
+    const L = String(b.x || '').split('\n').flatMap(p => p.trim() ? wrap(p, colW - ind) : ['']);
+    const hgt = L.length * lh;
+    if (y + hgt > H - M && y > top) {                    // a block never splits: next column, else next page
+      if (col < cols - 1) { col++; y = top; }
+      else { page(); x.textAlign = 'left'; top = y = M; col = 0; }
+    }
+    const cx = M + col * (colW + gap) + ind;
+    font(400, fs); x.fillStyle = '#111';
+    L.forEach(l => { x.fillText(l, cx, y + (lh - fs) / 2); y += lh; });
+    y += fs * 1.6;
+  });
+  return jpegPdf(pages.map(c => c.toDataURL('image/jpeg', .92)), W, H);
+}
+function jpegPdf(urls, w, h){
+  const enc = new TextEncoder(), parts = [], offs = []; let len = 0;
+  const push = p => { const u = typeof p === 'string' ? enc.encode(p) : p; parts.push(u); len += u.length; };
+  const obj = (n, body) => { offs[n] = len; push(n + ' 0 obj\n'); body(); push('\nendobj\n'); };
+  const n = urls.length, pageId = i => 3 + i * 3;           // each page: page, image, contents
+  const draw = 'q 612 0 0 792 0 0 cm /Im0 Do Q';
+  push('%PDF-1.4\n');
+  obj(1, () => push('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2, () => push('<< /Type /Pages /Kids [' + urls.map((_, i) => pageId(i) + ' 0 R').join(' ') + '] /Count ' + n + ' >>'));
+  urls.forEach((url, i) => {
+    const p = pageId(i), bin = atob(url.split(',')[1]), img = new Uint8Array(bin.length);
+    for (let k = 0; k < bin.length; k++) img[k] = bin.charCodeAt(k);
+    obj(p, () => push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /XObject << /Im0 ' + (p + 1) + ' 0 R >> >> /Contents ' + (p + 2) + ' 0 R >>'));
+    obj(p + 1, () => { push('<< /Type /XObject /Subtype /Image /Width ' + w + ' /Height ' + h + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + img.length + ' >>\nstream\n'); push(img); push('\nendstream'); });
+    obj(p + 2, () => push('<< /Length ' + draw.length + ' >>\nstream\n' + draw + '\nendstream'));
+  });
+  const last = pageId(n - 1) + 2, xref = len;
+  let t = 'xref\n0 ' + (last + 1) + '\n0000000000 65535 f \n';
+  for (let k = 1; k <= last; k++) t += String(offs[k]).padStart(10, '0') + ' 00000 n \n';
+  push(t + 'trailer\n<< /Size ' + (last + 1) + ' /Root 1 0 R >>\nstartxref\n' + xref + '\n%%EOF');
+  return new Blob(parts, { type: 'application/pdf' });
 }
 function shareWhen(ev){
   const kind = ev.kind === 'other' ? (ev.name || ev.label || t('other')) : kindWord(ev);
