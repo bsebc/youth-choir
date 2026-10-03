@@ -622,6 +622,26 @@
   .skel .sk:nth-child(1){height:30px;width:55%}
   .skel .sk:nth-child(4n){height:38px}
   @keyframes skm{to{background-position:-200% 0}}
+  /* home skeleton: the real card shells, with shimmer bars where the content goes */
+  .skc{pointer-events:none}
+  .skx{display:block;flex:none;height:12px;border-radius:7px;background:linear-gradient(90deg,var(--paper) 25%,var(--surface-2) 45%,var(--paper) 65%);background-size:200% 100%;animation:skm 1.1s linear infinite}
+  .kpi.skc .skx:nth-child(1){margin:10px 0}
+  .kpi.skc .skx:nth-child(2){height:34px;width:42%;margin:11px 0 15px;border-radius:9px}
+  .skban{height:215px;border-radius:0}
+  .skrow{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid var(--rule)}
+  .skrow:last-child{border-bottom:0}
+  .skdonut{width:184px;height:184px;border-radius:50%;margin:0 auto 16px;border:16px solid var(--paper);flex:none}
+  .skrecent .skrow{padding:19px 0}
+  .skres{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;flex:1}
+  .skres.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .skres .skx{height:auto;min-height:121px;border-radius:14px}
+  @media (max-width:999px){ .skrecent .skrow:nth-child(n+4){display:none} .skrecent .skrow:nth-child(3){border-bottom:0} }
+  .dpanel.sklb{margin-top:20px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:end;gap:24px;min-height:194px;padding:22px 24px 0}
+  .sklb .pod{display:flex;align-items:flex-end;gap:10px}
+  .sklb .pod .skx{width:92px;border-radius:12px 12px 0 0}
+  @media (max-width:899px){ .dpanel.sklb{grid-template-columns:minmax(0,1fr);gap:16px;padding:18px 16px 0} .sklb .pod{order:1;justify-content:center} .sklb .skfacts{grid-template-columns:repeat(2,minmax(0,1fr))} .sklb .skfacts .skx{width:100% !important} .sklb .pod .skx:nth-child(1){height:110px !important} .sklb .pod .skx:nth-child(2){height:156px !important} .sklb .pod .skx:nth-child(3){height:90px !important} }
+  @media (max-width:699px){ .skres.four{grid-template-columns:repeat(2,minmax(0,1fr))} .skres{gap:8px} .dpanel.sklb{margin-top:0} .sklb .pod{justify-content:center} .skban{height:201px} .skres .skx{min-height:134px} }
+  @media (min-width:1400px){ .dbottom .skres.four{grid-template-columns:repeat(2,minmax(0,1fr))} }
   .qwrap{position:relative;display:block;min-width:0;flex:1}
   .qwrap .field{padding-right:40px}
   .qx{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:0;border-radius:50%;background:var(--paper);color:var(--muted);font-size:var(--fs-15);line-height:1;display:flex;align-items:center;justify-content:center}
@@ -749,7 +769,7 @@
     .drawer.on,.scrim.on,.drawer.on .it{animation:none}
     .login{animation:fadein .2s ease}
     .toast{animation:fadein .12s ease}
-    .skel .sk{animation:none;background:var(--paper)}
+    .skel .sk,.skx{animation:none;background:var(--paper)}
     ::view-transition-old(root),::view-transition-new(root){animation:none}
   }
   /* wide screens: the menu becomes a permanent left sidebar and the page uses the width */
@@ -2812,13 +2832,14 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.8.10';
+const VERSION = '5.8.11';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'While the home page loads, the grey placeholders now match the real cards in shape and size',
     'Badges on phones are more compact: four to a row with smaller medals',
     'On phones the Leaderboard tile shows streak and section first, with the podium rising from the bottom edge',
     'On phones: the Leaderboard tile sits right under Singer Tools, and badges come last on the report card',
@@ -2888,6 +2909,7 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'Пока главная загружается, серые заготовки совпадают с настоящими карточками по форме и размеру',
     'Награды на телефоне компактнее: по четыре в ряд, медали меньше',
     'На телефоне в плитке «Лидеры» сначала серия и партия, а пьедестал стоит на нижнем краю',
     'На телефоне: плитка «Лидеры» сразу под инструментами певца, а награды в конце отчёта',
@@ -4239,6 +4261,33 @@ const TILEICON = {
         <circle cx="17" cy="12" r="5.6" fill="none" stroke="var(--blue-text)" stroke-width="2.2"></circle>
         <path d="M6.5 29.5c1.6-6 5.6-9 10.5-9s8.9 3 10.5 9" fill="none" stroke="var(--blue-text)" stroke-width="2.2" stroke-linecap="round"></path></svg>`
 };
+function homeSkel(){
+  const x = (w, h) => `<i class="skx" style="width:${w}${h ? ';height:' + h + 'px' : ''}"></i>`;
+  const kpi = `<div class="kpi skc">${x('55%')}${x('42%')}${x('70%', 10)}</div>`;
+  const row = (w, last) => `<div class="skrow">${x('22px', 14)}<span style="flex:1;display:grid;gap:7px">${x(w, 14)}${x('34%', 10)}</span></div>`;
+  const head = w => `<div class="phd">${x(w, 16)}${x('22px', 22)}</div>`;
+  return `<div class="dtop"></div><div class="ov" aria-busy="true" aria-label="${esc(t('loading'))}">
+    <div class="kpis">${kpi.repeat(4)}</div>
+    <div class="dgrid">
+      <section class="dsvc skc"><i class="skx skban"></i>
+        <div class="sethd"><span style="height:20px;display:flex;align-items:center;width:100%">${x('90px', 11)}</span></div>
+        <div class="setlist">${['62%', '48%', '70%'].map(row).join('')}</div>
+        <div class="pfoot"><span style="height:49px;display:flex;align-items:center;width:100%">${x('120px', 12)}</span></div></section>
+      <section class="dpanel datt skc">${head('46%')}<div style="height:19px;margin:2px 0 24px;display:flex;align-items:center">${x('60%', 11)}</div><i class="skdonut"></i>
+        <div style="height:16px;display:flex;justify-content:center;gap:20px;align-items:center">${x('70px', 10)}${x('70px', 10)}</div>
+        <div style="display:grid;gap:20px;margin-top:20px">${x('100%', 16).repeat(4)}</div>
+        <div class="pfoot c"><span style="height:49px;display:flex;align-items:center;justify-content:center;width:100%">${x('110px', 12)}</span></div></section>
+    </div>
+    <div class="dpanel skc sklb"><div style="display:grid;gap:10px;align-self:center">${x('50%', 18)}${x('34%', 11)}</div>
+      <div class="pod">${x('', 70)}${x('', 96)}${x('', 56)}</div>
+      <div class="skfacts" style="display:grid;gap:12px;align-self:center">${x('70%', 32)}${x('70%', 32)}</div></div>
+    <div class="dbottom">
+      <section class="dpanel skc">${head('40%')}<div class="skres">${x('').repeat(6)}</div></section>
+      <section class="dpanel skc">${head('44%')}<div class="skrecent">${['58%', '46%', '64%', '50%'].map(row).join('')}</div></section>
+      ${S.session ? `<section class="dpanel dadm skc">${head('42%')}<div class="skres four">${x('').repeat(4)}</div></section>`
+        : `<section class="dpanel dadm out skc">${x('40px', 40)}<span class="grow2" style="display:grid;gap:7px">${x('60%', 14)}${x('80%', 10)}</span>${x('96px', 40)}</section>`}
+    </div></div>`;
+}
 function homePage(){
   const members = S.singers.filter(x => x.part && x.active !== false);
   const now = today(), [ty, tm, td] = now.split('-').map(Number);
@@ -6234,7 +6283,7 @@ function render(){
   syncDock();
 
   if (S.loading && !onLogin) { document.getElementById('app').innerHTML = html
-    + `<main class="pg"><div class="skel" aria-label="${esc(t('loading'))}">` + '<div class="sk"></div>'.repeat(7) + `</div></main>`;
+    + `<main class="pg">` + (!r || r === '#' || r === '#/' || r.startsWith('#/home') ? homeSkel() : `<div class="skel" aria-label="${esc(t('loading'))}">` + '<div class="sk"></div>'.repeat(7) + `</div>`) + `</main>`;
     wasLoading = true; return; }
   html += '<main class="pg">';
 
