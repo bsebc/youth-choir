@@ -640,7 +640,7 @@
   .sklb .pod{display:flex;align-items:flex-end;gap:10px}
   .sklb .pod .skx{width:92px;border-radius:12px 12px 0 0}
   @media (max-width:899px){ .dpanel.sklb{grid-template-columns:minmax(0,1fr);gap:16px;padding:18px 16px 0} .sklb .pod{order:1;justify-content:center} .sklb .skfacts{grid-template-columns:repeat(2,minmax(0,1fr))} .sklb .skfacts .skx{width:100% !important} .sklb .pod .skx:nth-child(1){height:110px !important} .sklb .pod .skx:nth-child(2){height:156px !important} .sklb .pod .skx:nth-child(3){height:90px !important} }
-  @media (max-width:699px){ .skres.four{grid-template-columns:repeat(2,minmax(0,1fr))} .skres{gap:8px} .dpanel.sklb{margin-top:0} .sklb .pod{justify-content:center} .skban{height:201px} .skres .skx{min-height:134px} }
+  @media (max-width:699px){ .skres.four{grid-template-columns:repeat(2,minmax(0,1fr))} .skres{gap:8px} .ov .dpanel.sklb{order:3;margin:0} .sklb .pod{justify-content:center} .skban{height:201px} .skres .skx{min-height:134px} }
   @media (min-width:1400px){ .dbottom .skres.four{grid-template-columns:repeat(2,minmax(0,1fr))} }
   .qwrap{position:relative;display:block;min-width:0;flex:1}
   .qwrap .field{padding-right:40px}
@@ -1589,6 +1589,9 @@
   .songc .li{transition:background-color .45s ease}
   .songc.hi{box-shadow:0 0 0 2px var(--gold),0 8px 20px -10px var(--gold)}
   .songc.hi .li{background:var(--gold-wash);border-radius:inherit}
+  .li[data-mrow]{transition:background-color .45s ease,box-shadow .45s ease}
+  .li.mhi{background:var(--gold-wash);box-shadow:inset 0 0 0 2px var(--gold);border-radius:10px}
+  .tsi.av{width:34px;height:34px;border-radius:10px;overflow:hidden;font-size:11.5px}
   /* ---- member report card ---- */
   /* everything grows in each time the report is drawn */
   .mpage.rip .donut{animation:donutfill 1.3s cubic-bezier(.3,.7,.2,1) .15s both}
@@ -1879,6 +1882,8 @@
   .lbsr small{display:flex;gap:4px;min-width:0;margin-top:9px;font-size:11.5px;color:var(--muted)}
   .lbname{background:none;border:0;padding:0;font:inherit;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
   .lbname:hover{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px}
+  .aname{background:none;border:0;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+  .aname:hover{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px}
   .lbchips{display:flex;flex-wrap:wrap;gap:8px}
   .lbchip{display:inline-flex;align-items:center;gap:7px;padding:4px 6px 4px 4px;border-radius:999px;background:var(--surface-2);border:1px solid var(--rule);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
   .lbchip .lbav{width:24px;height:24px;font-size:9.5px}
@@ -2328,6 +2333,12 @@
     --dock-glass-a:rgba(42,47,78,.74); --dock-glass-b:rgba(30,34,58,.62); --dock-border:rgba(255,255,255,.12); --dock-sheen:rgba(255,255,255,.06); --dock-edge:rgba(255,255,255,.08); --dock-top:rgba(255,255,255,.10);
     --placeholder:#7c84a3; --disabled-ink:#6c7493; --focus:#b8b2ff; --selection-bg:#3a3870; --skel:#262b46; } }
   :root[data-theme="dark"] .sban{background:linear-gradient(112deg,#35338f,#5750dd 68%,#7a71ee)}
+  :root[data-theme="dark"] .lbtile{background:radial-gradient(ellipse 46% 85% at 50% 108%,rgba(255,255,255,.08),transparent 70%),linear-gradient(112deg,#302e86,#4d47cc 62%,#6a62e6);border-color:rgba(199,196,255,.38);border-bottom-color:#c7c4ff}
+  :root[data-theme="dark"] .lbtile:hover{border-color:rgba(199,196,255,.65)}
+  :root[data-theme="dark"] .lbtile .tlink{color:#e4e2ff}
+  :root[data-theme="dark"] .lbt p,:root[data-theme="dark"] .lbfact small{color:rgba(255,255,255,.82)}
+  :root[data-theme="dark"] .lbfact{background:rgba(20,18,70,.22);border-color:rgba(255,255,255,.14)}
+  :root[data-theme="dark"] .lbm .pmed{outline-color:#3f3aa8}
   :root[data-theme="dark"] .eye{color:#d8d6ff}
   :root[data-theme="dark"] .eye::before{background:#c7c4ff}
   :root[data-theme="dark"] .sstat, :root[data-theme="dark"] .sdate{color:#e6e5ff}
@@ -2338,6 +2349,12 @@
   :root[data-theme="dark"] .drawer .it.on{box-shadow:0 6px 16px -6px rgba(0,0,0,.6)}
   @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]) .sban{background:linear-gradient(112deg,#35338f,#5750dd 68%,#7a71ee)}
+  :root:not([data-theme="light"]) .lbtile{background:radial-gradient(ellipse 46% 85% at 50% 108%,rgba(255,255,255,.08),transparent 70%),linear-gradient(112deg,#302e86,#4d47cc 62%,#6a62e6);border-color:rgba(199,196,255,.38);border-bottom-color:#c7c4ff}
+  :root:not([data-theme="light"]) .lbtile:hover{border-color:rgba(199,196,255,.65)}
+  :root:not([data-theme="light"]) .lbtile .tlink{color:#e4e2ff}
+  :root:not([data-theme="light"]) .lbt p,:root:not([data-theme="light"]) .lbfact small{color:rgba(255,255,255,.82)}
+  :root:not([data-theme="light"]) .lbfact{background:rgba(20,18,70,.22);border-color:rgba(255,255,255,.14)}
+  :root:not([data-theme="light"]) .lbm .pmed{outline-color:#3f3aa8}
   :root:not([data-theme="light"]) .eye{color:#d8d6ff}
   :root:not([data-theme="light"]) .eye::before{background:#c7c4ff}
   :root:not([data-theme="light"]) .sstat, :root:not([data-theme="light"]) .sdate{color:#e6e5ff}
@@ -2571,7 +2588,7 @@ const STR = {
     blocksN:n=>n===1?'1 block':n+' blocks',
     stEvent:'Event',stSongs:'Songs',stReview:'Review',review:'Review',back:'Back',draft:'Draft',recordAtt:'Mark attendance',planSvc:'Plan a service',repertoire:'Repertoire',usageIns:'Usage insights',editSongT:'Edit song',editMemberT:'Edit member',allPresent:'Everyone is marked present.',cancelEvent:'Cancel event',neverSung:'Not sung before',date2:'Date',event2:'Event',recentT:'Recent entries',exportT:'Export',titleL:'Title',catL:'Category',pvL:'№ in Песнь возрождения',nameL:'Full name · surname first',saveSong:'Save song',sinceD:d=>'since '+d,fromRoster:'Someone already on the roster',orNew:'…or add a new person:',
     appName:'Youth Choir',appTag:'Music · attendance',overview:'Overview',navWork:'Workspace',navLib:'Music library',navChoir:'Our choir',navDir:'Director',
-    findSong:'Find a song',dirSignin:'Director sign in',dirSigninSub:'Manage the choir',dirWs:'Director workspace',signedIn:'Signed in',
+    findSong:'Find a song or singer',tsReport:'Report',tsNone:'No songs or singers found',dirSignin:'Director sign in',dirSigninSub:'Manage the choir',dirWs:'Director workspace',signedIn:'Signed in',
     kSingers:'Singers',kParts:n=>n===1?'1 voice part':n+' voice parts',kActive:n=>n===1?'1 active singer':n+' active singers',kRep:'Repertoire',kRepSub:n=>n+' with choir sheets',
     kAtt:'Attendance',kAttSub:'Last 30 days',kSvc:'Services',kSvcSub:n=>n===1?'1 song sung · 12 months':n+' songs sung · 12 months',
     songOrder:'Song order',songsCount:n=>n===1?'1 song':n+' songs',inOrder:'In singing order',svcHistory:'Service history',
@@ -2665,7 +2682,7 @@ const STR = {
     blocksN:n=>n+' '+(n%10===1&&n%100!==11?'блок':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'блока':'блоков'),
     stEvent:'Событие',stSongs:'Песни',stReview:'Проверка',review:'Проверить',back:'Назад',draft:'Черновик',recordAtt:'Отметить посещаемость',planSvc:'План служения',repertoire:'Репертуар',usageIns:'Активность',editSongT:'Изменить песню',editMemberT:'Изменить участника',allPresent:'Все отмечены присутствующими.',cancelEvent:'Отменить событие',neverSung:'Ранее не исполнялась',date2:'Дата',event2:'Событие',recentT:'Последние записи',exportT:'Экспорт',titleL:'Название',catL:'Категория',pvL:'№ в «Песни возрождения»',nameL:'Фамилия и имя',saveSong:'Сохранить песню',sinceD:d=>'с '+d,fromRoster:'Кто-то из состава',orNew:'…или добавьте нового человека:',
     appName:'Молодёжный хор',appTag:'Ноты · посещения',overview:'Обзор',navWork:'Пространство',navLib:'Библиотека',navChoir:'Наш хор',navDir:'Регент',
-    findSong:'Найти песню',dirSignin:'Вход для регента',dirSigninSub:'Управление хором',dirWs:'Кабинет регента',signedIn:'Вы вошли',
+    findSong:'Найти песню или хориста',tsReport:'Отчёт',tsNone:'Ничего не найдено',dirSignin:'Вход для регента',dirSigninSub:'Управление хором',dirWs:'Кабинет регента',signedIn:'Вы вошли',
     kSingers:'Хористы',kParts:n=>n+(n===1?' партия':n<5?' партии':' партий'),kActive:n=>'активных хористов: '+n,kRep:'Репертуар',kRepSub:n=>'с нотами: '+n,
     kAtt:'Посещаемость',kAttSub:'За 30 дней',kSvc:'Служения',kSvcSub:n=>'песен спето: '+n+' · 12 мес.',
     songOrder:'Порядок песен',songsCount:n=>n+' '+(n%10===1&&n%100!==11?'песня':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'песни':'песен'),inOrder:'По порядку исполнения',svcHistory:'История служений',
@@ -2813,6 +2830,12 @@ const catSelect = () => S.categories.length ? `<select class="field" style="widt
 const catBar = () => S.categories.length ? `<div class="ctlbar" style="flex-direction:row">${catSelect()}</div>` : '';
 const qField = (ph) => `<span class="qwrap"><input class="field" id="q" enterkeyhint="search" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="${esc(t(ph || 'search'))}" value="${esc(S.query)}">${
   S.query ? `<button class="qx" data-clear-q aria-label="clear">×</button>` : ''}</span>`;
+/* Russian titles and names can be typed in English letters: both sides are spelled
+   out in Latin and loosened (y/j/i, kh/h, sch/sh, doubled letters…) before comparing. */
+const CYR = {а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ё:'e',ж:'zh',з:'z',и:'i',й:'i',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'ts',ч:'ch',ш:'sh',щ:'sh',ъ:'',ы:'i',ь:'',э:'e',ю:'iu',я:'ia',і:'i',ї:'i',є:'e',ґ:'g'};
+const lat = x => String(x || '').toLowerCase().replace(/[а-яёіїєґ]/g, c => CYR[c] ?? c)
+  .replace(/shch|sch/g, 'sh').replace(/kh/g, 'h').replace(/tz/g, 'ts').replace(/ph/g, 'f').replace(/w/g, 'v').replace(/q/g, 'k').replace(/x/g, 'ks')
+  .replace(/[yj]/g, 'i').replace(/c(?!h)/g, 'k').replace(/[^a-z0-9 ]+/g, '').replace(/([a-z])\1+/g, '$1').replace(/ie/g, 'e').replace(/\s+/g, ' ').trim();
 /* A song is found by its title or by its Песнь возрождения number: the projector
    operator looks songs up by number on the fly, so digits typed into the search
    box are matched against the № as well. */
@@ -2821,7 +2844,10 @@ function songMatch(s, q){
   if (!qs) return true;
   if (s.title.toLowerCase().includes(qs)) return true;
   if (s.subtitle && String(s.subtitle).toLowerCase().includes(qs)) return true;
-  if (s.category_id && typeof catName === 'function') { const c = catName(s.category_id); if (c && String(c).toLowerCase().includes(qs)) return true; }
+  const cn = s.category_id && typeof catName === 'function' ? catName(s.category_id) : '';
+  if (cn && String(cn).toLowerCase().includes(qs)) return true;
+  const ql = lat(qs);
+  if (/[a-z]/.test(ql) && [s.title, s.subtitle, cn].some(v => v && lat(v).includes(ql))) return true;
   const digits = qs.replace(/\D/g, '');
   return !!digits && s.pv_number != null && String(s.pv_number).includes(digits);
 }
@@ -2832,13 +2858,18 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.8.11';
+const VERSION = '5.10.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Search understands English letters: type “slava” or “kristina” to find Russian titles and names',
+    'Tap a name in Attendance → Summary to see that singer’s badges',
+    'In dark mode the Leaderboard card on the home page uses the dark indigo theme',
+    'Search finds singers too: the director opens their report, everyone else sees them highlighted in Attendance',
+    'Fixed: on phones the loading placeholders now come in the same order as the real cards',
     'While the home page loads, the grey placeholders now match the real cards in shape and size',
     'Badges on phones are more compact: four to a row with smaller medals',
     'On phones the Leaderboard tile shows streak and section first, with the podium rising from the bottom edge',
@@ -2909,6 +2940,11 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'Поиск понимает латиницу: «slava» или «kristina» найдут русские названия и имена',
+    'Нажмите на имя в «Посещаемость → Сводка», чтобы увидеть награды хориста',
+    'В тёмной теме плитка «Лидеры» на главной в тёмно-индиговых тонах',
+    'Поиск находит и хористов: регент открывает их отчёт, остальные видят их выделенными в посещаемости',
+    'Исправлено: на телефоне заготовки при загрузке идут в том же порядке, что и настоящие карточки',
     'Пока главная загружается, серые заготовки совпадают с настоящими карточками по форме и размеру',
     'Награды на телефоне компактнее: по четыре в ряд, медали меньше',
     'На телефоне в плитке «Лидеры» сначала серия и партия, а пьедестал стоит на нижнем краю',
@@ -4836,7 +4872,7 @@ function leaderPage(){
     </div>${lbSheet(from, p)}`;
 }
 /* tapping a name: every badge that person holds right now, and their year-end trophies */
-function lbSheet(from, p){
+function lbSheet(from, p, label){
   const s = S.lbWho && S.singers.find(x => x.id === S.lbWho);
   if (!s) return '';
   const B = badgesFor(s, from).filter(b => b.earned), Y = yearAwards(s).won;
@@ -4846,7 +4882,7 @@ function lbSheet(from, p){
       <div class="lbsh"><span class="lbav big ${s.part || ''}">${avIn(s)}</span>
         <div><h3>${esc(s.name)}</h3><div class="mmeta">${s.part ? `<span class="mpart ${s.part}">${esc(t(s.part))}</span>` : ''}</div></div></div>
       ${Y.length ? `<div class="bgh"><span>${esc(t('bHall'))}</span></div><div class="bgrid">${Y.map(medal).join('')}</div>` : ''}
-      <div class="bgh"><span>${esc(t('bNowTitle'))}</span><small>${esc(t('rng' + p))}</small></div>
+      <div class="bgh"><span>${esc(t('bNowTitle'))}</span><small>${esc(label || t('rng' + p))}</small></div>
       ${B.length ? `<div class="bgrid">${B.map(medal).join('')}</div>` : `<p class="pcap" style="margin:10px 0 0">${esc(t('lbNoBadges'))}</p>`}
       ${S.session ? `<a class="mini go lbrep" href="${memberLink(s)}">${esc(t('mTitle'))}</a>` : ''}
     </div>`;
@@ -4963,10 +4999,11 @@ function attendanceSummary(){
     if (!rows.length) return '';
     return `<div class="sectbar ${p}">${esc(t(p))}</div>` + rows.map(s => {
       const c = attCount(ev, s.id), pct = c.pct;
-      const nm = (S.session ? `<a class="mname" href="${memberLink(s)}">${esc(s.name)}</a>` : esc(s.name)) + bMinis(s, S.from || '', S.to || today());
-      if (pct === null) return `<div class="li"><div style="width:44%;font-size:var(--fs-15);color:var(--faint)">${nm}</div>
+      const nm = `<button class="aname" data-lbwho="${s.id}">${esc(s.name)}</button>` + bMinis(s, S.from || '', S.to || today());
+      const li = `<div class="li${S.hiMember === s.id ? ' mhi' : ''}" data-mrow="${s.id}">`;
+      if (pct === null) return `${li}<div style="width:44%;font-size:var(--fs-15);color:var(--faint)">${nm}</div>
         <div class="bar"></div><div class="cnt">0/0</div><div class="pct" style="color:var(--faint)">—</div></div>`;
-      return `<div class="li"><div style="width:44%;font-size:var(--fs-15)">${nm}</div>
+      return `${li}<div style="width:44%;font-size:var(--fs-15)">${nm}</div>
         <div class="bar"><i style="width:${pct}%;background:${pct>=50?'var(--green)':pct>=10?'var(--gold)':'var(--red)'}"></i></div>
         <div class="cnt">${c.came}/${c.of}</div>
         <div class="pct" style="color:${pct>=50?'var(--ink)':pct>=10?'var(--gold)':'var(--red)'}">${pct}%</div></div>`;
@@ -6345,7 +6382,8 @@ function render(){
       <a href="#/attendance/grid" class="${tab==='grid'?'on':''}">${esc(t('grid'))}</a>
       <a href="#/attendance/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
     html += publicNav('att') + pageHead(t('attendance'), t('attSub'));
-    if (tab === 'summary') html += attTabs + rangeCtrl('sum', true) + attendanceSummary();
+    if (tab === 'summary') html += attTabs + rangeCtrl('sum', true) + attendanceSummary()
+      + lbSheet(S.from || '', S.preset, ['3', '6', '12', '36', 'all'].includes(S.preset) ? '' : fmtPill(S.from) + ' – ' + fmtPill(S.to));
     else html += attTabs + attendanceGrid(rangeCtrl('grid', true));
   }
   html += '</main>';
@@ -7323,11 +7361,18 @@ let tsSel = 0;
 function tsList(q){
   q = (q || '').trim();
   if (!q) return [];
-  const ql = q.toLowerCase();
-  return S.songs.filter(s => s.active !== false && songMatch(s, q))
-    .sort((a, b) => (a.title.toLowerCase().startsWith(ql) ? 0 : 1) - (b.title.toLowerCase().startsWith(ql) ? 0 : 1)
-      || a.title.localeCompare(b.title, 'ru'))
-    .slice(0, 8);
+  const ql = q.toLowerCase(), qa = lat(q), nm = s => String(s.name || '').toLowerCase();
+  const wordStart = s => nm(s).split(/\s+/).some(w => w.startsWith(ql)) || (qa && lat(s.name).split(' ').some(w => w.startsWith(qa))) ? 0 : 1;
+  const tStart = s => s.title.toLowerCase().startsWith(ql) || (qa && lat(s.title).startsWith(qa));
+  const people = S.singers.filter(s => s.part && s.active !== false && (nm(s).includes(ql) || (/[a-z]/.test(qa) && lat(s.name).includes(qa))))
+    .sort((a, b) => wordStart(a) - wordStart(b) || a.name.localeCompare(b.name, 'ru')).slice(0, 4)
+    .map(m => ({ k: 'm:' + m.id, m }));
+  const songs = S.songs.filter(s => s.active !== false && songMatch(s, q))
+    .sort((a, b) => (tStart(a) ? 0 : 1) - (tStart(b) ? 0 : 1) || a.title.localeCompare(b.title, 'ru'))
+    .slice(0, people.length ? 6 : 8).map(s => ({ k: 's:' + s.id, s }));
+  /* a name typed from its start puts the people first, unless a song title starts the same way */
+  const peopleFirst = people.length && !wordStart(people[0].m) && !(songs[0] && tStart(songs[0].s));
+  return peopleFirst ? people.concat(songs) : songs.concat(people);
 }
 const tsInput = () => { const a = document.activeElement;
   return a && a.classList && a.classList.contains('tsin') ? a : document.getElementById(S.msOpen ? 'msearch' : 'tsearch'); };
@@ -7337,20 +7382,49 @@ function tsDraw(){
   const q = inp.value, list = tsList(q);
   if (!q.trim()) { box.hidden = true; box.innerHTML = ''; inp.setAttribute('aria-expanded', 'false'); return; }
   tsSel = Math.min(tsSel, Math.max(0, list.length - 1));
-  box.innerHTML = list.length ? list.map((s, i) => `<a href="#" role="option" data-ts="${s.id}" class="${i === tsSel ? 'on' : ''}" aria-selected="${i === tsSel}">
+  box.innerHTML = list.length ? list.map((it, i) => it.m ? `<a href="#" role="option" data-ts="${it.k}" class="${i === tsSel ? 'on' : ''}" aria-selected="${i === tsSel}">
+      <span class="tsi av">${avIn(it.m)}</span>
+      <span class="grow2"><span class="tst">${esc(it.m.name)}</span><span class="tsm">${esc(partName(it.m.part))}</span></span>
+      <em>${esc(t(S.session ? 'tsReport' : 'attendance'))}</em></a>` : (s => `<a href="#" role="option" data-ts="${it.k}" class="${i === tsSel ? 'on' : ''}" aria-selected="${i === tsSel}">
       <span class="tsi">${AIC.sheets}</span>
       <span class="grow2"><span class="tst">${esc(s.title)}${pvTag(s)}</span>${catName(s.category_id) ? `<span class="tsm">${esc(catName(s.category_id))}</span>` : ''}</span>
-      <em>${esc(t('tSheets'))}</em></a>`).join('')
-    : `<div class="tsnone">${esc(t('noSongs'))}</div>`;
+      <em>${esc(t('tSheets'))}</em></a>`)(it.s)).join('')
+    : `<div class="tsnone">${esc(t('tsNone'))}</div>`;
   box.hidden = false;
   inp.setAttribute('aria-expanded', 'true');
 }
-function tsGo(id){
-  const s = S.songs.find(x => x.id === id);
-  if (!s) return;
+function tsGo(k){
+  k = String(k || ''); const id = k.slice(2);
+  const m = k[0] === 'm' && S.singers.find(x => x.id === id), s = k[0] === 's' && S.songs.find(x => x.id === id);
+  if (!m && !s) return;
   document.querySelectorAll('.tsin').forEach(i => { i.value = ''; i.blur(); });
   msClose();
-  showInSheets(id);
+  if (s) return showInSheets(id);
+  /* the director gets the person's report card; everyone else sees them lit up in Attendance */
+  if (S.session) location.hash = memberLink(m); else showInAtt(id);
+}
+function showInAtt(id){
+  S.hiMember = id;
+  if (location.hash.startsWith('#/attendance/summary')) render(); else location.hash = '#/attendance/summary';
+  let tries = 0;
+  const unlit = () => { S.hiMember = null; document.querySelectorAll('[data-mrow].mhi').forEach(r => r.classList.remove('mhi')); };
+  const find = () => {
+    const row = document.querySelector('[data-mrow="' + id + '"]');
+    if (!row) { if (++tries < 30) setTimeout(find, 60); return; }
+    requestAnimationFrame(() => {
+      const r = row.getBoundingClientRect();
+      window.scrollTo({ top: Math.max(0, window.scrollY + r.top - window.innerHeight / 2 + r.height / 2), behavior: 'smooth' });
+      setTimeout(() => {
+        const base = window.scrollY;
+        const onScroll = () => {
+          if (S.hiMember !== id) return window.removeEventListener('scroll', onScroll);
+          if (Math.abs(window.scrollY - base) > 80) { unlit(); window.removeEventListener('scroll', onScroll); }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }, 1000);
+    });
+  };
+  setTimeout(find, 80);
 }
 /* open Choir music with the whole list, bring the song's row into view and keep it
    highlighted. The highlight is state (S.hiSong) rendered as a class, so a redraw
@@ -7428,7 +7502,7 @@ document.addEventListener('keydown', e => {
     tsDraw();
   } else if (e.key === 'Enter') {
     e.preventDefault();
-    if (list[tsSel]) tsGo(list[tsSel].id);
+    if (list[tsSel]) tsGo(list[tsSel].k);
   } else if (e.key === 'Escape') {
     if (e.target.id === 'msearch') return msClose();
     e.target.value = ''; tsDraw(); e.target.blur();
@@ -7446,6 +7520,7 @@ window.addEventListener('hashchange', () => {
   trackRoute();
   S.menuOpen = false; S.msOpen = false; S.lbWho = null; S.lbSeen = null; S.lbTie = 0;
   if (!S.route.startsWith('#/sheets')) S.hiSong = null;
+  if (!S.route.startsWith('#/attendance')) S.hiMember = null;
   document.body.classList.remove('mlock');
   if (!/^#\/admin\/(attendance|songs)\/.+/.test(S.route)) { S.edit = null; S.pending = null; }
   if (!S.route.startsWith('#/seating')) { S.seatEdit = null; S.seatSel = null; }
