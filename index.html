@@ -1592,6 +1592,76 @@
   /* members list: the initials tile matches its part's section bar */
   .mrow .av.soprano{background:var(--violet-wash);color:var(--violet)} .mrow .av.alto{background:var(--teal-tint);color:var(--teal)}
   .mrow .av.tenor{background:var(--rose-wash);color:var(--rose)} .mrow .av.bass{background:var(--amber-wash);color:var(--gold-text)}
+  /* song cards: colour-coded buttons everywhere; on phones the buttons live in a tray that slides in */
+  .songc .scat{margin-top:3px;font-size:11.5px;letter-spacing:.02em;color:var(--faint)}
+  .songc .stray{display:contents}
+  .songc .scap,.songc .schev,.mini .mlbl,.mini .tl{display:none}
+  .songc .acts .mini.play{background:color-mix(in srgb,var(--teal) 13%,var(--card));color:var(--teal)}
+  .songc .acts .mini.sheet{background:color-mix(in srgb,var(--blue) 12%,var(--card));color:var(--blue-text)}
+  .songc .acts .mini.lyr{background:color-mix(in srgb,var(--gold) 20%,var(--card));color:var(--gold-text)}
+  .songc .acts .mini.icon,.songc .acts .mini.locked{background:color-mix(in srgb,var(--muted) 11%,var(--card));color:var(--muted)}
+  .songc .acts .mini.icon.on{background:var(--blue);color:#fff}
+  @media (hover:hover){
+    .songc .acts .mini.play:hover{background:color-mix(in srgb,var(--teal) 21%,var(--card))}
+    .songc .acts .mini.sheet:hover{background:color-mix(in srgb,var(--blue) 20%,var(--card))}
+    .songc .acts .mini.lyr:hover{background:color-mix(in srgb,var(--gold) 30%,var(--card))}
+    .songc .acts .mini.icon:not(.on):hover{background:color-mix(in srgb,var(--muted) 18%,var(--card))}
+  }
+  @media (max-width:699px){
+    .sec.songc > .li.srow{position:relative;height:78px;min-height:0;padding:0 10px 0 16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+    .srow .stitle{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .srow .smeta{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px;font-size:12px;color:var(--faint)}
+    .srow .smeta > *{display:inline;margin:0;font-size:12px;letter-spacing:0}
+    .srow .smeta > * + *::before{content:'·';margin:0 5px;color:var(--faint);font-style:normal}
+    .srow > .ftile,.srow > .ord,.srow > .stxt{transition:opacity .2s ease,transform .34s cubic-bezier(.2,.8,.2,1)}
+    .songc.open .srow > .ftile,.songc.open .srow > .ord,.songc.open .srow > .stxt{opacity:0;transform:translateX(-16px);pointer-events:none}
+    .srow .stray{display:flex;flex-direction:column;justify-content:center;gap:5px;position:absolute;left:14px;right:58px;top:0;bottom:0;visibility:hidden;transition:visibility 0s linear .36s}
+    .songc.open .srow .stray{visibility:visible;transition-delay:0s}
+    .srow .scap{display:block;padding:0 2px;font-size:12px;font-weight:600;line-height:15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transform:translateY(5px);transition:opacity .16s ease,transform .26s ease}
+    .songc.open .srow .scap{opacity:1;transform:none;transition-delay:.05s}
+    .srow .scap b{font-weight:700;color:var(--muted);margin-right:6px;font-variant-numeric:tabular-nums}
+    .srow .scap i{font-style:normal;font-weight:500;color:var(--faint)}
+    .srow .sbtns{display:flex;gap:6px;width:100%}
+    .srow .sbtns .mini{flex:1 1 0;min-width:0;width:auto;height:46px;padding:0 4px;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+      font-size:11px;font-weight:600;line-height:1.1;text-decoration:none;opacity:0;transform:translateX(26px);transition:opacity .14s ease,transform .2s ease,background .15s ease}
+    .songc.open .srow .sbtns .mini{opacity:1;transform:none;
+      transition:opacity .26s ease calc(var(--k,0) * 45ms + 40ms),transform .44s cubic-bezier(.2,.9,.25,1.12) calc(var(--k,0) * 45ms + 40ms),background .15s ease}
+    .songc.open .srow .sbtns .mini:active{transform:scale(.95);transition-delay:0s}
+    .srow .sbtns .mini span{display:block!important;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .srow .sbtns .mini span.dl{display:none!important}
+    .srow .sbtns .mini svg{width:17px;height:17px;flex:none}
+    .srow .schev{display:grid;place-items:center;flex:none;width:40px;height:40px;margin-left:auto;padding:0;border:0;border-radius:50%;position:relative;z-index:1;
+      background:color-mix(in srgb,var(--blue) 9%,var(--card));color:var(--blue-text);transition:transform .4s cubic-bezier(.3,.8,.2,1.15),background .2s ease,color .2s ease}
+    .srow .schev svg{width:18px;height:18px}
+    .songc.open .srow .schev{transform:rotate(180deg);background:var(--blue);color:#fff}
+    .srow .schev.hint{animation:chevnudge 1.5s ease-in-out .9s 2}
+  }
+  @keyframes chevnudge{0%,100%{transform:none}35%{transform:translateX(-6px)}60%{transform:translateX(1px)}}
+  @media (prefers-reduced-motion:reduce){ .srow,.srow *{transition-duration:.01s!important;transition-delay:0s!important} .srow .schev.hint{animation:none} }
+  /* admin strip under a song: the same colour code (upload navy, lock grey, remove red, recording green, text gold) */
+  .songc .ord{position:relative}
+  .songc .admstrip,.songc .audiorow{transition:opacity .2s ease,transform .25s ease}
+  .songc .admstrip.out,.songc .audiorow.out{opacity:0;transform:translateY(-6px)}
+  .songc .admstrip .mini.up{background:color-mix(in srgb,var(--blue) 12%,var(--card));color:var(--blue-text)}
+  .songc .admstrip .mini.lk{background:color-mix(in srgb,var(--muted) 11%,var(--card));color:var(--muted)}
+  .songc .admstrip .mini.trash{background:color-mix(in srgb,var(--red) 11%,var(--card));color:var(--red)}
+  .songc .admstrip .mini.au{background:color-mix(in srgb,var(--teal) 13%,var(--card));color:var(--teal)}
+  .songc .admstrip .mini.lx{background:color-mix(in srgb,var(--gold) 20%,var(--card));color:var(--gold-text)}
+  .songc .admstrip .mini.up{display:inline-flex;align-items:center;gap:6px}
+  @media (hover:hover){
+    .songc .admstrip .mini.up:hover{background:color-mix(in srgb,var(--blue) 20%,var(--card))}
+    .songc .admstrip .mini.lk:hover{background:color-mix(in srgb,var(--muted) 18%,var(--card))}
+    .songc .admstrip .mini.trash:hover{background:color-mix(in srgb,var(--red) 18%,var(--card))}
+    .songc .admstrip .mini.au:hover{background:color-mix(in srgb,var(--teal) 21%,var(--card))}
+    .songc .admstrip .mini.lx:hover{background:color-mix(in srgb,var(--gold) 30%,var(--card))}
+  }
+  @media (max-width:699px){
+    .songc .admstrip{flex-wrap:nowrap;gap:6px;padding:10px 12px 12px}
+    .songc .admstrip .mini,.songc .admstrip .mini.trash{flex:1 1 0;min-width:0;width:auto;height:auto;min-height:58px;padding:7px 4px;border-radius:13px;
+      flex-direction:column;justify-content:center;gap:4px;font-size:11px;line-height:1.15;text-align:center;text-decoration:none}
+    .songc .admstrip .mini span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal}
+    .songc .admstrip .mini svg{width:17px;height:17px;flex:none}
+  }
   /* seasonal songs: a small ornament on the page-icon tile */
   .ftile{position:relative}
   .songc .li > .ftile,.songc .li > .ord{margin-right:8px}
@@ -2722,7 +2792,7 @@ const STR = {
     withPiano:n=>n+' with piano sheets',
     tLyrics:'Lyrics',tLyricsSub:'The words as we sing them, ready to copy',
     lyrWith:n=>n+' with lyrics',noLyricsYet:'No lyrics yet',needsLyrics:'Needs lyrics',lyrHave:'Have lyrics',lyrNeed:'Need lyrics',upTitle:'Upcoming services',upDemoOn:'Show a sample',upDemoAct:'This is only a sample. On a real service this button works.',upDemoOff:'Hide sample',upDemoNote:'Sample only: made-up services to show how the board looks. Nothing here is saved or shown to the choir.',pastSvc:'Past Services',upCount:n=>n===1?'1 planned':n+' planned',upNone:'Nothing planned ahead yet. Pick a date below to plan a service.',upLive:'Live now',upThisWeek:'This week',upNoon:'Live from noon',upFrom:d=>'Live from '+d,upMove:'Move',upLater:n=>n+' more planned further ahead',planNew:'Plan a service',upClash:'There is already a service of this kind on that date.',sortBy:'Sort',mTitle:'Attendance report',mSince:d=>'In the choir since '+d,mPresent:'Present',mMissed:'Missed',mOf:(a,b)=>a+' of '+b,mEvents:n=>'of '+n+' counted',mStreak:'Current streak',mBest:'Best streak',mInRow:'in a row',mServices:'Services',mRehearsals:'Rehearsals',mByMonth:'Month by month',mByQuarter:'By quarter',mByYear:'Year by year',mChoirAvg:'Choir average',phAdd:'Add photo',phChange:'Change photo',phRemove:'Remove photo',phBusy:'Uploading…',phBad:'That file could not be read as a picture.',lbTitle:'Leaderboard',lbCold:'Cold streaks',lbColdSub:'Missed lately — we miss you',lbColdN:n=>n+' missed in a row',lbDown:d=>'−'+Math.abs(d)+' pts',lbNoCold:'Nobody is on a cold streak. Keep it up!',lbShow:'Showing the past',lbShowShort:'Past',lbPs1:'1 mo',lbPs3:'3 mo',lbPs6:'6 mo',lbPs12:'12 mo',lbP1:'1 month',lbP3:'3 months',lbP6:'6 months',lbP12:'12 months',lbTied:n=>n+' tied',lbTiedFor:r=>'Tied for #'+r,lbRanked:n=>n+' ranked',lbChase:'Full standings',tapName:'Tap a name to see all their badges',lbMe:'That’s me',lbMeCap:'Marks you on this phone so your place is easy to find',lbMeOnCap:'Saved on this phone. Tap again to undo.',lbMeHint:'Tap your name and choose “That’s me” to keep your place in view',lbAll:n=>'Show everyone ('+n+')',lbFewer:'Show fewer',lbMvTip:'Change in place over the past 2 weeks',lbMvKey:'▲ places gained in the past 2 weeks',lbWasNow:(a,b)=>'was '+a+'% · now '+b+'%',lbSince:y=>'Member since '+y,lbFresh:'New badges this week',lbFreshSub:'Earned in the past 7 days',bRare:n=>n===0?'No one has this yet':n===1?'Only 1 singer has this':n<=5?'Only '+n+' singers have this':n+' singers have this',lbShare:'Share',lbShotTitle:'Leaderboard picture',lbShotSave:'Save picture',lbShotHint:'You can also press and hold the picture to save it',lbCut:'Top 10 line',lbSub:'Who shows up the most',lbSee:'See the leaderboard',lbLeaders:'Top attendance',lbStreaks:'Hot streaks',lbStreakFoot:'Events in a row, still going. One miss starts it over.',lbNoStreak:'No streaks of 5 or more right now.',lbSections:'Section race',lbLeads:'Leads',lbImproved:'Most improved',lbImprovedSub:'vs the period before',lbNoImproved:'Nobody is up 10 points or more yet.',lbPerfect:'Perfect attendance',lbPerfectSub:n=>n===1?'1 singer':n+' singers',lbNoPerfect:'Nobody has a perfect record for this period yet.',lbRace:y=>'Race for Top 10 of '+y,lbDaysLeft:n=>n===1?'1 day to go':n+' days to go',lbHof:y=>'Top 10 of '+y,lbNone:'Not enough attendance recorded for this period yet.',lbNoBadges:'No badges right now.',lbPts:d=>'+'+d+' pts',lbMore:n=>'and '+n+' more',lbClose:'Close',lbTileStreak:'Longest streak',lbTileSection:'Leading section',bTitle:'Badges',bHall:'Hall of fame',bHallSub:'Year-end awards, kept for good',bNowTitle:'Right now',bNowSub:'Based on the period above',bCapped:'Based on the past 12 months',bYearTop:y=>'Top 10 of '+y,bPerfectYear:y=>'Perfect '+y,bAllN:n=>'All '+n+' events',bYearIn:r=>'Now #'+r+' · decided Dec 31',bYearNow:r=>'Now #'+r+' · top 10 needed',bYearNeed:'Attend half the events to rank',bEarned:(a,b)=>a+' of '+b+' earned',bTop5:'Top 5',bTop10:'Top 10',bTopPart:'Top of the section',bStreak:'On a roll',bPerfect:'Perfect month',bComeback:'Comeback',bImproved:'Most improved',bSunday:'Every Sunday',bSvcStreak:'Service streak',bRehearsal:'Rehearsal regular',bAbove:'Above average',bVeteran:'Veteran',bVetSub:n=>n+' years in the choir',bRank:(r,n)=>'#'+r+' of '+n,bNow:r=>'Now #'+r,bTop5Need:'Finish in the top 5',bTop10Need:'Finish in the top 10',bPartOf:(p,n)=>'#1 of '+n+' · '+p.charAt(0)+p.slice(1).toLowerCase(),bPartNeed:'Be #1 in your section',bStreakGot:n=>n+' in a row and counting',bStreakNow:n=>'Now '+n+' in a row · goal 10',bStreakNeed:'10 in a row',bSvcGot:n=>n+' services in a row',bSvcNow:n=>n===1?'Now 1 service in a row · goal 6':'Now '+n+' services in a row · goal 6',bSvcNeed:'6 Sunday services in a row',bPerfectGot:n=>n===1?'1 month, no misses':n+' months, no misses',bPerfectNeed:'3 full months with no misses',bPerfectSome:n=>n+' so far · goal 3',bNeedPeriod:'Pick a shorter period',bPlus:d=>'+'+d+' points on the period before',bComebackNeed:'From below average to above it, +25 points',bPlusMost:d=>'+'+d+' points, the most in the choir',bImprovedNeed:'Improve the most in the choir',bSundayGot:n=>'All '+n+' services',bSundayNeed:'No missed services (8+)',bSundayMore:'No misses yet · needs 8 services',bRehGot:p=>p+'% of rehearsals',bRehNeed:'95% of 10+ rehearsals',bAboveGot:n=>n+' months in a row',bAboveNeed:'6 months in a row above the choir average',bYears:y=>y===1?'1 year in the choir':y+' years in the choir',bVetNeed:'Two years in the choir',bVetNoDate:'Needs a join date',mBackMembers:'Back to members',mBackAtt:'Back to attendance',mAbove:'points above the choir average',mBelow:'points below the choir average',mRecent:'Recent',mMissedList:'Missed dates',mNoneMissed:'No absences in this period.',mMore:'Show all',mLess:'Show less',mNoData:'No attendance recorded for this period.',mShare:'Share',mLinkCopied:'Link copied',mNotFound:'This member could not be found.',viewMusic:'View Music',lastSungOn:d=>'Last sung '+d,neverSung:'Not sung yet',neverShort:'—',sortAZ:'A–Z',sortTimes:'Most sung',sortOldest:'Longest ago',sortNewest:'Most recent',
-    lbSecTip:d=>(d>0?'+':'')+d+' since the previous period',lbSecFoot:'+/− shows the change since the previous period.',lyrAll:'All lyrics',lyrEmpty:'No lyrics have been added for this song yet.',
+    lbSecTip:d=>(d>0?'+':'')+d+' since the previous period',lbSecFoot:'+/− shows the change since the previous period.',trayShow:'Show actions',trayHide:'Hide actions',trayEdit:'Edit',trayNotes:'Sheets',removePdfT:'Remove sheet music?',removePdfQ:x=>'The PDF for «'+x+'» will be removed. You can upload it again later.',lyrAll:'All lyrics',lyrEmpty:'No lyrics have been added for this song yet.',
     lyrView:'Text',copyLyrics:'Copy text',printLyrics:'Print',printHint:'If no print window opens, use Share → Print',lyrCopied:'Text copied.',
     editLyrics:'Edit text',addLyrics:'Add text',lyrSaved:'Text saved.',
     bkVerse:'Verse',bkChorus:'Chorus',bkBridge:'Bridge',bkEnd:'Ending',
@@ -2856,7 +2926,7 @@ const STR = {
     withPiano:n=>'с фортепиано: '+n,
     tLyrics:'Тексты песен',tLyricsSub:'Слова так, как мы их поём — готово к копированию',
     lyrWith:n=>'с текстом: '+n,noLyricsYet:'Текста пока нет',needsLyrics:'Без текста',lyrHave:'С текстом',lyrNeed:'Без текста',upTitle:'Предстоящие служения',upDemoOn:'Показать пример',upDemoAct:'Это только пример. У настоящего служения эта кнопка работает.',upDemoOff:'Скрыть пример',upDemoNote:'Только пример: придуманные служения, чтобы показать, как выглядит список. Ничего не сохраняется и хору не показывается.',pastSvc:'Прошедшие служения',upCount:n=>'запланировано: '+n,upNone:'Пока ничего не запланировано заранее. Выберите дату ниже, чтобы спланировать служение.',upLive:'Сейчас на сайте',upThisWeek:'На этой неделе',upNoon:'На сайте с полудня',upFrom:d=>'На сайте с '+d,upMove:'Перенести',upLater:n=>'ещё дальше: '+n,planNew:'Спланировать служение',upClash:'На эту дату уже есть такое служение.',sortBy:'Сортировка',mTitle:'Отчёт о посещаемости',mSince:d=>'В хоре с '+d,mPresent:'Был',mMissed:'Пропустил',mOf:(a,b)=>a+' из '+b,mEvents:n=>'из '+n+' учтённых',mStreak:'Текущая серия',mBest:'Лучшая серия',mInRow:'подряд',mServices:'Служения',mRehearsals:'Спевки',mByMonth:'По месяцам',mByQuarter:'По кварталам',mByYear:'По годам',mChoirAvg:'Среднее по хору',phAdd:'Добавить фото',phChange:'Сменить фото',phRemove:'Удалить фото',phBusy:'Загрузка…',phBad:'Этот файл не удалось открыть как изображение.',lbTitle:'Лидеры',lbCold:'Холодные серии',lbColdSub:'Давно не были — ждём вас',lbColdN:n=>'пропусков подряд: '+n,lbDown:d=>'−'+Math.abs(d)+' п.п.',lbNoCold:'Холодных серий нет — так держать!',lbShow:'За последние',lbShowShort:'За',lbPs1:'1 мес',lbPs3:'3 мес',lbPs6:'6 мес',lbPs12:'12 мес',lbP1:'1 месяц',lbP3:'3 месяца',lbP6:'6 месяцев',lbP12:'12 месяцев',lbTied:n=>'разделили: '+n,lbTiedFor:r=>'Разделили №'+r,lbRanked:n=>'в рейтинге: '+n,lbChase:'Общий рейтинг',tapName:'Нажмите на имя, чтобы увидеть все награды',lbMe:'Это я',lbMeCap:'Отметит вас на этом телефоне, чтобы своё место было легко найти',lbMeOnCap:'Сохранено на этом телефоне. Нажмите ещё раз, чтобы отменить.',lbMeHint:'Нажмите на своё имя и выберите «Это я», чтобы всегда видеть своё место',lbAll:n=>'Показать всех ('+n+')',lbFewer:'Свернуть',lbMvTip:'Изменение места за 2 недели',lbMvKey:'▲ на сколько мест поднялись за 2 недели',lbWasNow:(a,b)=>'было '+a+'% · сейчас '+b+'%',lbSince:y=>'В хоре с '+y+' г.',lbFresh:'Новые награды за неделю',lbFreshSub:'Получены за последние 7 дней',bRare:n=>n===0?'Пока ни у кого нет':(n<=5?'Только у ':'Есть у ')+n+(n%10===1&&n%100!==11?' хориста':' хористов'),lbShare:'Поделиться',lbShotTitle:'Картинка рейтинга',lbShotSave:'Сохранить картинку',lbShotHint:'Можно также нажать и удерживать картинку, чтобы сохранить её',lbCut:'Граница топ-10',lbSub:'Кто приходит чаще всех',lbSee:'Все лидеры',lbLeaders:'Лучшая посещаемость',lbStreaks:'Горячие серии',lbStreakFoot:'Событий подряд без пропусков. Один пропуск — и серия заново.',lbNoStreak:'Сейчас нет серий от 5 подряд.',lbSections:'Гонка партий',lbLeads:'Лидер',lbImproved:'Главный рывок',lbImprovedSub:'к прошлому периоду',lbNoImproved:'Пока никто не вырос на 10 п.п.',lbPerfect:'Без пропусков',lbPerfectSub:n=>'хористов: '+n,lbNoPerfect:'За этот период пока ни у кого нет идеальной посещаемости.',lbRace:y=>'Гонка за Топ-10 '+y,lbDaysLeft:n=>'осталось дней: '+n,lbHof:y=>'Топ-10 '+y,lbNone:'За этот период пока мало отметок.',lbNoBadges:'Сейчас наград нет.',lbPts:d=>'+'+d+' п.п.',lbMore:n=>'и ещё '+n,lbClose:'Закрыть',lbTileStreak:'Самая длинная серия',lbTileSection:'Лидирует партия',bTitle:'Награды',bHall:'Зал славы',bHallSub:'Итоги года — остаются навсегда',bNowTitle:'Сейчас',bNowSub:'По выбранному периоду',bCapped:'За последние 12 месяцев',bYearTop:y=>'Топ-10 '+y,bPerfectYear:y=>'Идеальный '+y,bAllN:n=>'все '+n+' событий',bYearIn:r=>'Сейчас №'+r+' · итоги 31 декабря',bYearNow:r=>'Сейчас №'+r+' · нужен топ-10',bYearNeed:'Посетите половину событий, чтобы попасть в рейтинг',bEarned:(a,b)=>'получено '+a+' из '+b,bTop5:'Топ-5',bTop10:'Топ-10',bTopPart:'Лучший в партии',bStreak:'Без пропусков',bPerfect:'Идеальный месяц',bComeback:'Возвращение',bImproved:'Главный рывок',bSunday:'Каждое воскресенье',bSvcStreak:'Серия служений',bRehearsal:'Верен спевкам',bAbove:'Выше среднего',bVeteran:'Ветеран',bVetSub:n=>'В хоре '+n+' '+(n%10===1&&n%100!==11?'год':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'года':'лет'),bRank:(r,n)=>'№'+r+' из '+n,bNow:r=>'Сейчас №'+r,bTop5Need:'Войти в пятёрку лучших',bTop10Need:'Войти в десятку лучших',bPartOf:(p,n)=>'№1 из '+n+' · '+p.charAt(0)+p.slice(1).toLowerCase(),bPartNeed:'Стать первым в своей партии',bStreakGot:n=>n+' подряд — и дальше',bStreakNow:n=>'Сейчас '+n+' подряд · цель 10',bStreakNeed:'10 раз подряд',bSvcGot:n=>'служений подряд: '+n,bSvcNow:n=>'Сейчас подряд: '+n+' · цель 6',bSvcNeed:'6 воскресных служений подряд',bPerfectGot:n=>n===1?'1 месяц без пропусков':'месяцев без пропусков: '+n,bPerfectNeed:'3 полных месяца без пропусков',bPerfectSome:n=>'пока '+n+' · цель 3',bNeedPeriod:'Выберите период короче',bPlus:d=>'+'+d+' п.п. к прошлому периоду',bComebackNeed:'Из-под среднего — выше него, +25 п.п.',bPlusMost:d=>'+'+d+' п.п., больше всех в хоре',bImprovedNeed:'Вырасти больше всех в хоре',bSundayGot:n=>'Все '+n+' служений',bSundayNeed:'Ни одного пропуска (от 8 служений)',bSundayMore:'Пропусков нет · нужно 8 служений',bRehGot:p=>p+'% спевок',bRehNeed:'95% из 10+ спевок',bAboveGot:n=>'месяцев подряд: '+n,bAboveNeed:'6 месяцев подряд выше среднего по хору',bYears:y=>'лет в хоре: '+y,bVetNeed:'Два года в хоре',bVetNoDate:'Нужна дата вступления',mBackMembers:'К списку хористов',mBackAtt:'К посещаемости',mAbove:'п.п. выше среднего по хору',mBelow:'п.п. ниже среднего по хору',mRecent:'Последние',mMissedList:'Пропуски',mNoneMissed:'В этом периоде пропусков нет.',mMore:'Показать все',mLess:'Свернуть',mNoData:'За этот период посещаемость не отмечалась.',mShare:'Поделиться',mLinkCopied:'Ссылка скопирована',mNotFound:'Участник не найден.',viewMusic:'Открыть ноты',lastSungOn:d=>'Последний раз: '+d,neverSung:'Ещё не пели',neverShort:'—',sortAZ:'А–Я',sortTimes:'Чаще всего',sortOldest:'Давно не пели',sortNewest:'Недавно пели',
-    lbSecTip:d=>(d>0?'+':'')+d+' по сравнению с прошлым периодом',lbSecFoot:'+/− — изменение с прошлого периода.',lyrAll:'Все тексты',lyrEmpty:'Для этой песни текст ещё не добавлен.',
+    lbSecTip:d=>(d>0?'+':'')+d+' по сравнению с прошлым периодом',lbSecFoot:'+/− — изменение с прошлого периода.',trayShow:'Показать действия',trayHide:'Скрыть действия',trayEdit:'Правка',trayNotes:'Ноты',removePdfT:'Удалить ноты?',removePdfQ:x=>'PDF для «'+x+'» будет удалён. Его можно загрузить снова.',lyrAll:'Все тексты',lyrEmpty:'Для этой песни текст ещё не добавлен.',
     lyrView:'Текст',copyLyrics:'Копировать текст',printLyrics:'Печать',printHint:'Если окно печати не открылось: Поделиться → Напечатать',lyrCopied:'Текст скопирован.',
     editLyrics:'Изменить текст',addLyrics:'Добавить текст',lyrSaved:'Текст сохранён.',
     bkVerse:'Куплет',bkChorus:'Припев',bkBridge:'Бридж',bkEnd:'Концовка',
@@ -2989,8 +3059,8 @@ const DECO = {
   frost: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g stroke-width="1.7" stroke-linecap="round"><path d="M12 4.2v3M12 16.8v3M4.2 12h3M16.8 12h3" stroke="#e0457b"></path><path d="M6.5 6.5l2.1 2.1M15.4 15.4l2.1 2.1M17.5 6.5l-2.1 2.1M8.6 15.4l-2.1 2.1" stroke="#3d8fd6"></path></g><circle cx="12" cy="12" r="1.7" fill="#f2b630"></circle><g fill="#f2b630"><circle cx="12" cy="2.9" r=".9"></circle><circle cx="21.1" cy="12" r=".9"></circle><circle cx="12" cy="21.1" r=".9"></circle><circle cx="2.9" cy="12" r=".9"></circle></g></svg>',
   harvest: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><path d="M12 19.5c-.2-2.6.3-4.6 1.6-6.4M7.2 16.3c-1.6-4.6.9-9.4 9.9-10.8 1.1 6.9-2.4 11.8-8.3 11.6z" fill="#d9822b" stroke="#a65a12" stroke-width="1.2" stroke-linejoin="round"></path><path d="M8.6 16.6c1.8-2.6 3.9-4.7 6.6-6.6" fill="none" stroke="#a65a12" stroke-width="1" stroke-linecap="round"></path></svg>',
   easter: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><path d="M4.71 14.52L1.95 14.03M5.59 12.10L4.12 11.25M7.24 10.13L5.44 7.99M9.47 8.85L8.89 7.25M12.00 8.40L12.00 5.60M14.53 8.85L15.11 7.25M16.76 10.13L18.56 7.99M18.41 12.10L19.88 11.25M19.29 14.52L22.05 14.03" stroke="#f2b630" stroke-width="1.4" stroke-linecap="round"></path><path d="M5.2 19.4c0-5.6 3-9.3 6.8-9.3s6.8 3.7 6.8 9.3z" fill="#c9b796" stroke="#7d6a4e" stroke-width="1.1" stroke-linejoin="round"></path><path d="M9.7 19.4v-3.3a2.3 2.3 0 0 1 4.6 0v3.3z" fill="#fff3b8" stroke="#7d6a4e" stroke-width=".9"></path><path d="M4.6 19.6h14.8" stroke="#7d6a4e" stroke-width="1.1" stroke-linecap="round"></path></svg>',
-  praise: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g fill="none" stroke="#b07d12" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 5.4c-1.4.3-1.6 2-.6 2.8 1 .8 1.3 2.3.9 4.3-.5 2.4.6 5 3 5.9h4.2c2.4-.9 3.5-3.5 3-5.9-.4-2-.1-3.5.9-4.3 1-.8.8-2.5-.6-2.8" stroke-width="1.7"></path><path d="M6.4 6.8h11.2" stroke-width="1.5"></path><path d="M10 7.2v10.2M12 7.2v10.6M14 7.2v10.2" stroke-width=".9" stroke="#d9a63a"></path><path d="M9.6 18.4h4.8v1.6H9.6z" fill="#e3a92a" stroke-width="1"></path></g><path d="M19.6 2.8l.45 1.1 1.1.45-1.1.45-.45 1.1-.45-1.1-1.1-.45 1.1-.45z" fill="#e3a92a"></path></svg>',
-  call: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><path d="M6.6 20.2h10.8" stroke="#c3d3b8" stroke-width="1.1" stroke-linecap="round"></path><circle cx="13.4" cy="4.9" r="2.1" fill="#4a6b3a"></circle><g fill="none" stroke="#4a6b3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13.2 8v5.4l.6 5.6H8"></path><path d="M13.2 9.2l2.4 2.3.3-3.2"></path></g></svg>',
+  praise: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><path d="M6.8 19.4V6.6" stroke="#b07d12" stroke-width="2.1" stroke-linecap="round"></path><path d="M6.8 6.6C9.4 3.4 12.6 7.8 17.8 4.8" fill="none" stroke="#b07d12" stroke-width="2.1" stroke-linecap="round"></path><path d="M8.6 19.7h2.4l7.6-14.3-1.5-.9z" fill="#b07d12"></path><rect x="5.4" y="18.8" width="6.4" height="1.9" rx=".6" fill="#b07d12"></rect><path d="M9 5.20V18.80M10.7 5.25V17.30M12.4 5.70V14.15M14.1 5.85V11.01M15.8 5.40V7.86" stroke="#b07d12" stroke-width=".7" stroke-linecap="round"></path></svg>',
+  call: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g fill="#4a6b3a"><circle cx="12.7" cy="6.3" r="2.25"></circle><path d="M9.4 9.1Q9.9 8.3 11 8.4L12.5 8.6Q13.6 8.8 13.4 10L12.9 13.4 14.6 17.6Q15.2 19.9 13.2 19.9H6.6Q5.4 19.9 5.4 18.8 5.4 17.7 6.6 17.7H10.2L8.4 14.6Q8 13.8 8.2 12.9z"></path><path d="M12.3 10.2 13.3 13 15.4 12.2" fill="none" stroke="#4a6b3a" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14.9 12.7C14.6 11.3 15 9.8 15.9 9 16.7 9.9 16.8 11.4 16.3 12.8Z"></path></g></svg>',
   prayer: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g fill="#f8dcc4" stroke="#9a5a2e" stroke-width="1.1" stroke-linejoin="round"><path d="M12 3.3c-1.3 0-2.1 1.1-2.3 2.5l-.8 6.6c-.2 1.5-1.1 2.8-2.3 3.8l2.4 3.1L12 17.4z"></path><path d="M12 3.3c1.3 0 2.1 1.1 2.3 2.5l.8 6.6c.2 1.5 1.1 2.8 2.3 3.8l-2.4 3.1L12 17.4z"></path><path d="M12 12.2c-.9.4-1.3 1.3-1.1 2.3M12 12.2c.9.4 1.3 1.3 1.1 2.3" fill="none" stroke-width=".9" stroke-linecap="round"></path><path d="M6.1 16.5l3.2 3.6-1.4 1.3-3.3-3.5zM17.9 16.5l-3.2 3.6 1.4 1.3 3.3-3.5z" fill="#e9b48c"></path></g><path d="M10.9 5.6v4.2M13.1 5.6v4.2" stroke="#c48a5c" stroke-width=".8" stroke-linecap="round"></path></svg>',
   passion: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><path d="M3.5 19.2q8.5-4.2 17 0" fill="none" stroke="#c99aa3" stroke-width="1.1" stroke-linecap="round"></path><g fill="#7a1f2e"><path d="M11.2 4.2h1.6v3.8h2.7v1.6h-2.7v7.2h-1.6v-7.2h-2.7v-1.6h2.7z"></path><path d="M5.6000000000000005 9.6h1.6v2.4h1.6v1.6h-1.6v4.0h-1.6v-4.0h-1.6v-1.6h1.6z"></path><path d="M16.8 9.6h1.6v2.4h1.6v1.6h-1.6v4.0h-1.6v-4.0h-1.6v-1.6h1.6z"></path></g></svg>',
   joint: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g fill="#a3abb7" stroke="#fff" stroke-width="1"><circle cx="5.9" cy="9.2" r="1.8"></circle><path d="M3.11 17.6V14.49a2.79 2.79 0 0 1 5.58 0V17.6z"></path></g><g fill="#a3abb7" stroke="#fff" stroke-width="1"><circle cx="18.1" cy="9.2" r="1.8"></circle><path d="M15.31 17.6V14.49a2.79 2.79 0 0 1 5.58 0V17.6z"></path></g><g fill="#5f6876" stroke="#fff" stroke-width="1"><circle cx="9.6" cy="8.4" r="2.05"></circle><path d="M6.42 18.2V14.33a3.18 3.18 0 0 1 6.35 0V18.2z"></path></g><g fill="#5f6876" stroke="#fff" stroke-width="1"><circle cx="14.4" cy="8.4" r="2.05"></circle><path d="M11.22 18.2V14.33a3.18 3.18 0 0 1 6.35 0V18.2z"></path></g></svg>',
@@ -3036,13 +3106,16 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.28.8';
+const VERSION = '5.31.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Phone tab bar: Songs is now right after Home',
+    'Admins: editing a recording link or removing a PDF now opens a small window',
+    'Choir music on phones: song cards are all one tidy size; tap the arrow or swipe left to slide out the buttons, now colour-coded (Listen green, Sheets navy, Text gold), and admin buttons match; a service’s song list shows the category badges too',
     'Choir music: each song shows its category, and many categories have their own small badge (Christmas, Easter, New Year, Harvest, Heaven, Praise, Prayer, Invitation, Passion, Palm Sunday, Combined choir, Christian life)',
     'Leaderboard: podium with sharable picture, hot streaks, section race with change since the last period, most improved, perfect attendance, year race and Hall of fame, each card in its own colour',
     'Tap any name to see their badges and report card; choose “That’s me” to pin and highlight your place',
@@ -3056,6 +3129,9 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Нижняя панель на телефоне: «Песни» теперь сразу после «Главной»',
+    'Админ: ссылка на запись и удаление PDF теперь открываются в отдельном окне',
+    'Музыка хора на телефоне: карточки песен одного размера; нажмите стрелку или проведите влево, чтобы выдвинуть кнопки, теперь разного цвета (Слушать — зелёная, Ноты — синяя, Текст — золотая), кнопки админа в том же стиле; в списке песен служения тоже видны значки категорий',
     'Музыка хора: у каждой песни указана категория, а у многих категорий свой значок (Рождество, Пасха, Новый год, Жатва, Небо, Прославление, Молитвенные, Призывные, Страдания, Вербное, Сводный, Христианская жизнь)',
     'Рейтинг: пьедестал с картинкой для чата, серии, соревнование партий с изменением к прошлому периоду, лучший рост, без пропусков, гонка года и Зал славы — у каждой карточки свой цвет',
     'Нажмите на имя, чтобы увидеть награды и отчёт; «Это я» закрепляет и подсвечивает ваше место',
@@ -3999,9 +4075,9 @@ function dock(){
   const a = (href, key, label) => `<a href="${href}" data-tab="${key}" class="${k===key?'on':''}" aria-label="${esc(label)}">${ic(key)}<em class="dkl">${esc(label)}</em></a>`;
   return `<nav class="dock" aria-label="Tabs"><i class="dpill" aria-hidden="true"></i>
     ${a('#/home','home', t('home'))}
+    ${a('#/sheets','music', t('dkMusic'))}
     ${a('#/attendance/summary','att', t('attendance'))}
     ${a('#/songs/summary','songs', t('dkSongs'))}
-    ${a('#/sheets','music', t('dkMusic'))}
     <button data-menu class="${S.menuOpen || k==='more'?'on':''}" aria-label="${esc(t('more'))}" aria-expanded="${S.menuOpen?'true':'false'}">${ic('more')}<em class="dkl">${esc(t('more'))}</em></button>
   </nav>`;
 }
@@ -5039,6 +5115,10 @@ function lbSheet(from, p, label){
     </div>`;
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.lbWho) { S.lbWho = null; render(); } });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && (S.audioEdit || S.pdfDel)) { S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; render(); }
+  if (e.key === 'Enter' && e.target.id && e.target.id.startsWith('audio-')) { e.preventDefault(); const b = document.querySelector('.modal [data-audio-save]'); if (b) b.click(); }
+});
 /* first view of a period: the percentages count up while the podium rises */
 function lbCountUp(){
   const pg = document.querySelector('.lbpage.rip');
@@ -6004,6 +6084,7 @@ const SHEETSVG = '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="t
   '<ellipse cx="8" cy="15" rx="3.1" ry="2.4" transform="rotate(-22 8 15)" fill="currentColor"></ellipse>' +
   '<path d="M10.9 14.2V4.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path>' +
   '<path d="M10.9 4.6c3 .7 4.6 1.9 5 4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg>';
+const LINKSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"></path><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"></path></svg>';
 const PLAYSVG = '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><polygon points="7 4 20 12 7 20"></polygon></svg>';
 const NOTESVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>';
 /* Chat apps build their link preview from the page they fetch, and a static site
@@ -6207,63 +6288,75 @@ function sheetsPage(kind){
       const busy = S.uploading === kind + ':' + s.id;
       /* narrowed to one service, the list IS the running order — so number it.
          The full song list has no order to speak of and stays unnumbered. */
-      const left = (ordEv ? `<span class="ord">${String(i + 1).padStart(2, '0')}</span>` : `<span class="ftile">${kind === 'piano' ? AIC.piano : AIC.sheets}${songDeco(s)}</span>`) + `<div style="flex:1;min-width:0">
-          <div style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}${pvTag(s)}</div>
-          ${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}
-          ${catName(s.category_id) ? `<div style="margin-top:3px;font-size:11.5px;letter-spacing:.02em;color:var(--faint)">${esc(catName(s.category_id))}</div>` : ''}
-          ${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}
-          ${locked ? `<div class="sub" style="font-style:normal;color:var(--gold)">${esc(t('adminOnly'))}</div>` : ''}
+      const left = (ordEv ? `<span class="ord">${String(i + 1).padStart(2, '0')}${songDeco(s)}</span>` : `<span class="ftile">${kind === 'piano' ? AIC.piano : AIC.sheets}${songDeco(s)}</span>`) + `<div class="stxt" style="flex:1;min-width:0">
+          <div class="stitle" style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}${pvTag(s)}</div>
+          <div class="smeta">${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}${catName(s.category_id) ? `<div class="scat">${esc(catName(s.category_id))}</div>` : ''}${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}${locked ? `<div class="sub" style="font-style:normal;color:var(--gold)">${esc(t('adminOnly'))}</div>` : ''}</div>
         </div>`;
-      if (busy) return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}"><div class="li">${left}<div style="color:var(--blue-text);font-weight:600;font-size:var(--fs-14)">${esc(t('uploading'))}</div></div></div>`;
+      if (busy) return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}${S.actOpen === s.id ? ' open' : ''}" data-srow="${s.id}"><div class="li">${left}<div style="color:var(--blue-text);font-weight:600;font-size:var(--fs-14)">${esc(t('uploading'))}</div></div></div>`;
       /* Files are served through short-lived signed URLs, so an admin-only PDF
          cannot be opened by guessing its address. */
       const dl = !path ? ''
         : locked && !S.session
-          ? `<span class="mini locked">${lockSVG(true)}${esc(t('adminOnlyShort'))}</span>`
+          ? `<span class="mini locked">${lockSVG(true)}<span>${esc(t('adminOnlyShort'))}</span></span>`
           : `<button class="mini sheet" data-open="${kind}:${s.id}" title="${esc(t('download'))}"
-              aria-label="${esc(t('download'))}">${SHEETSVG}<span>${esc(t('download'))}</span></button>`;
+              aria-label="${esc(t('download'))}">${SHEETSVG}<span class="dl">${esc(t('download'))}</span><span class="tl">${esc(t('trayNotes'))}</span></button>`;
       /* Every admin action for a song lives in a strip that opens under its row.
          Inline, five buttons next to a title either wrapped or ate the title on a
          phone; here they have room for their own labels. */
       const admin = S.session ? `<div class="admstrip">
-        ${path ? '' : `<label class="mini" for="up-${kind}-${s.id}">${esc(t('upload'))}
+        ${path ? '' : `<label class="mini up" for="up-${kind}-${s.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M7 9l5-5 5 5M5 20h14"></path></svg><span>${esc(t('upload'))}</span>
           <input id="up-${kind}-${s.id}" type="file" accept="application/pdf,.pdf"
                  data-upload="${s.id}" data-sheet-kind="${kind}" style="display:none">
         </label>`}
-        ${path ? `<button class="mini ${locked?'on':''}" data-lock="${kind}:${s.id}">${
+        ${path ? `<button class="mini lk ${locked?'on':''}" data-lock="${kind}:${s.id}">${
             locked ? lockSVG(true) : lockSVG(false)}<span>${esc(locked ? t('makePublic') : t('makeAdminOnly'))}</span></button>
           <button class="mini danger trash" data-del-pdf="${s.id}" data-sheet-kind="${kind}">${TRASHSVG}<span>${esc(t('removePdf'))}</span></button>` : ''}
-        <button class="mini ${s.audio_url?'on':''}" data-audio-edit="${s.id}">${NOTESVG}<span>${esc(s.audio_url ? t('audioLink') : t('audioAdd'))}</span></button>
-        <a class="mini" href="#/lyrics/${shortId(s.id)}" data-lyr-edit="${s.id}">${LYRSVG}<span>${esc(hasLyrics(s) ? t('editLyrics') : t('addLyrics'))}</span></a>
+        <button class="mini au ${s.audio_url?'on':''}" data-audio-edit="${s.id}">${LINKSVG}<span>${esc(s.audio_url ? t('audioLink') : t('audioAdd'))}</span></button>
+        <a class="mini lx" href="#/lyrics/${shortId(s.id)}" data-lyr-edit="${s.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M12 5v15M8 20h8M4 5v3M20 5v3"></path></svg><span>${esc(hasLyrics(s) ? t('editLyrics') : t('addLyrics'))}</span></a>
       </div>` : '';
       /* one recording link per song, and the words for whoever is projecting them */
       const listen = s.audio_url
         ? `<a class="mini play" href="${esc(s.audio_url)}" data-song="${s.id}" target="_blank" rel="noopener">${PLAYSVG}<span>${esc(t('listen'))}</span></a>`
         : '';
       const lyr = hasLyrics(s)
-        ? `<a class="mini lyr" href="#/lyrics/${shortId(s.id)}" title="${esc(t('lyrView'))}" aria-label="${esc(t('lyrView'))}">${LYRSVG}<span>${esc(t('lyrView'))}</span></a>`
+        ? `<a class="mini lyr" href="#/lyrics/${shortId(s.id)}" title="${esc(t('lyrView'))}" aria-label="${esc(t('lyrView'))}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M12 5v15M8 20h8M4 5v3M20 5v3"></path></svg><span>${esc(t('lyrView'))}</span></a>`
         : '';
       const more = S.session
         ? `<button class="mini icon ${S.admRow===s.id?'on':''}" data-adm-row="${s.id}"
-            title="${esc(t('adminActs'))}" aria-label="${esc(t('adminActs'))}">${MORESVG}</button>`
+            title="${esc(t('adminActs'))}" aria-label="${esc(t('adminActs'))}">${MORESVG}<span class="mlbl">${esc(t('trayEdit'))}</span></button>`
         : '';
       /* signed in, the whole row is the handle for its own tools — no travelling
          back to the left edge to open them */
-      const row = `<div class="li${S.session ? ' tap' : ''}"${S.session ? ` data-adm-row="${s.id}"` : ''}>${left}<div class="acts">${listen}${dl}${lyr}${more}</div></div>`
+      const btns = [listen, dl, lyr, more].filter(Boolean).map((b, k) => b.replace('class="mini', `style="--k:${k}" class="mini`)).join('');
+      const tOpen = S.actOpen === s.id;
+      const cap = `<div class="scap">${ordEv ? `<b>${String(i + 1).padStart(2, '0')}</b>` : ''}${esc(s.title)}${catName(s.category_id) ? `<i> · ${esc(catName(s.category_id))}</i>` : ''}</div>`;
+      const chev = btns ? `<button class="schev${i === 0 && !traySeen() ? ' hint' : ''}" data-tray aria-expanded="${tOpen}" aria-label="${esc(t(tOpen ? 'trayHide' : 'trayShow'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 6l-6 6 6 6"></path></svg></button>` : '';
+      const row = `<div class="li srow${S.session ? ' tap' : ''}"${S.session ? ` data-adm-row="${s.id}"` : ''}>${left}<div class="stray">${cap}<div class="acts sbtns">${btns}</div></div>${chev}</div>`
         + (S.admRow === s.id ? admin : '');
-      if (S.audioEdit !== s.id) return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}">${row}</div>`;
-      return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}">` + row + `<div class="li audiorow">
-          <input class="field" id="audio-${s.id}" type="url" inputmode="url" spellcheck="false"
-                 placeholder="${esc(t('audioHint'))}" value="${esc(S.audioDraft)}">
-          <div class="acts">
-            ${s.audio_url ? `<a class="mini play" href="${esc(s.audio_url)}" target="_blank" rel="noopener">${PLAYSVG}<span>${esc(t('openLink'))}</span></a>
-            <button class="mini danger" data-audio-clear="${s.id}">${esc(t('audioRemove'))}</button>` : ''}
-            <button class="mini" data-audio-cancel>${esc(t('cancel'))}</button>
-            <button class="mini go" data-audio-save="${s.id}">${esc(t('save'))}</button>
-          </div>
-        </div></div>`;
+      return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}${S.actOpen === s.id ? ' open' : ''}" data-srow="${s.id}">${row}</div>`;
     }).join('') + foot +
     (S.session ? `<div class="note">${esc(t('adminOnlyNote'))}</div>` : '');
+}
+/* the music page's two small dialogs: a song's recording link, and removing its PDF */
+function songModal(){
+  if (!S.session || !S.route.startsWith('#/sheets')) return '';
+  const shell = (title, sub, body, foot) => `<div class="mscrim" data-modal-x></div>
+    <div class="modal" role="dialog" aria-modal="true" aria-label="${esc(title)}" style="width:min(460px,calc(100vw - 24px))">
+      <div class="mhd"><h2>${esc(title)}</h2><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
+      <div class="mbody">${sub ? `<p style="margin:0 0 14px;font-size:14px;line-height:1.45;color:var(--muted);text-wrap:pretty">${sub}</p>` : ''}${body}</div>
+      <div class="mfoot">${foot}</div></div>`;
+  const a = S.audioEdit && S.songs.find(x => x.id === S.audioEdit);
+  if (a) return shell(t(a.audio_url ? 'audioLink' : 'audioAdd'), esc(a.title),
+    `<input class="field" id="audio-${a.id}" type="url" inputmode="url" spellcheck="false" autocomplete="off" placeholder="https://" value="${esc(S.audioDraft)}" style="width:100%">
+      <p style="margin:8px 0 0;font-size:12.5px;color:var(--faint)">${esc(t('audioHint'))}</p>`
+      + (a.audio_url ? `<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+        <a class="mini play" href="${esc(a.audio_url)}" target="_blank" rel="noopener">${PLAYSVG}<span style="display:inline">${esc(t('openLink'))}</span></a>
+        <button class="mini danger" data-audio-clear="${a.id}" style="display:inline-flex;align-items:center;gap:6px">${TRASHSVG}<span>${esc(t('audioRemove'))}</span></button></div>` : ''),
+    `<button class="obtn2" data-modal-x>${esc(t('cancel'))}</button><button class="pbtn" data-audio-save="${a.id}">${esc(t('save'))}</button>`);
+  const p = S.pdfDel && S.songs.find(x => x.id === S.pdfDel.id);
+  if (p) return shell(t('removePdfT'), t('removePdfQ')(esc(p.title)), '',
+    `<button class="obtn2" data-modal-x>${esc(t('cancel'))}</button><button class="pbtn" style="background:var(--red);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:7px" data-del-pdf="${p.id}" data-sheet-kind="${S.pdfDel.kind}" data-go="1">${TRASHSVG}${esc(t('removePdf'))}</button>`);
+  return '';
 }
 /* 'locked/' is the prefix the storage policy refuses to serve to guests */
 function lockSVG(shut){
@@ -6643,7 +6736,7 @@ function render(){
     const n = document.getElementById(id);
     if (n) keep[id] = { v: n.value, f: n === document.activeElement, p: n.selectionStart };
   });
-  document.getElementById('app').innerHTML = html + adminModal() + toastHTML();
+  document.getElementById('app').innerHTML = html + adminModal() + songModal() + toastHTML();
   requestAnimationFrame(fitMissed);
   Object.entries(keep).forEach(([id, k]) => {
     const n = document.getElementById(id);
@@ -6857,6 +6950,59 @@ document.addEventListener('input', e => {
 });
 /* recordings are plain links, so they are counted here rather than in the
    delegated handler below */
+/* phones: a song card keeps one height and its buttons wait in a tray. Tap the arrow
+   (or anywhere on the card) or swipe left to slide them in; tap again or swipe right
+   to put them away. One tray open at a time. */
+const TRAYMQ = matchMedia('(max-width: 699px)');
+function traySeen(){ try { return !!localStorage.getItem('bsebc-tray-seen'); } catch (_) { return true; } }
+function setTray(card, on){
+  card.classList.toggle('open', on);
+  const b = card.querySelector('[data-tray]');
+  if (b) { b.setAttribute('aria-expanded', on); b.setAttribute('aria-label', t(on ? 'trayHide' : 'trayShow')); b.classList.remove('hint'); }
+}
+function toggleTray(card, force){
+  if (!card || !card.querySelector('[data-tray]')) return;
+  const on = force == null ? !card.classList.contains('open') : force;
+  document.querySelectorAll('.songc.open').forEach(c => { if (c !== card) setTray(c, false); });
+  const closing = [...document.querySelectorAll('.songc.open')].filter(c => c !== card || !on);
+  setTray(card, on);
+  S.actOpen = on ? card.dataset.srow : null;
+  /* putting the buttons away also folds that song's admin tools */
+  const shut = closing.filter(c => c.dataset.srow === S.admRow || c.dataset.srow === S.audioEdit);
+  if (shut.length) {
+    shut.forEach(c => c.querySelectorAll('.admstrip,.audiorow').forEach(x => x.classList.add('out')));
+    S.admRow = null; S.audioEdit = null;
+    setTimeout(render, 360);
+  }
+  if (on) try { localStorage.setItem('bsebc-tray-seen', '1'); } catch (_) {}
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest) return;
+  const chev = e.target.closest('[data-tray]');
+  const row = !chev && TRAYMQ.matches && e.target.closest('.songc > .li.srow');
+  if (!chev && !row) return;
+  if (row && e.target.closest('.stray a,.stray button,.stray label,.stray .mini,input')) return;
+  const card = (chev || row).closest('.songc');
+  if (!card || !card.querySelector('[data-tray]')) return;
+  e.preventDefault(); e.stopPropagation();
+  toggleTray(card);
+}, true);
+let traySw = null;
+document.addEventListener('touchstart', e => {
+  const row = TRAYMQ.matches && e.touches.length === 1 && e.target.closest && e.target.closest('.songc > .li.srow');
+  traySw = row ? { card: row.closest('.songc'), x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+}, { passive: true });
+document.addEventListener('touchmove', e => {
+  if (!traySw) return;
+  const dx = e.touches[0].clientX - traySw.x, dy = e.touches[0].clientY - traySw.y;
+  if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) { traySw = null; return; }
+  if (Math.abs(dx) < 34 || Math.abs(dx) < Math.abs(dy) * 1.6) return;
+  const open = traySw.card.classList.contains('open');
+  if (dx < 0 && !open) toggleTray(traySw.card, true);
+  else if (dx > 0 && open) toggleTray(traySw.card, false);
+  traySw = null;
+}, { passive: true });
+document.addEventListener('touchend', () => { traySw = null; }, { passive: true });
 document.addEventListener('click', e => {
   const a = e.target.closest && e.target.closest('a.mini.play');
   if (a && a.dataset.song) track('audio', a.dataset.song);
@@ -6952,7 +7098,7 @@ document.addEventListener('click', async e => {
     return;
   }
 
-  if (el.hasAttribute('data-modal-x')) { S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
+  if (el.hasAttribute('data-modal-x')) { S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
   if (d.toggleAbsent && S.edit) {              // present ↔ absent
     S.toast = ''; S.retry = null;
     S.edit.sel.has(d.toggleAbsent) ? S.edit.sel.delete(d.toggleAbsent)
@@ -7097,7 +7243,9 @@ document.addEventListener('click', async e => {
   if (d.delPdf) {
     const K = SHEETKIND[d.sheetKind || 'sheets'];
     const song = S.songs.find(s => s.id === d.delPdf);
-    if (!song || !song[K.col] || !confirm(t('confirmRemovePdf'))) return;
+    if (!song || !song[K.col]) return;
+    if (!d.go) { S.pdfDel = { id: song.id, kind: d.sheetKind || 'sheets' }; return render(); }
+    S.pdfDel = null;
     const path = song[K.col];
     const { error } = await sb.from('songs').update({ [K.col]: null }).eq('id', song.id);
     if (error) return fail(error);
@@ -7118,7 +7266,9 @@ document.addEventListener('click', async e => {
     const open = S.audioEdit !== d.audioEdit;
     S.audioEdit = open ? d.audioEdit : null;
     S.audioDraft = open ? ((S.songs.find(x => x.id === d.audioEdit) || {}).audio_url || '') : '';
-    return render();
+    render();
+    if (open) requestAnimationFrame(() => { const b = document.getElementById('audio-' + d.audioEdit); if (b) b.focus(); });
+    return;
   }
   if (el.hasAttribute('data-audio-cancel')) { S.audioEdit = null; S.audioDraft = ''; return render(); }
   if (d.audioSave || d.audioClear) {
