@@ -2643,7 +2643,7 @@ const STR = {
     uTopSongs:'Most opened songs',uTopServices:'Most viewed services',
     uLang:'Language',uRecent:'Recent activity',uReturning:n=>n===1?'1 came back':n+' came back',uPerDevice:n=>n+' per device',uDeviceType:'Device type',uAppShare:'Opened from the home-screen icon',uDevNone:'Device types are counted from now on.',uDevSetup:'To count device types, run supabase/usage_log.sql again in the Supabase SQL editor.',uWhen:'When people look',uBusiest:'Busiest',uMorning:'morning',uAfternoon:'afternoon',uEvening:'evening',uNight:'night',uEn:'English',uRu:'Russian',dvIphone:'iPhone',dvIpad:'iPad',dvAndroid:'Android phone',dvAtablet:'Android tablet',dvMac:'Mac',dvWindows:'Windows PC',dvOther:'Other',uPerDay:'by day',uPerWeek:'by week',
     u7:'7 days',u30:'30 days',u90:'90 days',uAll:'All time',uRng7:'Past 7 Days',uRng30:'Past 30 Days',uRng90:'Past 90 Days',uRngall:'All Time',
-    kOrder:'Song order',kSheet:'Sheet music',kAudio:'Recording',
+    kOrder:'Song order',kSheet:'Sheet music',kAudio:'Recording',kPage:'Page',uPages:'Pages visited',uDevN:n=>n===1?'1 device':n+' devices',
     uNow:'just now',uMin:n=>n+' min ago',uHr:n=>n+' h ago',uDay:n=>n+' d ago',listenHere:'View/Listen here:',copied:'Copied — paste it into the chat',
     backupBtn:'Full backup',backupNote:'Downloads every table — singers, events, attendance, songs, categories — as one JSON file. Sheet PDFs are not included.',backupFail:'Backup failed — try again.',
     period:'Period',changePeriod:'Change',
@@ -2655,7 +2655,7 @@ const STR = {
     withPiano:n=>n+' with piano sheets',
     tLyrics:'Lyrics',tLyricsSub:'The words as we sing them, ready to copy',
     lyrWith:n=>n+' with lyrics',noLyricsYet:'No lyrics yet',needsLyrics:'Needs lyrics',lyrHave:'Have lyrics',lyrNeed:'Need lyrics',upTitle:'Upcoming services',upDemoOn:'Show a sample',upDemoAct:'This is only a sample. On a real service this button works.',upDemoOff:'Hide sample',upDemoNote:'Sample only: made-up services to show how the board looks. Nothing here is saved or shown to the choir.',pastSvc:'Past Services',upCount:n=>n===1?'1 planned':n+' planned',upNone:'Nothing planned ahead yet. Pick a date below to plan a service.',upLive:'Live now',upThisWeek:'This week',upNoon:'Live from noon',upFrom:d=>'Live from '+d,upMove:'Move',upLater:n=>n+' more planned further ahead',planNew:'Plan a service',upClash:'There is already a service of this kind on that date.',sortBy:'Sort',mTitle:'Attendance report',mSince:d=>'In the choir since '+d,mPresent:'Present',mMissed:'Missed',mOf:(a,b)=>a+' of '+b,mEvents:n=>'of '+n+' counted',mStreak:'Current streak',mBest:'Best streak',mInRow:'in a row',mServices:'Services',mRehearsals:'Rehearsals',mByMonth:'Month by month',mByQuarter:'By quarter',mByYear:'Year by year',mChoirAvg:'Choir average',phAdd:'Add photo',phChange:'Change photo',phRemove:'Remove photo',phBusy:'Uploading…',phBad:'That file could not be read as a picture.',lbTitle:'Leaderboard',lbCold:'Cold streaks',lbColdSub:'Missed lately — we miss you',lbColdN:n=>n+' missed in a row',lbDown:d=>'−'+Math.abs(d)+' pts',lbNoCold:'Nobody is on a cold streak. Keep it up!',lbShow:'Showing the past',lbShowShort:'Past',lbPs1:'1 mo',lbPs3:'3 mo',lbPs6:'6 mo',lbPs12:'12 mo',lbP1:'1 month',lbP3:'3 months',lbP6:'6 months',lbP12:'12 months',lbTied:n=>n+' tied',lbTiedFor:r=>'Tied for #'+r,lbRanked:n=>n+' ranked',lbChase:'Full standings',tapName:'Tap a name to see all their badges',lbMe:'That’s me',lbMeCap:'Marks you on this phone so your place is easy to find',lbMeOnCap:'Saved on this phone. Tap again to undo.',lbMeHint:'Tap your name and choose “That’s me” to keep your place in view',lbAll:n=>'Show everyone ('+n+')',lbFewer:'Show fewer',lbMvTip:'Change in place over the past 2 weeks',lbMvKey:'▲ places gained in the past 2 weeks',lbWasNow:(a,b)=>'was '+a+'% · now '+b+'%',lbSince:y=>'Member since '+y,lbFresh:'New badges this week',lbFreshSub:'Earned in the past 7 days',bRare:n=>n===0?'No one has this yet':n===1?'Only 1 singer has this':n<=5?'Only '+n+' singers have this':n+' singers have this',lbShare:'Share',lbShotTitle:'Leaderboard picture',lbShotSave:'Save picture',lbShotHint:'You can also press and hold the picture to save it',lbCut:'Top 10 line',lbSub:'Who shows up the most',lbSee:'See the leaderboard',lbLeaders:'Top attendance',lbStreaks:'Hot streaks',lbStreakFoot:'Events in a row, still going. One miss starts it over.',lbNoStreak:'No streaks of 5 or more right now.',lbSections:'Section race',lbLeads:'Leads',lbImproved:'Most improved',lbImprovedSub:'vs the period before',lbNoImproved:'Nobody is up 10 points or more yet.',lbPerfect:'Perfect attendance',lbPerfectSub:n=>n===1?'1 singer':n+' singers',lbNoPerfect:'Nobody has a perfect record for this period yet.',lbRace:y=>'Race for Top 10 of '+y,lbDaysLeft:n=>n===1?'1 day to go':n+' days to go',lbHof:y=>'Top 10 of '+y,lbNone:'Not enough attendance recorded for this period yet.',lbNoBadges:'No badges right now.',lbPts:d=>'+'+d+' pts',lbMore:n=>'and '+n+' more',lbClose:'Close',lbTileStreak:'Longest streak',lbTileSection:'Leading section',bTitle:'Badges',bHall:'Hall of fame',bHallSub:'Year-end awards, kept for good',bNowTitle:'Right now',bNowSub:'Based on the period above',bCapped:'Based on the past 12 months',bYearTop:y=>'Top 10 of '+y,bPerfectYear:y=>'Perfect '+y,bAllN:n=>'All '+n+' events',bYearIn:r=>'Now #'+r+' · decided Dec 31',bYearNow:r=>'Now #'+r+' · top 10 needed',bYearNeed:'Attend half the events to rank',bEarned:(a,b)=>a+' of '+b+' earned',bTop5:'Top 5',bTop10:'Top 10',bTopPart:'Top of the section',bStreak:'On a roll',bPerfect:'Perfect month',bComeback:'Comeback',bImproved:'Most improved',bSunday:'Every Sunday',bSvcStreak:'Service streak',bRehearsal:'Rehearsal regular',bAbove:'Above average',bVeteran:'Veteran',bVetSub:n=>n+' years in the choir',bRank:(r,n)=>'#'+r+' of '+n,bNow:r=>'Now #'+r,bTop5Need:'Finish in the top 5',bTop10Need:'Finish in the top 10',bPartOf:(p,n)=>'#1 of '+n+' · '+p.charAt(0)+p.slice(1).toLowerCase(),bPartNeed:'Be #1 in your section',bStreakGot:n=>n+' in a row and counting',bStreakNow:n=>'Now '+n+' in a row · goal 10',bStreakNeed:'10 in a row',bSvcGot:n=>n+' services in a row',bSvcNow:n=>n===1?'Now 1 service in a row · goal 6':'Now '+n+' services in a row · goal 6',bSvcNeed:'6 Sunday services in a row',bPerfectGot:n=>n===1?'1 month, no misses':n+' months, no misses',bPerfectNeed:'3 full months with no misses',bPerfectSome:n=>n+' so far · goal 3',bNeedPeriod:'Pick a shorter period',bPlus:d=>'+'+d+' points on the period before',bComebackNeed:'From below average to above it, +25 points',bPlusMost:d=>'+'+d+' points, the most in the choir',bImprovedNeed:'Improve the most in the choir',bSundayGot:n=>'All '+n+' services',bSundayNeed:'No missed services (8+)',bSundayMore:'No misses yet · needs 8 services',bRehGot:p=>p+'% of rehearsals',bRehNeed:'95% of 10+ rehearsals',bAboveGot:n=>n+' months in a row',bAboveNeed:'6 months in a row above the choir average',bYears:y=>y===1?'1 year in the choir':y+' years in the choir',bVetNeed:'Two years in the choir',bVetNoDate:'Needs a join date',mBackMembers:'Back to members',mBackAtt:'Back to attendance',mAbove:'points above the choir average',mBelow:'points below the choir average',mRecent:'Recent',mMissedList:'Missed dates',mNoneMissed:'No absences in this period.',mMore:'Show all',mLess:'Show less',mNoData:'No attendance recorded for this period.',mShare:'Share',mLinkCopied:'Link copied',mNotFound:'This member could not be found.',viewMusic:'View Music',lastSungOn:d=>'Last sung '+d,neverSung:'Not sung yet',neverShort:'—',sortAZ:'A–Z',sortTimes:'Most sung',sortOldest:'Longest ago',sortNewest:'Most recent',
-    lyrAll:'All lyrics',lyrEmpty:'No lyrics have been added for this song yet.',
+    lbSecTip:d=>(d>0?'+':'')+d+' since the previous period',lbSecFoot:'+/− shows the change since the previous period.',lyrAll:'All lyrics',lyrEmpty:'No lyrics have been added for this song yet.',
     lyrView:'Text',copyLyrics:'Copy text',printLyrics:'Print',printHint:'If no print window opens, use Share → Print',lyrCopied:'Text copied.',
     editLyrics:'Edit text',addLyrics:'Add text',lyrSaved:'Text saved.',
     bkVerse:'Verse',bkChorus:'Chorus',bkBridge:'Bridge',bkEnd:'Ending',
@@ -2766,7 +2766,7 @@ const STR = {
     uTopSongs:'Чаще всего открывали ноты',uTopServices:'Чаще всего смотрели служения',
     uLang:'Язык',uRecent:'Последние действия',uReturning:n=>'вернулись: '+n,uPerDevice:n=>n+' на устройство',uDeviceType:'Тип устройства',uAppShare:'Открывали с иконки на экране',uDevNone:'Тип устройства считается с этого момента.',uDevSetup:'Чтобы считать типы устройств, ещё раз выполните supabase/usage_log.sql в SQL-редакторе Supabase.',uWhen:'Когда смотрят',uBusiest:'Чаще всего',uMorning:'утром',uAfternoon:'днём',uEvening:'вечером',uNight:'ночью',uEn:'Английский',uRu:'Русский',dvIphone:'iPhone',dvIpad:'iPad',dvAndroid:'Android-телефон',dvAtablet:'Android-планшет',dvMac:'Mac',dvWindows:'Компьютер Windows',dvOther:'Другое',uPerDay:'по дням',uPerWeek:'по неделям',
     u7:'7 дней',u30:'30 дней',u90:'90 дней',uAll:'За всё время',uRng7:'Последние 7 дней',uRng30:'Последние 30 дней',uRng90:'Последние 90 дней',uRngall:'За всё время',
-    kOrder:'Порядок песнопений',kSheet:'Ноты',kAudio:'Запись',
+    kOrder:'Порядок песнопений',kSheet:'Ноты',kAudio:'Запись',kPage:'Страница',uPages:'Посещённые страницы',uDevN:n=>'устройств: '+n,
     uNow:'только что',uMin:n=>n+' мин назад',uHr:n=>n+' ч назад',uDay:n=>n+' дн. назад',listenHere:'Смотреть/слушать здесь:',copied:'Скопировано — вставьте в чат',
     backupBtn:'Полная копия',backupNote:'Скачивает все таблицы — хористы, события, посещаемость, песни, категории — одним файлом JSON. PDF-ноты не входят.',backupFail:'Не удалось создать копию — попробуйте ещё раз.',
     blocksN:n=>n+' '+(n%10===1&&n%100!==11?'блок':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'блока':'блоков'),
@@ -2789,7 +2789,7 @@ const STR = {
     withPiano:n=>'с фортепиано: '+n,
     tLyrics:'Тексты песен',tLyricsSub:'Слова так, как мы их поём — готово к копированию',
     lyrWith:n=>'с текстом: '+n,noLyricsYet:'Текста пока нет',needsLyrics:'Без текста',lyrHave:'С текстом',lyrNeed:'Без текста',upTitle:'Предстоящие служения',upDemoOn:'Показать пример',upDemoAct:'Это только пример. У настоящего служения эта кнопка работает.',upDemoOff:'Скрыть пример',upDemoNote:'Только пример: придуманные служения, чтобы показать, как выглядит список. Ничего не сохраняется и хору не показывается.',pastSvc:'Прошедшие служения',upCount:n=>'запланировано: '+n,upNone:'Пока ничего не запланировано заранее. Выберите дату ниже, чтобы спланировать служение.',upLive:'Сейчас на сайте',upThisWeek:'На этой неделе',upNoon:'На сайте с полудня',upFrom:d=>'На сайте с '+d,upMove:'Перенести',upLater:n=>'ещё дальше: '+n,planNew:'Спланировать служение',upClash:'На эту дату уже есть такое служение.',sortBy:'Сортировка',mTitle:'Отчёт о посещаемости',mSince:d=>'В хоре с '+d,mPresent:'Был',mMissed:'Пропустил',mOf:(a,b)=>a+' из '+b,mEvents:n=>'из '+n+' учтённых',mStreak:'Текущая серия',mBest:'Лучшая серия',mInRow:'подряд',mServices:'Служения',mRehearsals:'Спевки',mByMonth:'По месяцам',mByQuarter:'По кварталам',mByYear:'По годам',mChoirAvg:'Среднее по хору',phAdd:'Добавить фото',phChange:'Сменить фото',phRemove:'Удалить фото',phBusy:'Загрузка…',phBad:'Этот файл не удалось открыть как изображение.',lbTitle:'Лидеры',lbCold:'Холодные серии',lbColdSub:'Давно не были — ждём вас',lbColdN:n=>'пропусков подряд: '+n,lbDown:d=>'−'+Math.abs(d)+' п.п.',lbNoCold:'Холодных серий нет — так держать!',lbShow:'За последние',lbShowShort:'За',lbPs1:'1 мес',lbPs3:'3 мес',lbPs6:'6 мес',lbPs12:'12 мес',lbP1:'1 месяц',lbP3:'3 месяца',lbP6:'6 месяцев',lbP12:'12 месяцев',lbTied:n=>'разделили: '+n,lbTiedFor:r=>'Разделили №'+r,lbRanked:n=>'в рейтинге: '+n,lbChase:'Общий рейтинг',tapName:'Нажмите на имя, чтобы увидеть все награды',lbMe:'Это я',lbMeCap:'Отметит вас на этом телефоне, чтобы своё место было легко найти',lbMeOnCap:'Сохранено на этом телефоне. Нажмите ещё раз, чтобы отменить.',lbMeHint:'Нажмите на своё имя и выберите «Это я», чтобы всегда видеть своё место',lbAll:n=>'Показать всех ('+n+')',lbFewer:'Свернуть',lbMvTip:'Изменение места за 2 недели',lbMvKey:'▲ на сколько мест поднялись за 2 недели',lbWasNow:(a,b)=>'было '+a+'% · сейчас '+b+'%',lbSince:y=>'В хоре с '+y+' г.',lbFresh:'Новые награды за неделю',lbFreshSub:'Получены за последние 7 дней',bRare:n=>n===0?'Пока ни у кого нет':(n<=5?'Только у ':'Есть у ')+n+(n%10===1&&n%100!==11?' хориста':' хористов'),lbShare:'Поделиться',lbShotTitle:'Картинка рейтинга',lbShotSave:'Сохранить картинку',lbShotHint:'Можно также нажать и удерживать картинку, чтобы сохранить её',lbCut:'Граница топ-10',lbSub:'Кто приходит чаще всех',lbSee:'Все лидеры',lbLeaders:'Лучшая посещаемость',lbStreaks:'Горячие серии',lbStreakFoot:'Событий подряд без пропусков. Один пропуск — и серия заново.',lbNoStreak:'Сейчас нет серий от 5 подряд.',lbSections:'Гонка партий',lbLeads:'Лидер',lbImproved:'Главный рывок',lbImprovedSub:'к прошлому периоду',lbNoImproved:'Пока никто не вырос на 10 п.п.',lbPerfect:'Без пропусков',lbPerfectSub:n=>'хористов: '+n,lbNoPerfect:'За этот период пока ни у кого нет идеальной посещаемости.',lbRace:y=>'Гонка за Топ-10 '+y,lbDaysLeft:n=>'осталось дней: '+n,lbHof:y=>'Топ-10 '+y,lbNone:'За этот период пока мало отметок.',lbNoBadges:'Сейчас наград нет.',lbPts:d=>'+'+d+' п.п.',lbMore:n=>'и ещё '+n,lbClose:'Закрыть',lbTileStreak:'Самая длинная серия',lbTileSection:'Лидирует партия',bTitle:'Награды',bHall:'Зал славы',bHallSub:'Итоги года — остаются навсегда',bNowTitle:'Сейчас',bNowSub:'По выбранному периоду',bCapped:'За последние 12 месяцев',bYearTop:y=>'Топ-10 '+y,bPerfectYear:y=>'Идеальный '+y,bAllN:n=>'все '+n+' событий',bYearIn:r=>'Сейчас №'+r+' · итоги 31 декабря',bYearNow:r=>'Сейчас №'+r+' · нужен топ-10',bYearNeed:'Посетите половину событий, чтобы попасть в рейтинг',bEarned:(a,b)=>'получено '+a+' из '+b,bTop5:'Топ-5',bTop10:'Топ-10',bTopPart:'Лучший в партии',bStreak:'Без пропусков',bPerfect:'Идеальный месяц',bComeback:'Возвращение',bImproved:'Главный рывок',bSunday:'Каждое воскресенье',bSvcStreak:'Серия служений',bRehearsal:'Верен спевкам',bAbove:'Выше среднего',bVeteran:'Ветеран',bVetSub:n=>'В хоре '+n+' '+(n%10===1&&n%100!==11?'год':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'года':'лет'),bRank:(r,n)=>'№'+r+' из '+n,bNow:r=>'Сейчас №'+r,bTop5Need:'Войти в пятёрку лучших',bTop10Need:'Войти в десятку лучших',bPartOf:(p,n)=>'№1 из '+n+' · '+p.charAt(0)+p.slice(1).toLowerCase(),bPartNeed:'Стать первым в своей партии',bStreakGot:n=>n+' подряд — и дальше',bStreakNow:n=>'Сейчас '+n+' подряд · цель 10',bStreakNeed:'10 раз подряд',bSvcGot:n=>'служений подряд: '+n,bSvcNow:n=>'Сейчас подряд: '+n+' · цель 6',bSvcNeed:'6 воскресных служений подряд',bPerfectGot:n=>n===1?'1 месяц без пропусков':'месяцев без пропусков: '+n,bPerfectNeed:'3 полных месяца без пропусков',bPerfectSome:n=>'пока '+n+' · цель 3',bNeedPeriod:'Выберите период короче',bPlus:d=>'+'+d+' п.п. к прошлому периоду',bComebackNeed:'Из-под среднего — выше него, +25 п.п.',bPlusMost:d=>'+'+d+' п.п., больше всех в хоре',bImprovedNeed:'Вырасти больше всех в хоре',bSundayGot:n=>'Все '+n+' служений',bSundayNeed:'Ни одного пропуска (от 8 служений)',bSundayMore:'Пропусков нет · нужно 8 служений',bRehGot:p=>p+'% спевок',bRehNeed:'95% из 10+ спевок',bAboveGot:n=>'месяцев подряд: '+n,bAboveNeed:'6 месяцев подряд выше среднего по хору',bYears:y=>'лет в хоре: '+y,bVetNeed:'Два года в хоре',bVetNoDate:'Нужна дата вступления',mBackMembers:'К списку хористов',mBackAtt:'К посещаемости',mAbove:'п.п. выше среднего по хору',mBelow:'п.п. ниже среднего по хору',mRecent:'Последние',mMissedList:'Пропуски',mNoneMissed:'В этом периоде пропусков нет.',mMore:'Показать все',mLess:'Свернуть',mNoData:'За этот период посещаемость не отмечалась.',mShare:'Поделиться',mLinkCopied:'Ссылка скопирована',mNotFound:'Участник не найден.',viewMusic:'Открыть ноты',lastSungOn:d=>'Последний раз: '+d,neverSung:'Ещё не пели',neverShort:'—',sortAZ:'А–Я',sortTimes:'Чаще всего',sortOldest:'Давно не пели',sortNewest:'Недавно пели',
-    lyrAll:'Все тексты',lyrEmpty:'Для этой песни текст ещё не добавлен.',
+    lbSecTip:d=>(d>0?'+':'')+d+' по сравнению с прошлым периодом',lbSecFoot:'+/− — изменение с прошлого периода.',lyrAll:'Все тексты',lyrEmpty:'Для этой песни текст ещё не добавлен.',
     lyrView:'Текст',copyLyrics:'Копировать текст',printLyrics:'Печать',printHint:'Если окно печати не открылось: Поделиться → Напечатать',lyrCopied:'Текст скопирован.',
     editLyrics:'Изменить текст',addLyrics:'Добавить текст',lyrSaved:'Текст сохранён.',
     bkVerse:'Куплет',bkChorus:'Припев',bkBridge:'Бридж',bkEnd:'Концовка',
@@ -2949,13 +2949,15 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.15.0';
+const VERSION = '5.17.5';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Section race: the circle on each part’s bar shows how many points it rose (+) or slipped (−) since the previous period',
+    'Usage insights (directors): a new Pages visited card shows how often each page is opened, like Seating, Leaderboard and Rules, and on how many devices',
     'Veteran is back in the Hall of fame, kept for good: bronze at 5 years in the choir, silver at 7, gold at 10',
     'Tap a name: the badge window now says “Member since” and the year they joined',
     'The podium shows every name, however many tie; the shared picture shows faces on the podium and the top 5 by name below, with just the dates',
@@ -3047,6 +3049,8 @@ const NOTES = { '5': {
     'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
   ],
   ru: [
+    'Соревнование партий: кружок на полосе партии показывает, на сколько пунктов она выросла (+) или сдала (−) по сравнению с прошлым периодом',
+    'Статистика (для регента): новая карточка «Посещённые страницы» — как часто открывают каждую страницу, например рассадку, рейтинг и правила, и с какого числа устройств',
     'Поиск понимает латиницу: «slava» или «kristina» найдут русские названия и имена',
     '«Ветеран» вернулся в Зал славы навсегда: бронза — 5 лет в хоре, серебро — 7, золото — 10',
     'В окне наград теперь видно, с какого года человек в хоре',
@@ -3373,10 +3377,21 @@ function track(kind, ref){
   const row = { kind, ref: ref || null, lang: S.lang, vid: visitorId() };
   const send = full => sb.from('usage_log').insert(full ? Object.assign({ device: deviceKind(), app: isHomeApp() }, row) : row);
   try {
-    send(!usageLite).then(r => { if (r && r.error && !usageLite) { usageLite = true; send(false).then(() => {}, () => {}); } }, () => {});
+    send(!usageLite).then(r => { if (r && r.error && !usageLite && kind !== 'page') { usageLite = true; send(false).then(() => {}, () => {}); } }, () => {});
   } catch (_) {}
 }
+/* singer-facing pages, logged once per page per visit; director pages are not */
+const PAGES = [['home','overview'],['songs','songs'],['sheets','tSheets'],['piano','tPiano'],['lyrics','tLyrics'],['attendance','attendance'],['member','mTitle'],['leaders','lbTitle'],['seating','tSeating'],['rules','tRules']];
+function pageKey(route){
+  const r = (route || '').split('?')[0];
+  if (r.startsWith('#/sheets/piano')) return 'piano';
+  const k = r.split('/')[1] || 'home';
+  return PAGES.some(p => p[0] === k) ? k : null;
+}
+const pageName = k => { const p = PAGES.find(x => x[0] === k); return p ? t(p[1]) : (k || '—'); };
 function trackRoute(){
+  const pk = pageKey(S.route);
+  if (pk && !seenViews.has('p:' + pk)) { seenViews.add('p:' + pk); track('page', pk); }
   const m = S.route.match(/order-([^/?&]+)/);
   if (!m || seenViews.has(m[1])) return;
   seenViews.add(m[1]);
@@ -3458,7 +3473,7 @@ function usagePage(){
         <div class="ubar"><em style="width:${Math.round(c / rows[0][1] * 100)}%"></em></div></div>`).join('')}</div>`
         : `<p class="pcap">${esc(t('uNone'))}</p>`}
     </section>`;
-  const songRank = tally(x => x.kind !== 'order', id => (S.songs.find(y => y.id === id) || {}).title || '—');
+  const songRank = tally(x => x.kind === 'sheet' || x.kind === 'audio', id => (S.songs.find(y => y.id === id) || {}).title || '—');
   const svcRank = tally(x => x.kind === 'order', id => {
     const e = findEvent(id);
     return e ? (e.name || kindWord(e)) + ' · ' + fmtPill(e.date) : '—';
@@ -3496,20 +3511,32 @@ function usagePage(){
       <div class="uweek">${wk.map((v, i) => `<div><i class="${i === wTop && v ? 'hi' : ''}" style="height:${Math.max(4, Math.round(v / wmax * 100))}%" title="${v}"></i><span>${WD[i]}</span></div>`).join('')}</div>
       <div class="ufact"><span>${esc(t('uBusiest'))}</span><b>${esc(WD[wTop])} · ${esc(t(['uMorning','uAfternoon','uEvening','uNight'][tTop]))}</b></div>
     </section>`;
-  const kindName = k => t(k === 'order' ? 'kOrder' : k === 'sheet' ? 'kSheet' : 'kAudio');
-  const kindIc = k => k === 'order' ? AIC.plan : k === 'sheet' ? AIC.sheets : AIC.headphones;
+  const kindName = k => t(k === 'page' ? 'kPage' : k === 'order' ? 'kOrder' : k === 'sheet' ? 'kSheet' : 'kAudio');
+  const kindIc = k => k === 'page' ? AIC.chart : k === 'order' ? AIC.plan : k === 'sheet' ? AIC.sheets : AIC.headphones;
   const refName = x => {
+    if (x.kind === 'page') return pageName(x.ref);
     if (x.kind === 'order') { const e = findEvent(x.ref); return e ? (e.name || kindWord(e)) + ' · ' + fmtPill(e.date) : '—'; }
     return (S.songs.find(y => y.id === x.ref) || {}).title || '—';
   };
   const recent = `<section class="dpanel">
       <div class="phd"><h2>${esc(t('uRecent'))}</h2></div>
-      <div class="urecent">${u.slice(0, 10).map(x => `<div class="urec ${x.kind === 'order' ? 'r2' : x.kind === 'sheet' ? 'r1' : 'r5'}">
+      <div class="urecent">${u.slice(0, 10).map(x => `<div class="urec ${x.kind === 'page' ? 'r3' : x.kind === 'order' ? 'r2' : x.kind === 'sheet' ? 'r1' : 'r5'}">
         <span class="rico">${kindIc(x.kind)}</span>
         <span class="grow2"><strong>${esc(refName(x))}</strong><small>${esc(kindName(x.kind))}</small></span>
         <span class="un">${esc(agoShort(x.at))}</span></div>`).join('')}</div>
     </section>`;
-  return wrap(`<div class="uwrap">${kpis}${chart}
+  /* pages: views and distinct devices per page */
+  const pv = {};
+  u.filter(x => x.kind === 'page' && x.ref).forEach(x => { const o = pv[x.ref] = pv[x.ref] || { n: 0, d: new Set() }; o.n++; if (x.vid) o.d.add(x.vid); });
+  const pRows = Object.entries(pv).sort((a, b) => b[1].n - a[1].n);
+  const pages = `<section class="dpanel">
+      <div class="phd"><h2>${esc(t('uPages'))}</h2>${AIC.chart}</div>
+      ${pRows.length ? `<div class="urank">${pRows.map(([k, o], i) => `<div class="urow">
+        <span class="ui">${i + 1}</span><span class="un2">${esc(pageName(k))} <span style="color:var(--faint);font-size:12px">· ${esc(t('uDevN')(o.d.size))}</span></span><span class="ucnt">${o.n}</span>
+        <div class="ubar"><em style="width:${Math.round(o.n / pRows[0][1].n * 100)}%"></em></div></div>`).join('')}</div>`
+        : `<p class="pcap">${esc(t('uNone'))}</p>`}
+    </section>`;
+  return wrap(`<div class="uwrap">${kpis}${chart}${pages}
     <div class="ugrid">${rank(songRank, t('uTopSongs'), AIC.sheets)}${rank(svcRank, t('uTopServices'), AIC.plan)}</div>
     <div class="ugrid3">${lang}${devices}${when}</div>
     ${recent}</div>`);
@@ -4986,16 +5013,18 @@ function leaderPage(){
         : `<p class="pcap" style="margin:0">${esc(t('lbNoStreak'))}</p>`}
       <p class="lbfoot">${esc(t('lbStreakFoot'))}</p>
     </section>`;
-  const sec = sectionRace(T);
+  const len = Math.round((new Date(to + 'T12:00:00') - new Date(from + 'T12:00:00')) / 864e5);
+  const pTo = dayShift(from, -1), P = choirTable(dayShift(pTo, -len), pTo);
+  const sec = sectionRace(T), secWas = new Map(sectionRace(P).map(x => [x.part, x.p]));
+  const secD = x => { const w = secWas.get(x.part); return w == null ? null : x.p - w; };
   const sections = `<section class="dpanel lbk lbk-sec">
       <div class="phd"><h2><span class="lbic">${LBI.lbSections}</span>${esc(t('lbSections'))}</h2></div>
       <div class="lbsec">${sec.map((x, i) => `<div class="lbsr ${x.part}${i === 0 ? ' win' : ''}">
         <div class="lbsrh"><span class="lbpart">${esc(partName(x.part))}</span>${i === 0 ? `<i class="lbcrown">${BI.part}</i>` : ''}<strong>${x.p}%</strong></div>
-        <div class="lbtrack"><b style="width:${x.p}%"></b>${x.lead ? `<button class="lbrider" data-lbwho="${x.lead.s.id}" style="left:${x.p}%" title="${esc(x.lead.s.name)}" aria-label="${esc(x.lead.s.name)}">${avIn(x.lead.s)}</button>` : ''}</div>
-        ${x.lead ? `<small>${esc(t('lbLeads'))}: <button class="lbname" data-lbwho="${x.lead.s.id}">${esc(x.lead.s.name)}</button></small>` : ''}</div>`).join('')}</div>
+        <div class="lbtrack"><b style="width:${x.p}%"></b>${secD(x) != null ? `<span class="lbrider" style="left:${x.p}%;cursor:default;letter-spacing:-.02em" title="${esc(t('lbSecTip')(secD(x)))}" aria-label="${esc(t('lbSecTip')(secD(x)))}">${secD(x) > 0 ? '+' : secD(x) < 0 ? '−' : ''}${Math.abs(secD(x))}</span>` : x.lead ? `<button class="lbrider" data-lbwho="${x.lead.s.id}" style="left:${x.p}%" title="${esc(x.lead.s.name)}" aria-label="${esc(x.lead.s.name)}">${avIn(x.lead.s)}</button>` : ''}</div>
+        ${x.lead ? `<small>${x.lead ? `${esc(t('lbLeads'))}: <button class="lbname" data-lbwho="${x.lead.s.id}">${esc(x.lead.s.name)}</button>` : ''}</small>` : ''}</div>`).join('')}</div>
+      ${secWas.size ? `<p class="lbfoot">${esc(t('lbSecFoot'))}</p>` : ''}
     </section>`;
-  const len = Math.round((new Date(to + 'T12:00:00') - new Date(from + 'T12:00:00')) / 864e5);
-  const pTo = dayShift(from, -1), P = choirTable(dayShift(pTo, -len), pTo);
   const imp = T.ranked.map(r => { const q = P.rows.get(r.s.id); return q && q.of >= 5 ? { s: r.s, d: Math.round(r.pct - q.pct), a: Math.round(q.pct), b: Math.round(r.pct) } : null; })
     .filter(x => x && x.d >= 10).sort((a, b) => b.d - a.d).slice(0, 8);
   const improved = `<section class="dpanel lbk lbk-imp">
