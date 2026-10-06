@@ -1589,6 +1589,18 @@
   .songc .li{transition:background-color .45s ease}
   .songc.hi{box-shadow:0 0 0 2px var(--gold),0 8px 20px -10px var(--gold)}
   .songc.hi .li{background:var(--gold-wash);border-radius:inherit}
+  /* members list: the initials tile matches its part's section bar */
+  .mrow .av.soprano{background:var(--violet-wash);color:var(--violet)} .mrow .av.alto{background:var(--teal-tint);color:var(--teal)}
+  .mrow .av.tenor{background:var(--rose-wash);color:var(--rose)} .mrow .av.bass{background:var(--amber-wash);color:var(--gold-text)}
+  /* seasonal songs: a small ornament on the page-icon tile */
+  .ftile{position:relative}
+  .songc .li > .ftile,.songc .li > .ord{margin-right:8px}
+  .fdeco > circle:first-child{stroke:rgba(0,0,0,.09);stroke-width:.7}
+  .fdeco{position:absolute;pointer-events:none;top:-7px;right:-7px;width:19px;height:19px;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.2))}
+  .fdeco.lights{top:2px;left:50%;right:auto;width:30px;height:10px;transform:translateX(-50%);filter:none}
+  .fdeco.lights .b{animation:ftwk 2.6s ease-in-out infinite} .fdeco.lights .b2{animation-delay:.85s} .fdeco.lights .b3{animation-delay:1.7s}
+  @keyframes ftwk{50%{opacity:.5}}
+  @media (prefers-reduced-motion:reduce){ .fdeco.lights .b{animation:none} }
   .li[data-mrow]{transition:background-color .45s ease,box-shadow .45s ease}
   .li.mhi{background:var(--gold-wash);box-shadow:inset 0 0 0 2px var(--gold);border-radius:10px}
   .tsi.av{width:34px;height:34px;border-radius:10px;overflow:hidden;font-size:11.5px}
@@ -2374,6 +2386,61 @@
   .urec strong{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .urec small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
   .urec .un{flex:none;font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums}
+  /* usage: each card its own colour (like the leaderboard), and everything grows in when fresh numbers arrive */
+  .uwrap .dpanel > .phd h2{display:flex;align-items:center;gap:10px;min-width:0}
+  .uk{--k:#3d63dd;background:linear-gradient(180deg,var(--kw,transparent),transparent 140px),var(--card)}
+  .uk-act{--k:#7c4ddb;--kw:rgba(124,77,219,.08)} .uk-pages{--k:#e0661f;--kw:rgba(255,128,48,.10)}
+  .uk-songs{--k:#0f9a8a;--kw:rgba(15,159,143,.09)} .uk-svc{--k:#c27a0a;--kw:rgba(232,160,30,.11)}
+  .uk-lang{--k:#d6457a;--kw:rgba(214,69,122,.08)} .uk-dev{--k:#3d63dd;--kw:rgba(61,99,221,.08)}
+  .uk-when{--k:#1f9a54;--kw:rgba(34,163,90,.09)} .uk-rec{--k:#6b7590}
+  .ukpis .kpi{background:linear-gradient(160deg,var(--kw),transparent 70%),var(--card)}
+  .ukpis .k1{--k:#3d63dd;--kw:rgba(61,99,221,.10)} .ukpis .k2{--k:#c27a0a;--kw:rgba(232,160,30,.13)}
+  .ukpis .k3{--k:#0f9a8a;--kw:rgba(15,159,143,.11)} .ukpis .k4{--k:#d6457a;--kw:rgba(214,69,122,.10)}
+  .ukpis .ki{color:var(--k);background:color-mix(in srgb,var(--k) 15%,transparent)}
+  .uk .uchart i{background:linear-gradient(180deg,var(--k),color-mix(in srgb,var(--k) 40%,transparent));opacity:.6;transform-origin:bottom;transition:opacity .15s}
+  .uk .uchart i.hi,.uk .uchart i:hover{opacity:1}
+  .uk .uchart i.hi{background:var(--k)}
+  .uk .ucnt{background:color-mix(in srgb,var(--k) 14%,transparent);color:color-mix(in srgb,var(--k) 78%,var(--ink))}
+  .uk .ubar{background:color-mix(in srgb,var(--k) 12%,transparent)}
+  .uk .ubar em{background:var(--k);transform-origin:left}
+  .uk-lang .donut .val{stroke:var(--k)} .uk-lang .ulk span:first-child i{background:var(--k)}
+  .uk-when .uweek i{background:color-mix(in srgb,var(--k) 22%,transparent);transform-origin:bottom} .uk-when .uweek i.hi{background:var(--k)}
+  .uk-rec .urec .rico{--rk:#6b7590;color:var(--rk);background:color-mix(in srgb,var(--rk) 13%,transparent)}
+  .uk-rec .urec.r1 .rico{--rk:#0f9a8a} .uk-rec .urec.r2 .rico{--rk:#c27a0a} .uk-rec .urec.r3 .rico{--rk:#e0661f} .uk-rec .urec.r5 .rico{--rk:#d6457a}
+  :root[data-theme="dark"] .uk-act{--k:#a98bff}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-act{--k:#a98bff} }
+  :root[data-theme="dark"] .uk-pages{--k:#ff9150}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-pages{--k:#ff9150} }
+  :root[data-theme="dark"] .uk-songs,.ukpis .k3{--k:#33cbb8}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-songs,.ukpis .k3{--k:#33cbb8} }
+  :root[data-theme="dark"] .uk-svc,.ukpis .k2{--k:#ebc47d}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-svc,.ukpis .k2{--k:#ebc47d} }
+  :root[data-theme="dark"] .uk-lang,.ukpis .k4{--k:#f08bb0}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-lang,.ukpis .k4{--k:#f08bb0} }
+  :root[data-theme="dark"] .uk-dev,.ukpis .k1{--k:#8ea6ff}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-dev,.ukpis .k1{--k:#8ea6ff} }
+  :root[data-theme="dark"] .uk-when{--k:#4fd38a}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-when{--k:#4fd38a} }
+  :root[data-theme="dark"] .uk-rec{--k:#a8b0c8}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-rec{--k:#a8b0c8} }
+  :root[data-theme="dark"] .uk-rec .urec.r1 .rico{--rk:#33cbb8}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-rec .urec.r1 .rico{--rk:#33cbb8} }
+  :root[data-theme="dark"] .uk-rec .urec.r2 .rico{--rk:#ebc47d}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-rec .urec.r2 .rico{--rk:#ebc47d} }
+  :root[data-theme="dark"] .uk-rec .urec.r3 .rico{--rk:#ff9150}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-rec .urec.r3 .rico{--rk:#ff9150} }
+  :root[data-theme="dark"] .uk-rec .urec.r5 .rico{--rk:#f08bb0}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .uk-rec .urec.r5 .rico{--rk:#f08bb0} }
+  .urip .kpi,.urip .dpanel{animation:urise .6s cubic-bezier(.2,.7,.2,1) calc(var(--d,0) * 60ms) both}
+  .urip .uchart i{animation:mgrowy .7s cubic-bezier(.3,.7,.2,1) calc(.3s + var(--i,0) * 12ms) both}
+  .urip .ubar em{animation:mgrowx .8s cubic-bezier(.3,.7,.2,1) calc(.45s + var(--i,0) * 60ms) both}
+  .urip .uweek i{animation:mgrowy .7s cubic-bezier(.3,.7,.2,1.15) calc(.55s + var(--i,0) * 50ms) both}
+  .urip .donut{animation:donutfill 1.3s cubic-bezier(.3,.7,.2,1) .5s both}
+  .urip .udev .pbar b{animation:barfill .9s cubic-bezier(.3,.7,.2,1) calc(.55s + var(--i,0) * 70ms) both}
+  .urip .urec{animation:uslide .45s ease calc(.65s + var(--i,0) * 40ms) both}
+  @keyframes urise{from{opacity:0;transform:translateY(14px)}}
+  @keyframes uslide{from{opacity:0;transform:translateX(-10px)}}
+  @media (prefers-reduced-motion:reduce){ .urip *,.urip .kpi,.urip .dpanel{animation:none !important} }
   /* ---- usage (older) ---- */
   .ustats{padding:12px 0 2px}
   .ustat{border-radius:14px;box-shadow:var(--shadow-card)}
@@ -2915,6 +2982,26 @@ const t = k => { const v = STR[S.lang][k]; return typeof v === 'function' ? v : 
 const isWide = () => window.innerWidth >= 900;
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const catName = id => { const c = S.categories.find(x => x.id === id); return c ? c.name : ''; };
+/* seasonal colour for a song row, from its category name (either language) */
+/* a small seasonal ornament on the song's page-icon tile */
+const DECO = {
+  xmas: '<svg class="fdeco lights" viewBox="0 0 48 16" aria-hidden="true"><path d="M1 3Q24 12 47 3" fill="none" stroke="#4b6b4f" stroke-width="1.2"></path><g><rect x="10.6" y="5.6" width="2.6" height="2" rx=".5" fill="#6b7a6d"></rect><ellipse class="b b1" cx="11.9" cy="10.4" rx="2.4" ry="3.3" fill="#e23b3b"></ellipse></g><g><rect x="22.7" y="6.9" width="2.6" height="2" rx=".5" fill="#6b7a6d"></rect><ellipse class="b b2" cx="24" cy="11.7" rx="2.4" ry="3.3" fill="#f2b630"></ellipse></g><g><rect x="34.8" y="5.6" width="2.6" height="2" rx=".5" fill="#6b7a6d"></rect><ellipse class="b b3" cx="36.1" cy="10.4" rx="2.4" ry="3.3" fill="#2f9e5b"></ellipse></g></svg>',
+  frost: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g stroke-width="1.7" stroke-linecap="round"><path d="M12 4.2v3M12 16.8v3M4.2 12h3M16.8 12h3" stroke="#e0457b"></path><path d="M6.5 6.5l2.1 2.1M15.4 15.4l2.1 2.1M17.5 6.5l-2.1 2.1M8.6 15.4l-2.1 2.1" stroke="#3d8fd6"></path></g><circle cx="12" cy="12" r="1.7" fill="#f2b630"></circle><g fill="#f2b630"><circle cx="12" cy="2.9" r=".9"></circle><circle cx="21.1" cy="12" r=".9"></circle><circle cx="12" cy="21.1" r=".9"></circle><circle cx="2.9" cy="12" r=".9"></circle></g></svg>',
+  harvest: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><path d="M12 19.5c-.2-2.6.3-4.6 1.6-6.4M7.2 16.3c-1.6-4.6.9-9.4 9.9-10.8 1.1 6.9-2.4 11.8-8.3 11.6z" fill="#d9822b" stroke="#a65a12" stroke-width="1.2" stroke-linejoin="round"></path><path d="M8.6 16.6c1.8-2.6 3.9-4.7 6.6-6.6" fill="none" stroke="#a65a12" stroke-width="1" stroke-linecap="round"></path></svg>',
+  easter: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><path d="M4 19.5a8 8 0 0 1 16 0z" fill="#fbe98a"></path><g stroke="#e9b93a" stroke-width="1.2" stroke-linecap="round"><path d="M4.6 12.2l1.7 1.2M19.4 12.2l-1.7 1.2M7.4 8.3l1.2 1.6M16.6 8.3l-1.2 1.6"></path></g><path d="M11 4.5h2v4h3.2v2H13v9h-2v-9H7.8v-2H11z" fill="#9a6f14"></path></svg>',
+  praise: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g fill="none" stroke="#b07d12" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 5.4c-1.4.3-1.6 2-.6 2.8 1 .8 1.3 2.3.9 4.3-.5 2.4.6 5 3 5.9h4.2c2.4-.9 3.5-3.5 3-5.9-.4-2-.1-3.5.9-4.3 1-.8.8-2.5-.6-2.8" stroke-width="1.7"></path><path d="M6.4 6.8h11.2" stroke-width="1.5"></path><path d="M10 7.2v10.2M12 7.2v10.6M14 7.2v10.2" stroke-width=".9" stroke="#d9a63a"></path><path d="M9.6 18.4h4.8v1.6H9.6z" fill="#e3a92a" stroke-width="1"></path></g><path d="M19.6 2.8l.45 1.1 1.1.45-1.1.45-.45 1.1-.45-1.1-1.1-.45 1.1-.45z" fill="#e3a92a"></path></svg>',
+  call: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><path d="M6.6 20.2h10.8" stroke="#c3d3b8" stroke-width="1.1" stroke-linecap="round"></path><circle cx="13.4" cy="4.9" r="2.1" fill="#4a6b3a"></circle><g fill="none" stroke="#4a6b3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13.2 8v5.4l.6 5.6H8"></path><path d="M13.2 9.2l2.4 2.3.3-3.2"></path></g></svg>',
+  prayer: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g fill="#f8dcc4" stroke="#9a5a2e" stroke-width="1.1" stroke-linejoin="round"><path d="M12 3.3c-1.3 0-2.1 1.1-2.3 2.5l-.8 6.6c-.2 1.5-1.1 2.8-2.3 3.8l2.4 3.1L12 17.4z"></path><path d="M12 3.3c1.3 0 2.1 1.1 2.3 2.5l.8 6.6c.2 1.5 1.1 2.8 2.3 3.8l-2.4 3.1L12 17.4z"></path><path d="M12 12.2c-.9.4-1.3 1.3-1.1 2.3M12 12.2c.9.4 1.3 1.3 1.1 2.3" fill="none" stroke-width=".9" stroke-linecap="round"></path><path d="M6.1 16.5l3.2 3.6-1.4 1.3-3.3-3.5zM17.9 16.5l-3.2 3.6 1.4 1.3 3.3-3.5z" fill="#e9b48c"></path></g><path d="M10.9 5.6v4.2M13.1 5.6v4.2" stroke="#c48a5c" stroke-width=".8" stroke-linecap="round"></path></svg>',
+  passion: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><path d="M3.5 19.2q8.5-4.2 17 0" fill="none" stroke="#c99aa3" stroke-width="1.1" stroke-linecap="round"></path><g fill="#7a1f2e"><path d="M11.2 4.2h1.6v3.8h2.7v1.6h-2.7v7.2h-1.6v-7.2h-2.7v-1.6h2.7z"></path><path d="M5.6000000000000005 9.6h1.6v2.4h1.6v1.6h-1.6v4.0h-1.6v-4.0h-1.6v-1.6h1.6z"></path><path d="M16.8 9.6h1.6v2.4h1.6v1.6h-1.6v4.0h-1.6v-4.0h-1.6v-1.6h1.6z"></path></g></svg>',
+  joint: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g fill="#a3abb7" stroke="#fff" stroke-width="1"><circle cx="5.9" cy="9.2" r="1.8"></circle><path d="M3.11 17.6V14.49a2.79 2.79 0 0 1 5.58 0V17.6z"></path></g><g fill="#a3abb7" stroke="#fff" stroke-width="1"><circle cx="18.1" cy="9.2" r="1.8"></circle><path d="M15.31 17.6V14.49a2.79 2.79 0 0 1 5.58 0V17.6z"></path></g><g fill="#5f6876" stroke="#fff" stroke-width="1"><circle cx="9.6" cy="8.4" r="2.05"></circle><path d="M6.42 18.2V14.33a3.18 3.18 0 0 1 6.35 0V18.2z"></path></g><g fill="#5f6876" stroke="#fff" stroke-width="1"><circle cx="14.4" cy="8.4" r="2.05"></circle><path d="M11.22 18.2V14.33a3.18 3.18 0 0 1 6.35 0V18.2z"></path></g></svg>',
+  palm: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g transform="translate(12.6 12.4) scale(.74) translate(-12.5 -12.5)"><path d="M7.20 17.95L13.03 16.83M7.20 17.95L3.14 13.62M8.19 15.38L13.48 14.94M8.19 15.38L4.99 11.14M9.41 13.01L14.09 13.15M9.41 13.01L7.03 8.98M10.87 10.84L14.88 11.45M10.87 10.84L9.24 7.13M12.57 8.88L15.87 9.79M12.57 8.88L11.57 5.60M14.50 7.12L17.09 8.18M14.50 7.12L14.01 4.37M16.67 5.56L18.57 6.60M16.67 5.56L16.53 3.40" fill="none" stroke="#6a9a2e" stroke-width="1.5" stroke-linecap="round"></path><path d="M6.5 20.5Q9 9.5 18.5 4.5" fill="none" stroke="#3f6a17" stroke-width="1.5" stroke-linecap="round"></path></g></svg>',
+  life: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g fill="#1f7a70"><circle cx="7.3" cy="6.3" r="2.2"></circle><path d="M4.00 18.6V12.70a3.30 3.30 0 0 1 6.60 0V18.6z"></path></g><g fill="#2f9c8f"><circle cx="16.7" cy="6.3" r="2.2"></circle><path d="M13.40 18.6V12.70a3.30 3.30 0 0 1 6.60 0V18.6z"></path></g><g fill="#e3a92a" stroke="#fff" stroke-width="1.1"><circle cx="12" cy="11.4" r="1.7"></circle><path d="M9.45 18.9V16.55a2.55 2.55 0 0 1 5.10 0V18.9z"></path></g></svg>',
+  sky: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><circle cx="15.6" cy="8.7" r="2.7" fill="#f6c445"></circle><path d="M7.5 17.2h9.2a3.3 3.3 0 0 0 .4-6.6 4.7 4.7 0 0 0-9 1.1 2.8 2.8 0 0 0-.6 5.5z" fill="#e3f0fd" stroke="#4f8fd0" stroke-width="1.4" stroke-linejoin="round"></path></svg>',
+};
+const songDeco = s => { const k = (songTheme(s) || '').replace(' th-', ''); return DECO[k] || ''; };
+const songTheme = s => { const n = catName(s.category_id).toLowerCase();
+  return /верб|palm/.test(n) ? ' th-palm' : /рожд|christmas/.test(n) ? ' th-xmas' : /пасх|easter/.test(n) ? ' th-easter' : /жатв|harvest/.test(n) ? ' th-harvest'
+    : /нов\S* год|new year/.test(n) ? ' th-frost' : /небо|небес|heaven/.test(n) ? ' th-sky' : /сводн|combined|joint|mass choir/.test(n) ? ' th-joint' : /страдан|passion|suffering/.test(n) ? ' th-passion' : /прослав|praise/.test(n) ? ' th-praise' : /призыв|invitation|altar call/.test(n) ? ' th-call' : /молитв|prayer/.test(n) ? ' th-prayer' : /христианск|christian life/.test(n) ? ' th-life' : ''; };
 const catSelect = () => S.categories.length ? `<select class="field" style="width:auto;flex:0 1 auto;max-width:46%" data-cat-filter>
   <option value="all">${esc(t('allCats'))}</option>${
   S.categories.map(c => `<option value="${c.id}"${S.catFilter===c.id?' selected':''}>${esc(c.name)}</option>`).join('')}</select>` : '';
@@ -2949,197 +3036,37 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.17.5';
+const VERSION = '5.28.5';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
-    'Section race: the circle on each part’s bar shows how many points it rose (+) or slipped (−) since the previous period',
-    'Usage insights (directors): a new Pages visited card shows how often each page is opened, like Seating, Leaderboard and Rules, and on how many devices',
-    'Veteran is back in the Hall of fame, kept for good: bronze at 5 years in the choir, silver at 7, gold at 10',
-    'Tap a name: the badge window now says “Member since” and the year they joined',
-    'The podium shows every name, however many tie; the shared picture shows faces on the podium and the top 5 by name below, with just the dates',
-    'Leaderboard cards each have their own colour and icon, so they are easier to tell apart',
-    'Most improved shows before and after; perfect attendance is a wall of faces; the year race shows how much of the year has gone; the Hall of fame is gold on navy',
-    'Leaderboard: ▲ shows places gained in the past 2 weeks, and “Show everyone” opens the full standings',
-    'Tap your name and choose “That’s me” to have your place highlighted and pinned on this phone',
-    'New badges this week at the top of the Leaderboard; each badge now says how many singers have it',
-    'Share the podium as a picture for the choir chat; the numbers count up when the page opens',
-    '“Cold streaks” and places lost are now shown to the director only',
-    'A short hint in Attendance → Summary and on the Leaderboard: tap a name to see all badges',
-    'The medals next to a name now show the highest ones first',
-    'Report cards are open to everyone: tap a name or its medals to see badges, then open the full attendance report',
-    'New badge: Service streak for Sunday services in a row (bronze at 6, silver at 15, gold at 30)',
-    'Most improved now shows up to 8 singers, Hot streaks up to 10, starting from 4 in a row',
-    'Leaderboard: the list under the podium is now “Full standings” and starts with the top 3, so the full ranking is in one place',
-    'Search understands English letters: type “slava” or “kristina” to find Russian titles and names',
-    'Tap a name in Attendance → Summary to see that singer’s badges',
-    'In dark mode the Leaderboard card on the home page uses the dark indigo theme',
-    'Search finds singers too: the director opens their report, everyone else sees them highlighted in Attendance',
-    'Fixed: on phones the loading placeholders now come in the same order as the real cards',
-    'While the home page loads, the grey placeholders now match the real cards in shape and size',
-    'Badges on phones are more compact: four to a row with smaller medals',
-    'On phones the Leaderboard tile shows streak and section first, with the podium rising from the bottom edge',
-    'On phones: the Leaderboard tile sits right under Singer Tools, and badges come last on the report card',
-    'Report card streak now matches the leaderboard; cancelled services no longer count toward how often a song was sung',
-    'Printed lyrics leave out the browser’s page address, date and title, and drop the Verse/Chorus titles: choruses are indented instead',
-    'Printed lyrics keep to one page unless a song is very long, with a smaller, quieter title and no rule under it',
-    'From the home-screen app on iPhone, Print makes a one-page PDF of the lyrics and opens the share sheet, where you can print it',
-    'Printing lyrics works on iPhone and iPad, including from the home-screen app',
-    'On phones, tapping More opens the menu every time, including on pages where More is already highlighted',
-    'Badges, report cards and the leaderboard update straight after attendance or member edits; lighter twinkle on the leaderboard cards for smoother scrolling on phones',
-    'Member photos: the director can add a photo when editing a member; it shows in every round avatar, with initials when there is none',
-    'New Leaderboard: top attendance with a podium, hot streaks, the section race, most improved, perfect attendance, the race for this year’s Top 10 and last year’s Hall of fame; tap a name to see their badges. A leaderboard card on the overview links to it',
-    'Badges: a Hall of fame keeps year-end Top 10 and Perfect year awards for good; the other badges follow the past 12 months and can be lost; On a roll counts the streak still going; Veteran removed',
-    'Attendance badges: medals on each report card for top 5, top 10, streaks, perfect months, comebacks and more; earned medals also show beside names in the attendance summary',
-    'On computers and iPads, the first step of the top-bar path is clickable and takes you back',
-    'Report cards compare each singer with the choir average, and the monthly bars line up evenly',
-    'Period pills say “Past Year” (and Past 3 Months, Past 30 Days…) instead of “Last”',
-    'Attendance reports: gentler colours, charts that animate in, and Share only for the director',
-    'A shared attendance report opens on the period the director last picked',
-    'Attendance report cards: signed in, tap a name in the attendance summary or the roster for a shareable page with that singer’s attendance, trends and streaks',
-    'A “View Music” link under a song’s lyrics opens it in Choir music, highlighted',
-    'On phones, a search button in the top bar opens song search right there, with the keyboard',
-    'Picking a song in the top search opens Choir music and briefly highlights that song',
-    'The Music library card on the overview is now Singer Tools, with seating chart, song history and choir rules added',
-    'When choosing songs for a service, each song shows when it was last sung',
-    'When choosing songs for a service and on Repertoire: filter by category and sort A–Z, most sung, most recent or longest ago',
-    'Mark attendance starts on the nearest Tuesday rehearsal',
-    'Plan a service starts on the next Sunday that has no song order yet',
-    'Upcoming services has a “Show a sample” preview with made-up services; nothing is saved',
-    'Upcoming services can be deleted right from the board',
-    'On Plan service, Upcoming services sit under the planning form, and Recent entries is now Past Services, showing only services already held',
-    'Plan service opens on an Upcoming board with every order planned ahead; edit or move each one',
-    'The overview shows this week’s order and switches to the next on Monday; on Sundays the morning order shows until noon, then the evening',
-    'The side menu shows counts for piano sheets and lyrics too',
-    'Usage insights and the export card use the same Period pill that opens in place',
-    'The Period pill is centred, reads like “Past 3 Years”, and opens in place to pick a new range; song history now starts at the last 3 years',
-    'Song history has a sort menu beside the category: most sung, most recent or longest ago (tapping the Times or Last sung heading works too)',
-    'Every song search (history, planning, sheets, lyrics, repertoire) also matches the subtitle, category and hymn number',
-    'Usage insights redesigned: cards for the numbers, top songs and services, language, device type and the busiest days',
-    'Attendance now opens on the summary; the grid is one tab away',
-    'The attendance ring on the overview has smooth, rounded ends',
-    'A Print button on each song’s lyrics: a clean sheet with the words sized to fill the page',
-    'In song history, each service is one line: the date, a small service badge, then the conductor and pianist',
-    'In Russian, Sunday services are now called “Воскресенье Утро” and “Воскресенье Вечер” everywhere',
-    'On phones the grey scroll bar on the side is hidden',
-    'On iPhone the tab bar now responds right away, even while the page is still scrolling',
-    'The phone tab bar is a little slimmer',
-    'On a song’s lyrics page, Copy text and Edit text now sit beside the title',
-    'On a phone, More is highlighted in the tab bar while you are on any page from the More menu',
-    'The lyrics filter has three options: All, Have lyrics and Need lyrics',
-    'On the lyrics page the All / Needs lyrics switch now comes first, then the search, then the count',
-    'The Sheets tab in the phone tab bar is now called Songs',
-    'The History icon in the phone tab bar is clearer when selected',
-    'On smaller laptop screens the director card goes back under the library, so nothing gets cut off',
-    'On a computer the director card now sits beside the library and recent services, in one row of three',
-    'The director sign-in card on the overview now sits on one tidy row',
-    'On the lyrics page the count of songs with lyrics moved under the search',
-    'A director card at the bottom of the overview: a sign-in button, or quick links to attendance, song order, repertoire and members once signed in',
-    'On the sheet music pages the Choir/Piano switcher sits at the top; the file count moved under the search',
-    'Opening another page now starts at the top instead of where the last page was scrolled to',
-    'Light mode is now the default, day or night; dark mode stays one tap away. On iPhone the navy header runs up behind Safari’s address bar',
-    'A new look across the whole site: cards on a soft canvas, navy and gold in light mode, deep indigo in dark mode',
-    'The home page is now an overview: choir numbers, the latest song order, last attendance by part, the music library and recent services',
-    'On a computer, a grouped sidebar and a top bar with live song search, language and appearance',
-    'Sheet music, services, lyrics and the choir rules are laid out as cards; lyrics and rules read like a printed page',
-    'Director pages: Repertoire and Members are cleaner lists, adding and editing happens in a dialog, and Usage insights is easier to read',
-    'New phone bottom bar: icons only, the selected tab opens with its name, and the bar tucks in while you scroll'
+    'Choir music: each song shows its category, and many categories have their own small badge (Christmas, Easter, New Year, Harvest, Heaven, Praise, Prayer, Invitation, Passion, Palm Sunday, Combined choir, Christian life)',
+    'Leaderboard: podium with sharable picture, hot streaks, section race with change since the last period, most improved, perfect attendance, year race and Hall of fame, each card in its own colour',
+    'Tap any name to see their badges and report card; choose “That’s me” to pin and highlight your place',
+    'Badges: Top 5/10, streaks, perfect months, comebacks, Service streak and Veteran; the Hall of fame keeps year-end awards for good',
+    'Attendance report cards for every singer, compared with the choir average, with member photos',
+    'Usage insights (directors): colourful animated cards, including which pages get visited and on how many devices',
+    'Members: initials circles take the colour of their part',
+    'Planning: an Upcoming board, last-sung dates while choosing songs, filters and sorting by category, most sung or most recent',
+    'Search finds songs and singers, also by subtitle, category, hymn number or English letters',
+    'Lyrics: print a clean one-page sheet (also on iPhone and iPad), copy text, and filter songs that need lyrics',
+    'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
-    'Соревнование партий: кружок на полосе партии показывает, на сколько пунктов она выросла (+) или сдала (−) по сравнению с прошлым периодом',
-    'Статистика (для регента): новая карточка «Посещённые страницы» — как часто открывают каждую страницу, например рассадку, рейтинг и правила, и с какого числа устройств',
-    'Поиск понимает латиницу: «slava» или «kristina» найдут русские названия и имена',
-    '«Ветеран» вернулся в Зал славы навсегда: бронза — 5 лет в хоре, серебро — 7, золото — 10',
-    'В окне наград теперь видно, с какого года человек в хоре',
-    'На пьедестале видны все имена, сколько бы ни было ничьих; в картинке — лица на пьедестале и пятёрка лучших по именам ниже, только даты',
-    'У каждой карточки в «Лидерах» свой цвет и значок — их легче различать',
-    '«Главный рывок» показывает «было → стало»; идеальная посещаемость — стена лиц; в гонке года видно, сколько года прошло; Зал славы — золотом на тёмно-синем',
-    'Лидеры: ▲ показывает, на сколько мест поднялись за 2 недели, а «Показать всех» открывает полный рейтинг',
-    'Нажмите на своё имя и выберите «Это я» — ваше место будет выделено и закреплено на этом телефоне',
-    'Новые награды за неделю вверху страницы «Лидеры»; у каждой награды видно, у скольких хористов она есть',
-    'Поделитесь пьедесталом картинкой в чате хора; при открытии страницы проценты плавно растут',
-    '«Холодные серии» и потерянные места теперь видит только регент',
-    'Подсказка в «Посещаемость → Сводка» и в «Лидерах»: нажмите на имя, чтобы увидеть все награды',
-    'Медали рядом с именем теперь идут от самых высоких',
-    'Отчёты о посещаемости теперь доступны всем: нажмите на имя или медали, чтобы увидеть награды и открыть полный отчёт',
-    'Новая награда «Серия служений»: воскресные служения подряд (бронза — 6, серебро — 15, золото — 30)',
-    '«Главный рывок» теперь показывает до 8 хористов, серии — до 10, от 4 подряд',
-    'Лидеры: список под пьедесталом теперь называется «Общий рейтинг» и начинается с тройки лидеров — весь рейтинг в одном месте',
-    'Нажмите на имя в «Посещаемость → Сводка», чтобы увидеть награды хориста',
-    'В тёмной теме плитка «Лидеры» на главной в тёмно-индиговых тонах',
-    'Поиск находит и хористов: регент открывает их отчёт, остальные видят их выделенными в посещаемости',
-    'Исправлено: на телефоне заготовки при загрузке идут в том же порядке, что и настоящие карточки',
-    'Пока главная загружается, серые заготовки совпадают с настоящими карточками по форме и размеру',
-    'Награды на телефоне компактнее: по четыре в ряд, медали меньше',
-    'На телефоне в плитке «Лидеры» сначала серия и партия, а пьедестал стоит на нижнем краю',
-    'На телефоне: плитка «Лидеры» сразу под инструментами певца, а награды в конце отчёта',
-    'Серия в отчёте теперь совпадает с таблицей лидеров; отменённые служения больше не учитываются в том, сколько раз пели песню',
-    'На напечатанном тексте больше нет адреса страницы, даты и заголовка браузера, а также подписей «Куплет/Припев»: припев печатается с отступом',
-    'Напечатанный текст помещается на одну страницу, если песня не очень длинная; заголовок меньше и спокойнее, без линии под ним',
-    'В приложении на главном экране iPhone кнопка «Печать» создаёт PDF с текстом на одну страницу и открывает меню «Поделиться», откуда его можно напечатать',
-    'Печать текстов работает на iPhone и iPad, в том числе из приложения на главном экране',
-    'На телефоне кнопка «Ещё» теперь всегда открывает меню, в том числе на страницах, где она уже подсвечена',
-    'Награды, отчёты и лидеры обновляются сразу после изменения посещаемости или состава; облегчённое мерцание на карточках лидеров — плавнее прокрутка на телефоне',
-    'Фото хористов: регент может добавить фото при редактировании; оно видно во всех круглых аватарах, а без фото — инициалы',
-    'Новая страница «Лидеры»: пьедестал лучшей посещаемости, горячие серии, гонка партий, главный рывок, без пропусков, гонка за Топ-10 года и Зал славы; нажмите на имя, чтобы увидеть награды. На обзоре — карточка со ссылкой',
-    'Награды: в «Зале славы» навсегда остаются итоги года — Топ-10 и Идеальный год; остальные награды считаются за последние 12 месяцев и могут пропасть; «Без пропусков» — текущая серия; «Ветеран» убран',
-    'Награды за посещаемость: медали в отчёте хориста — топ-5, топ-10, серии, идеальные месяцы, возвращение и другие; полученные медали видны и рядом с именами в сводке',
-    'На компьютере и iPad первый шаг пути в верхней панели теперь кликабелен и ведёт назад',
-    'В отчётах видно сравнение со средним по хору, а столбцы по месяцам выровнены',
-    'В выборе периода «Последний год» теперь «Последние 12 месяцев»',
-    'Отчёты о посещаемости: мягче цвета, анимация графиков, кнопка «Поделиться» только для регента',
-    'Отправленный отчёт о посещаемости открывается на периоде, который регент выбрал последним',
-    'Отчёт о посещаемости: после входа нажмите на имя в сводке или в составе — откроется страница хориста с посещаемостью, динамикой и сериями, её можно отправить',
-    'Ссылка «Открыть ноты» под текстом песни открывает её в нотах хора с подсветкой',
-    'На телефоне кнопка поиска в верхней панели открывает поиск песен прямо там, вместе с клавиатурой',
-    'Выбор песни в верхнем поиске открывает ноты хора и ненадолго подсвечивает эту песню',
-    'Карточка «Библиотека» на обзоре теперь «Для хористов»: добавлены схема мест, история песен и правила хора',
-    'При выборе песен для служения у каждой песни видно, когда её пели в последний раз',
-    'При выборе песен для служения и в репертуаре: фильтр по категории и сортировка А–Я, чаще всего, недавно, давно не пели',
-    'Отметка посещаемости сразу предлагает ближайшую спевку во вторник',
-    'Планирование служения сразу предлагает ближайшее воскресенье без порядка песен',
-    'В предстоящих служениях есть «Показать пример» с придуманными служениями — ничего не сохраняется',
-    'Предстоящие служения теперь можно удалить прямо из списка',
-    'В разделе «Служение» предстоящие служения теперь под формой, а «Недавние записи» стали «Прошедшими служениями» — только уже прошедшие',
-    'Раздел «Служение» открывается списком предстоящих служений: каждое можно изменить или перенести',
-    'Обзор показывает порядок этой недели и переключается на следующий в понедельник; в воскресенье до полудня — утренний, потом вечерний',
-    'В боковом меню теперь есть счётчики и для нот фортепиано, и для текстов',
-    'В статистике и экспорте теперь такая же кнопка «Период», раскрывающаяся на месте',
-    'Кнопка «Период» по центру, пишет «Последние 3 года» и раскрывается на месте; история песен теперь по умолчанию за 3 года',
-    'В истории песен рядом с категорией появилось меню сортировки: чаще всего, недавно пели, давно не пели (можно и нажатием на «Всего» или «Последний»)',
-    'Любой поиск песен (история, планирование, ноты, тексты, репертуар) ищет и по подзаголовку, категории и номеру',
-    'Новый вид статистики: карточки с числами, самые популярные песни и служения, язык, тип устройства и самые активные дни',
-    'Посещаемость теперь открывается на сводке; таблица — на соседней вкладке',
-    'Кольцо посещаемости на обзоре теперь с ровными скруглёнными краями',
-    'Кнопка «Печать» на странице текста песни: аккуратный лист, где слова заполняют всю страницу',
-    'В истории песен каждое служение — одна строка: дата, небольшой значок служения, дирижёр и пианист',
-    'Воскресные служения теперь везде называются «Воскресенье Утро» и «Воскресенье Вечер»',
-    'На телефоне серая полоса прокрутки сбоку скрыта',
-    'На iPhone нижняя панель теперь срабатывает сразу, даже пока страница ещё прокручивается',
-    'Нижняя панель на телефоне стала чуть ниже',
-    'На странице текста песни кнопки «Копировать» и «Изменить» теперь рядом с названием',
-    'На телефоне вкладка «Ещё» подсвечивается, когда открыта любая страница из этого меню',
-    'Фильтр на странице текстов получил три варианта: «Все», «С текстом», «Без текста»',
-    'На странице текстов сначала переключатель «Все / Без текста», затем поиск и число песен',
-    'Вкладки в нижней панели на телефоне теперь называются «История» и «Песни»',
-    'Значок «История» в нижней панели на телефоне стал чётче, когда выбран',
-    'На небольших экранах ноутбуков карточка регента снова под библиотекой, чтобы ничего не обрезалось',
-    'На компьютере карточка регента теперь стоит рядом с библиотекой и последними служениями — три в ряд',
-    'Карточка входа для регента на обзоре теперь в одну аккуратную строку',
-    'На странице текстов число песен с текстом теперь под поиском',
-    'Внизу обзора — карточка регента: кнопка входа, а после входа — быстрые ссылки на посещаемость, порядок песен, репертуар и хористов',
-    'На страницах нот переключатель Хор/Фортепиано теперь вверху, а число файлов — под поиском',
-    'Новая страница теперь открывается с начала, а не с того места, до которого была прокручена предыдущая',
-    'Светлая тема теперь по умолчанию в любое время суток; тёмная — по нажатию. На iPhone тёмно-синяя шапка продолжается под адресной строкой Safari',
-    'Новый вид всего сайта: карточки на светлом фоне, тёмно-синий с золотом днём и глубокий индиго ночью',
-    'Главная теперь — обзор: цифры хора, последний порядок песен, посещаемость по партиям, библиотека нот и последние служения',
-    'На компьютере — боковое меню по разделам и верхняя панель с поиском песни, языком и оформлением',
-    'Ноты, служения, тексты и правила хора оформлены карточками; тексты и правила читаются как напечатанная страница',
-    'Страницы регента: аккуратные списки репертуара и состава, добавление и изменение в окне, понятная страница активности',
-    'Новая нижняя панель на телефоне: только значки, выбранная вкладка раскрывается с названием, при прокрутке панель уменьшается'
+    'Музыка хора: у каждой песни указана категория, а у многих категорий свой значок (Рождество, Пасха, Новый год, Жатва, Небо, Прославление, Молитвенные, Призывные, Страдания, Вербное, Сводный, Христианская жизнь)',
+    'Рейтинг: пьедестал с картинкой для чата, серии, соревнование партий с изменением к прошлому периоду, лучший рост, без пропусков, гонка года и Зал славы — у каждой карточки свой цвет',
+    'Нажмите на имя, чтобы увидеть награды и отчёт; «Это я» закрепляет и подсвечивает ваше место',
+    'Награды: Топ-5/10, серии, идеальные месяцы, возвращения, серия служений и Ветеран; Зал славы хранит итоги года навсегда',
+    'Отчёт о посещаемости для каждого хориста, со сравнением со средним по хору и фото участников',
+    'Статистика (для регента): яркие анимированные карточки, в том числе какие страницы открывают и с какого числа устройств',
+    'Участники: кружки с инициалами окрашены в цвет партии',
+    'Планирование: доска предстоящих служений, когда песню пели последний раз, фильтр и сортировка по категории, частоте и дате',
+    'Поиск находит песни и хористов, также по подзаголовку, категории, номеру гимна или латиницей',
+    'Тексты: печать на одну чистую страницу (в том числе на iPhone и iPad), копирование и фильтр песен без текста',
+    'Новый вид: главная-обзор, боковое меню на компьютере, тонкая нижняя панель на телефоне, светлая тема по умолчанию и тёмная в одно касание'
   ] },
   '4': {
   en: [
@@ -3397,6 +3324,13 @@ function trackRoute(){
   seenViews.add(m[1]);
   track('order', m[1]);
 }
+function usageCount(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.urip [data-count]').forEach(el => { const n = +el.dataset.count; if (!n) return;
+    const t0 = performance.now(), D = 900;
+    const f = now => { const p = Math.min(1, (now - t0) / D); el.textContent = Math.round(n * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(f); };
+    el.textContent = '0'; requestAnimationFrame(f); });
+}
 async function loadUsage(){
   if (S.usageLoading) return;
   S.usageLoading = true;
@@ -3410,6 +3344,7 @@ async function loadUsage(){
   S.usageErr = r.error ? r.error.message : '';
   S.usage = r.error ? [] : (r.data || []);
   S.usageFor = want;
+  S.usageRip = true;
   render();
 }
 /* One column per day, or per week once the window is longer than six weeks. */
@@ -3436,6 +3371,8 @@ function usagePage(){
   if (S.usageErr) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uSetup'))}</div></div></div>`);
   if (!S.usage) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uLoading'))}</div></div></div>`);
   const u = S.usage;
+  const rip = S.usageRip; S.usageRip = false; if (rip) setTimeout(usageCount, 0);
+  const UIC = { page: AI('<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><path d="M14 3v6h6"></path>'), globe: AI('<circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path>'), phone: AI('<rect x="7" y="2.5" width="10" height="19" rx="2.5"></rect><path d="M11 18.5h2"></path>'), clock: AI('<circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>') };
   if (!u.length) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uNone'))}</div></div></div>`);
   const n = k => u.filter(x => x.kind === k).length;
   const vids = new Set(u.map(x => x.vid).filter(Boolean));
@@ -3444,9 +3381,9 @@ function usagePage(){
   u.forEach(x => { if (x.vid) (daysBy[x.vid] = daysBy[x.vid] || new Set()).add(dayOf(x)); });
   const returning = Object.values(daysBy).filter(s => s.size > 1).length;
   const per = v => vids.size ? (Math.round(v / vids.size * 10) / 10).toLocaleString(S.lang) : '0';
-  const kpi = (label, value, foot, ic, tone) => `<div class="kpi ${tone}">
+  const kpi = (label, value, foot, ic, tone) => `<div class="kpi ${tone}" style="--d:${+tone.slice(1) - 1}">
       <div class="kl"><span>${esc(label)}</span><span class="ki">${ic}</span></div>
-      <div class="kv">${value}</div><div class="kf">${esc(foot)}</div></div>`;
+      <div class="kv" data-count="${value}">${value}</div><div class="kf">${esc(foot)}</div></div>`;
   const kpis = `<div class="kpis ukpis">
     ${kpi(t('uDevices'), vids.size, t('uReturning')(returning), AIC.user, 'k1')}
     ${kpi(t('uOrders'), n('order'), t('uPerDevice')(per(n('order'))), AIC.plan, 'k2')}
@@ -3455,10 +3392,10 @@ function usagePage(){
   </div>`;
   const { arr, step } = usageBuckets(u);
   const max = Math.max(1, ...arr.map(b => b.n));
-  const chart = `<section class="dpanel">
-      <div class="phd"><h2>${esc(t('uActivity'))}</h2><span class="pcap">${esc(t(step === 1 ? 'uPerDay' : 'uPerWeek'))}</span></div>
-      <div class="uchart">${arr.map(b =>
-        `<i class="${b.n === max && b.n ? 'hi' : ''}" style="height:${Math.round(b.n / max * 100)}%" title="${b.n}"></i>`).join('')}</div>
+  const chart = `<section class="dpanel uk uk-act" style="--d:4">
+      <div class="phd"><h2><span class="lbic">${AIC.chart}</span>${esc(t('uActivity'))}</h2><span class="pcap">${esc(t(step === 1 ? 'uPerDay' : 'uPerWeek'))}</span></div>
+      <div class="uchart">${arr.map((b, i) =>
+        `<i class="${b.n === max && b.n ? 'hi' : ''}" style="--i:${i};height:${Math.round(b.n / max * 100)}%" title="${b.n}"></i>`).join('')}</div>
       <div class="uaxis"><span>${esc(fmtPill(localISO(new Date(arr[0].at))))}</span><span>${esc(fmtPill(today()))}</span></div>
     </section>`;
   const tally = (pred, name) => {
@@ -3466,11 +3403,11 @@ function usagePage(){
     u.filter(pred).forEach(x => { if (x.ref) m[x.ref] = (m[x.ref] || 0) + 1; });
     return Object.entries(m).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([id, c]) => [name(id), c]);
   };
-  const rank = (rows, label, ic) => `<section class="dpanel">
-      <div class="phd"><h2>${esc(label)}</h2>${ic}</div>
+  const rank = (rows, label, ic, cls, d) => `<section class="dpanel uk ${cls}" style="--d:${d}">
+      <div class="phd"><h2><span class="lbic">${ic}</span>${esc(label)}</h2></div>
       ${rows.length ? `<div class="urank">${rows.map(([name, c], i) => `<div class="urow">
         <span class="ui">${i + 1}</span><span class="un2">${esc(name)}</span><span class="ucnt">${c}</span>
-        <div class="ubar"><em style="width:${Math.round(c / rows[0][1] * 100)}%"></em></div></div>`).join('')}</div>`
+        <div class="ubar"><em style="--i:${i};width:${Math.round(c / rows[0][1] * 100)}%"></em></div></div>`).join('')}</div>`
         : `<p class="pcap">${esc(t('uNone'))}</p>`}
     </section>`;
   const songRank = tally(x => x.kind === 'sheet' || x.kind === 'audio', id => (S.songs.find(y => y.id === id) || {}).title || '—');
@@ -3481,8 +3418,8 @@ function usagePage(){
   /* language: a small ring, share of Russian */
   const ru = u.filter(x => x.lang === 'ru').length, en = u.filter(x => x.lang === 'en').length;
   const ruPct = (ru + en) ? Math.round(ru / (ru + en) * 100) : 0;
-  const lang = `<section class="dpanel">
-      <div class="phd"><h2>${esc(t('uLang'))}</h2></div>
+  const lang = `<section class="dpanel uk uk-lang" style="--d:8">
+      <div class="phd"><h2><span class="lbic">${UIC.globe}</span>${esc(t('uLang'))}</h2></div>
       ${(ru + en) ? `<div class="donut sm" style="--pn:${ruPct}" role="img" aria-label="${ruPct}% ${esc(t('uRu'))}"><svg viewBox="0 0 184 184" aria-hidden="true"><circle class="trk" cx="92" cy="92" r="84"></circle>${ruPct ? '<circle class="val" cx="92" cy="92" r="84" pathLength="100"></circle>' : ''}</svg><div><strong>${ruPct}%</strong><span>${esc(t('uRu'))}</span></div></div>
       <div class="akey ulk"><span><i></i>${esc(t('uRu'))} <b>${ru}</b></span><span><i></i>${esc(t('uEn'))} <b>${en}</b></span></div>`
         : `<p class="pcap">${esc(t('uNone'))}</p>`}
@@ -3494,11 +3431,11 @@ function usagePage(){
   const dv = Object.values(byVid), dvN = dv.length;
   const appN = dv.filter(x => x.app).length;
   const devRows = DV.map(([k, l, c]) => [l, c, dv.filter(x => x.device === k).length]).filter(r => r[2]);
-  const devices = `<section class="dpanel">
-      <div class="phd"><h2>${esc(t('uDeviceType'))}</h2></div>
+  const devices = `<section class="dpanel uk uk-dev" style="--d:9">
+      <div class="phd"><h2><span class="lbic">${UIC.phone}</span>${esc(t('uDeviceType'))}</h2></div>
       ${S.usageNoDevice ? `<p class="pcap">${esc(t('uDevSetup'))}</p>`
         : !dvN ? `<p class="pcap">${esc(t('uDevNone'))}</p>`
-        : `<div class="parts udev">${devRows.map(([l, c, v]) => `<div class="prow" style="--pc:${c}"><span><i></i>${esc(t(l))}</span><div class="pbar"><b style="width:${Math.round(v / dvN * 100)}%"></b></div><strong>${v}</strong></div>`).join('')}</div>
+        : `<div class="parts udev">${devRows.map(([l, c, v], i) => `<div class="prow" style="--pc:${c};--i:${i}"><span><i></i>${esc(t(l))}</span><div class="pbar"><b style="width:${Math.round(v / dvN * 100)}%"></b></div><strong>${v}</strong></div>`).join('')}</div>
         <div class="ufact"><span>${esc(t('uAppShare'))}</span><b>${Math.round(appN / dvN * 100)}%</b></div>`}
     </section>`;
   /* when: weekday bars (Monday first) and the busiest part of the day */
@@ -3506,9 +3443,9 @@ function usagePage(){
   u.forEach(x => { const d = new Date(x.at); wk[(d.getDay() + 6) % 7]++; const h = d.getHours(); tod[h < 5 ? 3 : h < 12 ? 0 : h < 17 ? 1 : h < 22 ? 2 : 3]++; });
   const wmax = Math.max(1, ...wk), wTop = wk.indexOf(Math.max(...wk)), tTop = tod.indexOf(Math.max(...tod));
   const WD = S.lang === 'ru' ? ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'] : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  const when = `<section class="dpanel">
-      <div class="phd"><h2>${esc(t('uWhen'))}</h2></div>
-      <div class="uweek">${wk.map((v, i) => `<div><i class="${i === wTop && v ? 'hi' : ''}" style="height:${Math.max(4, Math.round(v / wmax * 100))}%" title="${v}"></i><span>${WD[i]}</span></div>`).join('')}</div>
+  const when = `<section class="dpanel uk uk-when" style="--d:10">
+      <div class="phd"><h2><span class="lbic">${AIC.cal}</span>${esc(t('uWhen'))}</h2></div>
+      <div class="uweek">${wk.map((v, i) => `<div><i class="${i === wTop && v ? 'hi' : ''}" style="--i:${i};height:${Math.max(4, Math.round(v / wmax * 100))}%" title="${v}"></i><span>${WD[i]}</span></div>`).join('')}</div>
       <div class="ufact"><span>${esc(t('uBusiest'))}</span><b>${esc(WD[wTop])} · ${esc(t(['uMorning','uAfternoon','uEvening','uNight'][tTop]))}</b></div>
     </section>`;
   const kindName = k => t(k === 'page' ? 'kPage' : k === 'order' ? 'kOrder' : k === 'sheet' ? 'kSheet' : 'kAudio');
@@ -3518,9 +3455,9 @@ function usagePage(){
     if (x.kind === 'order') { const e = findEvent(x.ref); return e ? (e.name || kindWord(e)) + ' · ' + fmtPill(e.date) : '—'; }
     return (S.songs.find(y => y.id === x.ref) || {}).title || '—';
   };
-  const recent = `<section class="dpanel">
-      <div class="phd"><h2>${esc(t('uRecent'))}</h2></div>
-      <div class="urecent">${u.slice(0, 10).map(x => `<div class="urec ${x.kind === 'page' ? 'r3' : x.kind === 'order' ? 'r2' : x.kind === 'sheet' ? 'r1' : 'r5'}">
+  const recent = `<section class="dpanel uk uk-rec" style="--d:11">
+      <div class="phd"><h2><span class="lbic">${UIC.clock}</span>${esc(t('uRecent'))}</h2></div>
+      <div class="urecent">${u.slice(0, 10).map((x, i) => `<div class="urec ${x.kind === 'page' ? 'r3' : x.kind === 'order' ? 'r2' : x.kind === 'sheet' ? 'r1' : 'r5'}" style="--i:${i}">
         <span class="rico">${kindIc(x.kind)}</span>
         <span class="grow2"><strong>${esc(refName(x))}</strong><small>${esc(kindName(x.kind))}</small></span>
         <span class="un">${esc(agoShort(x.at))}</span></div>`).join('')}</div>
@@ -3529,15 +3466,15 @@ function usagePage(){
   const pv = {};
   u.filter(x => x.kind === 'page' && x.ref).forEach(x => { const o = pv[x.ref] = pv[x.ref] || { n: 0, d: new Set() }; o.n++; if (x.vid) o.d.add(x.vid); });
   const pRows = Object.entries(pv).sort((a, b) => b[1].n - a[1].n);
-  const pages = `<section class="dpanel">
-      <div class="phd"><h2>${esc(t('uPages'))}</h2>${AIC.chart}</div>
+  const pages = `<section class="dpanel uk uk-pages" style="--d:5">
+      <div class="phd"><h2><span class="lbic">${UIC.page}</span>${esc(t('uPages'))}</h2></div>
       ${pRows.length ? `<div class="urank">${pRows.map(([k, o], i) => `<div class="urow">
         <span class="ui">${i + 1}</span><span class="un2">${esc(pageName(k))} <span style="color:var(--faint);font-size:12px">· ${esc(t('uDevN')(o.d.size))}</span></span><span class="ucnt">${o.n}</span>
-        <div class="ubar"><em style="width:${Math.round(o.n / pRows[0][1].n * 100)}%"></em></div></div>`).join('')}</div>`
+        <div class="ubar"><em style="--i:${i};width:${Math.round(o.n / pRows[0][1].n * 100)}%"></em></div></div>`).join('')}</div>`
         : `<p class="pcap">${esc(t('uNone'))}</p>`}
     </section>`;
-  return wrap(`<div class="uwrap">${kpis}${chart}${pages}
-    <div class="ugrid">${rank(songRank, t('uTopSongs'), AIC.sheets)}${rank(svcRank, t('uTopServices'), AIC.plan)}</div>
+  return wrap(`<div class="uwrap${rip ? ' urip' : ''}">${kpis}${chart}${pages}
+    <div class="ugrid">${rank(songRank, t('uTopSongs'), AIC.sheets, 'uk-songs', 6)}${rank(svcRank, t('uTopServices'), AIC.plan, 'uk-svc', 7)}</div>
     <div class="ugrid3">${lang}${devices}${when}</div>
     ${recent}</div>`);
 }
@@ -5934,7 +5871,7 @@ async function uploadPhoto(s, file){
 }
 function personRow(s, note){
   const onSingers = S.memTab === 'singers';
-  return `<div class="li mrow ${s.active === false ? 'na' : ''}"><span class="av">${avIn(s)}</span>
+  return `<div class="li mrow ${s.active === false ? 'na' : ''}"><span class="av ${s.part || ''}">${avIn(s)}</span>
     <div style="flex:1;min-width:0"><div class="stl">${onSingers && s.part ? `<a class="mname" href="${memberLink(s)}">${esc(s.name)}</a>` : esc(s.name)}</div>${note ? `<div class="sub">${esc(note)}</div>` : ''}</div>
     ${onSingers && s.part ? `<a class="ibtn" href="${memberLink(s)}" aria-label="${esc(t('mTitle'))}" title="${esc(t('mTitle'))}">${AIC.chart || AIC.att}</a>` : ''}
     <button class="ibtn" data-edit-singer="${s.id}" aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
@@ -6270,13 +6207,14 @@ function sheetsPage(kind){
       const busy = S.uploading === kind + ':' + s.id;
       /* narrowed to one service, the list IS the running order — so number it.
          The full song list has no order to speak of and stays unnumbered. */
-      const left = (ordEv ? `<span class="ord">${String(i + 1).padStart(2, '0')}</span>` : `<span class="ftile">${kind === 'piano' ? AIC.piano : AIC.sheets}</span>`) + `<div style="flex:1;min-width:0">
+      const left = (ordEv ? `<span class="ord">${String(i + 1).padStart(2, '0')}</span>` : `<span class="ftile">${kind === 'piano' ? AIC.piano : AIC.sheets}${songDeco(s)}</span>`) + `<div style="flex:1;min-width:0">
           <div style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}${pvTag(s)}</div>
           ${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}
+          ${catName(s.category_id) ? `<div style="margin-top:3px;font-size:11.5px;letter-spacing:.02em;color:var(--faint)">${esc(catName(s.category_id))}</div>` : ''}
           ${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}
           ${locked ? `<div class="sub" style="font-style:normal;color:var(--gold)">${esc(t('adminOnly'))}</div>` : ''}
         </div>`;
-      if (busy) return `<div class="sec songc${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}"><div class="li">${left}<div style="color:var(--blue-text);font-weight:600;font-size:var(--fs-14)">${esc(t('uploading'))}</div></div></div>`;
+      if (busy) return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}"><div class="li">${left}<div style="color:var(--blue-text);font-weight:600;font-size:var(--fs-14)">${esc(t('uploading'))}</div></div></div>`;
       /* Files are served through short-lived signed URLs, so an admin-only PDF
          cannot be opened by guessing its address. */
       const dl = !path ? ''
@@ -6313,8 +6251,8 @@ function sheetsPage(kind){
          back to the left edge to open them */
       const row = `<div class="li${S.session ? ' tap' : ''}"${S.session ? ` data-adm-row="${s.id}"` : ''}>${left}<div class="acts">${listen}${dl}${lyr}${more}</div></div>`
         + (S.admRow === s.id ? admin : '');
-      if (S.audioEdit !== s.id) return `<div class="sec songc${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}">${row}</div>`;
-      return `<div class="sec songc${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}">` + row + `<div class="li audiorow">
+      if (S.audioEdit !== s.id) return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}">${row}</div>`;
+      return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}" data-srow="${s.id}">` + row + `<div class="li audiorow">
           <input class="field" id="audio-${s.id}" type="url" inputmode="url" spellcheck="false"
                  placeholder="${esc(t('audioHint'))}" value="${esc(S.audioDraft)}">
           <div class="acts">
