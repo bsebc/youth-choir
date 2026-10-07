@@ -548,6 +548,9 @@
   .li.off .nm{color:var(--red);font-weight:600}
   .pill{margin-left:auto;font-size:var(--fs-14);font-weight:600;padding:7px 14px;border-radius:var(--r-pill);background:var(--paper);color:var(--muted);min-width:86px;text-align:center}
   .li.off .pill{background:var(--red);color:var(--white)}
+  .li.here{background:var(--green-wash)}
+  .li.here .nm{color:var(--green);font-weight:600}
+  .li.here .pill{background:var(--green);color:var(--white)}
   .bar{flex:1;height:5px;background:var(--paper);border-radius:var(--r-sm);overflow:hidden}
   .bar i{display:block;height:100%;background:var(--blue-hover)}
   .pct{width:52px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
@@ -1052,6 +1055,7 @@
     .seg button:hover:not(.on){background:var(--paper)}
     .li.tap:hover{background:var(--surface-2)}
     .li.tap:hover.off{background:var(--red-wash)}
+    .li.tap:hover.here{background:var(--green-wash)}
     .tile.order:hover{border-color:var(--gold);box-shadow:0 16px 34px -14px rgba(var(--shadow-rgb),.6)}
     .obtn:hover{filter:brightness(1.07)}
     .seat:not([disabled]):hover{border-color:var(--blue-text)}
@@ -1466,6 +1470,162 @@
   .upc.demo{border-style:dashed}
   @media (max-width:699px){ .upgrid{grid-auto-rows:auto} .upch{padding:12px 14px} .upcl{padding:0 14px 4px} }
   .rsvc > .ai{width:16px;height:16px;color:var(--faint)}
+  /* plan a service: the upcoming services on a sideways timeline */
+  .htl{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scroll-padding-inline:4px;padding:4px 4px 16px;margin:0 -4px;
+    scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent;-webkit-overflow-scrolling:touch}
+  .htrack{--ry:51px;position:relative;display:flex;align-items:flex-start;gap:22px;width:max-content;min-width:100%;padding-right:8px}
+  .htrack::before{content:'';position:absolute;left:0;right:0;top:calc(var(--ry) - 1px);height:2px;border-radius:2px;
+    background:linear-gradient(to right,var(--gold) 0,var(--blue) 90px,var(--blue-line) 320px,var(--blue-line) calc(100% - 140px),transparent)}
+  .htday{flex:none;display:grid;grid-template-rows:40px 22px auto;justify-items:start}
+  .htdate{grid-row:1;align-self:end;display:flex;align-items:baseline;gap:7px;padding:0 0 7px 1px;line-height:1;white-space:nowrap}
+  .htdate strong{font-size:21px;font-weight:700;letter-spacing:-.5px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .htdate .tlwd,.htdate .tlmo{font-size:12px}
+  .htdate .tlrel{margin:0 0 0 4px;align-self:baseline}
+  .htday .tlnode{grid-row:2;grid-column:1;align-self:center;justify-self:start;margin:0}
+  .htday.next .tlnode{width:20px;height:20px;background:var(--blue);border:4px solid var(--card);box-shadow:0 0 0 2px var(--blue);animation:tlpulse 2.6s ease-out infinite}
+  .htday.next .htdate strong{color:var(--blue-text)}
+  .htday.next .tlrel{background:var(--blue);color:#fff}
+  .htday.now .tlnode{width:16px;height:16px;background:var(--gold);border:3px solid var(--card);box-shadow:0 0 0 2px var(--gold)}
+  .htday.now .htdate{padding-bottom:5px}
+  .htday.htend .tlnode{width:10px;height:10px;border:2px solid var(--line-strong-2)}
+  .htday.htend .tlendtx{padding:0;white-space:nowrap}
+  .htmon{flex:none;margin-top:calc(var(--ry) - 13px)}
+  .htmon span{display:block;position:relative;z-index:1;padding:7px 13px;border-radius:999px;background:var(--card);border:1px solid var(--card-line);box-shadow:var(--shadow-card);
+    font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);white-space:nowrap;line-height:1}
+  .htcards{grid-row:3;display:flex;align-items:flex-start;gap:12px;padding-top:12px}
+  .htc{flex:none;width:min(300px,78vw);scroll-snap-align:start}
+  .tlc.demo{border-style:dashed}
+  .htc .tlhd{padding:16px 18px}
+  .htc .tlhd .sbtop{margin-bottom:8px}
+  .htc .tlhd h3{font-size:18px}
+  .htc .tlsongs{padding:0 18px 2px}
+  .htc .srow2{min-height:50px;padding:9px 0}
+  .htnavs{display:flex;gap:6px;align-self:center}
+  .htnav{width:32px;height:32px;display:grid;place-items:center;padding:0;border-radius:50%;border:1px solid var(--card-line);background:var(--card);color:var(--ink);box-shadow:var(--shadow-card);cursor:pointer;transition:border-color .15s ease}
+  .htnav .ai{width:15px;height:15px}
+  @media (hover:hover){ .htnav:hover{border-color:var(--line-strong-2)} }
+  @media (hover:none),(max-width:699px){ .htnavs{display:none} }
+  /* phones: open on the first card — every date already names its month, so the Today point and month pills step aside */
+  @media (max-width:699px){ .htday.now,.htmon{display:none} }
+  /* touch: every swipe settles on a card's left edge. A gentle swipe moves one card, a flick can carry
+     past several (no snap-stop), and the timeline's own end is a resting point so the last card is reachable.
+     Mouse and trackpad keep the softer proximity snap so wheel scrolling never fights back. */
+  .htday.now{scroll-snap-align:start}
+  .htday.htend{scroll-snap-align:end}
+  @media (pointer:coarse),(max-width:699px){ .htl{scroll-snap-type:x mandatory;touch-action:pan-x pan-y} }
+  @media (prefers-reduced-motion:reduce){ .htday.next .tlnode{animation:none} }
+  /* home: the way into the services timeline, bottom right of the song-order banner */
+  .sfut{display:inline-flex;align-items:center;gap:3px;padding-right:6px;text-decoration:none;transition:background .15s ease,border-color .15s ease,color .15s ease}
+  .sfut .ai{width:12px;height:12px}
+  .dsvc .sbact .sshare{margin-left:auto}   /* home: Share sits in the banner's bottom-right corner */
+  @media (hover:hover){ .sfut:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4);color:#fff} }
+  /* services timeline: one rail, a node per day, the song-order cards beside it */
+  .tlpage{display:flex;flex-direction:column;width:100%;max-width:1040px;margin:0 auto}
+  .tlpage .dhead{padding-bottom:16px}
+  .tlpage.tlhist{padding-top:20px}
+  .tlpage.tlhist .tlday.tlend .tldate{flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px 12px}
+  .tlhist .tlend .tlleft{padding-top:0}
+  .tlc.cx .eye{color:var(--red)} .tlc.cx .eye::before{background:var(--red)}
+  .tlc.cx h3{color:var(--muted)}
+  .tlc.cx .sban .eye{color:#ffb4a8} .tlc.cx .sban .eye::before{background:#ffb4a8}
+  .tlc.cx .sban h3{color:var(--chrome-text-2)}
+  .tabs.tltabs{margin:22px auto 26px;max-width:340px;width:100%}
+  .tlcnt{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;margin-left:7px;border-radius:999px;background:var(--blue);color:#fff;font-size:11px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+  .tl{--rx:114px;position:relative;display:flex;flex-direction:column;gap:24px;padding:2px 0 12px;width:fit-content;max-width:100%;min-width:0;margin:0 auto}   /* as wide as its cards, centred on the page */
+  .tl::before{content:'';position:absolute;left:calc(var(--rx) - 1px);top:14px;bottom:24px;width:2px;border-radius:2px;
+    background:linear-gradient(to bottom,var(--gold) 0,var(--blue) 70px,var(--blue-line) 260px,var(--blue-line) calc(100% - 80px),transparent)}
+  .tl.pastl::before{background:repeating-linear-gradient(to bottom,var(--line-strong-2) 0 5px,transparent 5px 11px)}
+  .tlday{position:relative;display:grid;grid-template-columns:96px 36px auto auto minmax(0,1fr);align-items:start}
+  .tlnode{grid-column:2;grid-row:1;justify-self:center;position:relative;z-index:1;box-sizing:border-box;width:14px;height:14px;margin-top:10px;border-radius:50%;background:var(--card);border:3px solid var(--blue)}
+  .tldate{grid-column:1;grid-row:1;display:flex;flex-direction:column;align-items:center;text-align:center;line-height:1;min-width:0}
+  .tlwd{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .tldate strong{font-size:32px;font-weight:700;letter-spacing:-1px;margin:5px 0 4px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .tlmo{font-size:11px;font-weight:650;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .tlrel{margin-top:10px;font-style:normal;font-size:11.5px;font-weight:650;line-height:1.25;padding:4px 9px;border-radius:999px;background:var(--blue-wash);color:var(--blue-text);text-wrap:balance}
+  .tlcards{grid-column:3;grid-row:1;display:flex;flex-wrap:wrap;gap:14px;min-width:0;padding-left:8px}
+  .tl .tlc{width:380px;max-width:100%}
+  .tlday.next .tlnode{width:20px;height:20px;margin-top:7px;background:var(--blue);border:4px solid var(--card);box-shadow:0 0 0 2px var(--blue);animation:tlpulse 2.6s ease-out infinite}
+  @keyframes tlpulse{0%{box-shadow:0 0 0 2px var(--blue),0 0 0 2px rgba(var(--blue-rgb),.4)}75%,100%{box-shadow:0 0 0 2px var(--blue),0 0 0 14px rgba(var(--blue-rgb),0)}}
+  .tlday.next .tldate strong{color:var(--blue-text)}
+  .tlday.next .tlrel{background:var(--blue);color:#fff}
+  .pastl .tlnode{width:12px;height:12px;margin-top:11px;border:2px solid var(--line-strong-2)}
+  .pastl .tlrel{background:var(--paper-2);color:var(--text-2)}
+  .tlday.now .tlnode{width:16px;height:16px;margin-top:6px;background:var(--gold);border:3px solid var(--card);box-shadow:0 0 0 2px var(--gold)}
+  .tlday.now .tldate,.tlday.tlend .tldate{grid-column:3;align-items:flex-start;text-align:left;padding:0 0 0 8px}
+  .tlnowp{display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:999px;background:var(--gold-wash);color:var(--gold-text);font-size:12.5px;font-weight:700;white-space:nowrap}
+  .tlday.tlend .tlnode{width:10px;height:10px;margin-top:13px;border:2px solid var(--line-strong-2)}
+  .tlendtx{font-size:13px;color:var(--muted);padding-top:9px;line-height:1.4}
+  .tlmon{position:relative;height:28px;margin:2px 0 -6px}
+  .tlmon span{position:absolute;left:var(--rx);top:50%;transform:translate(-50%,-50%);z-index:1;padding:7px 13px;border-radius:999px;background:var(--card);border:1px solid var(--card-line);
+    box-shadow:var(--shadow-card);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);white-space:nowrap;line-height:1}
+  .tlc{display:flex;flex-direction:column;min-width:0;background:var(--card);border:1px solid var(--card-line);border-radius:18px;box-shadow:var(--shadow-card);overflow:hidden}
+  .tlc.next{border-color:var(--blue-line);box-shadow:0 0 0 3px var(--blue-wash),var(--shadow-card)}
+  .tlc .tlhd{padding:18px 20px}
+  .tlc .tlhd .sbtop{margin-bottom:10px}
+  .tlhd h3{margin:0;font-size:21px;font-weight:650;letter-spacing:-.5px;line-height:1.2;text-wrap:balance}
+  .tlc .tlhd .sbact{margin-top:16px;gap:10px}
+  .tlc .tlhd .sbtn{height:38px;padding:0 15px;font-size:13.5px}
+  .tlc .tlhd .sshare{width:38px;height:38px}
+  .tlc .sban.tlhd::before,.tlc .sban.tlhd::after{display:none}
+  .tlc.next .sban.tlhd::after{display:block}
+  .tlc.past .tlhd{padding:16px 18px 14px;border-bottom:1px solid var(--rule);color:var(--ink)}
+  .tlc.past .tlhd h3{font-size:17px;letter-spacing:-.3px}
+  .tlc.past .eye{color:var(--muted)}
+  .tlc.past .eye::before{background:var(--line-strong-2)}
+  .tlc.past .sstat{border-color:var(--rule);background:var(--paper-2);color:var(--muted)}
+  .tlc.past .tlhd .sbact{margin-top:12px}
+  .tlc.past .tlhd .sbtn{height:34px;background:var(--blue-wash);color:var(--blue-text);box-shadow:none;font-size:13px}
+  .tlc.past .tlhd .sshare{width:34px;height:34px;border-color:var(--card-line);background:transparent;color:var(--text-2)}
+  .tlsongs{padding:0 20px 4px}
+  .tlsongs .srow2{min-height:56px;padding:10px 0}
+  .tlc.past .tlsongs{padding:0 18px 2px}
+  .tlmore{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:999px;border:1px solid var(--card-line);background:var(--card);color:var(--ink);
+    font:inherit;font-size:13.5px;font-weight:600;box-shadow:var(--shadow-card);cursor:pointer;text-decoration:none;transition:border-color .15s ease,background .15s ease}
+  .tlmore .ai{width:15px;height:15px}
+  @media (hover:hover){ .tlmore:hover{border-color:var(--line-strong-2);color:var(--ink)} }
+  .tlempty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:44px 24px;border:1px dashed var(--card-line);border-radius:18px;background:var(--card)}
+  .tlei{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:var(--blue-wash);color:var(--blue-text);margin-bottom:6px}
+  .tlei .ai{width:22px;height:22px}
+  .tlempty strong{font-size:16px;font-weight:650}
+  .tlempty p{margin:0 0 10px;font-size:13.5px;color:var(--muted);max-width:340px;text-wrap:pretty}
+  /* wide screens: each day's dot and date sit level with the middle of its cards */
+  @media (min-width:700px){ .tl .tlday > .tlnode,.tl .tlday > .tldate{align-self:center;margin-top:0}
+    /* equal space above and below the day number, so the number itself sits level with the dot */
+    .tl .tlday:not(.now):not(.tlend) > .tldate{display:grid;grid-template-rows:1fr auto 1fr;justify-items:center}
+    .tl .tldate > .tlwd{align-self:end}
+    .tl .tldate > strong{margin:5px 0}
+    .tl .tldate > .tlbot{display:flex;flex-direction:column;align-items:center;align-self:start} }
+  .tlbot{display:contents}
+  /* past: "2 days ago" is a badge just to the right of the cards (above their right edge on phones) */
+  .pastl .tldate .tlrel{display:none}
+  .tlday > .tlrelr{grid-column:4;grid-row:1;align-self:center;justify-self:start;margin:0 0 0 14px;white-space:nowrap}
+  @media (max-width:699px){
+    .pastl .tlday{grid-template-columns:22px minmax(0,1fr)}
+    .tlday > .tlrelr{grid-column:2;grid-row:1;justify-self:end;margin:0} }
+  .tl.rip::before{transform-origin:top;animation:tlrail 1.1s var(--ease-out) both}
+  @keyframes tlrail{from{transform:scaleY(0)}}
+  .tl.rip > *{animation:tlin .55s var(--ease-out) both;animation-delay:calc(var(--i,0) * 70ms + 60ms)}
+  @keyframes tlin{from{opacity:0;transform:translateY(12px)}}
+  @media (prefers-reduced-motion:reduce){ .tl.rip::before,.tl.rip > *,.tlday.next .tlnode{animation:none} }
+  @media (max-width:699px){
+    .tabs.tltabs{max-width:none;margin:14px 0 22px}
+    .tl{--rx:11px;gap:22px}
+    .tlday{grid-template-columns:22px minmax(0,1fr);column-gap:12px;row-gap:10px}
+    .tlnode,.tlday.next .tlnode,.pastl .tlnode,.tlday.now .tlnode,.tlday.tlend .tlnode{grid-column:1;align-self:center;margin-top:0}
+    .tldate{grid-column:2;flex-direction:row;align-items:baseline;gap:7px;text-align:left;padding:0}
+    .tldate strong{font-size:21px;letter-spacing:-.5px;margin:0}
+    .tlwd,.tlmo{font-size:12px}
+    .tlrel{margin:0 0 0 4px;align-self:baseline}   /* the pill's words sit on the same line as the date */
+    .tlcards{grid-column:2;grid-row:2;flex-direction:column;padding-left:0;gap:12px}
+    .tl{width:auto;margin:0}
+    .tl .tlc{width:auto}
+    .tlday.now .tldate,.tlday.tlend .tldate{grid-column:2;padding:0}
+    .tlendtx{padding-top:0}
+    .tlmon span{left:0;transform:translate(0,-50%)}
+    .tlc .tlhd{padding:16px}
+    .tlsongs,.tlc.past .tlsongs{padding:0 16px 2px}
+    .tlhd h3{font-size:19px}
+  }
   .dadmin{display:flex;align-items:center;gap:14px;margin-top:20px;background:var(--card);border:1px solid var(--card-line);border-radius:16px;
     padding:14px 18px;box-shadow:var(--shadow-card);color:var(--ink)}
   .dadmin .rico{margin:0}
@@ -2719,7 +2879,7 @@ const STR = {
     bySong:'By song',byService:'Service',all:'All',services:'Services',rehearsals:'Rehearsals',m1:'1 mo',m3:'3 mo',m6:'6 mo',year:'Year',y2:'2 years',y3:'3 years',rng1:'Past Month',rng24:'Past 2 Years',rng3:'Past 3 Months',rng6:'Past 6 Months',rng12:'Past Year',rng36:'Past 3 Years',rngall:'All Time',
     singer:'Singer',song:'Song',times:'Times',last:'Last sung',present:'present',absent:'absent',notListed:'not in choir yet',service:'service',
     sung:'sung at this service',labels:'M — morning service · E — evening service · R — rehearsal',
-    admin:'Admin',songList:'Song list',songQueue:'Plan service',allSongs:'All Songs',members:'Members',whoCame:'Who came',absentN:'absent',whatSang:'What we sang',selected:'selected',
+    admin:'Admin',songList:'Song list',songQueue:'Plan service',allSongs:'All Songs',members:'Members',whoCame:'Who came',absentN:'absent',presentN:'present',whatSang:'What we sang',selected:'selected',
     autosave:'Nothing is saved until you press Save.',done:'Done',date:'1 · DATE',event:'2 · EVENT',
     save:'Save',cancel:'Cancel',savedOk:'Saved.',unsavedN:n=>n===1?'1 unsaved change':n+' unsaved changes',
     noChanges:'No changes yet',newEntry:'New entry — not saved yet',
@@ -2834,12 +2994,17 @@ const STR = {
     deleteSinger:'Delete this singer? Past marks stay in the ledger.',deleteSong:'Delete this song? Past services keep their record.',
     renameSinger:'Name',renameSong:'Title',soprano:'SOPRANO',alto:'ALTO',tenor:'TENOR',bass:'BASS',
     singersN:n=>n+' singers',songsN:n=>n+' songs',sungN:(n,d)=>'sung '+n+'× · last '+(d||'—'),wasPresent:'Present',wasAbsent:'Absent',wasNA:'Not listed',
-    tapHint:'Tap a name to mark them absent.',naNote:'“Not listed” means the singer was not in the choir yet — those rehearsals are left out of their percentage.'},
+    futureSvc:'Future services',svcTitle:'Services',svcSub:'Song orders for every service, laid out by date.',tlUp:'Upcoming',tlPast:'Past',tlNext:'Next up',
+    tlToday:'Today',tlTomorrow:'Tomorrow',tlYesterday:'Yesterday',tlInDays:n=>'In '+n+' days',tlInWeeks:n=>n===1?'In 1 week':'In '+n+' weeks',
+    tlDaysAgo:n=>n+' days ago',tlWeeksAgo:n=>n===1?'1 week ago':n+' weeks ago',tlMonthsAgo:n=>n===1?'1 month ago':n+' months ago',
+    tlEndUp:'That’s everything planned so far.',tlNoneUp:'Nothing planned yet',tlNoneUpSub:'When the director plans a song order, it shows up here.',
+    tlSeePast:'See past services',tlOlder:'Show older services',tlStart:'That’s the earliest service on record.',tlNonePast:'No past services yet.',tlEarlier:'Earlier',tlRangeStart:'That’s the start of the selected period.',tlShowN:n=>'Show '+n+' more',tlLeft:n=>n===1?'1 more in this period':n+' more in this period',tlLaterBtn:'Later',
+    tapHint:'Everyone starts as absent. Tap a name to mark them present.',naNote:'“Not listed” means the singer was not in the choir yet — those rehearsals are left out of their percentage.'},
   ru:{attendance:'Посещаемость',songs:'История песен',signin:'Вход',signout:'Выйти',grid:'Сетка',summary:'Сводка',
     bySong:'По песням',byService:'Служения',all:'Всё',services:'Служения',rehearsals:'Спевки',m1:'1 мес',m3:'3 мес',m6:'Полгода',year:'Год',y2:'2 года',y3:'3 года',rng1:'Последний месяц',rng24:'Последние 2 года',rng3:'Последние 3 месяца',rng6:'Последние полгода',rng12:'Последние 12 месяцев',rng36:'Последние 3 года',rngall:'За всё время',
     singer:'Хорист',song:'Песня',times:'Всего',last:'Последний',present:'был',absent:'не был',notListed:'ещё не в хоре',service:'служение',
     sung:'пели в это служение',labels:'Ут — утро · Вч — вечер · Сп — спевка',
-    admin:'Админка',songList:'Список песен',songQueue:'Служение',allSongs:'Все песни',members:'Состав',whoCame:'Кто был',absentN:'отсутствуют',whatSang:'Что пели',selected:'выбрано',
+    admin:'Админка',songList:'Список песен',songQueue:'Служение',allSongs:'Все песни',members:'Состав',whoCame:'Кто был',absentN:'отсутствуют',presentN:'присутствуют',whatSang:'Что пели',selected:'выбрано',
     autosave:'Ничего не сохраняется, пока вы не нажмёте «Сохранить».',done:'Готово',date:'1 · ДАТА',event:'2 · СОБЫТИЕ',
     save:'Сохранить',cancel:'Отмена',savedOk:'Сохранено.',
     unsavedN:n=>n+(n===1?' несохранённое изменение':n<5?' несохранённых изменения':' несохранённых изменений'),
@@ -2957,7 +3122,12 @@ const STR = {
     deleteSinger:'Удалить хориста? Прошлые отметки останутся в журнале.',deleteSong:'Удалить песню? История служений сохранится.',
     renameSinger:'Имя',renameSong:'Название',soprano:'СОПРАНО',alto:'АЛЬТ',tenor:'ТЕНОР',bass:'БАС',
     singersN:n=>n+' чел.',songsN:n=>n+' песен',sungN:(n,d)=>'спето '+n+' · посл. '+(d||'—'),wasPresent:'Был',wasAbsent:'Не был',wasNA:'Не в составе',
-    tapHint:'Нажмите на имя, чтобы отметить отсутствие.',naNote:'«Не в составе» — хорист тогда ещё не пел; такие спевки не входят в его процент.'}
+    futureSvc:'Будущие служения',svcTitle:'Служения',svcSub:'Порядок песен для каждого служения — по датам.',tlUp:'Предстоящие',tlPast:'Прошедшие',tlNext:'Следующее',
+    tlToday:'Сегодня',tlTomorrow:'Завтра',tlYesterday:'Вчера',tlInDays:n=>'Через '+n+' '+ruN(n,'день','дня','дней'),tlInWeeks:n=>n===1?'Через неделю':'Через '+n+' '+ruN(n,'неделю','недели','недель'),
+    tlDaysAgo:n=>n+' '+ruN(n,'день','дня','дней')+' назад',tlWeeksAgo:n=>n===1?'Неделю назад':n+' '+ruN(n,'неделю','недели','недель')+' назад',tlMonthsAgo:n=>n===1?'Месяц назад':n+' '+ruN(n,'месяц','месяца','месяцев')+' назад',
+    tlEndUp:'Пока это всё, что запланировано.',tlNoneUp:'Пока ничего не запланировано',tlNoneUpSub:'Когда регент составит порядок песен, он появится здесь.',
+    tlSeePast:'Посмотреть прошедшие',tlOlder:'Показать более ранние',tlStart:'Это самое раннее служение в записях.',tlNonePast:'Прошедших служений пока нет.',tlEarlier:'Раньше',tlRangeStart:'Это начало выбранного периода.',tlShowN:n=>'Показать ещё '+n,tlLeft:n=>'ещё '+n+' за этот период',tlLaterBtn:'Позже',
+    tapHint:'Сначала все отмечены как отсутствующие. Нажмите на имя, чтобы отметить присутствие.',naNote:'«Не в составе» — хорист тогда ещё не пел; такие спевки не входят в его процент.'}
 };
 const MON = { en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
               ru:['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'] };
@@ -3106,13 +3276,33 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.31.0';
+const VERSION = '5.35.15';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Timelines on computers: the weekday, date and month are centred in their column',
+    'Services page: no big title; the Upcoming / Past switch is centred',
+    'Timelines on computers: the line and cards are centred on the page, with every card the same width',
+    'Past timelines: “2 days ago” is a badge just to the right of the cards (above their right edge on phones)',
+    'Timelines: “2 days ago” and similar labels now sit on the same line as the date',
+    'Timelines on computers: the big day number lines up exactly with its dot',
+    'Services → Past: cards match Song history, with the blue banner and no Share button',
+    'Plan a service: the sideways timeline only labels a month when it changes',
+    'Timelines on computers: each day’s dot and date now line up with the middle of its cards',
+    'Song history → Service: cards have the blue song-order banner; the Share buttons are gone from this page',
+    'Timelines: upcoming services count down in days for the next three weeks, then in weeks',
+    'Home song order: the Share button now sits in the bottom-right corner of the banner',
+    'Song history → Service: opens on the past year and shows 12 services at a time, with “Show more” at the bottom',
+    'Song history → Service: services now sit on the same timeline as the Services page',
+    'Home song order: “Future services” is now a small link in the top corner; tapping a song opens View & Listen',
+    'Plan a service on phones: swiping the timeline always comes to rest neatly on a card',
+    'Plan a service on phones: the timeline opens on the first upcoming card',
+    'Plan a service: upcoming services now sit on a timeline you scroll sideways, with every planned service, not just the next 8 weeks',
+    'Services timeline: tap “Future services” on the home song-order card to see every planned service on a timeline, with past services one tap away',
+    'Attendance: everyone starts as absent (grey); tap the singers who came to mark them present (green)',
     'Phone tab bar: Songs is now right after Home',
     'Admins: editing a recording link or removing a PDF now opens a small window',
     'Choir music on phones: song cards are all one tidy size; tap the arrow or swipe left to slide out the buttons, now colour-coded (Listen green, Sheets navy, Text gold), and admin buttons match; a service’s song list shows the category badges too',
@@ -3129,6 +3319,26 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Ленты на компьютере: день недели, число и месяц выровнены по центру',
+    'Страница «Служения»: без крупного заголовка; переключатель «Предстоящие / Прошедшие» по центру',
+    'Ленты на компьютере: линия и карточки по центру страницы, все карточки одной ширины',
+    'Прошедшие ленты: «2 дня назад» — значок справа от карточек (на телефоне — над их правым краем)',
+    'Ленты: подписи вроде «2 дня назад» теперь на одной линии с датой',
+    'Ленты на компьютере: крупное число дня точно напротив своей точки',
+    'Служения → Прошедшие: карточки как в истории песен — синий баннер, без кнопки «Поделиться»',
+    'Планирование: на боковой ленте месяц подписан, только когда он меняется',
+    'Ленты на компьютере: точка и дата каждого дня теперь по центру карточек',
+    'История песен → Служения: у карточек синий баннер, как у порядка песен; кнопок «Поделиться» здесь больше нет',
+    'Ленты служений: ближайшие три недели — отсчёт в днях, дальше — в неделях',
+    'Порядок песен на главной: кнопка «Поделиться» теперь в правом нижнем углу баннера',
+    'История песен → Служения: открывается на последнем годе и показывает по 12 служений, внизу — «Показать ещё»',
+    'История песен → Служения: служения теперь на такой же ленте, как на странице «Служения»',
+    'Порядок песен на главной: «Будущие служения» — маленькая ссылка в углу; нажатие на песню открывает ноты и записи',
+    'Планирование на телефоне: лента при пролистывании всегда аккуратно останавливается на карточке',
+    'Планирование на телефоне: лента сразу начинается с ближайшего служения',
+    'Планирование: предстоящие служения теперь на ленте, которая листается вбок, — все запланированные, а не только на 8 недель вперёд',
+    'Лента служений: нажмите «Будущие служения» на карточке порядка песен — все запланированные служения на одной ленте, прошедшие — во второй вкладке',
+    'Посещаемость: сначала все отмечены как отсутствующие (серым); нажмите на тех, кто пришёл, — они станут зелёными',
     'Нижняя панель на телефоне: «Песни» теперь сразу после «Главной»',
     'Админ: ссылка на запись и удаление PDF теперь открываются в отдельном окне',
     'Музыка хора на телефоне: карточки песен одного размера; нажмите стрелку или проведите влево, чтобы выдвинуть кнопки, теперь разного цвета (Слушать — зелёная, Ноты — синяя, Текст — золотая), кнопки админа в том же стиле; в списке песен служения тоже видны значки категорий',
@@ -3384,7 +3594,7 @@ function track(kind, ref){
   } catch (_) {}
 }
 /* singer-facing pages, logged once per page per visit; director pages are not */
-const PAGES = [['home','overview'],['songs','songs'],['sheets','tSheets'],['piano','tPiano'],['lyrics','tLyrics'],['attendance','attendance'],['member','mTitle'],['leaders','lbTitle'],['seating','tSeating'],['rules','tRules']];
+const PAGES = [['home','overview'],['songs','songs'],['sheets','tSheets'],['piano','tPiano'],['lyrics','tLyrics'],['attendance','attendance'],['member','mTitle'],['leaders','lbTitle'],['seating','tSeating'],['rules','tRules'],['services','svcTitle']];
 function pageKey(route){
   const r = (route || '').split('?')[0];
   if (r.startsWith('#/sheets/piano')) return 'piano';
@@ -3987,6 +4197,7 @@ function crumbsBase(){
   const W = t('navWork'), L = t('navLib'), C = t('navChoir'), D = t('navDir');
   if (r.startsWith('#/member')) { const m = findSinger(r.split('/')[2]); return [t('attendance'), m ? m.name : t('mTitle')]; }
   if (r.startsWith('#/attendance')) return [W, t('attendance')];
+  if (r.startsWith('#/services')) return [W, t('svcTitle')];
   if (r.startsWith('#/songs')) return [W, t('songs')];
   if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) return [L, t('tPiano')];
   if (r.startsWith('#/sheets')) return [L, t('tSheets')];
@@ -4519,13 +4730,13 @@ function homePage(){
   const setRow = (x, i) => {
     const inner = `<span class="sno">${String(i + 1).padStart(2, '0')}</span>
       <span class="sbody"><span class="stl">${esc(x.title)}${pvTag(x)}</span>${creditPills(songRow(svc.id, x.id)) ? `<span class="scr">${creditPills(songRow(svc.id, x.id))}</span>` : ''}</span>`;
-    return hasLyrics(x) ? `<a class="srow2" href="#/lyrics/${shortId(x.id)}">${inner}${AIC.chev}</a>` : `<div class="srow2">${inner}</div>`;
+    return `<a class="srow2" href="#/sheets/order-${shortId(svc.id)}">${inner}${AIC.chev}</a>`;   // same place as View & Listen
   };
   const service = svc ? `<section class="dsvc${S.ripple ? ' rip' : ''}">
       <div class="sban${S.ripple ? ' rip' : ''}">
-        <div class="sbtop"><span class="eye">${esc(t('songOrder'))}</span><span class="sstat">${esc(t('songsCount')(list.length))}</span></div>
+        <div class="sbtop"><span class="eye">${esc(t('songOrder'))}</span><a class="sstat sfut" href="#/services">${esc(t('futureSvc'))}${AIC.chev}</a></div>
         <h2>${esc(svc.name || t(svc.kind))}</h2>
-        <p class="sdate">${AIC.cal}${esc(fmtLong(svc.date))}</p>
+        <p class="sdate">${AIC.cal}${esc(fmtLong(svc.date))} · ${esc(t('songsCount')(list.length))}</p>
         <div class="sbact">
           <a class="sbtn" href="#/sheets/order-${shortId(svc.id)}">${AIC.play}${esc(t('viewSheets'))}</a>
           <button class="sshare" data-share-order="${svc.id}" aria-label="${esc(t('shareBtn'))}" title="${esc(t('shareBtn'))}">${AIC.share}</button>
@@ -4534,7 +4745,7 @@ function homePage(){
       <div class="sethd"><span>${esc(t('order'))}</span><small>${esc(t('inOrder'))}</small></div>
       <div class="setlist">${list.map(setRow).join('')}</div>
       <div class="pfoot"><a href="#/songs/services">${esc(t('svcHistory'))}${AIC.arrow}</a></div>
-    </section>` : `<section class="dsvc"><div class="msg">${esc(t('noOrderYet'))}</div></section>`;
+    </section>` : `<section class="dsvc"><div class="msg">${esc(t('noOrderYet'))}</div>${futureServices().length ? `<div class="pfoot"><a href="#/services">${esc(t('futureSvc'))}${AIC.arrow}</a></div>` : ''}</section>`;
 
   /* the most recent date attendance was actually taken, split by voice part */
   const lastEv = S.events.filter(e => hasAtt(e) && past(e)).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0)[0];
@@ -5368,20 +5579,21 @@ function songsGrid(top){
   return `<div class="scroll">${topBar(top)}<div class="gwrap">${head}${body}</div>
     <div class="legend endbar"><span><i style="background:var(--chrome);border:0"></i> ${esc(t('sung'))}</span></div></div>`;
 }
+const HIST_STEP = 12;
 function songsByService(){
-  const ev = S.events.filter(e => e.kind !== 'rehearsal' && hasSongs(e) && inRange(e.date, S.from, S.to)).slice().reverse();
+  const now = today();
+  const ev = S.events.filter(e => e.kind !== 'rehearsal' && hasSongs(e) && inRange(e.date, S.from, S.to))
+    .sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : kindRank(a.kind) - kindRank(b.kind));
   if (!ev.length) return `<div class="msg">${esc(t('noEvents'))}</div>`;
-  return `<div class="svcgrid">` + ev.map(e => {
-    const list = songsFor(e.id);
-    return `<article class="sec svc${e.cancelled ? ' cx' : ''}"><div class="svch">
-        <div class="svct"><div class="svcd">${esc(fmtLong(e.date))}</div>
-          <h3>${esc(e.name || t(e.kind))}${e.cancelled ? ` <span class="svcx">${esc(t('cancelledEvent'))}</span>` : ''}</h3></div>
-        ${list.length && !e.cancelled ? `<a class="mini play" href="#/sheets/order-${shortId(e.id)}">${PLAYSVG}<span>${esc(t('viewSheets'))}</span></a>` : ''}
-      </div>
-      ${list.length ? `<ol class="svcl">${list.map((x, i) => `<li><span class="sno">${String(i + 1).padStart(2, '0')}</span>
-          <span class="sbody"><span class="stl">${esc(x.title)}${pvTag(x)}</span>${creditPills(songRow(e.id, x.id)) ? `<span class="scr">${creditPills(songRow(e.id, x.id))}</span>` : ''}</span></li>`).join('')}</ol>`
-        : `<div class="msg">—</div>`}</article>`;
-  }).join('') + '</div>';
+  /* a long period shows in batches; the cut never splits one day's services */
+  const key = S.from + '|' + S.to;
+  if (S.histKey !== key) { S.histKey = key; S.histN = HIST_STEP; }
+  let n = Math.min(S.histN, ev.length);
+  while (n < ev.length && ev[n].date === ev[n - 1].date) n++;
+  const left = ev.length - n;
+  return `<div class="tlpage tlhist">` + svcTimeline(ev.slice(0, n), { past: true, blue: true, noShare: true, showNow: S.to >= now && ev[0].date !== now,
+    endTx: left ? `<button class="tlmore" data-hist-more>${esc(t('tlShowN')(Math.min(HIST_STEP, left)))}</button><span class="tlendtx tlleft">${esc(t('tlLeft')(left))}</span>`
+      : `<span class="tlendtx">${esc(t('tlRangeStart'))}</span>` }) + '</div>';
 }
 function songDates(songId){
   return S.eventSongs.filter(x => x.song_id === songId)
@@ -5527,10 +5739,9 @@ const WDS = { en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], ru:['Вс','Пн',
 const dayShort = iso => { const d = new Date(iso + 'T12:00:00'); return WDS[S.lang][d.getDay()] + ', ' + MON[S.lang][d.getMonth()] + ' ' + d.getDate(); };
 function upcomingBoard(){
   const now = today(), live = latestService();
-  const lim = new Date(); lim.setDate(lim.getDate() + UP_WEEKS * 7); const limit = localISO(lim);
   const all = S.events.filter(e => e.kind !== 'rehearsal' && !e.cancelled && e.date >= now && hasSongs(e))
     .sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : kindRank(a.kind) - kindRank(b.kind));
-  let list = all.filter(e => e.date <= limit), later = all.length - list.length;
+  let list = all;      // the timeline scrolls sideways, so every planned service fits
   /* sample mode: made-up services from real songs and people, shown only here, never saved */
   const demo = !!S.upDemo, demoSongs = {}, demoRows = {};
   let liveId = live && live.id;
@@ -5546,7 +5757,7 @@ function upcomingBoard(){
         demoRows[id][s.id] = { conductor_id: cs.length ? cs[(i + j) % cs.length] : null, pianist_id: ps.length && j % 2 === 0 ? ps[(i + j) % ps.length] : null }; }
       return { id, date: localISO(d), kind, name: null };
     });
-    later = 0; liveId = 'demo' + (new Date().getDay() === 0 && new Date().getHours() >= 12 ? 1 : 0);
+    liveId = 'demo' + (new Date().getDay() === 0 && new Date().getHours() >= 12 ? 1 : 0);
   }
   const songsOf = e => demo ? demoSongs[e.id] : songsFor(e.id);
   const rowOf = (e, x) => demo ? demoRows[e.id][x.id] : songRow(e.id, x.id);
@@ -5556,25 +5767,108 @@ function upcomingBoard(){
     if (from <= now) return e.date === now && e.kind === 'evening' ? t('upNoon') : t('upThisWeek');
     return t('upFrom')(dayShort(from));
   };
-  const card = e => { const [, m, d] = e.date.split('-').map(Number), songs = songsOf(e), isLive = e.id === liveId;
-    const act = demo ? ' data-up-demo-act' : '';
-    return `<section class="upc${isLive ? ' live' : ''}${demo ? ' demo' : ''}">
-      <div class="upch"><span class="mdate"><span>${esc(MON[S.lang][m - 1])}</span><strong>${d}</strong></span>
-        <span class="grow2"><span class="upst">${esc(status(e))}</span><strong>${esc(e.name || t(e.kind))}</strong><small>${esc(dayShort(e.date))} · ${esc(t('songsCount')(songs.length))}</small></span></div>
-      <ol class="upcl">${songs.map((x, i) => { const cp = creditPills(rowOf(e, x));
-        return `<li><span class="unum">${i + 1}</span><span class="ub"><span class="tl">${esc(x.title)}</span>${cp ? `<span class="ucr">${cp}</span>` : ''}</span></li>`; }).join('')}</ol>
+  const card = e => { const songs = songsOf(e), isLive = e.id === liveId, act = demo ? ' data-up-demo-act' : '';
+    return `<article class="tlc up htc${isLive ? ' next' : ''}${demo ? ' demo' : ''}">
+      <header class="tlhd sban"><div class="sbtop"><span class="eye">${esc(status(e))}</span><span class="sstat">${esc(t('songsCount')(songs.length))}</span></div>
+        <h3>${esc(e.name || t(e.kind))}</h3></header>
+      <div class="tlsongs">${songs.map((x, i) => { const cp = creditPills(rowOf(e, x));
+        return `<div class="srow2"><span class="sno">${String(i + 1).padStart(2, '0')}</span><span class="sbody"><span class="stl">${esc(x.title)}</span>${cp ? `<span class="scr">${cp}</span>` : ''}</span></div>`; }).join('')}</div>
       <div class="upca">
         <button class="mini danger"${demo ? act : ` data-del-event="${e.id}"`}>${esc(t('del'))}</button>
         ${demo ? `<button class="mini"${act}>${esc(t('upMove'))}</button><button class="mini go"${act}>${esc(t('edit'))}</button>`
           : `<label class="mini upmv"><span>${esc(t('upMove'))}</span><input type="date" min="${now}" value="${e.date}" data-plan-move="${e.id}" aria-label="${esc(t('upMove'))}"></label>
         <a class="mini go" href="#/admin/songs/${e.id}">${esc(t('edit'))}</a>`}
-      </div></section>`; };
+      </div></article>`; };
+  /* the same rail as the public timeline, turned on its side: one node per day, cards hanging below */
+  const days = [];
+  list.forEach(e => { const g = days[days.length - 1]; if (g && g.date === e.date) g.evs.push(e); else days.push({ date: e.date, evs: [e] }); });
+  let track = days.length && days[0].date === now ? ''
+    : `<div class="htday now"><div class="htdate"><span class="tlnowp">${esc(t('tlToday'))} · ${esc(dayShort(now))}</span></div><span class="tlnode"></span></div>`;
+  let lastMon = '';
+  days.forEach(g => {
+    const [y, m, d] = g.date.split('-').map(Number), mo = MONN[S.lang][m - 1] + ' ' + y;
+    if (mo !== lastMon) { const first = !lastMon; lastMon = mo; if (!first) track += `<div class="htmon"><span>${esc(mo)}</span></div>`; }   // the first month goes without saying
+    const nx = g.evs.some(e => e.id === liveId);
+    track += `<div class="htday${nx ? ' next' : ''}"><div class="htdate"><span class="tlwd">${esc(WDS[S.lang][new Date(g.date + 'T12:00:00').getDay()])}</span><strong>${d}</strong><span class="tlmo">${esc(MON[S.lang][m - 1])}</span><em class="tlrel">${esc(relDay(g.date))}</em></div>
+      <span class="tlnode"></span><div class="htcards">${g.evs.map(card).join('')}</div></div>`;
+  });
+  track += `<div class="htday htend"><div class="htdate"><span class="tlendtx">${esc(t('tlEndUp'))}</span></div><span class="tlnode"></span></div>`;
+  const navs = list.length ? `<span class="htnavs"><button class="htnav" data-htl="-1" aria-label="${esc(t('tlEarlier'))}" title="${esc(t('tlEarlier'))}">${AI('<path d="m15 5-7 7 7 7"></path>')}</button><button class="htnav" data-htl="1" aria-label="${esc(t('tlLaterBtn'))}" title="${esc(t('tlLaterBtn'))}">${AIC.chev}</button></span>` : '';
   return `<div class="upboard">
-      <div class="uphd"><h2>${esc(t('upTitle'))}</h2><span class="uphr">${list.length && !demo ? `<span>${esc(t('upCount')(list.length))}</span>` : ''}<button class="upsample" data-up-demo>${esc(t(demo ? 'upDemoOff' : 'upDemoOn'))}</button></span></div>
+      <div class="uphd"><h2>${esc(t('upTitle'))}</h2><span class="uphr">${list.length && !demo ? `<span>${esc(t('upCount')(list.length))}</span>` : ''}<button class="upsample" data-up-demo>${esc(t(demo ? 'upDemoOff' : 'upDemoOn'))}</button>${navs}</span></div>
       ${demo ? `<p class="updemo">${esc(t('upDemoNote'))}</p>` : ''}
-      ${list.length ? `<div class="upgrid">${list.map(card).join('')}</div>` : `<p class="upnone">${esc(t('upNone'))}</p>`}
-      ${later ? `<a class="upmore" href="#/admin/entries/songs">${esc(t('upLater')(later))}</a>` : ''}
+      ${list.length ? `<div class="htl"><div class="htrack">${track}</div></div>` : `<p class="upnone">${esc(t('upNone'))}</p>`}
     </div>`;
+}
+/* ---------- services timeline: every song order, upcoming or past, along one rail ---------- */
+const MONN = { en: MONF.en, ru:['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'] };
+function ruN(n, a, b, c){ return n % 10 === 1 && n % 100 !== 11 ? a : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? b : c; }
+const dayGap = (a, b) => Math.round((new Date(b + 'T12:00:00') - new Date(a + 'T12:00:00')) / 86400000);
+function relDay(iso){
+  const d = dayGap(today(), iso), a = Math.abs(d);
+  if (d === 0) return t('tlToday');
+  if (d === 1) return t('tlTomorrow');
+  if (d === -1) return t('tlYesterday');
+  if (d > 0) return d <= 21 ? t('tlInDays')(d) : t('tlInWeeks')(Math.floor(d / 7));   // days up to three weeks out, then weeks
+  return a < 7 ? t('tlDaysAgo')(a) : a < 60 ? t('tlWeeksAgo')(Math.floor(a / 7)) : t('tlMonthsAgo')(Math.round(a / 30.44));
+}
+const svcOnly = e => e.kind !== 'rehearsal' && !e.cancelled && hasSongs(e);
+const futureServices = () => { const now = today(); return S.events.filter(e => e.date >= now && svcOnly(e)); };
+/* one service timeline, shared by the Services page and the Song history "Service" tab:
+   a node per day down the rail, the song-order cards beside it, newest or soonest first */
+function svcTimeline(list, o){
+  const now = today(), past = !!o.past, nextId = o.nextId || null, rip = S.ripple;
+  setTimeout(() => { S.ripple = false; }, 0);      // the rail draws in once per visit
+  const days = [];
+  list.forEach(e => { const g = days[days.length - 1]; if (g && g.date === e.date) g.evs.push(e); else days.push({ date: e.date, evs: [e] }); });
+  const row = (e, x, i) => { const cp = creditPills(songRow(e.id, x.id));
+    const inner = `<span class="sno">${String(i + 1).padStart(2, '0')}</span><span class="sbody"><span class="stl">${esc(x.title)}${pvTag(x)}</span>${cp ? `<span class="scr">${cp}</span>` : ''}</span>`;
+    return hasLyrics(x) ? `<a class="srow2" href="#/lyrics/${shortId(x.id)}">${inner}${AIC.chev}</a>` : `<div class="srow2">${inner}</div>`; };
+  const card = e => { const songs = songsFor(e.id), nx = e.id === nextId, cx = !!e.cancelled;
+    const plain = past && !o.blue;
+    return `<article class="tlc ${plain ? 'past' : 'up'}${nx ? ' next' : ''}${cx ? ' cx' : ''}">
+      <header class="tlhd${plain ? '' : ' sban'}">
+        <div class="sbtop"><span class="eye">${esc(cx ? t('cancelledEvent') : t(nx ? 'tlNext' : 'songOrder'))}</span><span class="sstat">${esc(t('songsCount')(songs.length))}</span></div>
+        <h3>${esc(e.name || t(e.kind))}</h3>
+        ${cx ? '' : `<div class="sbact">
+          <a class="sbtn" href="#/sheets/order-${shortId(e.id)}">${AIC.play}${esc(t('viewSheets'))}</a>
+          ${o.noShare ? '' : `<button class="sshare" data-share-order="${e.id}" aria-label="${esc(t('shareBtn'))}" title="${esc(t('shareBtn'))}">${AIC.share}</button>`}
+        </div>`}
+      </header>
+      <div class="tlsongs">${songs.map((x, i) => row(e, x, i)).join('')}</div>
+    </article>`; };
+  const monOf = iso => { const [y, m] = iso.split('-').map(Number); return MONN[S.lang][m - 1] + ' ' + y; };
+  let body = '', k = 0, lastMon = '';
+  const step = () => Math.min(++k, 9);
+  if (o.showNow)
+    body += `<div class="tlday now" style="--i:0"><span class="tlnode"></span><div class="tldate"><span class="tlnowp">${esc(t('tlToday'))} · ${esc(dayShort(now))}</span></div></div>`;
+  days.forEach(g => {
+    const mo = monOf(g.date);
+    if (mo !== lastMon) { lastMon = mo; body += `<div class="tlmon" style="--i:${step()}"><span>${esc(mo)}</span></div>`; }
+    const [, m, d] = g.date.split('-').map(Number), wd = WDS[S.lang][new Date(g.date + 'T12:00:00').getDay()];
+    const nx = g.evs.some(e => e.id === nextId);
+    body += `<div class="tlday${nx ? ' next' : ''}" style="--i:${step()}"><span class="tlnode"></span>
+      <div class="tldate"><span class="tlwd">${esc(wd)}</span><strong>${d}</strong><span class="tlbot"><span class="tlmo">${esc(MON[S.lang][m - 1])}</span><em class="tlrel">${esc(relDay(g.date))}</em></span></div>
+      <div class="tlcards">${g.evs.map(card).join('')}</div>${past ? `<em class="tlrel tlrelr">${esc(relDay(g.date))}</em>` : ''}</div>`;
+  });
+  body += `<div class="tlday tlend" style="--i:${step()}"><span class="tlnode"></span><div class="tldate">${o.endTx || ''}</div></div>`;
+  return `<div class="tl ${past ? 'pastl' : 'upl'}${rip ? ' rip' : ''}">${body}</div>`;
+}
+function servicesPage(past){
+  const now = today();
+  const up = futureServices().sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : kindRank(a.kind) - kindRank(b.kind));
+  const old = S.events.filter(e => e.date < now && svcOnly(e)).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : kindRank(a.kind) - kindRank(b.kind));
+  const list = past ? old.slice(0, S.tlPast || 12) : up, more = past ? old.length - list.length : 0;
+  const endTx = past ? (more ? `<button class="tlmore" data-tl-more>${esc(t('tlOlder'))}</button>` : `<span class="tlendtx">${esc(t('tlStart'))}</span>`)
+    : `<span class="tlendtx">${esc(t('tlEndUp'))}</span>`;
+  const empty = past ? `<div class="tlempty"><span class="tlei">${AIC.hist}</span><strong>${esc(t('tlNonePast'))}</strong></div>`
+    : `<div class="tlempty"><span class="tlei">${AIC.cal}</span><strong>${esc(t('tlNoneUp'))}</strong><p>${esc(t('tlNoneUpSub'))}</p><a class="tlmore" href="#/services/past">${esc(t('tlSeePast'))}${AIC.arrow}</a></div>`;
+  const tl = list.length ? svcTimeline(list, { past, blue: true, noShare: past, nextId: !past && up[0] ? up[0].id : null, endTx,
+    showNow: past || list[0].date !== now }) : empty;
+  return `<div class="tlpage">
+    <div class="tabs tltabs"><a href="#/services" class="${past ? '' : 'on'}">${esc(t('tlUp'))}${up.length ? `<b class="tlcnt">${up.length}</b>` : ''}</a><a href="#/services/past" class="${past ? 'on' : ''}">${esc(t('tlPast'))}</a></div>
+    ${tl}
+  </div>`;
 }
 async function planMove(id, date){
   const ev = S.events.find(x => x.id === id);
@@ -5716,7 +6010,11 @@ function editFor(mode, ev){
         base.set(s.id, { pos: i + 1, c: r.conductor_id || '', p: r.pianist_id || '' });
       });
     }
-    S.edit = { key, mode, evId: ev.id, base, sel: new Map(base),
+    const sel = new Map(base);
+    /* nothing marked yet: everyone starts absent and the director taps who came */
+    if (mode === 'att' && (ev.id === 'new' || !hasAtt(ev)))
+      S.singers.forEach(s => { if (s.active !== false) sel.set(s.id, s.joined_on && ev.date && ev.date < s.joined_on ? 'na' : 'absent'); });
+    S.edit = { key, mode, evId: ev.id, base, sel,
                wasCancelled: !!ev.cancelled, cancelled: !!ev.cancelled };
   }
   return S.edit;
@@ -5773,7 +6071,7 @@ function saveBar(mode){
 }
 function markAttendance(ev){
   const E = editFor('att', ev);
-  const n = E.cancelled ? 0 : [...E.sel.values()].filter(v => v === 'absent').length;
+  const n = E.cancelled ? 0 : S.singers.filter(s => s.active !== false && !E.sel.has(s.id)).length;
   const cancelCard = `<div class="pad">
       <button class="btn ${E.cancelled ? '' : 'ghost'}" data-toggle-cancel>${
         esc(E.cancelled ? t('unmarkCancelled') : t('markCancelled'))}</button>
@@ -5782,15 +6080,15 @@ function markAttendance(ev){
   /* The date in the header is editable for an existing entry: tap it, pick a
      new day, and Save moves the whole entry (attendance and songs alike). */
   return `<div class="h"><button class="back" data-cancel-marks="att">‹</button>
-      ${dateBadge(ev)} <span class="n" style="color:var(--red)">${n}</span>
-      <span style="font-size:var(--fs-13);color:var(--muted)">${esc(t('absentN'))}</span></div>` +
+      ${dateBadge(ev)} <span class="n" style="color:var(--green)">${n}</span>
+      <span style="font-size:var(--fs-13);color:var(--muted)">${esc(t('presentN'))}</span></div>` +
     cancelCard +
     (E.cancelled ? '' : `<div class="sec">` + PARTS.map(p => {
       const rows = S.singers.filter(s => s.part === p && s.active !== false);
       if (!rows.length) return '';
       return `<div class="sectbar">${esc(t(p))}</div>` + rows.map(s => {
         const st = E.sel.get(s.id) || 'present';
-        return `<div class="li tap ${st==='absent'?'off':st==='na'?'na':''}" data-toggle-absent="${s.id}" data-event="${ev.id}">
+        return `<div class="li tap ${st==='present'?'here':st==='na'?'na':''}" data-toggle-absent="${s.id}" data-event="${ev.id}">
           <div class="nm">${esc(s.name)}</div>
           <div class="pill">${esc(st==='absent' ? t('wasAbsent') : st==='na' ? t('wasNA') : t('wasPresent'))}</div></div>`;
       }).join('');
@@ -6703,10 +7001,12 @@ function render(){
   else if (r.startsWith('#/rules')) { html += publicNav('rules') + rulesPage(); }
   else if (r.startsWith('#/leaders')) { html += publicNav('leaders') + leaderPage(); }
   else if (r.startsWith('#/seating')) { html += publicNav('seating') + seatingPage(); }
+  else if (r.startsWith('#/services')) { html += publicNav('services') + servicesPage(r.split('?')[0].split('/')[2] === 'past'); }
   else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
   else if (r.startsWith('#/songs')) {
-    if (!S.rangeSet && S.preset !== '36') { S.preset = '36'; S.from = shift(36); S.to = today(); }
     const tab = r.split('/')[2] || 'summary';      // song history opens on the summary
+    const want = tab === 'services' ? '12' : '36';  // the service timeline opens on one year, the rest on three
+    if (!S.rangeSet && S.preset !== want) { S.preset = want; S.from = shift(Number(want)); S.to = today(); }
     const songTabs = `<div class="tabs">
       <a href="#/songs/grid" class="${tab==='grid'?'on':''}">${esc(t('bySong'))}</a>
       <a href="#/songs/services" class="${tab==='services'?'on':''}">${esc(t('byService'))}</a>
@@ -6828,7 +7128,10 @@ async function signIn(){
   if (error) { S.error = error.message; return render(); }
   S.session = data.session; S.error = ''; location.hash = '#/admin/attendance';
 }
+/* the sideways timeline keeps its place when the page redraws (a date moved, a song order deleted) */
+document.addEventListener('scroll', e => { const x = e.target; if (x && x.classList && x.classList.contains('htl')) S.htlX = x.scrollLeft; }, { capture: true, passive: true });
 function afterRender(){
+  { const hx = document.querySelector('.htl'); if (hx && S.htlX) hx.scrollLeft = S.htlX; }
   lbCountUp();
   document.querySelectorAll('textarea.lyrta').forEach(autoGrow);
   if (wasLoading) { wasLoading = false; fadeInBody(); }
@@ -7008,7 +7311,7 @@ document.addEventListener('click', e => {
   if (a && a.dataset.song) track('audio', a.dataset.song);
 }, true);
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -7313,6 +7616,9 @@ document.addEventListener('click', async e => {
     S.menuOpen = true; document.body.classList.add('mlock'); return render();
   }
   if (el.hasAttribute('data-menu-x')) return dismissMenu();
+  if (el.hasAttribute('data-hist-more')) { S.histN = (S.histN || HIST_STEP) + HIST_STEP; S.ripple = false; return render(); }
+  if (d.htl) { const h = document.querySelector('.htl'); if (h) h.scrollBy({ left: Number(d.htl) * Math.max(300, h.clientWidth * .8), behavior: calm() ? 'auto' : 'smooth' }); return; }
+  if (el.hasAttribute('data-tl-more')) { S.tlPast = (S.tlPast || 12) + 12; return render(); }
   if (d.shareOrder) {
     const ev = S.events.find(x => String(x.id) === d.shareOrder);
     if (!ev) return;
