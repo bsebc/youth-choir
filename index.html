@@ -1320,8 +1320,6 @@
     0%,100%{box-shadow:var(--shadow-card)}
     25%,75%{box-shadow:var(--shadow-card),0 0 0 3px rgba(var(--glow),.16),0 14px 40px -12px rgba(var(--glow),.45)}
     50%{box-shadow:var(--shadow-card),0 0 0 1px rgba(var(--glow),.08),0 10px 30px -16px rgba(var(--glow),.25)}}
-  /* once the ripple has spread, the main button pulses twice to invite a tap */
-  .sban.rip .sbtn{animation:btnpulse 1.8s ease-in-out 2.4s both}
   @keyframes btnpulse{
     0%,100%{box-shadow:0 6px 14px -6px rgba(10,10,50,.45),0 0 0 0 rgba(255,255,255,0)}
     25%,75%{box-shadow:0 6px 14px -6px rgba(10,10,50,.45),0 0 0 5px rgba(255,255,255,.22),0 0 22px 4px rgba(255,255,255,.35)}
@@ -1330,6 +1328,10 @@
   .sbtop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
   .eye{font-size:10.5px;font-weight:650;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
   .eye::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold)}
+  /* home: the dot blinks a few times on each visit, like a "recording" light */
+  .sban.rip .eye::before{animation:eyeblink 1.1s ease-in-out .5s 3 both}
+  @keyframes eyeblink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(201,162,39,0),0 0 8px 1px rgba(201,162,39,.65)}50%{opacity:.15;box-shadow:0 0 0 0 rgba(201,162,39,0),0 0 0 0 rgba(201,162,39,0)}}
+  @media (prefers-reduced-motion:reduce){ .sban.rip .eye::before{animation:none} }
   .sstat{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);font-size:11.5px;color:var(--chrome-text-2);padding:5px 9px;border-radius:7px;white-space:nowrap}
   .sban h2{margin:0;font-size:28px;font-weight:650;letter-spacing:-.8px;line-height:1.15}
   .sdate{margin:8px 0 0;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--chrome-text-2)}
@@ -1531,10 +1533,10 @@
   .tlc.cx .sban h3{color:var(--chrome-text-2)}
   .tabs.tltabs{margin:22px auto 26px;max-width:340px;width:100%}
   .tlcnt{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;margin-left:7px;border-radius:999px;background:var(--blue);color:#fff;font-size:11px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
-  .tl{--rx:114px;position:relative;display:flex;flex-direction:column;gap:24px;padding:2px 0 12px;width:fit-content;max-width:100%;min-width:0;margin:0 auto}   /* as wide as its cards, centred on the page */
-  .tl::before{content:'';position:absolute;left:calc(var(--rx) - 1px);top:14px;bottom:24px;width:2px;border-radius:2px;
+  .tline{--rx:114px;position:relative;display:flex;flex-direction:column;gap:24px;padding:2px 0 12px;width:fit-content;max-width:100%;min-width:0;margin:0 auto}   /* as wide as its cards, centred on the page */
+  .tline::before{content:'';position:absolute;left:calc(var(--rx) - 1px);top:14px;bottom:24px;width:2px;border-radius:2px;
     background:linear-gradient(to bottom,var(--gold) 0,var(--blue) 70px,var(--blue-line) 260px,var(--blue-line) calc(100% - 80px),transparent)}
-  .tl.pastl::before{background:repeating-linear-gradient(to bottom,var(--line-strong-2) 0 5px,transparent 5px 11px)}
+  .tline.pastl::before{background:repeating-linear-gradient(to bottom,var(--line-strong-2) 0 5px,transparent 5px 11px)}
   .tlday{position:relative;display:grid;grid-template-columns:96px 36px auto auto minmax(0,1fr);align-items:start}
   .tlnode{grid-column:2;grid-row:1;justify-self:center;position:relative;z-index:1;box-sizing:border-box;width:14px;height:14px;margin-top:10px;border-radius:50%;background:var(--card);border:3px solid var(--blue)}
   .tldate{grid-column:1;grid-row:1;display:flex;flex-direction:column;align-items:center;text-align:center;line-height:1;min-width:0}
@@ -1543,7 +1545,7 @@
   .tlmo{font-size:11px;font-weight:650;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   .tlrel{margin-top:10px;font-style:normal;font-size:11.5px;font-weight:650;line-height:1.25;padding:4px 9px;border-radius:999px;background:var(--blue-wash);color:var(--blue-text);text-wrap:balance}
   .tlcards{grid-column:3;grid-row:1;display:flex;flex-wrap:wrap;gap:14px;min-width:0;padding-left:8px}
-  .tl .tlc{width:380px;max-width:100%}
+  .tline .tlc{width:380px;max-width:100%}
   .tlday.next .tlnode{width:20px;height:20px;margin-top:7px;background:var(--blue);border:4px solid var(--card);box-shadow:0 0 0 2px var(--blue);animation:tlpulse 2.6s ease-out infinite}
   @keyframes tlpulse{0%{box-shadow:0 0 0 2px var(--blue),0 0 0 2px rgba(var(--blue-rgb),.4)}75%,100%{box-shadow:0 0 0 2px var(--blue),0 0 0 14px rgba(var(--blue-rgb),0)}}
   .tlday.next .tldate strong{color:var(--blue-text)}
@@ -1589,12 +1591,12 @@
   .tlempty strong{font-size:16px;font-weight:650}
   .tlempty p{margin:0 0 10px;font-size:13.5px;color:var(--muted);max-width:340px;text-wrap:pretty}
   /* wide screens: each day's dot and date sit level with the middle of its cards */
-  @media (min-width:700px){ .tl .tlday > .tlnode,.tl .tlday > .tldate{align-self:center;margin-top:0}
+  @media (min-width:700px){ .tline .tlday > .tlnode,.tline .tlday > .tldate{align-self:center;margin-top:0}
     /* equal space above and below the day number, so the number itself sits level with the dot */
-    .tl .tlday:not(.now):not(.tlend) > .tldate{display:grid;grid-template-rows:1fr auto 1fr;justify-items:center}
-    .tl .tldate > .tlwd{align-self:end}
-    .tl .tldate > strong{margin:5px 0}
-    .tl .tldate > .tlbot{display:flex;flex-direction:column;align-items:center;align-self:start} }
+    .tline .tlday:not(.now):not(.tlend) > .tldate{display:grid;grid-template-rows:1fr auto 1fr;justify-items:center}
+    .tline .tldate > .tlwd{align-self:end}
+    .tline .tldate > strong{margin:5px 0}
+    .tline .tldate > .tlbot{display:flex;flex-direction:column;align-items:center;align-self:start} }
   .tlbot{display:contents}
   /* past: "2 days ago" is a badge just to the right of the cards (above their right edge on phones) */
   .pastl .tldate .tlrel{display:none}
@@ -1602,14 +1604,14 @@
   @media (max-width:699px){
     .pastl .tlday{grid-template-columns:22px minmax(0,1fr)}
     .tlday > .tlrelr{grid-column:2;grid-row:1;justify-self:end;margin:0} }
-  .tl.rip::before{transform-origin:top;animation:tlrail 1.1s var(--ease-out) both}
+  .tline.rip::before{transform-origin:top;animation:tlrail 1.1s var(--ease-out) both}
   @keyframes tlrail{from{transform:scaleY(0)}}
-  .tl.rip > *{animation:tlin .55s var(--ease-out) both;animation-delay:calc(var(--i,0) * 70ms + 60ms)}
+  .tline.rip > *{animation:tlin .55s var(--ease-out) both;animation-delay:calc(var(--i,0) * 70ms + 60ms)}
   @keyframes tlin{from{opacity:0;transform:translateY(12px)}}
-  @media (prefers-reduced-motion:reduce){ .tl.rip::before,.tl.rip > *,.tlday.next .tlnode{animation:none} }
+  @media (prefers-reduced-motion:reduce){ .tline.rip::before,.tline.rip > *,.tlday.next .tlnode{animation:none} }
   @media (max-width:699px){
     .tabs.tltabs{max-width:none;margin:14px 0 22px}
-    .tl{--rx:11px;gap:22px}
+    .tline{--rx:11px;gap:22px}
     .tlday{grid-template-columns:22px minmax(0,1fr);column-gap:12px;row-gap:10px}
     .tlnode,.tlday.next .tlnode,.pastl .tlnode,.tlday.now .tlnode,.tlday.tlend .tlnode{grid-column:1;align-self:center;margin-top:0}
     .tldate{grid-column:2;flex-direction:row;align-items:baseline;gap:7px;text-align:left;padding:0}
@@ -1617,8 +1619,8 @@
     .tlwd,.tlmo{font-size:12px}
     .tlrel{margin:0 0 0 4px;align-self:baseline}   /* the pill's words sit on the same line as the date */
     .tlcards{grid-column:2;grid-row:2;flex-direction:column;padding-left:0;gap:12px}
-    .tl{width:auto;margin:0}
-    .tl .tlc{width:auto}
+    .tline{width:auto;margin:0}
+    .tline .tlc{width:auto}
     .tlday.now .tldate,.tlday.tlend .tldate{grid-column:2;padding:0}
     .tlendtx{padding-top:0}
     .tlmon span{left:0;transform:translate(0,-50%)}
@@ -1780,7 +1782,7 @@
     .srow .scap{display:block;padding:0 2px;font-size:12px;font-weight:600;line-height:15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transform:translateY(5px);transition:opacity .16s ease,transform .26s ease}
     .songc.open .srow .scap{opacity:1;transform:none;transition-delay:.05s}
     .srow .scap b{font-weight:700;color:var(--muted);margin-right:6px;font-variant-numeric:tabular-nums}
-    .srow .scap i{font-style:normal;font-weight:500;color:var(--faint)}
+    .srow .scap i{display:none}   /* the category badge already says it; the tray caption is just the title */
     .srow .sbtns{display:flex;gap:6px;width:100%}
     .srow .sbtns .mini{flex:1 1 0;min-width:0;width:auto;height:46px;padding:0 4px;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
       font-size:11px;font-weight:600;line-height:1.1;text-decoration:none;opacity:0;transform:translateX(26px);transition:opacity .14s ease,transform .2s ease,background .15s ease}
@@ -2875,7 +2877,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* ---------- i18n ---------- */
 const STR = {
-  en:{attendance:'Attendance',songs:'Song history',signin:'Sign in',signout:'Sign out',grid:'Grid',summary:'Summary',
+  en:{attendance:'Attendance',songs:'History',signin:'Sign in',signout:'Sign out',grid:'Grid',summary:'Summary',
     bySong:'By song',byService:'Service',all:'All',services:'Services',rehearsals:'Rehearsals',m1:'1 mo',m3:'3 mo',m6:'6 mo',year:'Year',y2:'2 years',y3:'3 years',rng1:'Past Month',rng24:'Past 2 Years',rng3:'Past 3 Months',rng6:'Past 6 Months',rng12:'Past Year',rng36:'Past 3 Years',rngall:'All Time',
     singer:'Singer',song:'Song',times:'Times',last:'Last sung',present:'present',absent:'absent',notListed:'not in choir yet',service:'service',
     sung:'sung at this service',labels:'M — morning service · E — evening service · R — rehearsal',
@@ -2985,7 +2987,7 @@ const STR = {
     home:'Home',homeSub:'Youth choir attendance and song ledger',
     tAttGrid:'Attendance',tAttGridSub:'Who was at each rehearsal and service',
     tAttSum:'Attendance summary',tAttSumSub:'Percentage per singer',
-    tSongGrid:'Song history',tSongGridSub:'What was sung, service by service',
+    tSongGrid:'History',tSongGridSub:'What was sung, service by service',
     tSongSvc:'By service',tSongSvcSub:'A list of every service and its songs',
     tSongSum:'Song summary',tSongSumSub:'How often each song is sung',
     tAdmin:'Admin',tAdminSub:'Manage attendance, songs, members, sheets and more',
@@ -2994,13 +2996,13 @@ const STR = {
     deleteSinger:'Delete this singer? Past marks stay in the ledger.',deleteSong:'Delete this song? Past services keep their record.',
     renameSinger:'Name',renameSong:'Title',soprano:'SOPRANO',alto:'ALTO',tenor:'TENOR',bass:'BASS',
     singersN:n=>n+' singers',songsN:n=>n+' songs',sungN:(n,d)=>'sung '+n+'× · last '+(d||'—'),wasPresent:'Present',wasAbsent:'Absent',wasNA:'Not listed',
-    futureSvc:'Future services',svcTitle:'Services',svcSub:'Song orders for every service, laid out by date.',tlUp:'Upcoming',tlPast:'Past',tlNext:'Next up',
+    futureSvc:'Future services',songTab:'Song',upcomingSvc:'Upcoming service',svcTitle:'Services',svcSub:'Song orders for every service, laid out by date.',tlUp:'Upcoming',tlPast:'Past',tlNext:'Next up',
     tlToday:'Today',tlTomorrow:'Tomorrow',tlYesterday:'Yesterday',tlInDays:n=>'In '+n+' days',tlInWeeks:n=>n===1?'In 1 week':'In '+n+' weeks',
     tlDaysAgo:n=>n+' days ago',tlWeeksAgo:n=>n===1?'1 week ago':n+' weeks ago',tlMonthsAgo:n=>n===1?'1 month ago':n+' months ago',
     tlEndUp:'That’s everything planned so far.',tlNoneUp:'Nothing planned yet',tlNoneUpSub:'When the director plans a song order, it shows up here.',
     tlSeePast:'See past services',tlOlder:'Show older services',tlStart:'That’s the earliest service on record.',tlNonePast:'No past services yet.',tlEarlier:'Earlier',tlRangeStart:'That’s the start of the selected period.',tlShowN:n=>'Show '+n+' more',tlLeft:n=>n===1?'1 more in this period':n+' more in this period',tlLaterBtn:'Later',
     tapHint:'Everyone starts as absent. Tap a name to mark them present.',naNote:'“Not listed” means the singer was not in the choir yet — those rehearsals are left out of their percentage.'},
-  ru:{attendance:'Посещаемость',songs:'История песен',signin:'Вход',signout:'Выйти',grid:'Сетка',summary:'Сводка',
+  ru:{attendance:'Посещаемость',songs:'История',signin:'Вход',signout:'Выйти',grid:'Сетка',summary:'Сводка',
     bySong:'По песням',byService:'Служения',all:'Всё',services:'Служения',rehearsals:'Спевки',m1:'1 мес',m3:'3 мес',m6:'Полгода',year:'Год',y2:'2 года',y3:'3 года',rng1:'Последний месяц',rng24:'Последние 2 года',rng3:'Последние 3 месяца',rng6:'Последние полгода',rng12:'Последние 12 месяцев',rng36:'Последние 3 года',rngall:'За всё время',
     singer:'Хорист',song:'Песня',times:'Всего',last:'Последний',present:'был',absent:'не был',notListed:'ещё не в хоре',service:'служение',
     sung:'пели в это служение',labels:'Ут — утро · Вч — вечер · Сп — спевка',
@@ -3113,7 +3115,7 @@ const STR = {
     sessionLost:'Сеанс истёк. Войдите снова.',
     tAttGrid:'Посещаемость',tAttGridSub:'Кто был на спевках и служениях',
     tAttSum:'Сводка посещаемости',tAttSumSub:'Процент по каждому хористу',
-    tSongGrid:'История песен',tSongGridSub:'Что пели на каждом служении',
+    tSongGrid:'История',tSongGridSub:'Что пели на каждом служении',
     tSongSvc:'По служениям',tSongSvcSub:'Список служений и их песнопений',
     tSongSum:'Сводка песен',tSongSumSub:'Как часто поют каждую песню',
     tAdmin:'Админка',tAdminSub:'Управление: посещаемость, песни, хористы, ноты и другое',
@@ -3122,7 +3124,7 @@ const STR = {
     deleteSinger:'Удалить хориста? Прошлые отметки останутся в журнале.',deleteSong:'Удалить песню? История служений сохранится.',
     renameSinger:'Имя',renameSong:'Название',soprano:'СОПРАНО',alto:'АЛЬТ',tenor:'ТЕНОР',bass:'БАС',
     singersN:n=>n+' чел.',songsN:n=>n+' песен',sungN:(n,d)=>'спето '+n+' · посл. '+(d||'—'),wasPresent:'Был',wasAbsent:'Не был',wasNA:'Не в составе',
-    futureSvc:'Будущие служения',svcTitle:'Служения',svcSub:'Порядок песен для каждого служения — по датам.',tlUp:'Предстоящие',tlPast:'Прошедшие',tlNext:'Следующее',
+    futureSvc:'Будущие служения',songTab:'Песни',upcomingSvc:'Ближайшее служение',svcTitle:'Служения',svcSub:'Порядок песен для каждого служения — по датам.',tlUp:'Предстоящие',tlPast:'Прошедшие',tlNext:'Следующее',
     tlToday:'Сегодня',tlTomorrow:'Завтра',tlYesterday:'Вчера',tlInDays:n=>'Через '+n+' '+ruN(n,'день','дня','дней'),tlInWeeks:n=>n===1?'Через неделю':'Через '+n+' '+ruN(n,'неделю','недели','недель'),
     tlDaysAgo:n=>n+' '+ruN(n,'день','дня','дней')+' назад',tlWeeksAgo:n=>n===1?'Неделю назад':n+' '+ruN(n,'неделю','недели','недель')+' назад',tlMonthsAgo:n=>n===1?'Месяц назад':n+' '+ruN(n,'месяц','месяца','месяцев')+' назад',
     tlEndUp:'Пока это всё, что запланировано.',tlNoneUp:'Пока ничего не запланировано',tlNoneUpSub:'Когда регент составит порядок песен, он появится здесь.',
@@ -3276,32 +3278,17 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.35.15';
+const VERSION = '5.36.3';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
-    'Timelines on computers: the weekday, date and month are centred in their column',
-    'Services page: no big title; the Upcoming / Past switch is centred',
-    'Timelines on computers: the line and cards are centred on the page, with every card the same width',
-    'Past timelines: “2 days ago” is a badge just to the right of the cards (above their right edge on phones)',
-    'Timelines: “2 days ago” and similar labels now sit on the same line as the date',
-    'Timelines on computers: the big day number lines up exactly with its dot',
-    'Services → Past: cards match Song history, with the blue banner and no Share button',
-    'Plan a service: the sideways timeline only labels a month when it changes',
-    'Timelines on computers: each day’s dot and date now line up with the middle of its cards',
-    'Song history → Service: cards have the blue song-order banner; the Share buttons are gone from this page',
-    'Timelines: upcoming services count down in days for the next three weeks, then in weeks',
-    'Home song order: the Share button now sits in the bottom-right corner of the banner',
-    'Song history → Service: opens on the past year and shows 12 services at a time, with “Show more” at the bottom',
-    'Song history → Service: services now sit on the same timeline as the Services page',
-    'Home song order: “Future services” is now a small link in the top corner; tapping a song opens View & Listen',
-    'Plan a service on phones: swiping the timeline always comes to rest neatly on a card',
-    'Plan a service on phones: the timeline opens on the first upcoming card',
-    'Plan a service: upcoming services now sit on a timeline you scroll sideways, with every planned service, not just the next 8 weeks',
-    'Services timeline: tap “Future services” on the home song-order card to see every planned service on a timeline, with past services one tap away',
+    'Home: the song order card always shows the next planned service, even weeks ahead; tap a song to open View & Listen',
+    'Services: a new timeline of every upcoming service, with past services one tap away — open it from “Future services” on the home card',
+    'History (was Song history): the By song grid is gone and Summary is now called Song; the Service tab shows services on the same timeline, opening on the past year with “Show more” at the bottom',
+    'Plan a service: every planned service on a timeline you swipe sideways',
     'Attendance: everyone starts as absent (grey); tap the singers who came to mark them present (green)',
     'Phone tab bar: Songs is now right after Home',
     'Admins: editing a recording link or removing a PDF now opens a small window',
@@ -3319,25 +3306,10 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
-    'Ленты на компьютере: день недели, число и месяц выровнены по центру',
-    'Страница «Служения»: без крупного заголовка; переключатель «Предстоящие / Прошедшие» по центру',
-    'Ленты на компьютере: линия и карточки по центру страницы, все карточки одной ширины',
-    'Прошедшие ленты: «2 дня назад» — значок справа от карточек (на телефоне — над их правым краем)',
-    'Ленты: подписи вроде «2 дня назад» теперь на одной линии с датой',
-    'Ленты на компьютере: крупное число дня точно напротив своей точки',
-    'Служения → Прошедшие: карточки как в истории песен — синий баннер, без кнопки «Поделиться»',
-    'Планирование: на боковой ленте месяц подписан, только когда он меняется',
-    'Ленты на компьютере: точка и дата каждого дня теперь по центру карточек',
-    'История песен → Служения: у карточек синий баннер, как у порядка песен; кнопок «Поделиться» здесь больше нет',
-    'Ленты служений: ближайшие три недели — отсчёт в днях, дальше — в неделях',
-    'Порядок песен на главной: кнопка «Поделиться» теперь в правом нижнем углу баннера',
-    'История песен → Служения: открывается на последнем годе и показывает по 12 служений, внизу — «Показать ещё»',
-    'История песен → Служения: служения теперь на такой же ленте, как на странице «Служения»',
-    'Порядок песен на главной: «Будущие служения» — маленькая ссылка в углу; нажатие на песню открывает ноты и записи',
-    'Планирование на телефоне: лента при пролистывании всегда аккуратно останавливается на карточке',
-    'Планирование на телефоне: лента сразу начинается с ближайшего служения',
-    'Планирование: предстоящие служения теперь на ленте, которая листается вбок, — все запланированные, а не только на 8 недель вперёд',
-    'Лента служений: нажмите «Будущие служения» на карточке порядка песен — все запланированные служения на одной ленте, прошедшие — во второй вкладке',
+    'Главная: карточка порядка песен всегда показывает следующее запланированное служение, даже через несколько недель; нажатие на песню открывает ноты и записи',
+    'Служения: новая лента всех предстоящих служений, прошедшие — в соседней вкладке; откройте её через «Будущие служения» на карточке главной',
+    'История (раньше «История песен»): сетки «По песням» больше нет, «Сводка» теперь называется «Песни»; во вкладке «Служения» — такая же лента, открывается на последнем годе, внизу — «Показать ещё»',
+    'Планирование: все запланированные служения на ленте, которая листается вбок',
     'Посещаемость: сначала все отмечены как отсутствующие (серым); нажмите на тех, кто пришёл, — они станут зелёными',
     'Нижняя панель на телефоне: «Песни» теперь сразу после «Главной»',
     'Админ: ссылка на запись и удаление PDF теперь открываются в отдельном окне',
@@ -3834,20 +3806,20 @@ function normRoute(h){
   const m = (h || '').match(/^#\/o\/([^/?&]+)$/);
   return m ? '#/sheets/order-' + m[1] : (h || '#/home');
 }
-/* The order the public sees. Orders can be planned weeks ahead, so only services up
-   to this coming Sunday count; the next week's order appears on Monday. On a day
-   with both, the morning order shows until noon, then the evening one. */
+/* The order the public sees: today's service while it is today (on a day with both,
+   the morning order until noon, then the evening one), otherwise the next planned
+   service however far off it is. With nothing planned ahead, the most recent one. */
 const kindRank = k => k === 'morning' ? 0 : k === 'evening' ? 2 : 1;
 function weekEnd(iso){ const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + (7 - d.getDay()) % 7); return localISO(d); }
 function weekStart(iso){ const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return localISO(d); }
 function latestService(){
-  const now = today(), end = weekEnd(now);
-  const c = S.events.filter(e => e.kind !== 'rehearsal' && !e.cancelled && e.date <= end && songsFor(e.id).length);
+  const now = today();
+  const c = S.events.filter(e => e.kind !== 'rehearsal' && !e.cancelled && songsFor(e.id).length)
+    .sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : kindRank(a.kind) - kindRank(b.kind));
   if (!c.length) return null;
-  const d = c.reduce((m, e) => e.date > m ? e.date : m, '');
-  const day = c.filter(e => e.date === d).sort((a, b) => kindRank(a.kind) - kindRank(b.kind));
-  const early = d > now || (d === now && new Date().getHours() < 12);
-  return early ? day[0] : day[day.length - 1];
+  const day = c.filter(e => e.date === now);
+  if (day.length) return new Date().getHours() < 12 ? day[0] : day[day.length - 1];
+  return c.find(e => e.date > now) || c[c.length - 1];
 }
 const inRange  = (d,a,b) => d >= a && d <= b;
 
@@ -4734,9 +4706,9 @@ function homePage(){
   };
   const service = svc ? `<section class="dsvc${S.ripple ? ' rip' : ''}">
       <div class="sban${S.ripple ? ' rip' : ''}">
-        <div class="sbtop"><span class="eye">${esc(t('songOrder'))}</span><a class="sstat sfut" href="#/services">${esc(t('futureSvc'))}${AIC.chev}</a></div>
+        <div class="sbtop"><span class="eye">${esc(t(svc.date >= now ? 'upcomingSvc' : 'songOrder'))}</span><a class="sstat sfut" href="#/services">${esc(t('futureSvc'))}${AIC.chev}</a></div>
         <h2>${esc(svc.name || t(svc.kind))}</h2>
-        <p class="sdate">${AIC.cal}${esc(fmtLong(svc.date))} · ${esc(t('songsCount')(list.length))}</p>
+        <p class="sdate">${AIC.cal}${esc(fmtLong(svc.date))}</p>
         <div class="sbact">
           <a class="sbtn" href="#/sheets/order-${shortId(svc.id)}">${AIC.play}${esc(t('viewSheets'))}</a>
           <button class="sshare" data-share-order="${svc.id}" aria-label="${esc(t('shareBtn'))}" title="${esc(t('shareBtn'))}">${AIC.share}</button>
@@ -5852,7 +5824,7 @@ function svcTimeline(list, o){
       <div class="tlcards">${g.evs.map(card).join('')}</div>${past ? `<em class="tlrel tlrelr">${esc(relDay(g.date))}</em>` : ''}</div>`;
   });
   body += `<div class="tlday tlend" style="--i:${step()}"><span class="tlnode"></span><div class="tldate">${o.endTx || ''}</div></div>`;
-  return `<div class="tl ${past ? 'pastl' : 'upl'}${rip ? ' rip' : ''}">${body}</div>`;
+  return `<div class="tline ${past ? 'pastl' : 'upl'}${rip ? ' rip' : ''}">${body}</div>`;
 }
 function servicesPage(past){
   const now = today();
@@ -6632,8 +6604,7 @@ function sheetsPage(kind){
       const row = `<div class="li srow${S.session ? ' tap' : ''}"${S.session ? ` data-adm-row="${s.id}"` : ''}>${left}<div class="stray">${cap}<div class="acts sbtns">${btns}</div></div>${chev}</div>`
         + (S.admRow === s.id ? admin : '');
       return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}${S.actOpen === s.id ? ' open' : ''}" data-srow="${s.id}">${row}</div>`;
-    }).join('') + foot +
-    (S.session ? `<div class="note">${esc(t('adminOnlyNote'))}</div>` : '');
+    }).join('') + foot;
 }
 /* the music page's two small dialogs: a song's recording link, and removing its PDF */
 function songModal(){
@@ -7004,21 +6975,19 @@ function render(){
   else if (r.startsWith('#/services')) { html += publicNav('services') + servicesPage(r.split('?')[0].split('/')[2] === 'past'); }
   else if (r.startsWith('#/home')) { html += publicNav('home') + homePage(); }
   else if (r.startsWith('#/songs')) {
-    const tab = r.split('/')[2] || 'summary';      // song history opens on the summary
+    let tab = r.split('/')[2] || 'summary';        // history opens on the song summary
+    if (!['services', 'summary', 'people'].includes(tab)) tab = 'summary';   // the old By song grid is gone; its links land here
     const want = tab === 'services' ? '12' : '36';  // the service timeline opens on one year, the rest on three
     if (!S.rangeSet && S.preset !== want) { S.preset = want; S.from = shift(Number(want)); S.to = today(); }
     const songTabs = `<div class="tabs">
-      <a href="#/songs/grid" class="${tab==='grid'?'on':''}">${esc(t('bySong'))}</a>
       <a href="#/songs/services" class="${tab==='services'?'on':''}">${esc(t('byService'))}</a>
-      <a href="#/songs/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a>
+      <a href="#/songs/summary" class="${tab==='summary'?'on':''}">${esc(t('songTab'))}</a>
       <a href="#/songs/people" class="${tab==='people'?'on':''}">${esc(t('people'))}</a></div>`;
     html += publicNav('songs') + pageHead(t('songs'), t('songsSub'));
     if (tab === 'people') html += songTabs + rangeCtrl('sum') + songsPeople();
-    else if (tab === 'summary') html += songTabs + rangeCtrl('sum')
+    else if (tab !== 'services') html += songTabs + rangeCtrl('sum')
       + `<div class="searchrow sumrow" style="display:flex;gap:8px">${qField()}${catSelect()}${sortSelect()}</div>` + songsSummary();
-    else if (tab === 'services') html += songTabs + rangeCtrl('grid') + songsByService();
-    else html += songTabs + songsGrid(rangeCtrl('grid')
-      + `<div class="searchrow" style="display:flex;gap:8px">${qField()}${catSelect()}</div>`);
+    else html += songTabs + rangeCtrl('grid') + songsByService();
   }
   else {
     const tab = r.split('/')[2] || 'summary';
