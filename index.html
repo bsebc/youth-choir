@@ -2328,6 +2328,7 @@
   .lbt h2::before{content:"";width:22px;height:22px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff4c2,#f2c94c 45%,#c9971d 80%,#8a620a);box-shadow:inset 0 1px 1px rgba(255,255,255,.7),0 1px 3px rgba(0,0,0,.35)}
   .lbt p{margin:6px 0 14px;font-size:13px;color:rgba(255,255,255,.72)}
   .lbtile .tlink{color:#f2c94c}
+  .lbtile .lbfull{display:none}
   .lbmini{display:flex;align-items:flex-end;gap:10px}
   .lbm{display:flex;flex-direction:column;align-items:center;gap:6px;width:92px}
   .lbtile .lbm .lbav{width:46px;height:46px;font-size:15px;background:rgba(255,255,255,.14);color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.22)}
@@ -2380,9 +2381,12 @@
     .lbt{grid-area:head;display:flex;align-items:center;gap:10px;min-width:0}
     .lbt h2{flex:none;font-size:17px;justify-content:flex-start}
     .lbt p{flex:1 1 auto;min-width:0;margin:1px 0 0;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .lbtile .tlink{margin-left:auto;width:36px;height:36px;padding:0;gap:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0;line-height:0;background:rgba(255,255,255,.1);border:1px solid rgba(242,201,76,.35)}
+    /* a small squared chip, like "Future services" on the song-order card */
+    .lbtile .tlink{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:3px;padding:5px 6px 5px 9px;border-radius:7px;font-size:11.5px;font-weight:600;line-height:1.2;white-space:nowrap;
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2)}
     .lbtile .tlink > *{margin:0 !important;transform:none !important;flex:none}
-    .lbtile .tlink .ai,.lbtile .tlink svg{width:16px;height:16px}
+    .lbtile .tlink .ai,.lbtile .tlink svg{width:12px;height:12px}
+    .lbtile .lbsee{display:none} .lbtile .lbfull{display:inline}
     .lbmini{grid-area:pod;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:8px}
     .lbm,.lbm.multi{width:auto;min-width:0}
     .lbfacts{grid-area:facts;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;justify-self:stretch;min-width:0;text-align:left}
@@ -2996,7 +3000,7 @@ const STR = {
     deleteSinger:'Delete this singer? Past marks stay in the ledger.',deleteSong:'Delete this song? Past services keep their record.',
     renameSinger:'Name',renameSong:'Title',soprano:'SOPRANO',alto:'ALTO',tenor:'TENOR',bass:'BASS',
     singersN:n=>n+' singers',songsN:n=>n+' songs',sungN:(n,d)=>'sung '+n+'× · last '+(d||'—'),wasPresent:'Present',wasAbsent:'Absent',wasNA:'Not listed',
-    futureSvc:'Future services',songTab:'Song',upcomingSvc:'Upcoming service',svcTitle:'Services',svcSub:'Song orders for every service, laid out by date.',tlUp:'Upcoming',tlPast:'Past',tlNext:'Next up',
+    futureSvc:'Future services',lbFull:'Full board',songTab:'Song',upcomingSvc:'Upcoming service',svcTitle:'Services',svcSub:'Song orders for every service, laid out by date.',tlUp:'Upcoming',tlPast:'Past',tlNext:'Next up',
     tlToday:'Today',tlTomorrow:'Tomorrow',tlYesterday:'Yesterday',tlInDays:n=>'In '+n+' days',tlInWeeks:n=>n===1?'In 1 week':'In '+n+' weeks',
     tlDaysAgo:n=>n+' days ago',tlWeeksAgo:n=>n===1?'1 week ago':n+' weeks ago',tlMonthsAgo:n=>n===1?'1 month ago':n+' months ago',
     tlEndUp:'That’s everything planned so far.',tlNoneUp:'Nothing planned yet',tlNoneUpSub:'When the director plans a song order, it shows up here.',
@@ -3124,7 +3128,7 @@ const STR = {
     deleteSinger:'Удалить хориста? Прошлые отметки останутся в журнале.',deleteSong:'Удалить песню? История служений сохранится.',
     renameSinger:'Имя',renameSong:'Название',soprano:'СОПРАНО',alto:'АЛЬТ',tenor:'ТЕНОР',bass:'БАС',
     singersN:n=>n+' чел.',songsN:n=>n+' песен',sungN:(n,d)=>'спето '+n+' · посл. '+(d||'—'),wasPresent:'Был',wasAbsent:'Не был',wasNA:'Не в составе',
-    futureSvc:'Будущие служения',songTab:'Песни',upcomingSvc:'Ближайшее служение',svcTitle:'Служения',svcSub:'Порядок песен для каждого служения — по датам.',tlUp:'Предстоящие',tlPast:'Прошедшие',tlNext:'Следующее',
+    futureSvc:'Будущие служения',lbFull:'Весь рейтинг',songTab:'Песни',upcomingSvc:'Ближайшее служение',svcTitle:'Служения',svcSub:'Порядок песен для каждого служения — по датам.',tlUp:'Предстоящие',tlPast:'Прошедшие',tlNext:'Следующее',
     tlToday:'Сегодня',tlTomorrow:'Завтра',tlYesterday:'Вчера',tlInDays:n=>'Через '+n+' '+ruN(n,'день','дня','дней'),tlInWeeks:n=>n===1?'Через неделю':'Через '+n+' '+ruN(n,'неделю','недели','недель'),
     tlDaysAgo:n=>n+' '+ruN(n,'день','дня','дней')+' назад',tlWeeksAgo:n=>n===1?'Неделю назад':n+' '+ruN(n,'неделю','недели','недель')+' назад',tlMonthsAgo:n=>n===1?'Месяц назад':n+' '+ruN(n,'месяц','месяца','месяцев')+' назад',
     tlEndUp:'Пока это всё, что запланировано.',tlNoneUp:'Пока ничего не запланировано',tlNoneUpSub:'Когда регент составит порядок песен, он появится здесь.',
@@ -3278,7 +3282,7 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.36.3';
+const VERSION = '5.36.4';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
@@ -4781,7 +4785,7 @@ function homePage(){
     if (!G.length) return '';
     const hot = hotStreaks(5)[0], sec = sectionRace(T)[0];
     return `<a class="dpanel lbtile" href="#/leaders"><span class="lbglow" aria-hidden="true"></span><span class="lbtw" aria-hidden="true"><i style="left:13%;top:24%"></i><i style="left:84%;top:17%;animation-delay:1.4s"></i><i style="left:70%;top:70%;animation-delay:2.6s"></i><i style="left:27%;top:62%;animation-delay:3.3s"></i></span>
-      <div class="lbt"><h2><span class="lbtro">${AIC.trophy}</span>${esc(t('lbTitle'))}</h2><p>${esc(t('rng3'))}</p><span class="tlink">${esc(t('lbSee'))}${AIC.arrow}</span></div>
+      <div class="lbt"><h2><span class="lbtro">${AIC.trophy}</span>${esc(t('lbTitle'))}</h2><p>${esc(t('rng3'))}</p><span class="tlink"><span class="lbsee">${esc(t('lbSee'))}</span><span class="lbfull">${esc(t('lbFull'))}</span>${AIC.arrow}</span></div>
       <div class="lbmini">${[G[1], G[0], G[2]].map((g, i) => { if (!g) return ''; const L = g.list, r0 = L[0];
         /* a tie shows its names stacked under one rank medal, no circles */
         /* the place number lives in the step, so it sits level whatever stands above it */
