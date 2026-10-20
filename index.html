@@ -3282,13 +3282,14 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.38.3';
+const VERSION = '5.38.4';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Fixed: services before a singer’s “Sings at services from” date no longer show as absent, even if they were marked before',
     'Edit member: the two attendance dates now sit together in their own section, with roles below',
     'Plan a service: Edit now shows the service type at the top, with a Change type button (Sunday morning, Sunday evening or a named event)',
     'Fixed: removing a PDF from Choir music now removes it instead of opening Plan a service',
@@ -3314,6 +3315,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Исправлено: служения до даты «Поёт на служениях с» больше не показываются как пропуски, даже если были отмечены раньше',
     'Изменение хориста: обе даты посещаемости теперь в отдельном блоке, роли — ниже',
     'Спланировать служение: в «Изм.» сверху виден тип служения и кнопка «Изменить тип» (утро, вечер или событие с названием)',
     'Исправлено: удаление PDF в «Музыке хора» теперь удаляет файл, а не открывает «Спланировать служение»',
@@ -3490,16 +3492,16 @@ function countsFrom(sg, kind){
   return j && v ? (v > j ? v : j) : (v || j);
 }
 function attStatus(e,s){
-  const a = S.absences.find(x => x.event_id === e && x.singer_id === s);
-  if (a) return a.status === 'not_listed' ? 'na' : 'absent';
-  /* No row normally means present — but not for events before the singer joined:
-     a brand-new member must not inherit perfect attendance for the past. */
+  /* The singer's dates win over any stored mark: events before they joined (or, for
+     services, before they started singing at services) never count either way. */
   const sg = S.singers.find(x => x.id === s);
   if (sg) {
     const evt = S.events.find(x => x.id === e), from = evt && countsFrom(sg, evt.kind);
     if (from && evt.date < from) return 'na';
   }
-  return 'present';
+  const a = S.absences.find(x => x.event_id === e && x.singer_id === s);
+  if (a) return a.status === 'not_listed' ? 'na' : 'absent';
+  return 'present';                              // no row = present
 }
 const isAbsent = (e,s) => attStatus(e,s) === 'absent';
 /* present / total, counting only events the singer was actually in the choir for */
@@ -4961,7 +4963,7 @@ function bIndex(){
   _bx = { key, abs, all, memo: new Map(), streak: new Map() };
   return _bx;
 }
-const bSt = (X, e, s) => X.abs.get(e.id + '|' + s.id) || ((f => f && e.date < f)(countsFrom(s, e.kind)) ? 'na' : 'present');
+const bSt = (X, e, s) => (f => f && e.date < f)(countsFrom(s, e.kind)) ? 'na' : (X.abs.get(e.id + '|' + s.id) || 'present');
 const dayShift = (iso, n) => { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return localISO(d); };
 function bRow(X, ev, s){
   const r = { s, came: 0, of: 0, sc: 0, so: 0, rc: 0, ro: 0, mon: {} };
@@ -5995,6 +5997,8 @@ function editFor(mode, ev){
     if (ev.id !== 'new') {
       if (mode === 'att') S.absences.filter(a => a.event_id === ev.id)
         .forEach(a => base.set(a.singer_id, a.status === 'not_listed' ? 'na' : 'absent'));
+      if (mode === 'att') S.singers.forEach(s => {   // before their start date: not in the choir yet
+        const f = countsFrom(s, ev.kind); if (f && ev.date && ev.date < f) base.set(s.id, 'na'); });
       else songsFor(ev.id).forEach((s, i) => {
         const r = songRow(ev.id, s.id) || {};
         base.set(s.id, { pos: i + 1, c: r.conductor_id || '', p: r.pianist_id || '' });
