@@ -2891,7 +2891,7 @@ const STR = {
     noChanges:'No changes yet',newEntry:'New entry — not saved yet',
     discardQ:'Leave without saving? Your marks on this page will be lost.',
     rehearsal:'Rehearsal',morning:'Sunday morning',evening:'Sunday evening',other:'Other event',
-    eventName:'Event name',shortLabel:'Label',labelHint:'The short label shows under the date in the grid — 1–2 letters.',
+    eventName:'Event name',chgType:'Change type',ptTitle:'Service type',ptNeedName:'Give the event a name.',shortLabel:'Label',labelHint:'The short label shows under the date in the grid — 1–2 letters.',
     changeDate:'Change the date',markAtt:'Mark attendance →',chooseSongs:'Choose songs →',recent:'RECENT ENTRIES',edit:'Edit',del:'Delete',
     allEntries:'All entries',olderEntries:'Older entries →',entriesN:n=>n+' entries',noEntries:'Nothing recorded yet',
     songDates:'When it was sung',inRangeN:n=>n+' in this period',closeRow:'Close',
@@ -2919,7 +2919,7 @@ const STR = {
     search:'Search…',email:'Email',password:'Password',loginNote:'Only the choir director signs in. Everyone else can read the ledger.',
     loading:'Loading…',noEvents:'No events in this range yet.',noSongs:'No songs recorded yet.',
     exportTitle:'EXPORT',exp6:'6 months',exp12:'1 year',expAll:'All time',exportAtt:'Attendance CSV',exportSongs:'Song history CSV',
-    removeRole:'Remove role',joinedOn:'In the choir since',joinedNote:'Events before this date don\u2019t count toward attendance. Blank = since the beginning.',
+    removeRole:'Remove role',joinedOn:'In the choir since',joinedNote:'Events before this date don\u2019t count toward attendance. Blank = since the beginning.',svcStart:'Sings at services from',attDates:'Attendance dates',rolesL:'Roles',joinedHint:'Rehearsals count from this date. Blank = since the beginning.',svcHint:'Services count from this date. Keep it the same if they sing right away.',svcNote:'Rehearsals count from the joined date, services from this one. Leave it the same as the joined date if they sing right away.',
     tSeating:'Seating chart',tSeatingSub:'Where everyone sits',
     listen:'Listen',openLink:'Open link',audioLink:'Recording link',audioAdd:'Add a recording link',audioSaved:'Link saved',
     audioRemove:'Remove link',audioHint:'Paste a YouTube, Drive or Dropbox link.',
@@ -3017,7 +3017,7 @@ const STR = {
     noChanges:'Изменений пока нет',newEntry:'Новая запись — ещё не сохранена',
     discardQ:'Выйти без сохранения? Отметки на этой странице будут потеряны.',
     rehearsal:'Спевка',morning:'Воскресенье Утро',evening:'Воскресенье Вечер',other:'Другое событие',
-    eventName:'Название события',shortLabel:'Метка',labelHint:'Короткая метка показывается под датой в сетке — 1–2 буквы.',
+    eventName:'Название события',chgType:'Изменить тип',ptTitle:'Тип служения',ptNeedName:'Укажите название события.',shortLabel:'Метка',labelHint:'Короткая метка показывается под датой в сетке — 1–2 буквы.',
     changeDate:'Изменить дату',markAtt:'Отметить посещаемость →',chooseSongs:'Выбрать песни →',recent:'ПОСЛЕДНИЕ ЗАПИСИ',edit:'Изм.',del:'Удал.',
     allEntries:'Все записи',olderEntries:'Более ранние записи →',entriesN:n=>'записей: '+n,noEntries:'Пока ничего не записано',
     songDates:'Когда пели',inRangeN:n=>'в этом периоде: '+n,closeRow:'Закрыть',
@@ -3045,7 +3045,7 @@ const STR = {
     search:'Поиск…',email:'Эл. почта',password:'Пароль',loginNote:'Доступ только у регента. Просмотр журнала — без входа.',
     loading:'Загрузка…',noEvents:'В этом периоде событий нет.',noSongs:'Записей пока нет.',
     exportTitle:'ЭКСПОРТ',exp6:'6 месяцев',exp12:'1 год',expAll:'Всё время',exportAtt:'Посещаемость CSV',exportSongs:'История песен CSV',
-    removeRole:'Убрать роль',joinedOn:'В хоре с',joinedNote:'События до этой даты не входят в посещаемость. Пусто — с самого начала.',
+    removeRole:'Убрать роль',joinedOn:'В хоре с',svcStart:'Поёт на служениях с',attDates:'Даты посещаемости',rolesL:'Роли',joinedHint:'Спевки считаются с этой даты. Пусто — с самого начала.',svcHint:'Служения считаются с этой даты. Оставьте ту же, если поёт сразу.',svcNote:'Спевки считаются с даты вступления, служения — с этой даты. Оставьте как дату вступления, если хорист поёт сразу.',joinedNote:'События до этой даты не входят в посещаемость. Пусто — с самого начала.',
     tSeating:'Схема мест',tSeatingSub:'Кто где сидит',
     listen:'Слушать',openLink:'Открыть ссылку',audioLink:'Ссылка на запись',audioAdd:'Добавить ссылку на запись',audioSaved:'Ссылка сохранена',
     audioRemove:'Убрать ссылку',audioHint:'Вставьте ссылку YouTube, Drive или Dropbox.',
@@ -3282,13 +3282,17 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.36.4';
+const VERSION = '5.38.3';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Edit member: the two attendance dates now sit together in their own section, with roles below',
+    'Plan a service: Edit now shows the service type at the top, with a Change type button (Sunday morning, Sunday evening or a named event)',
+    'Fixed: removing a PDF from Choir music now removes it instead of opening Plan a service',
+    'Members: new “Sings at services from” date — services before it don’t count against a new singer, rehearsals still count from the joined date',
     'Home: the song order card always shows the next planned service, even weeks ahead; tap a song to open View & Listen',
     'Services: a new timeline of every upcoming service, with past services one tap away — open it from “Future services” on the home card',
     'History (was Song history): the By song grid is gone and Summary is now called Song; the Service tab shows services on the same timeline, opening on the past year with “Show more” at the bottom',
@@ -3310,6 +3314,10 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Изменение хориста: обе даты посещаемости теперь в отдельном блоке, роли — ниже',
+    'Спланировать служение: в «Изм.» сверху виден тип служения и кнопка «Изменить тип» (утро, вечер или событие с названием)',
+    'Исправлено: удаление PDF в «Музыке хора» теперь удаляет файл, а не открывает «Спланировать служение»',
+    'Хористы: новая дата «Поёт на служениях с» — служения до неё не портят посещаемость новичку, спевки по-прежнему считаются с даты вступления',
     'Главная: карточка порядка песен всегда показывает следующее запланированное служение, даже через несколько недель; нажатие на песню открывает ноты и записи',
     'Служения: новая лента всех предстоящих служений, прошедшие — в соседней вкладке; откройте её через «Будущие служения» на карточке главной',
     'История (раньше «История песен»): сетки «По песням» больше нет, «Сводка» теперь называется «Песни»; во вкладке «Служения» — такая же лента, открывается на последнем годе, внизу — «Показать ещё»',
@@ -3475,15 +3483,21 @@ async function load(silent){
 /* Three states per singer per event. Only the exceptions are stored:
    an absences row with status 'absent' (missed it) or 'not_listed' (was not in
    the choir yet — excluded from their percentage). No row at all = present. */
+/* the first date an event counts for a singer: rehearsals from joined_on,
+   services from service_start (never earlier than joined_on). */
+function countsFrom(sg, kind){
+  const j = sg.joined_on || null, v = kind === 'rehearsal' ? null : (sg.service_start || null);
+  return j && v ? (v > j ? v : j) : (v || j);
+}
 function attStatus(e,s){
   const a = S.absences.find(x => x.event_id === e && x.singer_id === s);
   if (a) return a.status === 'not_listed' ? 'na' : 'absent';
   /* No row normally means present — but not for events before the singer joined:
      a brand-new member must not inherit perfect attendance for the past. */
   const sg = S.singers.find(x => x.id === s);
-  if (sg && sg.joined_on) {
-    const evt = S.events.find(x => x.id === e);
-    if (evt && evt.date < sg.joined_on) return 'na';
+  if (sg) {
+    const evt = S.events.find(x => x.id === e), from = evt && countsFrom(sg, evt.kind);
+    if (from && evt.date < from) return 'na';
   }
   return 'present';
 }
@@ -4947,7 +4961,7 @@ function bIndex(){
   _bx = { key, abs, all, memo: new Map(), streak: new Map() };
   return _bx;
 }
-const bSt = (X, e, s) => X.abs.get(e.id + '|' + s.id) || (s.joined_on && e.date < s.joined_on ? 'na' : 'present');
+const bSt = (X, e, s) => X.abs.get(e.id + '|' + s.id) || ((f => f && e.date < f)(countsFrom(s, e.kind)) ? 'na' : 'present');
 const dayShift = (iso, n) => { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return localISO(d); };
 function bRow(X, ev, s){
   const r = { s, came: 0, of: 0, sc: 0, so: 0, rc: 0, ro: 0, mon: {} };
@@ -5303,7 +5317,7 @@ function lbSheet(from, p, label){
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.lbWho) { S.lbWho = null; render(); } });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && (S.audioEdit || S.pdfDel)) { S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; render(); }
+  if (e.key === 'Escape' && (S.audioEdit || S.pdfDel || S.planType)) { S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; render(); }
   if (e.key === 'Enter' && e.target.id && e.target.id.startsWith('audio-')) { e.preventDefault(); const b = document.querySelector('.modal [data-audio-save]'); if (b) b.click(); }
 });
 /* first view of a period: the percentages count up while the podium rises */
@@ -5989,7 +6003,7 @@ function editFor(mode, ev){
     const sel = new Map(base);
     /* nothing marked yet: everyone starts absent and the director taps who came */
     if (mode === 'att' && (ev.id === 'new' || !hasAtt(ev)))
-      S.singers.forEach(s => { if (s.active !== false) sel.set(s.id, s.joined_on && ev.date && ev.date < s.joined_on ? 'na' : 'absent'); });
+      S.singers.forEach(s => { if (s.active !== false) { const f = countsFrom(s, ev.kind); sel.set(s.id, f && ev.date && ev.date < f ? 'na' : 'absent'); } });
     S.edit = { key, mode, evId: ev.id, base, sel,
                wasCancelled: !!ev.cancelled, cancelled: !!ev.cancelled };
   }
@@ -6007,6 +6021,16 @@ function renumber(){
 }
 const sameSel = (a, b) => (a && typeof a === 'object' && b && typeof b === 'object')
   ? (a.pos === b.pos && a.c === b.c && a.p === b.p) : a === b;
+/* the song-order editor's type row: what this service is, and a way to change it (saved with Save) */
+function typeCard(ev){
+  const E = S.edit;
+  if (!ev || ev.id === undefined || !E || E.evId === 'new') return '';
+  const ty = E.newType || ev;
+  return `<div class="sec"><div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-direction:row">
+      <div style="min-width:0"><div class="step">${esc(t('ptTitle'))}</div>
+        <div style="font-size:var(--fs-15);font-weight:600;color:var(--ink);overflow-wrap:anywhere">${esc(ty.name || t(ty.kind))}</div></div>
+      <button class="mini" style="flex:none" data-plan-type="${ev.id}">${esc(t('chgType'))}</button></div></div>`;
+}
 function dateBadge(ev){
   const E = S.edit, cur = (E && E.newDate) || ev.date;
   if (ev.id === undefined || E.evId === 'new') return esc(fmtLong(cur));
@@ -6030,7 +6054,7 @@ function editDirty(){
   const E = S.edit;
   if (!E) return false;
   if (E.evId === 'new' || E.cancelled !== E.wasCancelled) return true;
-  if (E.newDate) return true;
+  if (E.newDate || E.newType) return true;
   return !isAttCancelled(E) && editDelta().n > 0;
 }
 
@@ -6154,7 +6178,7 @@ function markSongs(ev){
     </div>` : '';
   return `<div class="h"><button class="back" data-cancel-marks="songs">‹</button>
       ${dateBadge(ev)} <span class="n" style="color:var(--blue-text)">${picked}</span>
-      <span style="font-size:var(--fs-13);color:var(--muted)">${esc(t('selected'))}</span></div>` +
+      <span style="font-size:var(--fs-13);color:var(--muted)">${esc(t('selected'))}</span></div>` + typeCard(ev) +
     `<div class="sec">` + chooser + `</div>` + orderCard() + creditsCard() +
     saveBar('songs');
 }
@@ -6315,12 +6339,21 @@ function adminModal(){
           ${p.photo_path ? `<button class="mini" data-photo-del="${p.id}">${esc(t('phRemove'))}</button>` : ''}
           ${S.photoBusy === p.id ? `<span class="pcap" style="margin:0">${esc(t('phBusy'))}</span>` : ''}</div></div>
         <label class="fl full"><span>${esc(t('nameL'))}</span><input class="field" id="edit-name" value="${esc(p.name)}"></label>
-        <label class="fl"><span>${esc(t('voicePart'))}</span><select class="field" id="edit-part">${p.part ? '' : `<option value="">${esc(t('noVoice'))}</option>`}${
+        <label class="fl full"><span>${esc(t('voicePart'))}</span><select class="field" id="edit-part">${p.part ? '' : `<option value="">${esc(t('noVoice'))}</option>`}${
           PARTS.map(x => `<option value="${x}"${p.part === x ? ' selected' : ''}>${esc(partName(x))}</option>`).join('')}</select></label>
-        <label class="fl"><span>${esc(t('joinedOn'))}</span><input class="field" id="edit-joined" type="date" value="${esc(p.joined_on || '')}"></label>
-        <div class="fhint full">${esc(t('joinedNote'))}</div>
-        <label class="ck"><input type="checkbox" id="edit-is-c"${p.is_conductor ? ' checked' : ''}><span>${esc(t('conductor'))}</span></label>
-        <label class="ck"><input type="checkbox" id="edit-is-p"${p.is_pianist ? ' checked' : ''}><span>${esc(t('pianist'))}</span></label></div>`,
+        <div class="full" style="display:grid;gap:12px;margin-top:4px;padding:14px 16px 16px;border:1px solid var(--card-line);border-radius:14px;background:var(--surface-2)">
+          <div style="font-size:12px;font-weight:650;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">${esc(t('attDates'))}</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px 16px">
+            <label class="fl"><span>${esc(t('joinedOn'))}</span><input class="field" id="edit-joined" type="date" value="${esc(p.joined_on || '')}" style="background:var(--card)">
+              <span style="font-size:12.5px;font-weight:400;line-height:1.45;color:var(--muted);text-wrap:pretty">${esc(t('joinedHint'))}</span></label>
+            <label class="fl"><span>${esc(t('svcStart'))}</span><input class="field" id="edit-svc" type="date" value="${esc(p.service_start || p.joined_on || '')}" style="background:var(--card)">
+              <span style="font-size:12.5px;font-weight:400;line-height:1.45;color:var(--muted);text-wrap:pretty">${esc(t('svcHint'))}</span></label>
+          </div></div>
+        <div class="full" style="display:grid;gap:4px;margin-top:4px">
+          <div style="font-size:12px;font-weight:650;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">${esc(t('rolesL'))}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px 24px">
+            <label class="ck"><input type="checkbox" id="edit-is-c"${p.is_conductor ? ' checked' : ''}><span>${esc(t('conductor'))}</span></label>
+            <label class="ck"><input type="checkbox" id="edit-is-p"${p.is_pianist ? ' checked' : ''}><span>${esc(t('pianist'))}</span></label></div></div></div>`,
       `<button class="pbtn" data-save-person="${p.id}">${esc(t('save'))}</button>`);
   }
   return '';
@@ -6610,6 +6643,51 @@ function sheetsPage(kind){
       return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}${S.actOpen === s.id ? ' open' : ''}" data-srow="${s.id}">${row}</div>`;
     }).join('') + foot;
 }
+/* Plan a service: change a planned service's type (morning, evening, or a named event) */
+function planTypeModal(){
+  const P = S.planType, ev = P && S.session && S.events.find(x => x.id === P.id);
+  if (!ev) return '';
+  const other = P.kind === 'other';
+  const opt = k => `<div class="opt${P.kind === k ? ' on' : ''}" role="radio" aria-checked="${P.kind === k}" tabindex="0" data-pt-kind="${k}">
+      <div class="dot"></div><div style="flex:1;min-width:0;font-weight:550">${esc(t(k))}</div>${k === 'other' ? '' : `<div class="tag">${esc(KIND_LABEL[S.lang][k])}</div>`}</div>`;
+  const lab = 'font-size:12.5px;font-weight:600;color:var(--muted)';
+  return `<div class="mscrim" data-modal-x></div>
+    <div class="modal" role="dialog" aria-modal="true" aria-label="${esc(t('ptTitle'))}" style="width:min(420px,calc(100vw - 24px))">
+      <div class="mhd"><div style="flex:1;min-width:0"><h2 style="margin:0">${esc(t('ptTitle'))}</h2>
+        <div style="margin-top:4px;font-size:14px;color:var(--muted)">${esc(fmtLong((S.edit && S.edit.evId === ev.id && S.edit.newDate) || ev.date))}</div></div>
+        <button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
+      <div class="mbody">
+        <div role="radiogroup" aria-label="${esc(t('ptTitle'))}" style="display:grid;gap:8px">${['morning','evening','other'].map(opt).join('')}</div>
+        <div id="pt-other" style="display:${other ? 'grid' : 'none'};grid-template-columns:minmax(0,1fr) 84px;gap:8px 10px;margin-top:14px">
+          <label style="display:grid;gap:6px;min-width:0"><span style="${lab}">${esc(t('eventName'))}</span>
+            <input class="field" id="pt-name" value="${esc(P.name)}" autocomplete="off" style="width:100%;min-width:0;box-sizing:border-box"></label>
+          <label style="display:grid;gap:6px;min-width:0"><span style="${lab}">${esc(t('shortLabel'))}</span>
+            <input class="field" id="pt-label" value="${esc(P.label)}" maxlength="3" autocomplete="off" style="width:100%;min-width:0;box-sizing:border-box;text-align:center"></label>
+          <div style="grid-column:1/-1;font-size:12.5px;line-height:1.4;color:var(--faint);text-wrap:pretty">${esc(t('labelHint'))}</div>
+        </div></div>
+      <div class="mfoot"><button class="obtn2" data-modal-x>${esc(t('cancel'))}</button><button class="pbtn" data-pt-save>${esc(t('save'))}</button></div></div>`;
+}
+function ptRead(){ const n = document.getElementById('pt-name'), l = document.getElementById('pt-label');
+  if (n) S.planType.name = n.value; if (l) S.planType.label = l.value; }
+async function planTypeSave(){
+  ptRead();
+  const P = S.planType, ev = S.events.find(x => x.id === P.id);
+  if (!ev) { S.planType = null; return render(); }
+  const other = P.kind === 'other', name = other ? (P.name || '').trim() : null;
+  if (other && !name) { alert(t('ptNeedName')); return; }
+  const row = { kind: P.kind, name, label: other ? ((P.label || '').trim() || name.slice(0, 2)) : KIND_LABEL[S.lang][P.kind] };
+  const day = (S.edit && S.edit.evId === ev.id && S.edit.newDate) || ev.date;
+  if (S.events.some(x => x.id !== ev.id && x.date === day && x.kind === row.kind && (x.name || '') === (row.name || ''))) { alert(t('upClash')); return; }
+  if (S.edit && S.edit.evId === ev.id) {        // inside the editor: kept until Save, like the date
+    const same = row.kind === ev.kind && (row.name || '') === (ev.name || '') && (row.label || '') === (ev.label || '');
+    S.edit.newType = same ? null : row; S.planType = null; return render();
+  }
+  if (!await ensureSession()) return render();
+  const res = await sb.from('events').update(row).eq('id', ev.id).select();
+  if (!wrote(res)) return render();
+  Object.assign(ev, row); S.planType = null;
+  return render();
+}
 /* the music page's two small dialogs: a song's recording link, and removing its PDF */
 function songModal(){
   if (!S.session || !S.route.startsWith('#/sheets')) return '';
@@ -6628,7 +6706,7 @@ function songModal(){
     `<button class="obtn2" data-modal-x>${esc(t('cancel'))}</button><button class="pbtn" data-audio-save="${a.id}">${esc(t('save'))}</button>`);
   const p = S.pdfDel && S.songs.find(x => x.id === S.pdfDel.id);
   if (p) return shell(t('removePdfT'), t('removePdfQ')(esc(p.title)), '',
-    `<button class="obtn2" data-modal-x>${esc(t('cancel'))}</button><button class="pbtn" style="background:var(--red);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:7px" data-del-pdf="${p.id}" data-sheet-kind="${S.pdfDel.kind}" data-go="1">${TRASHSVG}${esc(t('removePdf'))}</button>`);
+    `<button class="obtn2" data-modal-x>${esc(t('cancel'))}</button><button class="pbtn" style="background:var(--red);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:7px" data-del-pdf="${p.id}" data-sheet-kind="${S.pdfDel.kind}" data-confirm="1">${TRASHSVG}${esc(t('removePdf'))}</button>`);
   return '';
 }
 /* 'locked/' is the prefix the storage policy refuses to serve to guests */
@@ -7009,7 +7087,7 @@ function render(){
     const n = document.getElementById(id);
     if (n) keep[id] = { v: n.value, f: n === document.activeElement, p: n.selectionStart };
   });
-  document.getElementById('app').innerHTML = html + adminModal() + songModal() + toastHTML();
+  document.getElementById('app').innerHTML = html + adminModal() + songModal() + planTypeModal() + toastHTML();
   requestAnimationFrame(fitMissed);
   Object.entries(keep).forEach(([id, k]) => {
     const n = document.getElementById(id);
@@ -7284,7 +7362,7 @@ document.addEventListener('click', e => {
   if (a && a.dataset.song) track('audio', a.dataset.song);
 }, true);
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -7374,7 +7452,14 @@ document.addEventListener('click', async e => {
     return;
   }
 
-  if (el.hasAttribute('data-modal-x')) { S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
+  if (d.planType) { const ev0 = S.events.find(x => x.id === d.planType), ev = ev0 && S.edit && S.edit.evId === ev0.id && S.edit.newType ? S.edit.newType : ev0; if (ev) S.planType = { id: ev0.id, kind: ev.kind === 'rehearsal' ? 'morning' : ev.kind, name: ev.name || '', label: ev.kind === 'other' ? (ev.label || '') : '' }; return render(); }
+  if (d.ptKind && S.planType) { ptRead(); S.planType.kind = d.ptKind;
+    document.querySelectorAll('.modal [data-pt-kind]').forEach(o => { const on = o.dataset.ptKind === d.ptKind; o.classList.toggle('on', on); o.setAttribute('aria-checked', on); });
+    const box = document.getElementById('pt-other'); if (box) box.style.display = d.ptKind === 'other' ? 'grid' : 'none';
+    if (d.ptKind === 'other') { const n = document.getElementById('pt-name'); if (n && !n.value) n.focus(); }
+    return; }
+  if (el.hasAttribute('data-pt-save') && S.planType) return planTypeSave();
+  if (el.hasAttribute('data-modal-x')) { S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
   if (d.toggleAbsent && S.edit) {              // present ↔ absent
     S.toast = ''; S.retry = null;
     S.edit.sel.has(d.toggleAbsent) ? S.edit.sel.delete(d.toggleAbsent)
@@ -7428,12 +7513,14 @@ document.addEventListener('click', async e => {
     const evRow0 = S.events.find(x => x.id === evId);
     const patch = {};
     if (E.newDate && evRow0 && E.newDate !== evRow0.date) patch.date = E.newDate;
+    if (E.newType) Object.assign(patch, E.newType);
     if (E.cancelled !== E.wasCancelled) patch.cancelled = E.cancelled;
     if (E.mode === 'att' && evRow0 && !evRow0.attendance_taken) patch.attendance_taken = true;
     if (Object.keys(patch).length && E.evId !== 'new') {
       const { error } = await sb.from('events').update(patch).eq('id', evId);
       if (error) return fail(error);
       if (patch.date && evRow0) evRow0.date = patch.date;
+      if (E.newType && evRow0) Object.assign(evRow0, E.newType);
     }
     const evRow = S.events.find(x => x.id === evId);
     if (evRow) { evRow.cancelled = E.cancelled; if (E.mode === 'att') evRow.attendance_taken = true; }
@@ -7520,7 +7607,7 @@ document.addEventListener('click', async e => {
     const K = SHEETKIND[d.sheetKind || 'sheets'];
     const song = S.songs.find(s => s.id === d.delPdf);
     if (!song || !song[K.col]) return;
-    if (!d.go) { S.pdfDel = { id: song.id, kind: d.sheetKind || 'sheets' }; return render(); }
+    if (!d.confirm) { S.pdfDel = { id: song.id, kind: d.sheetKind || 'sheets' }; return render(); }
     S.pdfDel = null;
     const path = song[K.col];
     const { error } = await sb.from('songs').update({ [K.col]: null }).eq('id', song.id);
@@ -7788,6 +7875,8 @@ document.addEventListener('click', async e => {
     const jd = document.getElementById('edit-joined');   // absent on the role tabs
     const patch = { name: clean };
     if (jd) patch.joined_on = jd.value || null;
+    const sd = document.getElementById('edit-svc');       // same as joined = no separate start
+    if (sd) patch.service_start = sd.value && sd.value !== (jd ? jd.value : '') ? sd.value : null;
     const pe = document.getElementById('edit-part'), ce = document.getElementById('edit-is-c'), pc = document.getElementById('edit-is-p');
     if (pe && pe.value) patch.part = pe.value;            // a voice part can change, but not be cleared here — singers keep their history
     if (ce) patch.is_conductor = ce.checked;
