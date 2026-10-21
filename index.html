@@ -643,7 +643,7 @@
   .sklb .pod{display:flex;align-items:flex-end;gap:10px}
   .sklb .pod .skx{width:92px;border-radius:12px 12px 0 0}
   @media (max-width:899px){ .dpanel.sklb{grid-template-columns:minmax(0,1fr);gap:16px;padding:18px 16px 0} .sklb .pod{order:1;justify-content:center} .sklb .skfacts{grid-template-columns:repeat(2,minmax(0,1fr))} .sklb .skfacts .skx{width:100% !important} .sklb .pod .skx:nth-child(1){height:110px !important} .sklb .pod .skx:nth-child(2){height:156px !important} .sklb .pod .skx:nth-child(3){height:90px !important} }
-  @media (max-width:699px){ .skres.four{grid-template-columns:repeat(2,minmax(0,1fr))} .skres{gap:8px} .ov .dpanel.sklb{order:3;margin:0} .sklb .pod{justify-content:center} .skban{height:201px} .skres .skx{min-height:134px} }
+  @media (max-width:699px){ .skres.four{grid-template-columns:repeat(2,minmax(0,1fr))} .skres{gap:8px} .sklb .pod{justify-content:center} .skban{height:201px} .skres .skx{min-height:134px} }
   @media (min-width:1400px){ .dbottom .skres.four{grid-template-columns:repeat(2,minmax(0,1fr))} }
   .qwrap{position:relative;display:block;min-width:0;flex:1}
   .qwrap .field{padding-right:40px}
@@ -1332,10 +1332,6 @@
   .sban.rip .eye::before{animation:eyeblink 1.1s ease-in-out .5s 3 both}
   @keyframes eyeblink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(201,162,39,0),0 0 8px 1px rgba(201,162,39,.65)}50%{opacity:.15;box-shadow:0 0 0 0 rgba(201,162,39,0),0 0 0 0 rgba(201,162,39,0)}}
   @media (prefers-reduced-motion:reduce){ .sban.rip .eye::before{animation:none} }
-  /* home banner: a red "recording" light, in every theme */
-  :root .sban.rip .eye::before{background:#ff3b30}
-  @keyframes eyeblinkrec{0%,100%{opacity:1;box-shadow:0 0 8px 1px rgba(255,59,48,.7)}50%{opacity:.15;box-shadow:0 0 0 0 rgba(255,59,48,0)}}
-  .sban.rip .eye::before{animation-name:eyeblinkrec}
   .sstat{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);font-size:11.5px;color:var(--chrome-text-2);padding:5px 9px;border-radius:7px;white-space:nowrap}
   .sban h2{margin:0;font-size:28px;font-weight:650;letter-spacing:-.8px;line-height:1.15}
   .sdate{margin:8px 0 0;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--chrome-text-2)}
@@ -1396,6 +1392,19 @@
   .datt .pcap{margin-bottom:24px}      /* auto margins collapse to 0 when the card isn't stretched (phones) */
   .datt .akey{margin-bottom:auto}
   .datt .parts{margin-top:20px}
+  /* phones: ring beside the key instead of on its own, so the card is about half as tall */
+  @media (max-width:699px){
+    .datt:not(.skc){flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:24px}
+    .datt:not(.skc) > .phd,.datt:not(.skc) > .pcap,.datt:not(.skc) > .parts,.datt:not(.skc) > .pfoot{flex:0 0 100%}
+    .datt .pcap{margin-bottom:16px}
+    .datt .donut{width:112px;height:112px;margin:0;flex:none}
+    .datt .donut > div{width:92px;height:92px}
+    .datt .donut strong{font-size:26px;letter-spacing:-.8px}
+    .datt .donut span{font-size:11px;margin-top:1px}
+    .datt .akey{flex:none;flex-direction:column;align-items:flex-start;justify-content:center;gap:12px;margin:0;font-size:13px}
+    .datt .parts{margin-top:16px;padding-top:14px;gap:11px}
+    .datt.skc .skdonut{width:112px;height:112px}
+  }
   .prow{display:grid;grid-template-columns:82px 1fr 40px;align-items:center;gap:12px;font-size:12.5px}
   .prow > span{display:flex;align-items:center;gap:7px;color:var(--muted)}
   .prow i{width:7px;height:7px;border-radius:50%;background:var(--pc)}
@@ -1426,6 +1435,9 @@
   .reslist .r4 .rico{background:var(--tool4-bg);color:var(--tool4-ic)}
   .reslist .r5 .rico{background:var(--tool5-bg);color:var(--tool5-ic)}
   .reslist .r6 .rico{background:var(--tool6-bg);color:var(--tool6-ic)}
+  .reslist .r7 .rico{--t7:#c2541a;background:color-mix(in srgb,var(--t7) 13%,var(--card));color:var(--t7)}
+  :root[data-theme="dark"] .reslist .r7 .rico{--t7:#ff9150}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .reslist .r7 .rico{--t7:#ff9150} }
   .res strong{display:block;font-size:13.5px;font-weight:600;line-height:1.3}
   .res small{display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.35}
   .recent{display:flex;flex-direction:column;margin-top:-6px}
@@ -1439,7 +1451,8 @@
     background:#d4372c;color:#fff}
   .rsvc .mdate strong,.upc .mdate strong{flex:1;display:grid;place-items:center;font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--ink);font-variant-numeric:tabular-nums}
   .rsvc small{display:block;font-size:12px;color:var(--muted);margin-top:3px}
-  @media (max-width:999px){ .recent .rsvc:nth-child(n+4){display:none} .recent .rsvc:nth-child(3){border-bottom:0;padding-bottom:0} }   /* four fit beside the tools on desktop */
+  /* six fill the space beside Last attendance; phones keep the first three */
+  @media (max-width:699px){ .recent .rsvc:nth-child(n+4){display:none} .recent .rsvc:nth-child(3){border-bottom:0;padding-bottom:0} }
   /* upcoming board */
   .upboard{display:flex;flex-direction:column;gap:12px;margin:22px 0 16px}
   .uphd{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:0 2px}
@@ -1472,6 +1485,99 @@
   .upmore{align-self:center;font-size:12.5px;font-weight:600}
   .uphr{display:flex;align-items:baseline;gap:12px}
   .upsample{background:none;border:0;padding:0;font:inherit;font-size:12.5px;font-weight:600;color:var(--blue-text);cursor:pointer}
+  /* ---------- learning: page + home tile ---------- */
+  .lnhd{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 20px;margin:26px 0 18px}
+  .lnhd h1{margin:0;font-size:26px;font-weight:700;letter-spacing:-.6px;line-height:1.15;color:var(--ink)}
+  .lnhd p{margin:5px 0 0;font-size:14px;color:var(--muted)}
+  .lnhd .acts{display:flex;align-items:center;gap:18px}
+  .lndemo{margin:0 0 16px;padding:10px 14px;border:1px dashed var(--line-strong-2);border-radius:12px;font-size:13px;line-height:1.45;color:var(--muted)}
+  .lngrid{display:flex;flex-direction:column;gap:14px}
+  .lncard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);align-items:center;gap:16px 32px;min-width:0;padding:22px 24px;background:var(--card);border:1px solid var(--card-line);border-radius:18px;box-shadow:var(--shadow-card)}
+  .lncard.demo{border-style:dashed;box-shadow:none}
+  .lnh{display:flex;align-items:flex-start;gap:12px}
+  .lnh .tt{flex:1;min-width:0}
+  .lnh h3{margin:0;font-size:17px;font-weight:650;letter-spacing:-.3px;line-height:1.3;color:var(--ink);overflow-wrap:anywhere;text-wrap:pretty}
+  .lnh .mt{margin:4px 0 0;font-size:13px;line-height:1.4;color:var(--muted)}
+  .lngoal{flex:none;max-width:46%;margin-top:1px;padding:5px 10px;border-radius:999px;background:var(--gold-wash);color:var(--gold-text);font-size:12px;font-weight:650;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lntag{display:inline-block;margin-left:8px;vertical-align:2px;padding:2px 8px;border:1px dashed var(--line-strong-2);border-radius:999px;font-size:11px;font-weight:600;letter-spacing:0;line-height:1.4;color:var(--muted)}
+  .lnnote{padding:12px 14px;border-radius:12px;background:var(--surface-2)}
+  .lnnote b{display:block;margin-bottom:4px;font-size:11px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .lnnote p{margin:0;font-size:14px;line-height:1.5;color:var(--ink);white-space:pre-line;text-wrap:pretty}
+  .lninfo{display:flex;flex-direction:column;gap:14px;min-width:0}
+  .lnft,.lntools{grid-column:1/-1}
+  .lnpr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .lnb{display:flex;align-items:center;gap:10px;min-width:0;height:46px;padding:0 14px;border:0;border-radius:12px;font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:filter .15s ease}
+  .lnb svg{width:18px;height:18px;flex:none}
+  .lnb span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lnb.t1{background:var(--tool1-bg);color:var(--tool1-ic)} .lnb.t2{background:var(--tool2-bg);color:var(--tool2-ic)}
+  .lnb.t3{background:var(--tool3-bg);color:var(--tool3-ic)} .lnb.t4{background:var(--tool4-bg);color:var(--tool4-ic)}
+  .lnb.off{background:var(--surface-2);color:var(--faint);cursor:default}
+  .lnsoon{min-height:100px;display:grid;place-items:center;padding:0 16px;border:1px dashed var(--rule);border-radius:12px;font-size:13px;color:var(--muted);text-align:center}
+  .lnft{display:flex;align-items:center;gap:8px;padding-top:14px;border-top:1px solid var(--rule)}
+  .lnib{display:grid;place-items:center;width:46px;height:46px;flex:none;padding:0;border:0;border-radius:12px;background:var(--surface-2);color:var(--muted);cursor:pointer;transition:background .15s ease,color .15s ease}
+  .lnib svg{width:18px;height:18px}
+  .lnib.on{background:var(--blue-tint);color:var(--blue-text)}
+  .lnib[disabled]{opacity:.35;cursor:default;pointer-events:none}
+  .lnord{display:flex;gap:4px;padding-left:8px;margin-left:4px;border-left:1px solid var(--rule)}
+  .lnb.go{flex:none;margin-left:auto;padding:0 20px;background:var(--blue);color:#fff;box-shadow:0 8px 18px -12px rgba(var(--blue-rgb),.8)}
+  .lntools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:-4px}
+  .lnt{display:flex;align-items:center;gap:8px;min-width:0;height:40px;padding:0 12px;border:1px solid var(--rule);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer}
+  .lnt svg{width:15px;height:15px;flex:none;color:var(--muted)}
+  .lnt span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lnt.danger,.lnt.danger svg{color:var(--red)}
+  .lnempty{padding:48px 20px;border:1px dashed var(--line-strong-2);border-radius:18px;text-align:center;font-size:14px;color:var(--muted)}
+  .dpanel.lntile{display:flex;flex-direction:column;min-width:0}
+  .lntile .lntag{margin-left:6px}
+  .lntile .lrows{flex:1;display:flex;flex-direction:column;gap:2px;margin:10px -12px 0}
+  .dpanel.lntile{position:relative;overflow:hidden}
+  .lnhead{display:flex;align-items:center;gap:12px}
+  .lnhead h2{margin:0;font-size:16.5px;font-weight:650;letter-spacing:-.3px;line-height:1.3}
+  .lnhead p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+  .lnhead .lnico{width:40px;height:40px;border-radius:12px}
+  .lnfeat{margin-top:16px;padding:14px 16px 16px;border-radius:14px;background:linear-gradient(135deg,var(--tool3-bg),color-mix(in srgb,var(--tool3-bg) 35%,var(--card)));border:1px solid color-mix(in srgb,var(--tool3-ic) 18%,transparent)}
+  .lnfeat .fe{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
+  .lnfeat .fe span{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--tool3-ic)}
+  .lnfeat .fe em{font-style:normal;min-width:0;padding:3px 9px;border-radius:999px;background:var(--card);color:var(--gold-text);font-size:12px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lnfeat .ft{display:block;margin-top:6px;font-size:18px;font-weight:650;letter-spacing:-.3px;line-height:1.25;color:var(--ink);overflow-wrap:anywhere;text-wrap:pretty}
+  .lnfeat .fq{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;margin-top:12px}
+  .lnfeat .fs{margin:8px 0 0;font-size:13px;color:var(--muted)}
+  .lnq{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;height:36px;padding:0 8px;border:0;border-radius:10px;font:inherit;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;background:var(--card);transition:transform .15s ease,box-shadow .15s ease}
+  .lnq svg{width:16px;height:16px;flex:none}
+  .lnq span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lnq.t1{color:var(--tool1-ic)} .lnq.t3{color:var(--tool3-ic)} .lnq.t4{color:var(--tool4-ic)}
+  .lntile .lrow .has{display:flex;gap:6px;flex:none;color:var(--faint)}
+  .lntile .lrow .has svg{width:14px;height:14px}
+  @media (hover:hover){ .lnq:hover{transform:translateY(-1px);box-shadow:0 6px 14px -8px rgba(var(--blue-rgb),.45)} }
+  /* featured song + up to 4 more on wide screens, 3 in between, 2 on phones */
+  @media (max-width:1399px){ .lntile .lrow:nth-child(n+4){display:none} }
+  @media (max-width:699px){ .lntile .lrow:nth-child(n+3){display:none} .lnfeat .ft{font-size:17px} }
+  .lntile .lnone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:150px}
+  .lntile .lnico{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:var(--tool3-bg);color:var(--tool3-ic)}
+  .lntile .lnico svg{width:20px;height:20px}
+  .dlib{margin-top:20px}
+  .dlib .phd{margin-bottom:16px}
+  .reslist.seven,.skres.seven{grid-template-columns:repeat(7,minmax(0,1fr))}
+  @media (max-width:699px){ .reslist.seven,.skres.seven{grid-template-columns:repeat(3,minmax(0,1fr))} }
+  .lrow{display:flex;align-items:center;gap:14px;min-width:0;padding:12px;border-radius:12px;color:var(--ink);transition:background .15s ease}
+  .lrow .n{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:10px;background:var(--tool3-bg);color:var(--tool3-ic);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+  .lrow .b{flex:1;min-width:0}
+  .lrow strong{display:block;font-size:14.5px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s ease}
+  .lrow small{display:block;margin-top:3px;font-size:12.5px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lrow small.g{color:var(--gold-text);font-weight:600}
+  .lrow > svg{width:16px;height:16px;flex:none;color:var(--faint)}
+  @media (hover:hover){
+    .lnb:not(.off):hover{filter:brightness(.95)}
+    .lnib:hover{background:var(--blue-tint);color:var(--blue-text)}
+    .lnt:hover{background:var(--surface-2)}
+    .lrow:hover{background:var(--surface-2)} .lrow:hover strong{color:var(--blue-text)}
+  }
+  @media (max-width:699px){
+    .lnhd{margin:18px 0 14px} .lnhd h1{font-size:22px}
+    .lncard{padding:18px 16px}
+  }
+  @media (max-width:860px){
+    .lncard{grid-template-columns:minmax(0,1fr)}
+  }
   .updemo{margin:0;padding:9px 14px;border-radius:12px;background:var(--blue-wash);color:var(--ink);font-size:12.5px;text-align:center}
   .upc.demo{border-style:dashed}
   @media (max-width:699px){ .upgrid{grid-auto-rows:auto} .upch{padding:12px 14px} .upcl{padding:0 14px 4px} }
@@ -1642,13 +1748,14 @@
   @media (min-width:1400px){
     .dbottom{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) minmax(0,.85fr)}
     .dbottom .reslist.four{grid-template-columns:repeat(2,minmax(0,1fr));flex:1}
+    .dbottom .reslist.four .res.mwide{grid-column:1/-1;order:-1}   /* Plan a service on top, then an even 2×2 */
     .dbottom .dadm.out{flex-direction:column;align-items:flex-start;gap:12px}
     .dbottom .dadm.out .grow2{flex:0 0 auto}
     .dbottom .dadm.out .abtn{margin-top:auto;align-self:stretch;justify-content:center}
   }
   @media (min-width:700px) and (max-width:1399px){ .dbottom .dadm{grid-column:1 / -1} }
   .dadm .phd{margin-bottom:16px}
-  .reslist.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .reslist.four{grid-template-columns:repeat(5,minmax(0,1fr))}
   .reslist.four .res strong{margin-top:12px}
   .dadm.out{display:flex;flex-direction:row;align-items:center;gap:14px;padding:16px 18px}
   .dadm.out .grow2{flex:1;min-width:0}
@@ -1658,18 +1765,23 @@
   .abtn{flex:none;background:var(--blue);color:#fff;border-radius:999px;padding:10px 18px;font-size:13.5px;font-weight:600;min-height:40px;display:inline-flex;align-items:center}
   @media (max-width:1200px){ .kpis{gap:12px} .kv{font-size:30px} .dgrid,.dbottom{gap:16px} .dbottom{margin-top:16px} }
   @media (max-width:860px){ .dgrid,.dbottom{grid-template-columns:minmax(0,1fr)} }
-  /* phones: the numbers follow the library, just above recent services */
+  /* phones: service, learning, leaderboard, singer tools, last attendance, numbers, recent, director */
   @media (max-width:699px){
     .ov{display:flex;flex-direction:column;gap:16px}
     .ov > .dgrid,.ov > .dbottom{display:contents}
     .ov .dsvc{order:1}
-    .ov .dbottom > :first-child{order:2}
-    .ov .datt{order:4}
-    .ov .kpis{order:5;margin:0}
-    .ov .dbottom > :nth-child(2){order:6}
+    .ov .lntile{order:2;margin:0}
+    .ov .lbtile,.ov .dpanel.sklb{order:3;margin:0}
+    .ov .dlib{order:4;margin:0}
+    .ov .datt{order:5}
+    .ov .kpis{order:6;margin:0}
+    .ov .dbottom > :nth-child(2){order:7}
     .ov .dbottom{margin:0}
-    .ov .dadm{order:7}
+    .ov .dadm{order:8}
     .reslist.four{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .reslist.four .res.wide{grid-column:auto}
+    .reslist.four .res.mwide{grid-column:1/-1;order:-1}   /* wide Plan on top, then an even 2×2 */
+    .reslist .res.nomob,.skres.seven > :last-child{display:none}
   }
   @media (max-width:699px){
     .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:16px}
@@ -1772,6 +1884,15 @@
     .songc .acts .mini.sheet:hover{background:color-mix(in srgb,var(--blue) 20%,var(--card))}
     .songc .acts .mini.lyr:hover{background:color-mix(in srgb,var(--gold) 30%,var(--card))}
     .songc .acts .mini.icon:not(.on):hover{background:color-mix(in srgb,var(--muted) 18%,var(--card))}
+  }
+  /* desktop + tablet: squared buttons, same shape as the Learning page */
+  @media (min-width:700px){
+    .songc .acts .mini{height:44px;padding:0 15px;gap:8px;border-radius:12px;font-size:14px;font-weight:600}
+    .songc .acts .mini.icon{width:44px;padding:0;justify-content:center}
+    .songc .acts .mini svg{width:17px;height:17px;flex:none}
+    .songc .admstrip{gap:8px}
+    .songc .admstrip .mini,.songc .admstrip .mini.trash{height:44px;padding:0 15px;gap:8px;border-radius:12px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;text-decoration:none}
+    .songc .admstrip .mini svg{width:17px;height:17px;flex:none}
   }
   @media (max-width:699px){
     .sec.songc > .li.srow{position:relative;height:78px;min-height:0;padding:0 10px 0 16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -2404,7 +2525,7 @@
   }
 
   @media (prefers-reduced-motion:reduce){ .lbglow{animation:none;display:none} }
-  @media (max-width:699px){ .ov .lbtile{order:3;margin:0} .mpage .mbadges{order:9} }
+  @media (max-width:699px){ .mpage .mbadges{order:9} }
   /* phone search: a field that grows out of the search button across the bar */
   .mast{position:relative}
   .mast > .lang{margin-left:auto}
@@ -2906,7 +3027,7 @@ const STR = {
     tSingers:'Singers',tPianists:'Pianists',tConductors:'Conductors',
     conductor:'Conductor',pianist:'Pianist',markC:'C',markP:'P',
     voicePart:'Voice part',partMoved:(n,p)=>n+' → '+p+'. Attendance is unchanged.',
-    archive:'Archive',restore:'Restore',archived:'Archived',archSongs:'Archived songs',archSongNote:'Archived songs keep their history and still show in past services, but are hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Restore brings them back.',
+    archive:'Archive',restore:'Restore',archived:'Archived',archSongs:'Archived songs',lnTitle:'Learning',lnNow:'Now learning',lnNotes:'Sheet',lnUp:'Move up',lnDown:'Move down',lnFiles:'Files & links',lnFromDir:'From the director',lnSumSheet:'Sheet music',lnSumPiano:'Piano',lnSumRec:'Recording',lnSumLyr:'Lyrics',lnComing:'Coming soon',lnDemoOn:'Show a sample',lnDemoOff:'Hide sample',lnDemoTag:'Sample',lnDemoNote:'Sample songs made from your repertoire, to preview this page. Nothing here is saved.',lnDemoAct:'This is a sample. Nothing is saved.',lnSub:'Songs we are learning or about to learn. Practise at home with the music, the recording and the words.',lnNone:'No songs to learn right now.',lnSoon:'Music and recording coming soon.',lnTarget:'Goal',lnTargetPh:'e.g. For Christmas',lnNote:'Note for singers',lnNotePh:'e.g. Altos, learn the second verse first',lnAdd:'Add learning song',lnEditT:'Edit learning song',lnMove:'Move to repertoire',lnMoveT:'Move to the repertoire?',lnMoveQ:n=>'“'+n+'” will show in Choir music, Piano music, Lyrics and the song picker like every other song, and leave the Learning list.',lnTileNote:'Songs here show only on the Learning page until you move them to the repertoire.',lnOpen:'Open Learning page',lnChoir:'Choir sheet',lnPiano:'Piano',lnUpChoir:'Upload choir PDF',lnUpPiano:'Upload piano PDF',lnRmChoir:'Remove choir PDF',lnRmPiano:'Remove piano PDF',lnLyrAdd:'Add lyrics',lnLyrEdit:'Edit lyrics',archSongT:'Archive this song?',archSongQ:n=>'“'+n+'” will be hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Its history stays, and you can restore it from Archived songs.',archSongNote:'Archived songs keep their history and still show in past services, but are hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Restore brings them back.',
     archivedNote:'Archived singers keep all their history in the database but are hidden from the grids and summaries. Restore brings them back.',
     copyLast:'Copy last service',
     categories:'Categories',addSong:'Add song',addCat:'Add category',addSinger:'Add singer',
@@ -3032,7 +3153,7 @@ const STR = {
     tSingers:'Хористы',tPianists:'Пианисты',tConductors:'Дирижёры',
     conductor:'Дирижёр',pianist:'Пианист',markC:'Д',markP:'П',
     voicePart:'Партия',partMoved:(n,p)=>n+' → '+p+'. Посещаемость не изменилась.',
-    archive:'В архив',restore:'Вернуть',archived:'Архив',archSongs:'Песни в архиве',archSongNote:'Архивные песни сохраняют историю и видны в прошлых служениях, но скрыты из «Музыки хора», нот для фортепиано, текстов, статистики песен и выбора песен. «Вернуть» возвращает их.',
+    archive:'В архив',restore:'Вернуть',archived:'Архив',archSongs:'Песни в архиве',lnTitle:'Разучиваем',lnNow:'Сейчас учим',lnNotes:'Ноты',lnUp:'Выше',lnDown:'Ниже',lnFiles:'Файлы и ссылки',lnFromDir:'От регента',lnSumSheet:'Ноты',lnSumPiano:'Фортепиано',lnSumRec:'Запись',lnSumLyr:'Текст',lnComing:'Скоро',lnDemoOn:'Показать пример',lnDemoOff:'Скрыть пример',lnDemoTag:'Пример',lnDemoNote:'Пример из ваших песен, чтобы посмотреть страницу. Ничего не сохраняется.',lnDemoAct:'Это пример. Ничего не сохраняется.',lnSub:'Песни, которые мы разучиваем или скоро начнём. Занимайтесь дома по нотам, записи и тексту.',lnNone:'Сейчас нет песен для разучивания.',lnSoon:'Ноты и запись скоро будут.',lnTarget:'Цель',lnTargetPh:'напр. К Рождеству',lnNote:'Заметка для хористов',lnNotePh:'напр. Альты, сначала выучите второй куплет',lnAdd:'Добавить песню для разучивания',lnEditT:'Песня для разучивания',lnMove:'В репертуар',lnMoveT:'Перенести в репертуар?',lnMoveQ:n=>'«'+n+'» появится в «Музыке хора», нотах для фортепиано, текстах и выборе песен, как остальные песни, и уйдёт из списка «Разучиваем».',lnTileNote:'Эти песни видны только на странице «Разучиваем», пока вы не перенесёте их в репертуар.',lnOpen:'Открыть «Разучиваем»',lnChoir:'Ноты хора',lnPiano:'Фортепиано',lnUpChoir:'Загрузить ноты хора',lnUpPiano:'Загрузить ноты фортепиано',lnRmChoir:'Убрать ноты хора',lnRmPiano:'Убрать ноты фортепиано',lnLyrAdd:'Добавить текст',lnLyrEdit:'Изменить текст',archSongT:'Отправить песню в архив?',archSongQ:n=>'«'+n+'» исчезнет из «Музыки хора», нот для фортепиано, текстов, статистики и выбора песен. История сохранится, вернуть песню можно из блока «Песни в архиве».',archSongNote:'Архивные песни сохраняют историю и видны в прошлых служениях, но скрыты из «Музыки хора», нот для фортепиано, текстов, статистики песен и выбора песен. «Вернуть» возвращает их.',
     archivedNote:'Архивные хористы сохраняют всю историю в базе, но не показываются в сетках и сводках. «Вернуть» возвращает их.',
     copyLast:'Скопировать прошлое служение',
     categories:'Категории',addSong:'Добавить песню',addCat:'Добавить категорию',addSinger:'Добавить хориста',
@@ -3248,8 +3369,10 @@ const DECO = {
   life: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><g fill="#1f7a70"><circle cx="7.3" cy="6.3" r="2.2"></circle><path d="M4.00 18.6V12.70a3.30 3.30 0 0 1 6.60 0V18.6z"></path></g><g fill="#2f9c8f"><circle cx="16.7" cy="6.3" r="2.2"></circle><path d="M13.40 18.6V12.70a3.30 3.30 0 0 1 6.60 0V18.6z"></path></g><g fill="#e3a92a" stroke="#fff" stroke-width="1.1"><circle cx="12" cy="11.4" r="1.7"></circle><path d="M9.45 18.9V16.55a2.55 2.55 0 0 1 5.10 0V18.9z"></path></g></svg>',
   sky: '<svg class="fdeco" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"></circle><circle cx="15.6" cy="8.7" r="2.7" fill="#f6c445"></circle><path d="M7.5 17.2h9.2a3.3 3.3 0 0 0 .4-6.6 4.7 4.7 0 0 0-9 1.1 2.8 2.8 0 0 0-.6 5.5z" fill="#e3f0fd" stroke="#4f8fd0" stroke-width="1.4" stroke-linejoin="round"></path></svg>',
 };
-const songDeco = s => { const k = (songTheme(s) || '').replace(' th-', ''); return DECO[k] || ''; };
-const songTheme = s => { const n = catName(s.category_id).toLowerCase();
+/* the seasonal ornaments and category themes are switched off; DECO stays in case they come back */
+const SONG_DECO = false;
+const songDeco = s => { if (!SONG_DECO) return ''; const k = (songTheme(s) || '').replace(' th-', ''); return DECO[k] || ''; };
+const songTheme = s => { if (!SONG_DECO) return ''; const n = catName(s.category_id).toLowerCase();
   return /верб|palm/.test(n) ? ' th-palm' : /рожд|christmas/.test(n) ? ' th-xmas' : /пасх|easter/.test(n) ? ' th-easter' : /жатв|harvest/.test(n) ? ' th-harvest'
     : /нов\S* год|new year/.test(n) ? ' th-frost' : /небо|небес|heaven/.test(n) ? ' th-sky' : /сводн|combined|joint|mass choir/.test(n) ? ' th-joint' : /страдан|passion|suffering/.test(n) ? ' th-passion' : /прослав|praise/.test(n) ? ' th-praise' : /призыв|invitation|altar call/.test(n) ? ' th-call' : /молитв|prayer/.test(n) ? ' th-prayer' : /христианск|christian life/.test(n) ? ' th-life' : ''; };
 const catSelect = () => S.categories.length ? `<select class="field" style="width:auto;flex:0 1 auto;max-width:46%" data-cat-filter>
@@ -3286,15 +3409,29 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.39.0';
+const VERSION = '5.44.3';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Home: the Learning card features the top song with quick Listen, Sheet and Lyrics buttons, and shows what each other song has',
+    'Home: the Learning card shows up to 5 songs on wide screens and 3 on phones',
+    'Home on phones: Last attendance is more compact, with the ring beside the present/absent counts',
+    'Home on phones: new card order (service, Learning, leaderboard, Singer tools, last attendance, numbers, recent services, director), wide Plan a service tile, and Choir rules hidden',
+    'Home: Learning added to Singer tools',
+    'Home: Usage insights added to the director workspace card',
+    'Home: Recent services shows six services to fill its card',
+    'Home: Learning sits next to the service card, Last attendance moves to the bottom row, and Singer tools runs full width underneath',
+    'Learning: the director can reorder songs with the up and down arrows; the home tile and Repertoire follow the same order',
+    'Songs: removed the seasonal category ornaments from song icons',
+    'Choir and Piano music: squared Listen, Open, Text and director buttons on larger screens; Learning: matching Move to repertoire button',
+    'Learning: redesigned page and home tile, with song cards in two columns, clear practice buttons, a note from the director and tidier director tools',
+    'Learning: a “Show a sample” link previews the page with sample songs; nothing is saved',
+    'New Learning page and home tile: songs the choir is learning, with music, recording, words and a note. The director adds them in Repertoire and moves them in when ready',
+    'Repertoire: archiving a song now asks you to confirm first',
     'Repertoire: archive songs you are not singing now. They leave the music pages and song stats, keep their history, and can be restored from the Archived songs tile',
-    'Home: the Upcoming service dot is now a red recording light',
     'Home: the leaderboard card no longer shows initials circles on the podium',
     'Fixed: services before a singer’s “Sings at services from” date no longer show as absent, even if they were marked before',
     'Edit member: the two attendance dates now sit together in their own section, with roles below',
@@ -3322,8 +3459,22 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Главная: в карточке «Разучиваем» первая песня выделена, с кнопками «Слушать», «Ноты» и «Текст»; у остальных видно, что есть',
+    'Главная: в карточке «Разучиваем» до 5 песен на широком экране и 3 на телефоне',
+    'Главная на телефоне: «Последняя посещаемость» компактнее — круг рядом с числами',
+    'Главная на телефоне: новый порядок карточек (служение, «Разучиваем», рейтинг, «Для хористов», посещаемость, цифры, недавние служения, регент), широкая плитка «Спланировать служение», правила хора скрыты',
+    'Главная: «Разучиваем» добавлено в «Для хористов»',
+    'Главная: «Статистика использования» добавлена в карточку регента',
+    'Главная: в «Недавних служениях» теперь шесть служений',
+    'Главная: «Разучиваем» рядом с карточкой служения, «Последняя посещаемость» — в нижнем ряду, «Для хористов» — во всю ширину внизу',
+    '«Разучиваем»: регент может менять порядок песен стрелками вверх и вниз; плитка на главной и «Репертуар» показывают тот же порядок',
+    'Песни: убраны сезонные украшения категорий со значков песен',
+    'Ноты хора и фортепиано: квадратные кнопки «Слушать», «Открыть», «Текст» и кнопки регента на больших экранах; «Разучиваем»: такая же кнопка «В репертуар»',
+    '«Разучиваем»: новый вид страницы и плитки — карточки в две колонки, понятные кнопки, заметка регента и аккуратные инструменты',
+    '«Разучиваем»: ссылка «Показать пример» показывает страницу с примерами песен; ничего не сохраняется',
+    'Новая страница и плитка «Разучиваем»: песни, которые хор учит, с нотами, записью, текстом и заметкой. Регент добавляет их в «Репертуаре» и переносит, когда пора',
+    'Репертуар: перед отправкой песни в архив теперь нужно подтверждение',
     'Репертуар: песни, которые сейчас не поются, можно отправить в архив. Они исчезают из нот и статистики, история сохраняется, вернуть можно из блока «Песни в архиве»',
-    'Главная: точка «Ближайшее служение» теперь красная, как индикатор записи',
     'Главная: на карточке рейтинга больше нет кружков с инициалами на пьедестале',
     'Исправлено: служения до даты «Поёт на служениях с» больше не показываются как пропуски, даже если были отмечены раньше',
     'Изменение хориста: обе даты посещаемости теперь в отдельном блоке, роли — ниже',
@@ -3860,8 +4011,27 @@ function gridEvents(){
     .filter(e => S.typeFilter === 'all' ? true
       : S.typeFilter === 'services' ? e.kind !== 'rehearsal' : e.kind === 'rehearsal');
 }
-/* archived songs keep their history but leave the music pages and song stats */
-const liveSongs = () => S.songs.filter(s => s.active !== false);
+/* archived songs keep their history but leave the music pages and song stats;
+   learning songs live on their own page until the director moves them in */
+const liveSongs = () => S.songs.filter(s => s.active !== false && !s.learning);
+/* the director's order first (learn_order), then anything never placed, by title */
+const lnCmp = (a, b) => (a.learn_order ?? 1e9) - (b.learn_order ?? 1e9) || a.title.localeCompare(b.title, 'ru');
+const learnSongs = () => { const real = S.songs.filter(s => s.learning && s.active !== false).sort(lnCmp);
+  return S.lnDemo ? real.concat(learnDemo()) : real; };
+/* sample mode for the Learning page: four real songs dressed up as learning songs, never saved.
+   Switched with the "Show a sample" link on the Learning page; remembered on this device. */
+try { S.lnDemo = localStorage.getItem('lnDemo') === '1'; } catch (_) {}
+function learnDemo(){
+  const sc = s => (s.pdf_path ? 1 : 0) + (s.piano_path ? 1 : 0) + (s.audio_url ? 1 : 0) + (hasLyrics(s) ? 1 : 0);
+  const ru = S.lang === 'ru';
+  const meta = [[ru ? 'К Рождеству' : 'For Christmas', ru ? 'Альты, сначала выучите второй куплет. Остальные — припев.' : 'Altos, learn the second verse first. Everyone else, the chorus.'],
+    [ru ? 'К Пасхе' : 'For Easter', null],
+    [null, ru ? 'Послушайте запись несколько раз до четверга.' : 'Listen to the recording a few times before Thursday.'],
+    [ru ? 'С января' : 'Starting in January', null]];
+  return liveSongs().slice().sort((a, b) => sc(b) - sc(a)).slice(0, 4).map((s, i) => Object.assign({}, s,
+    { _demo: true, learning: true, learn_for: meta[i][0], learn_note: meta[i][1] },
+    i === 3 ? { pdf_path: null, piano_path: null, audio_url: null, lyrics: null } : {}));
+}
 function songStats(id, from, to){
   const now = today();
   const rows = S.eventSongs.filter(x => {
@@ -4160,6 +4330,7 @@ const AIC = {
   restore: AI('<path d="M4 12a8 8 0 1 0 2.3-5.6"></path><path d="M4 4v4.5h4.5"></path>'),
   chart: AI('<path d="M4 3v18h17"></path><path d="M8 17v-5M13 17V8M18 17V4"></path>'),
   out: AI('<path d="M9 3H3v18h6"></path><path d="m14 6 6 6-6 6M20 12H8"></path>'),
+  learn: AI('<path d="M12 21c-2.2-1.4-5.6-1.9-9-1.6V10.2c1.3-.1 2.6 0 3.8.2"></path><path d="M12 21c2.2-1.4 5.6-1.9 9-1.6V10.2c-1.3-.1-2.6 0-3.8.2"></path><path d="M12 21v-3.4"></path><path d="M9.6 14.2a4.6 4.6 0 1 1 4.8 0v1.4H9.6z"></path><path d="M10.2 17.6h3.6"></path><path d="M12 1.8v1.4M5.6 4.4l1 1M18.4 4.4l-1 1"></path><path d="M12.8 12.4V8.6l1.4.5"></path><circle cx="11.9" cy="12.5" r=".9"></circle>'),
   music: AI('<path d="M9 18V5l12-2v13"></path><path d="M9 9l12-2"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>'),
   search: AI('<circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path>'),
   chev: AI('<path d="m9 5 7 7-7 7"></path>'),
@@ -4184,7 +4355,7 @@ const LOGOSVG = '<svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><g t
 function crumbLink(){
   const r = S.route || '#/home', seg = r.split('?')[0].split('/');
   if (r.startsWith('#/member')) return [t('attendance'), '#/attendance/summary'];
-  if (r.startsWith('#/lyrics/') && seg[2]) { const s = songByToken(seg[2]); if (s) return [t('tLyrics'), '#/lyrics', s.title]; }
+  if (r.startsWith('#/lyrics/') && seg[2]) { const s = songByToken(seg[2]); if (s) return s.learning ? [t('lnTitle'), '#/learning', s.title] : [t('tLyrics'), '#/lyrics', s.title]; }
   if (/^#\/sheets(\/piano)?\/order-/.test(r)) return [t('recentSvc'), '#/songs/services'];
   if (r.startsWith('#/admin/songs/') && seg[3]) return [t('planSvc'), '#/admin/songs'];
   if (r.startsWith('#/admin/attendance/') && seg[3]) return [t('recordAtt'), '#/admin/attendance'];
@@ -4205,6 +4376,7 @@ function crumbsBase(){
   if (r.startsWith('#/songs')) return [W, t('songs')];
   if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) return [L, t('tPiano')];
   if (r.startsWith('#/sheets')) return [L, t('tSheets')];
+  if (r.startsWith('#/learning')) return [L, t('lnTitle')];
   if (r.startsWith('#/lyrics')) return [L, t('tLyrics')];
   if (r.startsWith('#/leaders')) return [C, t('lbTitle')];
   if (r.startsWith('#/seating')) return [C, t('tSeating')];
@@ -4586,6 +4758,7 @@ function drawerNav(){
     ${it('#/sheets', r.startsWith('#/sheets') && !piano, AIC.sheets, t('tSheets'), liveSongs().filter(x => x.pdf_path).length)}
     ${it('#/sheets/piano', piano, AIC.piano, t('tPiano'), liveSongs().filter(x => x.piano_path).length)}
     ${it('#/lyrics', r.startsWith('#/lyrics'), AIC.lyrics, t('tLyrics'), liveSongs().filter(hasLyrics).length)}
+    ${it('#/learning', r.startsWith('#/learning'), AIC.learn, t('lnTitle'), learnSongs().length)}
     ${sec('navChoir')}
     ${it('#/leaders', r.startsWith('#/leaders'), AIC.trophy, t('lbTitle'))}
     ${it('#/seating', r.startsWith('#/seating'), AIC.seat, t('tSeating'))}
@@ -4687,20 +4860,23 @@ function homeSkel(){
         <div class="sethd"><span style="height:20px;display:flex;align-items:center;width:100%">${x('90px', 11)}</span></div>
         <div class="setlist">${['62%', '48%', '70%'].map(row).join('')}</div>
         <div class="pfoot"><span style="height:49px;display:flex;align-items:center;width:100%">${x('120px', 12)}</span></div></section>
-      <section class="dpanel datt skc">${head('46%')}<div style="height:19px;margin:2px 0 24px;display:flex;align-items:center">${x('60%', 11)}</div><i class="skdonut"></i>
-        <div style="height:16px;display:flex;justify-content:center;gap:20px;align-items:center">${x('70px', 10)}${x('70px', 10)}</div>
-        <div style="display:grid;gap:20px;margin-top:20px">${x('100%', 16).repeat(4)}</div>
-        <div class="pfoot c"><span style="height:49px;display:flex;align-items:center;justify-content:center;width:100%">${x('110px', 12)}</span></div></section>
+      <section class="dpanel lntile skc">${head('40%')}<div style="height:19px;display:flex;align-items:center">${x('30%', 11)}</div>
+        <div style="flex:1;margin-top:8px">${['64%', '52%', '70%', '46%'].map(row).join('')}</div>
+        <div class="pfoot c"><span style="height:49px;display:flex;align-items:center;justify-content:center;width:100%">${x('80px', 12)}</span></div></section>
     </div>
     <div class="dpanel skc sklb"><div style="display:grid;gap:10px;align-self:center">${x('50%', 18)}${x('34%', 11)}</div>
       <div class="pod">${x('', 70)}${x('', 96)}${x('', 56)}</div>
       <div class="skfacts" style="display:grid;gap:12px;align-self:center">${x('70%', 32)}${x('70%', 32)}</div></div>
     <div class="dbottom">
-      <section class="dpanel skc">${head('40%')}<div class="skres">${x('').repeat(6)}</div></section>
+      <section class="dpanel datt skc">${head('46%')}<div style="height:19px;margin:2px 0 24px;display:flex;align-items:center">${x('60%', 11)}</div><i class="skdonut"></i>
+        <div style="height:16px;display:flex;justify-content:center;gap:20px;align-items:center">${x('70px', 10)}${x('70px', 10)}</div>
+        <div style="display:grid;gap:20px;margin-top:20px">${x('100%', 16).repeat(4)}</div>
+        <div class="pfoot c"><span style="height:49px;display:flex;align-items:center;justify-content:center;width:100%">${x('110px', 12)}</span></div></section>
       <section class="dpanel skc">${head('44%')}<div class="skrecent">${['58%', '46%', '64%', '50%'].map(row).join('')}</div></section>
-      ${S.session ? `<section class="dpanel dadm skc">${head('42%')}<div class="skres four">${x('').repeat(4)}</div></section>`
+      ${S.session ? `<section class="dpanel dadm skc">${head('42%')}<div class="skres four">${x('').repeat(4)}<i class="skx" style="grid-column:1/-1"></i></div></section>`
         : `<section class="dpanel dadm out skc">${x('40px', 40)}<span class="grow2" style="display:grid;gap:7px">${x('60%', 14)}${x('80%', 10)}</span>${x('96px', 40)}</section>`}
-    </div></div>`;
+    </div>
+    <div class="dlib"><section class="dpanel skc">${head('20%')}<div class="skres seven">${x('').repeat(7)}</div></section></div></div>`;
 }
 function homePage(){
   const members = S.singers.filter(x => x.part && x.active !== false);
@@ -4776,17 +4952,39 @@ function homePage(){
   const res = (href, name, count, ic, tone) => `<a class="res ${tone}" href="${href}"><span class="rico">${ic}</span><strong>${esc(name)}</strong>${count ? `<small>${esc(count)}</small>` : ''}</a>`;
   const library = `<section class="dpanel">
       <div class="phd"><h2>${esc(t('singerTools'))}</h2></div>
-      <div class="reslist">
+      <div class="reslist seven">
         ${res('#/sheets', t('tSheets'), t('scoresN')(withPdf), AIC.sheets, 'r1')}
         ${res('#/sheets/piano', t('tPiano'), t('scoresN')(withPiano), AIC.piano, 'r2')}
         ${res('#/lyrics', t('tLyrics'), t('textsN')(withLyr), AIC.lyrics, 'r3')}
+        ${res('#/learning', t('lnTitle'), learnSongs().length ? t('songsCount')(learnSongs().length) : '', AIC.learn, 'r7')}
         ${res('#/seating', t('tSeating'), '', AIC.seat, 'r4')}
         ${res('#/songs/summary', t('songs'), '', AIC.hist, 'r5')}
-        ${res('#/rules', t('tRules'), '', AIC.rules, 'r6')}
+        ${res('#/rules', t('tRules'), '', AIC.rules, 'r6 nomob')}
       </div>
     </section>`;
+  const learnList = learnSongs();
+  const lnSum = s => [s.pdf_path && t('lnSumSheet'), s.piano_path && t('lnSumPiano'), s.audio_url && t('lnSumRec'), hasLyrics(s) && t('lnSumLyr')].filter(Boolean).join(' · ') || t('lnComing');
+  const lnHas = s => [s.pdf_path && AIC.sheets, s.audio_url && AIC.play, hasLyrics(s) && AIC.lyrics].filter(Boolean).join('');
+  const lnF = learnList[0];
+  const lnQuick = s => [
+    s.audio_url ? `<a class="lnq t4" href="${esc(s.audio_url)}" data-song="${s.id}" target="_blank" rel="noopener">${AIC.play}<span>${esc(t('listen'))}</span></a>` : '',
+    s.pdf_path && (!s.pdf_locked || S.session) ? `<button class="lnq t1" data-open="sheets:${s.id}" title="${esc(t('lnSumSheet'))}">${AIC.sheets}<span>${esc(t('lnNotes'))}</span></button>` : '',
+    hasLyrics(s) ? `<a class="lnq t3" href="#/lyrics/${shortId(s.id)}">${AIC.lyrics}<span>${esc(t('tLyrics'))}</span></a>` : ''].filter(Boolean).join('');
+  const learnCard = `<section class="dpanel lntile">
+      <div class="lnhead"><span class="lnico">${AIC.learn}</span><div style="min-width:0"><h2>${esc(t('lnTitle'))}${S.lnDemo ? ` <span class="lntag">${esc(t('lnDemoTag'))}</span>` : ''}</h2>
+        <p>${esc(learnList.length ? t('songsCount')(learnList.length) : t('lnNone'))}</p></div></div>
+      ${lnF ? `<div class="lnfeat">
+          <div class="fe"><span>${esc(t('lnNow'))}</span>${lnF.learn_for ? `<em>${esc(lnF.learn_for)}</em>` : ''}</div>
+          <a class="ft" href="#/learning">${esc(lnF.title)}</a>
+          ${lnQuick(lnF) ? `<div class="fq">${lnQuick(lnF)}</div>` : `<p class="fs">${esc(t('lnSoon'))}</p>`}
+        </div>
+        ${learnList.length > 1 ? `<div class="lrows">${learnList.slice(1, 5).map((s, i) => `<a class="lrow" href="#/learning"><span class="n">${String(i + 2).padStart(2, '0')}</span>
+          <span class="b"><strong>${esc(s.title)}</strong><small${s.learn_for ? ' class="g"' : ''}>${esc(s.learn_for || lnSum(s))}</small></span><span class="has">${lnHas(s)}</span></a>`).join('')}</div>` : ''}`
+        : `<div class="lnone"><span class="lnico">${AIC.learn}</span>${S.session ? `<a class="tlink" href="#/learning">＋ ${esc(t('lnAdd'))}</a>` : ''}</div>`}
+      <div class="pfoot c"><a href="#/learning">${esc(t('viewAll'))}${AIC.arrow}</a></div>
+    </section>`;
   const recent = S.events.filter(e => e.kind !== 'rehearsal' && past(e) && hasSongs(e))
-    .sort((a, b) => a.date < b.date ? 1 : -1).slice(0, 4);
+    .sort((a, b) => a.date < b.date ? 1 : -1).slice(0, 6);
   const recentCard = `<section class="dpanel">
       <div class="phd"><h2>${esc(t('recentSvc'))}</h2><a class="tlink" href="#/songs/services">${esc(t('viewAll'))}${AIC.arrow}</a></div>
       <div class="recent">${recent.length ? recent.map(e => { const [, m, d] = e.date.split('-').map(Number);
@@ -4799,9 +4997,10 @@ function homePage(){
       <div class="phd"><h2>${esc(t('dirWs'))}</h2><a class="tlink" href="#/admin/attendance">${esc(t('tAdmin'))}${AIC.arrow}</a></div>
       <div class="reslist four">
         ${qa('#/admin/attendance', 'attendance', AIC.att, 'r1')}
-        ${qa('#/admin/songs', 'songQueue', AIC.plan, 'r2')}
+        ${qa('#/admin/songs', 'songQueue', AIC.plan, 'r2 mwide')}
         ${qa('#/admin/songlist', 'repertoire', AIC.music, 'r3')}
         ${qa('#/admin/members', 'members', AIC.user, 'r4')}
+        ${qa('#/usage', 'usageIns', AIC.chart, 'r5 wide')}
       </div>
     </section>` : `<section class="dpanel dadm out"><span class="rico">${AIC.admin}</span>
       <span class="grow2"><strong>${esc(t('dirSignin'))}</strong><small>${esc(t('dirSigninSub'))}</small></span>
@@ -4828,8 +5027,9 @@ function homePage(){
   })();
   return `<div class="dtop"></div>
     <div class="ov">${kpis}
-    <div class="dgrid">${service}${att}</div>${leadersCard}
-    <div class="dbottom">${library}${recentCard}${admin}</div></div>
+    <div class="dgrid">${service}${learnCard}</div>${leadersCard}
+    <div class="dbottom">${att}${recentCard}${admin}</div>
+    <div class="dlib">${library}</div></div>
     <div class="ver">v${VERSION} · <a href="#" data-notes>${esc(t('relNotes'))}</a></div>
     ${S.showNotes ? `<div class="notespanel">
       <div class="nh">${esc(t('relNotes'))} — v${VERSION.split('.')[0]}</div>
@@ -5331,7 +5531,7 @@ function lbSheet(from, p, label){
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.lbWho) { S.lbWho = null; render(); } });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && (S.audioEdit || S.pdfDel || S.planType)) { S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; render(); }
+  if (e.key === 'Escape' && (S.audioEdit || S.pdfDel || S.planType || S.archAsk || S.learnEdit || S.learnMove)) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; render(); }
   if (e.key === 'Enter' && e.target.id && e.target.id.startsWith('audio-')) { e.preventDefault(); const b = document.querySelector('.modal [data-audio-save]'); if (b) b.click(); }
 });
 /* first view of a period: the percentages count up while the podium rises */
@@ -5559,7 +5759,7 @@ function attendanceSummary(){
 /* ---------- public: songs ---------- */
 function songsGrid(top){
   const ev = S.events.filter(e => e.kind !== 'rehearsal' && hasSongs(e) && inRange(e.date, S.from, S.to));
-  const songs = S.songs.filter(s => s.active !== false &&
+  const songs = liveSongs().filter(s =>
     (S.catFilter === 'all' || s.category_id === S.catFilter) &&
     songMatch(s, S.query));
   if (!ev.length) return (top || '') + `<div class="msg">${esc(t('noEvents'))}</div>`;
@@ -6159,7 +6359,7 @@ function orderCard(){
 function markSongs(ev){
   const E = editFor('songs', ev);
   const picked = E.sel.size;
-  const list = sortSongList(S.songs.filter(s => s.active !== false && (S.catFilter === 'all' || s.category_id === S.catFilter) && songMatch(s, S.query)), 'pick');
+  const list = sortSongList(liveSongs().filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) && songMatch(s, S.query)), 'pick');
   /* A 160-song list is a long scroll past the running order, so it folds itself
      away once three songs are picked. S.pickOpen overrides in both directions. */
   const open = S.pickOpen === null ? picked < 3 : S.pickOpen;
@@ -6219,7 +6419,7 @@ function catCard(){
 }
 function manageSongs(){
   const found = S.songs.filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) && songMatch(s, S.query));
-  const list = sortSongList(found.filter(s => s.active !== false), 'rep');
+  const list = sortSongList(found.filter(s => s.active !== false && !s.learning), 'rep');
   const arch = found.filter(s => s.active === false).sort((a, b) => a.title.localeCompare(b.title, 'ru'));
   const row = s => { const st = songStats(s.id), off = s.active === false, lab = t(off ? 'restore' : 'archive');
     const meta = [catName(s.category_id), s.subtitle, t('sungN')(st.n, st.last)].filter(Boolean).join(' · ');
@@ -6228,6 +6428,20 @@ function manageSongs(){
         <button class="ibtn" data-edit-song="${s.id}" aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
         <button class="ibtn" data-archive-song="${s.id}" aria-label="${esc(lab)}" title="${esc(lab)}">${off ? AIC.restore : AIC.archive}</button>
         <button class="ibtn danger" data-del-song="${s.id}" aria-label="${esc(t('del'))}" title="${esc(t('del'))}">${TRASHSVG}</button></div>`; };
+  const learn = found.filter(s => s.learning && s.active !== false).sort(lnCmp);
+  const lOpen = S.learnOpen || (!!S.query && learn.length > 0);
+  const lrow = s => { const meta = [s.learn_for, catName(s.category_id), s.subtitle].filter(Boolean).join(' · ');
+    return `<div class="li rrow"><span class="ftile">${AIC.music}</span><div style="flex:1;min-width:0">
+        <div class="stl">${esc(s.title)}${pvTag(s)}</div>${meta ? `<div class="sub">${esc(meta)}</div>` : ''}</div>
+        <button class="tbtn" data-learn-move="${s.id}">${esc(t('lnMove'))}</button>
+        <button class="ibtn" data-learn-edit="${s.id}" aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
+        <button class="ibtn danger" data-del-song="${s.id}" aria-label="${esc(t('del'))}" title="${esc(t('del'))}">${TRASHSVG}</button></div>`; };
+  const learnCard = `<div class="sec">
+      <button class="chd fold2" data-toggle-learn aria-expanded="${lOpen ? 'true' : 'false'}"><h3>${esc(t('lnTitle'))}</h3><span class="n">${learn.length}</span><i class="chev${lOpen ? ' up' : ''}"></i></button>
+      ${lOpen ? (learn.length ? learn.map(lrow).join('') : `<div class="msg">${esc(t('lnNone'))}</div>`) +
+        `<div class="cfoot" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px"><button class="tlink" data-learn-edit="new">＋ ${esc(t('lnAdd'))}</button><a class="tlink" href="#/learning">${esc(t('lnOpen'))}${AIC.arrow}</a></div>
+        <div class="note">${esc(t('lnTileNote'))}</div>` : ''}
+    </div>`;
   const open = S.archSongsOpen || (!!S.query && arch.length > 0);
   const archCard = S.songs.some(s => s.active === false) ? `<div class="sec">
       <button class="chd fold2" data-toggle-arch-songs aria-expanded="${open ? 'true' : 'false'}"><h3>${esc(t('archSongs'))}</h3><span class="n">${arch.length}</span><i class="chev${open ? ' up' : ''}"></i></button>
@@ -6235,7 +6449,7 @@ function manageSongs(){
     </div>` : '';
   return adminTabs('list') + admBar(t('songsN')(liveSongs().length), `<button class="pbtn" data-add-open="song">＋ ${esc(t('addSong'))}</button>`) +
     `<div class="searchrow sumrow" style="display:flex;gap:8px">${qField('searchPv')}${catSelect()}${listSortSelect('rep')}</div>
-    <div class="sec">` + (list.length ? list.map(row).join('') : `<div class="msg">${esc(t('noSongs'))}</div>`) + `</div>` + archCard + catCard();
+    <div class="sec">` + (list.length ? list.map(row).join('') : `<div class="msg">${esc(t('noSongs'))}</div>`) + `</div>` + learnCard + archCard + catCard();
 }
 const partName = p => { const v = t(p) || ''; return v.charAt(0) + v.slice(1).toLowerCase(); };
 const monYear = iso => { const [y, m] = iso.split('-').map(Number); return MON[S.lang][m - 1] + ' ' + y; };
@@ -6667,6 +6881,41 @@ function sheetsPage(kind){
       return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}${S.actOpen === s.id ? ' open' : ''}" data-srow="${s.id}">${row}</div>`;
     }).join('') + foot;
 }
+/* learning songs: add or edit one, and confirm moving it into the repertoire */
+function learnModal(){
+  if (!S.session) return '';
+  const shell = (title, body, go) => `<div class="mscrim" data-modal-x></div>
+    <div class="modal" role="dialog" aria-modal="true" aria-label="${esc(title)}" style="width:min(480px,calc(100vw - 24px))">
+      <div class="mhd"><h2>${esc(title)}</h2><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
+      <div class="mbody">${body}</div>
+      <div class="mfoot"><button class="obtn2" data-modal-x>${esc(t('cancel'))}</button>${go}</div></div>`;
+  const mv = S.learnMove && S.songs.find(x => x.id === S.learnMove);
+  if (mv) return shell(t('lnMoveT'), `<p style="margin:0;font-size:14px;line-height:1.5;color:var(--muted);text-wrap:pretty">${esc(t('lnMoveQ')(mv.title))}</p>`,
+    `<button class="pbtn" data-learn-move="${mv.id}" data-confirm="1">${esc(t('lnMove'))}</button>`);
+  if (!S.learnEdit) return '';
+  const s = S.learnEdit === 'new' ? {} : S.songs.find(x => x.id === S.learnEdit);
+  if (!s) return '';
+  const cats = S.categories.length ? `<label class="fl"><span>${esc(t('catL'))}</span><select class="field" id="ln-cat">
+      <option value="">${esc(t('noCat'))}</option>${S.categories.map(c => `<option value="${c.id}"${s.category_id === c.id ? ' selected' : ''}>${esc(c.name)}</option>`).join('')}</select></label>` : '';
+  return shell(t(S.learnEdit === 'new' ? 'lnAdd' : 'lnEditT'), `<div class="fgrid">
+      <label class="fl full"><span>${esc(t('titleL'))}</span><input class="field" id="ln-title" value="${esc(s.title || '')}" autocomplete="off"></label>
+      <label class="fl full"><span>${esc(t('subtitle'))}</span><input class="field" id="ln-sub" value="${esc(s.subtitle || '')}" autocomplete="off"></label>
+      ${cats}
+      <label class="fl"><span>${esc(t('pvL'))}</span><input class="field" id="ln-pv" inputmode="numeric" value="${esc(s.pv_number == null ? '' : s.pv_number)}"></label>
+      <label class="fl full"><span>${esc(t('lnTarget'))}</span><input class="field" id="ln-for" value="${esc(s.learn_for || '')}" placeholder="${esc(t('lnTargetPh'))}" autocomplete="off"></label>
+      <label class="fl full"><span>${esc(t('lnNote'))}</span><textarea class="field" id="ln-note" rows="3" placeholder="${esc(t('lnNotePh'))}" style="height:auto;min-height:84px;padding-top:10px;padding-bottom:10px;resize:vertical;line-height:1.45">${esc(s.learn_note || '')}</textarea></label></div>`,
+    `<button class="pbtn" data-learn-save>${esc(t('save'))}</button>`);
+}
+/* Repertoire: confirm before a song is archived (restoring needs no question) */
+function archSongModal(){
+  const sg = S.archAsk && S.session && S.songs.find(x => x.id === S.archAsk);
+  if (!sg) return '';
+  return `<div class="mscrim" data-modal-x></div>
+    <div class="modal" role="dialog" aria-modal="true" aria-label="${esc(t('archSongT'))}" style="width:min(440px,calc(100vw - 24px))">
+      <div class="mhd"><h2>${esc(t('archSongT'))}</h2><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
+      <div class="mbody"><p style="margin:0;font-size:14px;line-height:1.5;color:var(--muted);text-wrap:pretty">${esc(t('archSongQ')(sg.title))}</p></div>
+      <div class="mfoot"><button class="obtn2" data-modal-x>${esc(t('cancel'))}</button><button class="pbtn" style="display:inline-flex;align-items:center;justify-content:center;gap:7px" data-archive-song="${sg.id}" data-confirm="1">${AIC.archive}${esc(t('archive'))}</button></div></div>`;
+}
 /* Plan a service: change a planned service's type (morning, evening, or a named event) */
 function planTypeModal(){
   const P = S.planType, ev = P && S.session && S.events.find(x => x.id === P.id);
@@ -6714,7 +6963,7 @@ async function planTypeSave(){
 }
 /* the music page's two small dialogs: a song's recording link, and removing its PDF */
 function songModal(){
-  if (!S.session || !S.route.startsWith('#/sheets')) return '';
+  if (!S.session || !/^#\/(sheets|learning)/.test(S.route)) return '';
   const shell = (title, sub, body, foot) => `<div class="mscrim" data-modal-x></div>
     <div class="modal" role="dialog" aria-modal="true" aria-label="${esc(title)}" style="width:min(460px,calc(100vw - 24px))">
       <div class="mhd"><h2>${esc(title)}</h2><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
@@ -6781,6 +7030,53 @@ function startLyrDraft(id){
   S.lyrPasteOpen = false; S.lyrPasteTxt = '';
 }
 const lyrDirty = () => JSON.stringify([S.lyrDraft, S.lyrPv]) !== S.lyrWas;
+/* ---------- learning: songs the choir is learning, open to every singer ---------- */
+const UPSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M7 9l5-5 5 5M5 20h14"></path></svg>';
+function learningPage(){
+  const list = learnSongs();
+  const off = (ic, lab) => `<span class="lnb off" aria-disabled="true">${ic}<span>${esc(lab)}</span></span>`;
+  const realN = list.filter(x => !x._demo).length;
+  const card = (s, i) => {
+    const demo = !!s._demo;
+    const sheet = (kind, cls, ic, lab) => { const K = SHEETKIND[kind];
+      if (!s[K.col]) return off(ic, lab);
+      if (s[K.lock] && !S.session) return `<span class="lnb off" title="${esc(t('adminOnlyShort'))}">${lockSVG(true)}<span>${esc(lab)}</span></span>`;
+      return `<button class="lnb ${cls}" data-open="${kind}:${s.id}">${ic}<span>${esc(lab)}</span></button>`; };
+    const has = !!(s.pdf_path || s.piano_path || s.audio_url || hasLyrics(s));
+    const practice = has ? `<div class="lnpr">
+        ${sheet('sheets', 't1', AIC.sheets, t('lnChoir'))}
+        ${sheet('piano', 't2', AIC.piano, t('lnPiano'))}
+        ${s.audio_url ? `<a class="lnb t4" href="${esc(s.audio_url)}" data-song="${s.id}" target="_blank" rel="noopener">${AIC.play}<span>${esc(t('listen'))}</span></a>` : off(AIC.play, t('listen'))}
+        ${hasLyrics(s) ? `<a class="lnb t3" href="#/lyrics/${shortId(s.id)}">${AIC.lyrics}<span>${esc(t('tLyrics'))}</span></a>` : off(AIC.lyrics, t('tLyrics'))}
+      </div>` : `<div class="lnsoon">${esc(t('lnSoon'))}</div>`;
+    const open = !demo && S.lnTools === s.id, da = 'data-ln-demo-act';
+    const foot = S.session ? `<div class="lnft">
+        <button class="lnib" ${demo ? da : `data-learn-edit="${s.id}"`} aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
+        <button class="lnib${open ? ' on' : ''}" ${demo ? da : `data-ln-tools="${s.id}"`} aria-expanded="${open}" aria-label="${esc(t('lnFiles'))}" title="${esc(t('lnFiles'))}">${UPSVG}</button>
+        ${realN > 1 || demo ? `<span class="lnord"><button class="lnib" ${demo ? da : `data-ln-mv="${s.id}:-1"`}${!demo && i === 0 ? ' disabled' : ''} aria-label="${esc(t('lnUp'))}" title="${esc(t('lnUp'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg></button><button class="lnib" ${demo ? da : `data-ln-mv="${s.id}:1"`}${!demo && i === realN - 1 ? ' disabled' : ''} aria-label="${esc(t('lnDown'))}" title="${esc(t('lnDown'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"></path></svg></button></span>` : ''}
+        <button class="lnb go" ${demo ? da : `data-learn-move="${s.id}"`}><span>${esc(t('lnMove'))}</span></button></div>` : '';
+    const file = (kind, upL, rmL) => { const K = SHEETKIND[kind];
+      if (S.uploading === kind + ':' + s.id) return `<span class="lnt">${esc(t('uploading'))}</span>`;
+      return s[K.col]
+        ? `<button class="lnt danger" data-del-pdf="${s.id}" data-sheet-kind="${kind}">${TRASHSVG}<span>${esc(t(rmL))}</span></button>`
+        : `<label class="lnt" for="up-ln-${kind}-${s.id}">${UPSVG}<span>${esc(t(upL))}</span><input id="up-ln-${kind}-${s.id}" type="file" accept="application/pdf,.pdf" data-upload="${s.id}" data-sheet-kind="${kind}" hidden></label>`; };
+    const tools = open ? `<div class="lntools">
+        ${file('sheets', 'lnUpChoir', 'lnRmChoir')}${file('piano', 'lnUpPiano', 'lnRmPiano')}
+        <button class="lnt" data-audio-edit="${s.id}">${LINKSVG}<span>${esc(t(s.audio_url ? 'audioLink' : 'audioAdd'))}</span></button>
+        <a class="lnt" href="#/lyrics/${shortId(s.id)}" data-lyr-edit="${s.id}">${LYRSVG}<span>${esc(t(hasLyrics(s) ? 'lnLyrEdit' : 'lnLyrAdd'))}</span></a></div>` : '';
+    const meta = [s.subtitle, catName(s.category_id)].filter(Boolean).join(' · ');
+    return `<article class="lncard${demo ? ' demo' : ''}">
+      <div class="lninfo"><div class="lnh"><div class="tt"><h3>${esc(s.title)}${pvTag(s)}${demo ? `<span class="lntag">${esc(t('lnDemoTag'))}</span>` : ''}</h3>${meta ? `<p class="mt">${esc(meta)}</p>` : ''}</div>
+        ${s.learn_for ? `<span class="lngoal" title="${esc(s.learn_for)}">${esc(s.learn_for)}</span>` : ''}</div>
+      ${s.learn_note ? `<div class="lnnote"><b>${esc(t('lnFromDir'))}</b><p>${esc(s.learn_note)}</p></div>` : ''}</div>
+      ${practice}${foot}${tools}</article>`;
+  };
+  const demoBtn = S.session || S.lnDemo ? `<button class="upsample" data-ln-demo>${esc(t(S.lnDemo ? 'lnDemoOff' : 'lnDemoOn'))}</button>` : '';
+  const add = S.session ? `<button class="pbtn" data-learn-edit="new">＋ ${esc(t('lnAdd'))}</button>` : '';
+  return pageHead() + `<div class="lnhd"><div><h1>${esc(t('lnTitle'))}</h1>${list.length ? `<p>${esc(t('songsCount')(list.length))}</p>` : ''}</div>${demoBtn || add ? `<div class="acts">${demoBtn}${add}</div>` : ''}</div>` +
+    (S.lnDemo ? `<p class="lndemo">${esc(t('lnDemoNote'))}</p>` : '') +
+    (list.length ? `<div class="lngrid">${list.map(card).join('')}</div>` : `<div class="lnempty">${esc(t('lnNone'))}</div>`);
+}
 function lyricsRoute(){
   const song = songByToken(S.route.split('/')[2]);
   if (!song) return lyricsIndex();
@@ -7070,6 +7366,7 @@ function render(){
   else if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) { html += publicNav('piano') + sheetsPage('piano'); }
   else if (r.startsWith('#/sheets')) { html += publicNav('sheets') + sheetsPage('sheets'); }
   else if (r.startsWith('#/member')) { html += memberPage(r.split('/')[2]); }
+  else if (r.startsWith('#/learning')) { html += publicNav('learning') + learningPage(); }
   else if (r.startsWith('#/lyrics')) { html += publicNav('lyrics') + lyricsRoute(); }
   else if (r.startsWith('#/usage')) {
     if (S.session && !S.usageLoading && (S.usage === null || String(S.usageFor) !== String(S.usagePeriod))) loadUsage();
@@ -7111,7 +7408,7 @@ function render(){
     const n = document.getElementById(id);
     if (n) keep[id] = { v: n.value, f: n === document.activeElement, p: n.selectionStart };
   });
-  document.getElementById('app').innerHTML = html + adminModal() + songModal() + planTypeModal() + toastHTML();
+  document.getElementById('app').innerHTML = html + adminModal() + songModal() + planTypeModal() + archSongModal() + learnModal() + toastHTML();
   requestAnimationFrame(fitMissed);
   Object.entries(keep).forEach(([id, k]) => {
     const n = document.getElementById(id);
@@ -7386,7 +7683,7 @@ document.addEventListener('click', e => {
   if (a && a.dataset.song) track('audio', a.dataset.song);
 }, true);
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-ln-mv],[data-ln-tools],[data-ln-demo],[data-ln-demo-act],[data-learn-edit],[data-learn-save],[data-learn-move],[data-toggle-learn],[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -7483,7 +7780,7 @@ document.addEventListener('click', async e => {
     if (d.ptKind === 'other') { const n = document.getElementById('pt-name'); if (n && !n.value) n.focus(); }
     return; }
   if (el.hasAttribute('data-pt-save') && S.planType) return planTypeSave();
-  if (el.hasAttribute('data-modal-x')) { S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
+  if (el.hasAttribute('data-modal-x')) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
   if (d.toggleAbsent && S.edit) {              // present ↔ absent
     S.toast = ''; S.retry = null;
     S.edit.sel.has(d.toggleAbsent) ? S.edit.sel.delete(d.toggleAbsent)
@@ -7997,12 +8294,62 @@ document.addEventListener('click', async e => {
     return render();
   }
   if (el.hasAttribute('data-toggle-cats')) { S.showCats = !S.showCats; return render(); }
+  if (el.hasAttribute('data-ln-demo-act')) { e.preventDefault(); alert(t('lnDemoAct')); return; }
+  if (el.hasAttribute('data-ln-demo')) { S.lnDemo = !S.lnDemo; try { S.lnDemo ? localStorage.setItem('lnDemo', '1') : localStorage.removeItem('lnDemo'); } catch (_) {} return render(); }
+  if (d.lnMv) {                                   // reorder learning songs: swap, renumber, save what changed
+    const [id, dir] = d.lnMv.split(':'), list = learnSongs().filter(x => !x._demo);
+    const i = list.findIndex(x => x.id === id), j = i + Number(dir);
+    if (i < 0 || j < 0 || j >= list.length) return;
+    if (!await ensureSession()) return;
+    [list[i], list[j]] = [list[j], list[i]];
+    const changed = list.map((x, k) => [x, k, x.learn_order]).filter(([x, k]) => x.learn_order !== k);
+    changed.forEach(([x, k]) => { x.learn_order = k; }); render();
+    const res = await Promise.all(changed.map(([x, k]) => sb.from('songs').update({ learn_order: k }).eq('id', x.id).select()));
+    const bad = res.find(r => r.error || !r.data || !r.data.length);
+    if (bad) { changed.forEach(([x, , was]) => { x.learn_order = was; }); wrote(bad); return render(); }
+    return;
+  }
+  if (d.lnTools) { S.lnTools = S.lnTools === d.lnTools ? null : d.lnTools; return render(); }
+  if (d.learnEdit) { S.learnEdit = d.learnEdit; S.learnMove = null; return render(); }
+  if (el.hasAttribute('data-toggle-learn')) { S.learnOpen = !S.learnOpen; return render(); }
+  if (el.hasAttribute('data-learn-save') && S.learnEdit) {
+    const v = id => { const x = document.getElementById(id); return x ? x.value.trim() : ''; };
+    const title = v('ln-title');
+    if (!title) { const x = document.getElementById('ln-title'); if (x) x.focus(); return; }
+    if (!await ensureSession()) return;
+    const pd = v('ln-pv').replace(/\D/g, '');
+    const row = { title, subtitle: v('ln-sub') || null, category_id: v('ln-cat') || null, pv_number: pd ? +pd : null,
+                  learn_for: v('ln-for') || null, learn_note: v('ln-note') || null };
+    if (S.learnEdit === 'new') {
+      const { data, error } = await sb.from('songs').insert(Object.assign({ learning: true }, row)).select().single();
+      if (error) return fail(error);
+      S.songs.push(data);
+    } else {
+      const s = S.songs.find(x => x.id === S.learnEdit);
+      if (!s) { S.learnEdit = null; return render(); }
+      const res = await sb.from('songs').update(row).eq('id', s.id).select();
+      if (!wrote(res)) return render();
+      Object.assign(s, row);
+    }
+    S.songs.sort((a, b) => a.title.localeCompare(b.title)); S.learnEdit = null; return render();
+  }
+  if (d.learnMove) {
+    const s = S.songs.find(x => x.id === d.learnMove);
+    if (!s) return;
+    if (!d.confirm) { S.learnMove = s.id; return render(); }
+    if (!await ensureSession()) return;
+    const res = await sb.from('songs').update({ learning: false }).eq('id', s.id).select();
+    if (!wrote(res)) return render();
+    s.learning = false; S.learnMove = null; return render();
+  }
   if (el.hasAttribute('data-toggle-arch-songs')) { S.archSongsOpen = !S.archSongsOpen; return render(); }
   if (d.archiveSong) {
     const s = S.songs.find(x => x.id === d.archiveSong);
     if (!s) return;
     if (!await ensureSession()) return;
     const next = s.active === false;               // true = restore
+    if (!next && !d.confirm) { S.archAsk = s.id; return render(); }
+    S.archAsk = null;
     const res = await sb.from('songs').update({ active: next }).eq('id', s.id).select();
     if (!wrote(res)) return render();
     s.active = next; return render();
@@ -8174,7 +8521,7 @@ function tsList(q){
   const people = S.singers.filter(s => s.part && s.active !== false && (nm(s).includes(ql) || (/[a-z]/.test(qa) && lat(s.name).includes(qa))))
     .sort((a, b) => wordStart(a) - wordStart(b) || a.name.localeCompare(b.name, 'ru')).slice(0, 4)
     .map(m => ({ k: 'm:' + m.id, m }));
-  const songs = S.songs.filter(s => s.active !== false && songMatch(s, q))
+  const songs = liveSongs().filter(s => songMatch(s, q))
     .sort((a, b) => (tStart(a) ? 0 : 1) - (tStart(b) ? 0 : 1) || a.title.localeCompare(b.title, 'ru'))
     .slice(0, people.length ? 6 : 8).map(s => ({ k: 's:' + s.id, s }));
   /* a name typed from its start puts the people first, unless a song title starts the same way */
