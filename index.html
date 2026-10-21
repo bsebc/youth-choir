@@ -2047,6 +2047,10 @@
     .srow .sbtns .mini span{display:block!important;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .srow .sbtns .mini span.dl{display:none!important}
     .srow .sbtns .mini svg{width:17px;height:17px;flex:none}
+  /* phone tray: icon over label, so Listen's caret rides on the corner instead of stacking a third line */
+  .srow .sbtns .mini.lsbtn{position:relative}
+  .srow .sbtns .mini.lsbtn .lscar{position:absolute;top:6px;right:7px;width:10px;height:10px;opacity:.7}
+  .srow .sbtns .mini.play.on{background:var(--teal);color:var(--card)}
     .srow .schev{display:grid;place-items:center;flex:none;width:40px;height:40px;margin-left:auto;padding:0;border:0;border-radius:50%;position:relative;z-index:1;
       background:color-mix(in srgb,var(--blue) 9%,var(--card));color:var(--blue-text);transition:transform .4s cubic-bezier(.3,.8,.2,1.15),background .2s ease,color .2s ease}
     .srow .schev svg{width:18px;height:18px}
@@ -3587,7 +3591,7 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.45.5';
+const VERSION = '5.45.6';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
