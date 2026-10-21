@@ -1532,6 +1532,10 @@
   .dpanel.lntile{position:relative;overflow:hidden}
   .lnhead{display:flex;align-items:center;gap:12px}
   .lnhead h2{margin:0;font-size:16.5px;font-weight:650;letter-spacing:-.3px;line-height:1.3}
+  .lnnew{display:inline-block;flex:none;margin-left:auto;align-self:flex-start;margin-top:2px;padding:3px 8px 2px;border-radius:999px;background:var(--blue);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.08em;line-height:1.3;text-transform:uppercase;transform-origin:50% 100%}
+  .lnnew.rip{animation:lnbounce .9s cubic-bezier(.3,1.4,.5,1) .5s both}
+  @keyframes lnbounce{0%{opacity:0;transform:translateY(6px) scale(.4)}45%{opacity:1;transform:translateY(-5px) scale(1.12)}70%{transform:translateY(1px) scale(.96)}100%{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){ .lnnew.rip{animation:none} }
   .lnhead p{margin:2px 0 0;font-size:13px;color:var(--muted)}
   .lnhead .lnico{width:40px;height:40px;border-radius:12px}
   .lnfeat{margin-top:16px;padding:14px 16px 16px;border-radius:14px;background:linear-gradient(135deg,var(--tool3-bg),color-mix(in srgb,var(--tool3-bg) 35%,var(--card)));border:1px solid color-mix(in srgb,var(--tool3-ic) 18%,transparent)}
@@ -3027,7 +3031,7 @@ const STR = {
     tSingers:'Singers',tPianists:'Pianists',tConductors:'Conductors',
     conductor:'Conductor',pianist:'Pianist',markC:'C',markP:'P',
     voicePart:'Voice part',partMoved:(n,p)=>n+' → '+p+'. Attendance is unchanged.',
-    archive:'Archive',restore:'Restore',archived:'Archived',archSongs:'Archived songs',lnTitle:'Learning',lnNow:'Now learning',lnNotes:'Sheet',lnUp:'Move up',lnDown:'Move down',lnFiles:'Files & links',lnFromDir:'From the director',lnSumSheet:'Sheet music',lnSumPiano:'Piano',lnSumRec:'Recording',lnSumLyr:'Lyrics',lnComing:'Coming soon',lnDemoOn:'Show a sample',lnDemoOff:'Hide sample',lnDemoTag:'Sample',lnDemoNote:'Sample songs made from your repertoire, to preview this page. Nothing here is saved.',lnDemoAct:'This is a sample. Nothing is saved.',lnSub:'Songs we are learning or about to learn. Practise at home with the music, the recording and the words.',lnNone:'No songs to learn right now.',lnSoon:'Music and recording coming soon.',lnTarget:'Goal',lnTargetPh:'e.g. For Christmas',lnNote:'Note for singers',lnNotePh:'e.g. Altos, learn the second verse first',lnAdd:'Add learning song',lnEditT:'Edit learning song',lnMove:'Move to repertoire',lnMoveT:'Move to the repertoire?',lnMoveQ:n=>'“'+n+'” will show in Choir music, Piano music, Lyrics and the song picker like every other song, and leave the Learning list.',lnTileNote:'Songs here show only on the Learning page until you move them to the repertoire.',lnOpen:'Open Learning page',lnChoir:'Choir sheet',lnPiano:'Piano',lnUpChoir:'Upload choir PDF',lnUpPiano:'Upload piano PDF',lnRmChoir:'Remove choir PDF',lnRmPiano:'Remove piano PDF',lnLyrAdd:'Add lyrics',lnLyrEdit:'Edit lyrics',archSongT:'Archive this song?',archSongQ:n=>'“'+n+'” will be hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Its history stays, and you can restore it from Archived songs.',archSongNote:'Archived songs keep their history and still show in past services, but are hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Restore brings them back.',
+    archive:'Archive',restore:'Restore',archived:'Archived',archSongs:'Archived songs',lnTitle:'Learning',lnNow:'Now learning',lnNew:'New',lnNotes:'Sheet',lnUp:'Move up',lnDown:'Move down',lnFiles:'Files & links',lnFromDir:'From the director',lnSumSheet:'Sheet music',lnSumPiano:'Piano',lnSumRec:'Recording',lnSumLyr:'Lyrics',lnComing:'Coming soon',lnDemoOn:'Show a sample',lnDemoOff:'Hide sample',lnDemoTag:'Sample',lnDemoNote:'Sample songs made from your repertoire, to preview this page. Nothing here is saved.',lnDemoAct:'This is a sample. Nothing is saved.',lnSub:'Songs we are learning or about to learn. Practise at home with the music, the recording and the words.',lnNone:'No songs to learn right now.',lnSoon:'Music and recording coming soon.',lnTarget:'Goal',lnTargetPh:'e.g. For Christmas',lnNote:'Note for singers',lnNotePh:'e.g. Altos, learn the second verse first',lnAdd:'Add learning song',lnEditT:'Edit learning song',lnMove:'Move to repertoire',lnMoveT:'Move to the repertoire?',lnMoveQ:n=>'“'+n+'” will show in Choir music, Piano music, Lyrics and the song picker like every other song, and leave the Learning list.',lnTileNote:'Songs here show only on the Learning page until you move them to the repertoire.',lnOpen:'Open Learning page',lnChoir:'Choir sheet',lnPiano:'Piano',lnUpChoir:'Upload choir PDF',lnUpPiano:'Upload piano PDF',lnRmChoir:'Remove choir PDF',lnRmPiano:'Remove piano PDF',lnLyrAdd:'Add lyrics',lnLyrEdit:'Edit lyrics',archSongT:'Archive this song?',archSongQ:n=>'“'+n+'” will be hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Its history stays, and you can restore it from Archived songs.',archSongNote:'Archived songs keep their history and still show in past services, but are hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Restore brings them back.',
     archivedNote:'Archived singers keep all their history in the database but are hidden from the grids and summaries. Restore brings them back.',
     copyLast:'Copy last service',
     categories:'Categories',addSong:'Add song',addCat:'Add category',addSinger:'Add singer',
@@ -3153,7 +3157,7 @@ const STR = {
     tSingers:'Хористы',tPianists:'Пианисты',tConductors:'Дирижёры',
     conductor:'Дирижёр',pianist:'Пианист',markC:'Д',markP:'П',
     voicePart:'Партия',partMoved:(n,p)=>n+' → '+p+'. Посещаемость не изменилась.',
-    archive:'В архив',restore:'Вернуть',archived:'Архив',archSongs:'Песни в архиве',lnTitle:'Разучиваем',lnNow:'Сейчас учим',lnNotes:'Ноты',lnUp:'Выше',lnDown:'Ниже',lnFiles:'Файлы и ссылки',lnFromDir:'От регента',lnSumSheet:'Ноты',lnSumPiano:'Фортепиано',lnSumRec:'Запись',lnSumLyr:'Текст',lnComing:'Скоро',lnDemoOn:'Показать пример',lnDemoOff:'Скрыть пример',lnDemoTag:'Пример',lnDemoNote:'Пример из ваших песен, чтобы посмотреть страницу. Ничего не сохраняется.',lnDemoAct:'Это пример. Ничего не сохраняется.',lnSub:'Песни, которые мы разучиваем или скоро начнём. Занимайтесь дома по нотам, записи и тексту.',lnNone:'Сейчас нет песен для разучивания.',lnSoon:'Ноты и запись скоро будут.',lnTarget:'Цель',lnTargetPh:'напр. К Рождеству',lnNote:'Заметка для хористов',lnNotePh:'напр. Альты, сначала выучите второй куплет',lnAdd:'Добавить песню для разучивания',lnEditT:'Песня для разучивания',lnMove:'В репертуар',lnMoveT:'Перенести в репертуар?',lnMoveQ:n=>'«'+n+'» появится в «Музыке хора», нотах для фортепиано, текстах и выборе песен, как остальные песни, и уйдёт из списка «Разучиваем».',lnTileNote:'Эти песни видны только на странице «Разучиваем», пока вы не перенесёте их в репертуар.',lnOpen:'Открыть «Разучиваем»',lnChoir:'Ноты хора',lnPiano:'Фортепиано',lnUpChoir:'Загрузить ноты хора',lnUpPiano:'Загрузить ноты фортепиано',lnRmChoir:'Убрать ноты хора',lnRmPiano:'Убрать ноты фортепиано',lnLyrAdd:'Добавить текст',lnLyrEdit:'Изменить текст',archSongT:'Отправить песню в архив?',archSongQ:n=>'«'+n+'» исчезнет из «Музыки хора», нот для фортепиано, текстов, статистики и выбора песен. История сохранится, вернуть песню можно из блока «Песни в архиве».',archSongNote:'Архивные песни сохраняют историю и видны в прошлых служениях, но скрыты из «Музыки хора», нот для фортепиано, текстов, статистики песен и выбора песен. «Вернуть» возвращает их.',
+    archive:'В архив',restore:'Вернуть',archived:'Архив',archSongs:'Песни в архиве',lnTitle:'Разучиваем',lnNow:'Сейчас учим',lnNew:'Новое',lnNotes:'Ноты',lnUp:'Выше',lnDown:'Ниже',lnFiles:'Файлы и ссылки',lnFromDir:'От регента',lnSumSheet:'Ноты',lnSumPiano:'Фортепиано',lnSumRec:'Запись',lnSumLyr:'Текст',lnComing:'Скоро',lnDemoOn:'Показать пример',lnDemoOff:'Скрыть пример',lnDemoTag:'Пример',lnDemoNote:'Пример из ваших песен, чтобы посмотреть страницу. Ничего не сохраняется.',lnDemoAct:'Это пример. Ничего не сохраняется.',lnSub:'Песни, которые мы разучиваем или скоро начнём. Занимайтесь дома по нотам, записи и тексту.',lnNone:'Сейчас нет песен для разучивания.',lnSoon:'Ноты и запись скоро будут.',lnTarget:'Цель',lnTargetPh:'напр. К Рождеству',lnNote:'Заметка для хористов',lnNotePh:'напр. Альты, сначала выучите второй куплет',lnAdd:'Добавить песню для разучивания',lnEditT:'Песня для разучивания',lnMove:'В репертуар',lnMoveT:'Перенести в репертуар?',lnMoveQ:n=>'«'+n+'» появится в «Музыке хора», нотах для фортепиано, текстах и выборе песен, как остальные песни, и уйдёт из списка «Разучиваем».',lnTileNote:'Эти песни видны только на странице «Разучиваем», пока вы не перенесёте их в репертуар.',lnOpen:'Открыть «Разучиваем»',lnChoir:'Ноты хора',lnPiano:'Фортепиано',lnUpChoir:'Загрузить ноты хора',lnUpPiano:'Загрузить ноты фортепиано',lnRmChoir:'Убрать ноты хора',lnRmPiano:'Убрать ноты фортепиано',lnLyrAdd:'Добавить текст',lnLyrEdit:'Изменить текст',archSongT:'Отправить песню в архив?',archSongQ:n=>'«'+n+'» исчезнет из «Музыки хора», нот для фортепиано, текстов, статистики и выбора песен. История сохранится, вернуть песню можно из блока «Песни в архиве».',archSongNote:'Архивные песни сохраняют историю и видны в прошлых служениях, но скрыты из «Музыки хора», нот для фортепиано, текстов, статистики песен и выбора песен. «Вернуть» возвращает их.',
     archivedNote:'Архивные хористы сохраняют всю историю в базе, но не показываются в сетках и сводках. «Вернуть» возвращает их.',
     copyLast:'Скопировать прошлое служение',
     categories:'Категории',addSong:'Добавить песню',addCat:'Добавить категорию',addSinger:'Добавить хориста',
@@ -3408,14 +3412,16 @@ const hasLyrics = s => Array.isArray(s.lyrics) && s.lyrics.length > 0;
 /* ---------- dates ---------- */
 function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today(){ return localISO(new Date()); }
-const EPOCH = '2017-01-01';        // no choir records exist before this
-const VERSION = '5.44.3';
+const EPOCH = '2017-01-01';
+const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
+const VERSION = '5.44.5';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Home: a “New” badge on the Learning card for its first weeks',
     'Home: the Learning card features the top song with quick Listen, Sheet and Lyrics buttons, and shows what each other song has',
     'Home: the Learning card shows up to 5 songs on wide screens and 3 on phones',
     'Home on phones: Last attendance is more compact, with the ring beside the present/absent counts',
@@ -3459,6 +3465,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Главная: значок «Новое» на карточке «Разучиваем» в первые недели',
     'Главная: в карточке «Разучиваем» первая песня выделена, с кнопками «Слушать», «Ноты» и «Текст»; у остальных видно, что есть',
     'Главная: в карточке «Разучиваем» до 5 песен на широком экране и 3 на телефоне',
     'Главная на телефоне: «Последняя посещаемость» компактнее — круг рядом с числами',
@@ -4963,6 +4970,7 @@ function homePage(){
       </div>
     </section>`;
   const learnList = learnSongs();
+  const lnNew = today() <= LEARN_NEW_UNTIL;
   const lnSum = s => [s.pdf_path && t('lnSumSheet'), s.piano_path && t('lnSumPiano'), s.audio_url && t('lnSumRec'), hasLyrics(s) && t('lnSumLyr')].filter(Boolean).join(' · ') || t('lnComing');
   const lnHas = s => [s.pdf_path && AIC.sheets, s.audio_url && AIC.play, hasLyrics(s) && AIC.lyrics].filter(Boolean).join('');
   const lnF = learnList[0];
@@ -4972,7 +4980,7 @@ function homePage(){
     hasLyrics(s) ? `<a class="lnq t3" href="#/lyrics/${shortId(s.id)}">${AIC.lyrics}<span>${esc(t('tLyrics'))}</span></a>` : ''].filter(Boolean).join('');
   const learnCard = `<section class="dpanel lntile">
       <div class="lnhead"><span class="lnico">${AIC.learn}</span><div style="min-width:0"><h2>${esc(t('lnTitle'))}${S.lnDemo ? ` <span class="lntag">${esc(t('lnDemoTag'))}</span>` : ''}</h2>
-        <p>${esc(learnList.length ? t('songsCount')(learnList.length) : t('lnNone'))}</p></div></div>
+        <p>${esc(learnList.length ? t('songsCount')(learnList.length) : t('lnNone'))}</p></div>${lnNew ? `<span class="lnnew${S.ripple ? ' rip' : ''}">${esc(t('lnNew'))}</span>` : ''}</div>
       ${lnF ? `<div class="lnfeat">
           <div class="fe"><span>${esc(t('lnNow'))}</span>${lnF.learn_for ? `<em>${esc(lnF.learn_for)}</em>` : ''}</div>
           <a class="ft" href="#/learning">${esc(lnF.title)}</a>
