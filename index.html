@@ -3611,13 +3611,14 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.46.0';
+const VERSION = '5.46.1';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Usage insights: visits to the Learning page are now counted',
     'Recordings: add a second line like Soprano 2 or Alto 2 for songs where a part divides. Listen shows it under its part',
     'Player: springier opening, a gold progress bar you can drag, and a live “now playing” indicator',
     'Recordings: Full Choir can now be an uploaded MP3 or a link, like the parts',
@@ -3667,6 +3668,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Статистика: теперь учитываются посещения страницы «Разучиваем»',
     'Записи: можно добавить вторую партию, например «Сопрано 2» или «Альт 2», для песен, где партия делится. В «Слушать» она стоит под своей партией',
     'Плеер: плавное появление, золотая полоса прогресса, которую можно тянуть, и живой индикатор воспроизведения',
     'Записи: «Весь хор» теперь тоже можно загрузить как MP3 или добавить ссылкой, как партии',
@@ -3961,7 +3963,7 @@ function track(kind, ref){
   } catch (_) {}
 }
 /* singer-facing pages, logged once per page per visit; director pages are not */
-const PAGES = [['home','overview'],['songs','songs'],['sheets','tSheets'],['piano','tPiano'],['lyrics','tLyrics'],['attendance','attendance'],['member','mTitle'],['leaders','lbTitle'],['seating','tSeating'],['rules','tRules'],['services','svcTitle']];
+const PAGES = [['home','overview'],['songs','songs'],['sheets','tSheets'],['piano','tPiano'],['lyrics','tLyrics'],['attendance','attendance'],['member','mTitle'],['leaders','lbTitle'],['seating','tSeating'],['rules','tRules'],['services','svcTitle'],['learning','lnTitle']];
 function pageKey(route){
   const r = (route || '').split('?')[0];
   if (r.startsWith('#/sheets/piano')) return 'piano';
