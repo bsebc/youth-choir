@@ -1518,6 +1518,132 @@
   .lnib svg{width:18px;height:18px}
   .lnib.on{background:var(--blue-tint);color:var(--blue-text)}
   .lnib[disabled]{opacity:.35;cursor:default;pointer-events:none}
+  /* ---------- Listen: part choices, the player bar, the Recordings window ---------- */
+  .lsc,.recr{--pc:var(--blue-text);--pw:var(--blue-wash)}
+  .ibtn.rec.on{color:var(--teal);background:var(--teal-tint)}
+  .lnib.rec.on{color:var(--tool4-ic);background:var(--tool4-bg)}
+  .lsc.soprano,.recr.soprano{--pc:var(--violet);--pw:var(--violet-wash)}
+  .lsc.alto,.recr.alto{--pc:var(--teal);--pw:var(--teal-tint)}
+  .lsc.tenor,.recr.tenor{--pc:var(--rose);--pw:var(--rose-wash)}
+  .lsc.bass,.recr.bass{--pc:var(--amber);--pw:var(--amber-wash)}
+  .mini.lsbtn .lscar,.lnb.lsbtn .lscar,.songc .acts .mini.lsbtn .lscar{width:12px;height:12px;flex:none;transition:transform .25s ease}
+  .lnb.lsbtn .lscar{margin-left:auto}
+  .lsbtn.on .lscar{transform:rotate(180deg)}
+  .songc .acts .mini.play.on{background:var(--teal);color:var(--card)}
+  .lnb.t4.on,.lnq.t4.on{background:var(--tool4-ic);color:var(--card)}
+  .lsrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(122px,1fr));gap:8px;padding:12px 16px 14px;border-top:1px solid var(--rule);background:var(--surface-2)}
+  .lsc{position:relative;overflow:hidden;display:flex;align-items:center;gap:10px;min-width:0;height:48px;padding:0 12px 0 8px;border:1px solid color-mix(in srgb,var(--pc) 26%,var(--rule));border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:border-color .15s ease,box-shadow .15s ease,transform .15s ease}
+  .lsc .pi{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:9px;background:var(--pw);color:var(--pc);transition:background .15s ease,color .15s ease}
+  .lsc .pi svg{width:13px;height:13px}
+  .lsc .lb{flex:1;min-width:0;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lsc .tm{flex:none;font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+  .lsc.ext .tm{font-weight:500;color:var(--faint)}
+  .lsc.off{cursor:default;border-style:dashed;border-color:var(--rule);background:transparent;color:var(--faint)}
+  .lsc.off .pi{background:var(--surface-2);color:var(--faint)}
+  .lsc.off .tm{color:var(--faint)}
+  .lnfeat .lsc.off{background:color-mix(in srgb,var(--card) 55%,transparent)}
+  .lsc::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:calc(var(--lp,0) * 1%);background:var(--pc);transition:width .25s linear}
+  .lsc.cur{border-color:var(--pc);box-shadow:0 0 0 1px var(--pc) inset}
+  .lsc.cur .pi{background:var(--pc);color:var(--card)}
+  .lsc.cur .tm{color:var(--pc)}
+  .lsc .i-pause,.lsc .i-load,.rpl .i-pause,.rpl .i-load,.plbar .i-pause,.plbar .i-load{display:none}
+  .lsc.playing .i-play,.rpl.playing .i-play{display:none}
+  .lsc.playing .i-pause,.rpl.playing .i-pause{display:block}
+  .lsc.loading .i-play,.rpl.loading .i-play{display:none}
+  .lsc.loading .i-load,.rpl.loading .i-load{display:block;animation:lsspin .8s linear infinite}
+  @keyframes lsspin{to{transform:rotate(360deg)}}
+  .lsrow.enter{animation:lsopen .34s cubic-bezier(.2,.8,.2,1) both}
+  .lsrow.enter .lsc{animation:lspop .42s cubic-bezier(.3,1.35,.5,1) both;animation-delay:calc(var(--k,0) * 45ms + 70ms)}
+  @keyframes lsopen{from{opacity:0;clip-path:inset(0 0 100% 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+  @keyframes lspop{from{opacity:0;transform:translateY(-8px) scale(.9)}to{opacity:1;transform:none}}
+  .lncard > .lsrow{grid-column:1/-1}
+  .lncard > .lsrow,.lnfeat .lsrow{padding:0;border:0;background:none}
+  .lnfeat .lsrow{margin-top:10px;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lnfeat .lsrow .lsc.full{grid-column:1/-1}
+  .lnfeat .lsc .tm{display:none}
+  @media (max-width:699px){ .lsrow{grid-template-columns:repeat(2,minmax(0,1fr));padding:12px} .lsrow .lsc.full{grid-column:1/-1} .lncard > .lsrow{padding:0} }
+  @media (hover:hover){ .lsc:not(.off):hover{border-color:var(--pc);transform:translateY(-1px)} }
+  .plbar{position:fixed;z-index:var(--z-float);left:50%;bottom:calc(16px + env(safe-area-inset-bottom));width:min(720px,calc(100vw - 20px));box-sizing:border-box;display:grid;grid-template-columns:max-content minmax(0,1fr) max-content;align-items:center;gap:14px;padding:10px 12px 10px 10px;border-radius:20px;background:var(--chrome);color:#fff;box-shadow:0 22px 44px -18px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.07) inset;transform:translate(-50%,calc(100% + 48px)) scale(.96);opacity:0;pointer-events:none;transition:transform .55s cubic-bezier(.18,1.25,.32,1),opacity .25s ease}
+  .plbar.on{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+  .plbar.on .pl-pp{animation:pppop .5s cubic-bezier(.3,1.5,.5,1) .12s both}
+  .plbar.on .pl-pm,.plbar.on .pl-k{animation:ppfade .4s ease .18s both}
+  @keyframes pppop{from{transform:scale(.5);opacity:0}to{transform:none;opacity:1}}
+  @keyframes ppfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .plbar .pl-pp{display:grid;place-items:center;width:46px;height:46px;flex:none;padding:0;border:0;border-radius:50%;background:var(--gold);color:#17203a;cursor:pointer;box-shadow:0 6px 16px -6px rgba(220,187,92,.7)}
+  .plbar .pl-pp svg{width:18px;height:18px}
+  .plbar .i-pause,.plbar .i-load{display:none}
+  .plbar.playing .pl-pp .i-play{display:none} .plbar.playing .pl-pp .i-pause{display:block}
+  .plbar.loading .pl-pp .i-play{display:none} .plbar.loading .pl-pp .i-load{display:block;animation:lsspin .8s linear infinite}
+  .plbar .pl-pm{min-width:0;display:grid;gap:6px}
+  .plbar .pl-pt{display:flex;align-items:center;gap:10px;min-width:0}
+  .plbar .pl-ttl{min-width:0;font-size:14.5px;font-weight:650;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .plbar .pl-part{flex:none;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.75)}
+  .plbar .pl-part i{width:8px;height:8px;border-radius:50%;background:var(--dc,#fff)}
+  .plbar .pl-part.soprano{--dc:#e5cb7d} .plbar .pl-part.alto{--dc:#71b982} .plbar .pl-part.tenor{--dc:#b0bfe8} .plbar .pl-part.bass{--dc:#c3c9da}
+  .plbar.err .pl-part b{color:#ffb4a8}
+  .plbar .pl-eq{flex:none;display:inline-flex;align-items:flex-end;gap:2px;height:12px}
+  .plbar .pl-eq i{width:3px;height:3px;border-radius:1px;background:var(--gold);opacity:.45}
+  .plbar.playing .pl-eq i{opacity:1;animation:peq .9s ease-in-out infinite}
+  .plbar.playing .pl-eq i:nth-child(2){animation-delay:-.3s} .plbar.playing .pl-eq i:nth-child(3){animation-delay:-.6s} .plbar.playing .pl-eq i:nth-child(4){animation-delay:-.15s}
+  @keyframes peq{0%,100%{height:3px}50%{height:12px}}
+  .plbar .pl-ps{display:flex;align-items:center;gap:10px;font-size:11.5px;font-variant-numeric:tabular-nums;color:rgba(255,255,255,.65)}
+  .plbar .pl-cur,.plbar .pl-dur{flex:none;min-width:30px} .plbar .pl-dur{text-align:right}
+  .plbar .pl-trk{--lp:0;position:relative;flex:1;min-width:0;height:20px;display:flex;align-items:center}
+  .plbar .pl-trk::before{content:"";position:absolute;left:0;right:0;height:4px;border-radius:4px;background:rgba(255,255,255,.18)}
+  .plbar .pl-fill{position:absolute;left:0;height:4px;width:calc(var(--lp) * 1%);border-radius:4px;background:var(--gold)}
+  .plbar .pl-knob{position:absolute;left:calc(var(--lp) * 1%);width:14px;height:14px;margin-left:-7px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.45);transform:scale(.8);transition:transform .15s ease,box-shadow .15s ease}
+  .plbar .pl-trk:hover .pl-knob,.plbar .pl-trk:focus-within .pl-knob{transform:scale(1.05)}
+  .plbar .pl-trk:focus-within .pl-knob{box-shadow:0 0 0 4px rgba(255,255,255,.22)}
+  .plbar .pl-rg{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+  .plbar .pl-k{display:flex;align-items:center;gap:2px}
+  .plbar .pl-k button{flex:none;display:grid;place-items:center;width:38px;height:38px;padding:0;border:0;border-radius:11px;background:transparent;color:rgba(255,255,255,.78);cursor:pointer}
+  .plbar .pl-k button svg{width:19px;height:19px}
+  .plbar .pl-k button.on{background:rgba(255,255,255,.14);color:var(--gold)}
+  body.plon .pg{padding-bottom:110px}
+  @media (hover:hover){ .plbar .pl-k button:hover{background:rgba(255,255,255,.1);color:#fff} .plbar .pl-k button.on:hover{color:var(--gold)} .plbar .pl-pp:hover{filter:brightness(1.06)} }
+  @media (min-width:1000px){ .plbar{left:calc(248px + (100vw - 248px) / 2);width:min(760px,calc(100vw - 248px - 48px));bottom:20px} body.plon .toast{bottom:100px} }
+  @media (max-width:999px){ .plbar{bottom:calc(80px + env(safe-area-inset-bottom))} body.plon .toast{bottom:calc(164px + env(safe-area-inset-bottom))} }
+  @media (max-width:420px){ .plbar{gap:10px;padding:8px} .plbar .pl-pp{width:42px;height:42px} .plbar .pl-k button{width:34px} .plbar .pl-eq{display:none} }
+  .modal.recm{width:min(640px,calc(100vw - 24px))}
+  .recm .mhd h2{margin:0}
+  .recm .rsub{margin:3px 0 0;font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+  .recdrop{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1.5px dashed var(--line-strong-2);border-radius:14px;background:var(--surface-2);cursor:pointer;transition:border-color .15s ease,background .15s ease}
+  .recdrop > svg{width:26px;height:26px;flex:none;color:var(--blue-text)}
+  .recdrop .rdt{flex:1;min-width:0;display:grid;gap:3px}
+  .recdrop .rdt strong{font-size:14.5px;font-weight:650;color:var(--ink)}
+  .recdrop .rdt span{font-size:12.5px;line-height:1.4;color:var(--muted);text-wrap:pretty}
+  .recm.drag .recdrop{border-color:var(--blue);background:var(--blue-wash)}
+  .recl{display:grid;gap:8px;margin-top:14px}
+  .recr{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:12px;min-height:64px;box-sizing:border-box;padding:10px 12px;border:1px solid var(--rule);border-radius:14px;background:var(--card);transition:border-color .15s ease,background .15s ease,box-shadow .15s ease}
+  .recr.drag{border-color:var(--pc);background:var(--pw);box-shadow:0 0 0 2px var(--pc) inset}
+  .recr .rtag{display:grid;place-items:center;width:40px;height:40px;border-radius:11px;background:var(--pw);color:var(--pc);font-size:15px;font-weight:700}
+  .recr .rtag svg{width:18px;height:18px}
+  .recr.has .rtag{background:var(--pc);color:var(--card)}
+  .recr .rinfo{display:grid;gap:3px;min-width:0}
+  .recr .rinfo strong{font-size:14.5px;font-weight:650;color:var(--ink)}
+  .recr .rst{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .recr .rst.none{color:var(--faint)}
+  .recr .rst.warn{color:var(--red);font-weight:600}
+  .recr .rinfo .field{height:38px;width:100%;min-width:0;box-sizing:border-box;font-size:14px}
+  .recr .racts{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .rbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;box-sizing:border-box;padding:0 12px;border:1px solid var(--rule);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;white-space:nowrap}
+  .rbtn svg{width:15px;height:15px;flex:none}
+  .rbtn.ic{width:36px;padding:0}
+  .rbtn.go{background:var(--blue);border-color:var(--blue);color:#fff}
+  .rbtn.danger{color:var(--red);border-color:color-mix(in srgb,var(--red) 35%,var(--rule))}
+  .rpl{display:grid;place-items:center;width:36px;height:36px;padding:0;border:0;border-radius:10px;background:var(--pw);color:var(--pc);cursor:pointer}
+  .rpl svg{width:13px;height:13px}
+  .rpl.cur{background:var(--pc);color:var(--card)}
+  .rprog{display:grid;gap:6px;min-width:0}
+  .rprog .rpn{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--muted)}
+  .rprog .rpn span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rprog .rpn b{flex:none;color:var(--pc);font-weight:700;font-variant-numeric:tabular-nums}
+  .rprog i{position:relative;display:block;height:6px;border-radius:6px;background:var(--pw);overflow:hidden}
+  .rprog i::after{content:"";position:absolute;top:0;bottom:0;left:0;width:calc(var(--lp,0) * 1%);border-radius:6px;background:var(--pc);transition:width .2s ease}
+  .recm .rfmt{margin:12px 2px 0;font-size:12px;color:var(--faint)}
+  @media (hover:hover){ .rbtn:hover{background:var(--surface-2)} .rbtn.go:hover{background:var(--blue-hover)} .recdrop:hover{border-color:var(--blue);background:var(--blue-wash)} }
+  @media (max-width:599px){ .recr{grid-template-columns:40px minmax(0,1fr)} .recr .racts{grid-column:1/-1;justify-content:flex-start} .recdrop{flex-wrap:wrap} .recdrop .rbtn{width:100%} }
+  @media (prefers-reduced-motion:reduce){ .lsrow.enter,.lsrow.enter .lsc,.plbar.on .pl-pp,.plbar.on .pl-pm,.plbar.on .pl-k,.plbar.playing .pl-eq i{animation:none} .plbar{transition:none} }
   .lnord{display:flex;gap:4px;padding-left:8px;margin-left:4px;border-left:1px solid var(--rule)}
   .lnb.go{flex:none;margin-left:auto;padding:0 20px;background:var(--blue);color:#fff;box-shadow:0 8px 18px -12px rgba(var(--blue-rgb),.8)}
   .lntools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:-4px}
@@ -3031,7 +3157,7 @@ const STR = {
     tSingers:'Singers',tPianists:'Pianists',tConductors:'Conductors',
     conductor:'Conductor',pianist:'Pianist',markC:'C',markP:'P',
     voicePart:'Voice part',partMoved:(n,p)=>n+' → '+p+'. Attendance is unchanged.',
-    archive:'Archive',restore:'Restore',archived:'Archived',archSongs:'Archived songs',lnTitle:'Learning',lnNow:'Now learning',lnNew:'New',lnNotes:'Sheet',lnUp:'Move up',lnDown:'Move down',lnFiles:'Files & links',lnFromDir:'From the director',lnSumSheet:'Sheet music',lnSumPiano:'Piano',lnSumRec:'Recording',lnSumLyr:'Lyrics',lnComing:'Coming soon',lnDemoOn:'Show a sample',lnDemoOff:'Hide sample',lnDemoTag:'Sample',lnDemoNote:'Sample songs made from your repertoire, to preview this page. Nothing here is saved.',lnDemoAct:'This is a sample. Nothing is saved.',lnSub:'Songs we are learning or about to learn. Practise at home with the music, the recording and the words.',lnNone:'No songs to learn right now.',lnSoon:'Music and recording coming soon.',lnTarget:'Goal',lnTargetPh:'e.g. For Christmas',lnNote:'Note for singers',lnNotePh:'e.g. Altos, learn the second verse first',lnAdd:'Add learning song',lnEditT:'Edit learning song',lnMove:'Move to repertoire',lnMoveT:'Move to the repertoire?',lnMoveQ:n=>'“'+n+'” will show in Choir music, Piano music, Lyrics and the song picker like every other song, and leave the Learning list.',lnTileNote:'Songs here show only on the Learning page until you move them to the repertoire.',lnOpen:'Open Learning page',lnChoir:'Choir sheet',lnPiano:'Piano',lnUpChoir:'Upload choir PDF',lnUpPiano:'Upload piano PDF',lnRmChoir:'Remove choir PDF',lnRmPiano:'Remove piano PDF',lnLyrAdd:'Add lyrics',lnLyrEdit:'Edit lyrics',archSongT:'Archive this song?',archSongQ:n=>'“'+n+'” will be hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Its history stays, and you can restore it from Archived songs.',archSongNote:'Archived songs keep their history and still show in past services, but are hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Restore brings them back.',
+    archive:'Archive',restore:'Restore',archived:'Archived',archSongs:'Archived songs',lsFull:'Full Choir',lsNone:'No recording yet',recs:'Recordings',recsN:n=>'Recordings · '+n,recDrop:'Drop MP3 files here',recDropHint:'Name each file after its part, like “Soprano.mp3” or “Full Choir.mp3”, and it goes to the right row. You can drop them all at once.',recChoose:'Choose files',recFullL:'Full Choir',recNone:'Nothing yet',recUpload:'Upload',recAddLink:'Link',recReplace:'Replace',recEditLink:'Edit link',recRemove:'Remove',recRemoveQ:'Remove this recording?',recKeep:'Keep',recCancel:'Cancel',recSave:'Save',recLinkPh:'Paste a YouTube, SoundCloud or Drive link',recFormats:'MP3, M4A, AAC or WAV, up to 50 MB each. Everyone can listen.',recDoneBtn:'Done',recDone:p=>p+' recording uploaded',recLinkSaved:'Link saved',recType:'Use an MP3, M4A, AAC or WAV file.',recBig:s=>'That file is '+s+'. The limit is 50 MB, so export it as an MP3 first.',recMiss:n=>'Couldn’t tell which part these are: '+n+'. Drop each one on its row.',recBadLink:'That doesn’t look like a link.',recNoSql:'Part recordings aren’t set up yet. Run part_recordings.sql in Supabase.',recPlay:'Play',recOpen:'Open link',plTitle:'Player',plPlay:'Play',plPause:'Pause',plBack:'Back 10 seconds',plLoop:'Repeat',plClose:'Close player',plSeek:'Position',plErr:'Couldn’t play this recording',lnTitle:'Learning',lnNow:'Now learning',lnNew:'New',lnNotes:'Sheet',lnUp:'Move up',lnDown:'Move down',lnFiles:'Files & links',lnFromDir:'From the director',lnSumSheet:'Sheet music',lnSumPiano:'Piano',lnSumRec:'Recording',lnSumLyr:'Lyrics',lnComing:'Coming soon',lnDemoOn:'Show a sample',lnDemoOff:'Hide sample',lnDemoTag:'Sample',lnDemoNote:'Sample songs made from your repertoire, to preview this page. Nothing here is saved.',lnDemoAct:'This is a sample. Nothing is saved.',lnSub:'Songs we are learning or about to learn. Practise at home with the music, the recording and the words.',lnNone:'No songs to learn right now.',lnSoon:'Music and recording coming soon.',lnTarget:'Goal',lnTargetPh:'e.g. For Christmas',lnNote:'Note for singers',lnNotePh:'e.g. Altos, learn the second verse first',lnAdd:'Add learning song',lnEditT:'Edit learning song',lnMove:'Move to repertoire',lnMoveT:'Move to the repertoire?',lnMoveQ:n=>'“'+n+'” will show in Choir music, Piano music, Lyrics and the song picker like every other song, and leave the Learning list.',lnTileNote:'Songs here show only on the Learning page until you move them to the repertoire.',lnOpen:'Open Learning page',lnChoir:'Choir sheet',lnPiano:'Piano',lnUpChoir:'Upload choir PDF',lnUpPiano:'Upload piano PDF',lnRmChoir:'Remove choir PDF',lnRmPiano:'Remove piano PDF',lnLyrAdd:'Add lyrics',lnLyrEdit:'Edit lyrics',archSongT:'Archive this song?',archSongQ:n=>'“'+n+'” will be hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Its history stays, and you can restore it from Archived songs.',archSongNote:'Archived songs keep their history and still show in past services, but are hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Restore brings them back.',
     archivedNote:'Archived singers keep all their history in the database but are hidden from the grids and summaries. Restore brings them back.',
     copyLast:'Copy last service',
     categories:'Categories',addSong:'Add song',addCat:'Add category',addSinger:'Add singer',
@@ -3157,7 +3283,7 @@ const STR = {
     tSingers:'Хористы',tPianists:'Пианисты',tConductors:'Дирижёры',
     conductor:'Дирижёр',pianist:'Пианист',markC:'Д',markP:'П',
     voicePart:'Партия',partMoved:(n,p)=>n+' → '+p+'. Посещаемость не изменилась.',
-    archive:'В архив',restore:'Вернуть',archived:'Архив',archSongs:'Песни в архиве',lnTitle:'Разучиваем',lnNow:'Сейчас учим',lnNew:'Новое',lnNotes:'Ноты',lnUp:'Выше',lnDown:'Ниже',lnFiles:'Файлы и ссылки',lnFromDir:'От регента',lnSumSheet:'Ноты',lnSumPiano:'Фортепиано',lnSumRec:'Запись',lnSumLyr:'Текст',lnComing:'Скоро',lnDemoOn:'Показать пример',lnDemoOff:'Скрыть пример',lnDemoTag:'Пример',lnDemoNote:'Пример из ваших песен, чтобы посмотреть страницу. Ничего не сохраняется.',lnDemoAct:'Это пример. Ничего не сохраняется.',lnSub:'Песни, которые мы разучиваем или скоро начнём. Занимайтесь дома по нотам, записи и тексту.',lnNone:'Сейчас нет песен для разучивания.',lnSoon:'Ноты и запись скоро будут.',lnTarget:'Цель',lnTargetPh:'напр. К Рождеству',lnNote:'Заметка для хористов',lnNotePh:'напр. Альты, сначала выучите второй куплет',lnAdd:'Добавить песню для разучивания',lnEditT:'Песня для разучивания',lnMove:'В репертуар',lnMoveT:'Перенести в репертуар?',lnMoveQ:n=>'«'+n+'» появится в «Музыке хора», нотах для фортепиано, текстах и выборе песен, как остальные песни, и уйдёт из списка «Разучиваем».',lnTileNote:'Эти песни видны только на странице «Разучиваем», пока вы не перенесёте их в репертуар.',lnOpen:'Открыть «Разучиваем»',lnChoir:'Ноты хора',lnPiano:'Фортепиано',lnUpChoir:'Загрузить ноты хора',lnUpPiano:'Загрузить ноты фортепиано',lnRmChoir:'Убрать ноты хора',lnRmPiano:'Убрать ноты фортепиано',lnLyrAdd:'Добавить текст',lnLyrEdit:'Изменить текст',archSongT:'Отправить песню в архив?',archSongQ:n=>'«'+n+'» исчезнет из «Музыки хора», нот для фортепиано, текстов, статистики и выбора песен. История сохранится, вернуть песню можно из блока «Песни в архиве».',archSongNote:'Архивные песни сохраняют историю и видны в прошлых служениях, но скрыты из «Музыки хора», нот для фортепиано, текстов, статистики песен и выбора песен. «Вернуть» возвращает их.',
+    archive:'В архив',restore:'Вернуть',archived:'Архив',archSongs:'Песни в архиве',lsFull:'Весь хор',lsNone:'Записи пока нет',recs:'Записи',recsN:n=>'Записи · '+n,recDrop:'Перетащите сюда MP3-файлы',recDropHint:'Назовите файлы по партиям, например «Сопрано.mp3» или «Весь хор.mp3», и они попадут в нужную строку. Можно перетащить все сразу.',recChoose:'Выбрать файлы',recFullL:'Весь хор',recNone:'Пока нет',recUpload:'Загрузить',recAddLink:'Ссылка',recReplace:'Заменить',recEditLink:'Изменить ссылку',recRemove:'Удалить',recRemoveQ:'Удалить эту запись?',recKeep:'Оставить',recCancel:'Отмена',recSave:'Сохранить',recLinkPh:'Вставьте ссылку на YouTube, SoundCloud или Drive',recFormats:'MP3, M4A, AAC или WAV, до 50 МБ каждый. Слушать могут все.',recDoneBtn:'Готово',recDone:p=>'Запись «'+p+'» загружена',recLinkSaved:'Ссылка сохранена',recType:'Нужен файл MP3, M4A, AAC или WAV.',recBig:s=>'Файл весит '+s+'. Предел — 50 МБ, сохраните его как MP3.',recMiss:n=>'Не понятно, к какой партии относятся: '+n+'. Перетащите каждый файл на свою строку.',recBadLink:'Это не похоже на ссылку.',recNoSql:'Записи партий ещё не настроены. Выполните part_recordings.sql в Supabase.',recPlay:'Слушать',recOpen:'Открыть ссылку',plTitle:'Плеер',plPlay:'Играть',plPause:'Пауза',plBack:'Назад на 10 секунд',plLoop:'Повтор',plClose:'Закрыть плеер',plSeek:'Позиция',plErr:'Не удалось воспроизвести запись',lnTitle:'Разучиваем',lnNow:'Сейчас учим',lnNew:'Новое',lnNotes:'Ноты',lnUp:'Выше',lnDown:'Ниже',lnFiles:'Файлы и ссылки',lnFromDir:'От регента',lnSumSheet:'Ноты',lnSumPiano:'Фортепиано',lnSumRec:'Запись',lnSumLyr:'Текст',lnComing:'Скоро',lnDemoOn:'Показать пример',lnDemoOff:'Скрыть пример',lnDemoTag:'Пример',lnDemoNote:'Пример из ваших песен, чтобы посмотреть страницу. Ничего не сохраняется.',lnDemoAct:'Это пример. Ничего не сохраняется.',lnSub:'Песни, которые мы разучиваем или скоро начнём. Занимайтесь дома по нотам, записи и тексту.',lnNone:'Сейчас нет песен для разучивания.',lnSoon:'Ноты и запись скоро будут.',lnTarget:'Цель',lnTargetPh:'напр. К Рождеству',lnNote:'Заметка для хористов',lnNotePh:'напр. Альты, сначала выучите второй куплет',lnAdd:'Добавить песню для разучивания',lnEditT:'Песня для разучивания',lnMove:'В репертуар',lnMoveT:'Перенести в репертуар?',lnMoveQ:n=>'«'+n+'» появится в «Музыке хора», нотах для фортепиано, текстах и выборе песен, как остальные песни, и уйдёт из списка «Разучиваем».',lnTileNote:'Эти песни видны только на странице «Разучиваем», пока вы не перенесёте их в репертуар.',lnOpen:'Открыть «Разучиваем»',lnChoir:'Ноты хора',lnPiano:'Фортепиано',lnUpChoir:'Загрузить ноты хора',lnUpPiano:'Загрузить ноты фортепиано',lnRmChoir:'Убрать ноты хора',lnRmPiano:'Убрать ноты фортепиано',lnLyrAdd:'Добавить текст',lnLyrEdit:'Изменить текст',archSongT:'Отправить песню в архив?',archSongQ:n=>'«'+n+'» исчезнет из «Музыки хора», нот для фортепиано, текстов, статистики и выбора песен. История сохранится, вернуть песню можно из блока «Песни в архиве».',archSongNote:'Архивные песни сохраняют историю и видны в прошлых служениях, но скрыты из «Музыки хора», нот для фортепиано, текстов, статистики песен и выбора песен. «Вернуть» возвращает их.',
     archivedNote:'Архивные хористы сохраняют всю историю в базе, но не показываются в сетках и сводках. «Вернуть» возвращает их.',
     copyLast:'Скопировать прошлое служение',
     categories:'Категории',addSong:'Добавить песню',addCat:'Добавить категорию',addSinger:'Добавить хориста',
@@ -3269,6 +3395,53 @@ const MON = { en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','N
 const MONF = { en:['January','February','March','April','May','June','July','August','September','October','November','December'],
                ru:['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'] };
 const PARTS = ['soprano','alto','tenor','bass'];
+/* ---------- part recordings: Soprano / Alto / Tenor / Bass ----------
+   songs.part_audio = { soprano: { path, name, size, dur, at } | { url, at }, … }
+   Files live in the public 'parts' bucket as <song id>/<part>-<time>.<ext>; a link
+   (YouTube, Drive…) can stand in for a file. The full recording stays songs.audio_url. */
+const PARTS_BUCKET = 'parts';
+const PART_MAX = 50 * 1024 * 1024;
+const AUDIO_EXT = { mp3: 'audio/mpeg', m4a: 'audio/mp4', aac: 'audio/aac', wav: 'audio/wav' };
+const REC_ACCEPT = 'audio/*,.mp3,.m4a,.aac,.wav';
+const PL = { a: null, id: null, part: null, err: false, loop: false, drag: false };
+const RECUP = {};                      // 'songId:part' → { pct, name, xhr } while a file uploads
+let recQ = Promise.resolve();          // part_audio writes run one after another, so none is lost
+let plBarEl = null;
+const LS_PI = '<svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.6v12.8a1 1 0 0 0 1.53.85l10.1-6.4a1 1 0 0 0 0-1.7L9.53 4.75A1 1 0 0 0 8 5.6z"></path></svg><svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.3"></rect><rect x="13.5" y="5" width="4" height="14" rx="1.3"></rect></svg><svg class="i-load" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9"></path></svg>';
+const EXTSVG = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>';
+const CARETSVG = '<svg class="lscar" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>';
+const HEADSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15v-3a9 9 0 0 1 18 0v3"></path><rect x="3" y="13" width="4" height="7" rx="1.5"></rect><rect x="17" y="13" width="4" height="7" rx="1.5"></rect></svg>';
+const BACK10SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7"></path><path d="M4 4v4.5h4.5"></path><text x="12.6" y="15.6" text-anchor="middle" font-size="7.4" font-weight="700" fill="currentColor" stroke="none" font-family="inherit">10</text></svg>';
+const LOOPSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"></path><path d="M3 11V9a3 3 0 0 1 3-3h15"></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v2a3 3 0 0 1-3 3H3"></path></svg>';
+const XSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>';
+function prtName(p){ if (p === 'full') return t('lsFull'); const n = t(p) || p; return n.charAt(0) + n.slice(1).toLowerCase(); }
+function partsOf(s){ return s && s.part_audio && typeof s.part_audio === 'object' ? s.part_audio : {}; }
+function partRec(s, p){
+  if (!s) return null;
+  if (p === 'full') { const f = partsOf(s).full; return f && f.path ? f : (s.audio_url ? { url: s.audio_url } : null); }
+  const r = partsOf(s)[p];
+  return r && (r.path || r.url) ? r : null;
+}
+function hasParts(s){ return ['full', ...PARTS].some(p => partRec(s, p)); }
+function recCount(s){ return ['full', ...PARTS].filter(p => partRec(s, p)).length; }
+function partURL(r){ return r.path ? SUPABASE_URL + '/storage/v1/object/public/' + PARTS_BUCKET + '/' + r.path.split('/').map(encodeURIComponent).join('/') : r.url; }
+function isAudioLink(u){ return /\.(mp3|m4a|aac|wav|ogg|oga)(\?|#|$)/i.test(u || ''); }
+function partInline(r){ return !!r.path || isAudioLink(r.url); }      // plays inside the app; other links open in a tab
+function fmtDur(sec){ sec = Math.max(0, Math.round(sec || 0)); return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0'); }
+function fmtMB(b){ return (b / 1048576).toFixed(b < 10485760 ? 1 : 0) + ' MB'; }
+function hostOf(u){ try { return new URL(u).hostname.replace(/^www\./, ''); } catch (_) { return u || ''; } }
+/* "Glad Tidings - Soprano.mp3", "Сопрано.m4a", "Glad Tidings S.mp3" → the part, or null */
+function partGuess(name){
+  const n = (name || '').toLowerCase().replace(/\.[a-z0-9]+$/, '');
+  if (/sopr|сопр/.test(n)) return 'soprano';
+  if (/alto|(^|[^a-zа-я])alt([^a-zа-я]|$)|альт/.test(n)) return 'alto';
+  if (/tenor|тенор/.test(n)) return 'tenor';
+  if (/bass|(^|[^a-zа-я])bas([^a-zа-я]|$)|бас/.test(n)) return 'bass';
+  /* only after the four parts, and only whole words, so a title like «Наполни меня» or "Fully Alive" isn't taken for it */
+  if (/(^|[^a-zа-я])(full|tutti)([^a-zа-я]|$)|весь хор|всего хора|полная запись|общая запись|хор полностью/.test(n)) return 'full';
+  const m = n.match(/(?:^|[\s_\-(.])([satbсатб])\)?$/);
+  return m ? { s: 'soprano', a: 'alto', t: 'tenor', b: 'bass', 'с': 'soprano', 'а': 'alto', 'т': 'tenor', 'б': 'bass' }[m[1]] : null;
+}
 /* One roster: a person has a voice part (or none) and may also carry the
    pianist / conductor flags, so someone who sings AND conducts is entered once. */
 const isSinger = p => PARTS.includes(p.part);
@@ -3414,13 +3587,17 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.44.5';
+const VERSION = '5.45.5';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Player: springier opening, a gold progress bar you can drag, and a live “now playing” indicator',
+    'Recordings: Full Choir can now be an uploaded MP3 or a link, like the parts',
+    'Repertoire and Learning: a Recordings button on every song opens the part recordings window',
+    'Part recordings: the director uploads an MP3 or adds a link for Soprano, Alto, Tenor and Bass. Listen opens Full Choir plus all four parts (greyed out until recorded), and parts play in a player that keeps going between pages',
     'Home: a “New” badge on the Learning card for its first weeks',
     'Home: the Learning card features the top song with quick Listen, Sheet and Lyrics buttons, and shows what each other song has',
     'Home: the Learning card shows up to 5 songs on wide screens and 3 on phones',
@@ -3465,6 +3642,10 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Плеер: плавное появление, золотая полоса прогресса, которую можно тянуть, и живой индикатор воспроизведения',
+    'Записи: «Весь хор» теперь тоже можно загрузить как MP3 или добавить ссылкой, как партии',
+    '«Репертуар» и «Разучиваем»: кнопка «Записи» у каждой песни открывает окно записей партий',
+    'Записи партий: регент загружает MP3 или добавляет ссылку для сопрано, альтов, теноров и басов. «Слушать» открывает весь хор и все четыре партии (серые, пока нет записи), а плеер продолжает играть при переходе между страницами',
     'Главная: значок «Новое» на карточке «Разучиваем» в первые недели',
     'Главная: в карточке «Разучиваем» первая песня выделена, с кнопками «Слушать», «Ноты» и «Текст»; у остальных видно, что есть',
     'Главная: в карточке «Разучиваем» до 5 песен на широком экране и 3 на телефоне',
@@ -4029,7 +4210,7 @@ const learnSongs = () => { const real = S.songs.filter(s => s.learning && s.acti
    Switched with the "Show a sample" link on the Learning page; remembered on this device. */
 try { S.lnDemo = localStorage.getItem('lnDemo') === '1'; } catch (_) {}
 function learnDemo(){
-  const sc = s => (s.pdf_path ? 1 : 0) + (s.piano_path ? 1 : 0) + (s.audio_url ? 1 : 0) + (hasLyrics(s) ? 1 : 0);
+  const sc = s => (s.pdf_path ? 1 : 0) + (s.piano_path ? 1 : 0) + (s.audio_url ? 1 : 0) + (hasParts(s) ? 2 : 0) + (hasLyrics(s) ? 1 : 0);
   const ru = S.lang === 'ru';
   const meta = [[ru ? 'К Рождеству' : 'For Christmas', ru ? 'Альты, сначала выучите второй куплет. Остальные — припев.' : 'Altos, learn the second verse first. Everyone else, the chorus.'],
     [ru ? 'К Пасхе' : 'For Easter', null],
@@ -4037,7 +4218,7 @@ function learnDemo(){
     [ru ? 'С января' : 'Starting in January', null]];
   return liveSongs().slice().sort((a, b) => sc(b) - sc(a)).slice(0, 4).map((s, i) => Object.assign({}, s,
     { _demo: true, learning: true, learn_for: meta[i][0], learn_note: meta[i][1] },
-    i === 3 ? { pdf_path: null, piano_path: null, audio_url: null, lyrics: null } : {}));
+    i === 3 ? { pdf_path: null, piano_path: null, audio_url: null, part_audio: null, lyrics: null } : {}));
 }
 function songStats(id, from, to){
   const now = today();
@@ -4971,11 +5152,12 @@ function homePage(){
     </section>`;
   const learnList = learnSongs();
   const lnNew = today() <= LEARN_NEW_UNTIL;
-  const lnSum = s => [s.pdf_path && t('lnSumSheet'), s.piano_path && t('lnSumPiano'), s.audio_url && t('lnSumRec'), hasLyrics(s) && t('lnSumLyr')].filter(Boolean).join(' · ') || t('lnComing');
-  const lnHas = s => [s.pdf_path && AIC.sheets, s.audio_url && AIC.play, hasLyrics(s) && AIC.lyrics].filter(Boolean).join('');
+  const lnSum = s => [s.pdf_path && t('lnSumSheet'), s.piano_path && t('lnSumPiano'), (s.audio_url || hasParts(s)) && t('lnSumRec'), hasLyrics(s) && t('lnSumLyr')].filter(Boolean).join(' · ') || t('lnComing');
+  const lnHas = s => [s.pdf_path && AIC.sheets, (s.audio_url || hasParts(s)) && AIC.play, hasLyrics(s) && AIC.lyrics].filter(Boolean).join('');
   const lnF = learnList[0];
   const lnQuick = s => [
-    s.audio_url ? `<a class="lnq t4" href="${esc(s.audio_url)}" data-song="${s.id}" target="_blank" rel="noopener">${AIC.play}<span>${esc(t('listen'))}</span></a>` : '',
+    (s.audio_url || hasParts(s)) ? `<button class="lnq t4 lsbtn${S.listenOpen === 'home:' + s.id ? ' on' : ''}" data-listen="home:${s.id}" aria-expanded="${S.listenOpen === 'home:' + s.id}">${AIC.play}<span>${esc(t('listen'))}</span></button>`
+      : s.audio_url ? `<a class="lnq t4" href="${esc(s.audio_url)}" data-song="${s.id}" target="_blank" rel="noopener">${AIC.play}<span>${esc(t('listen'))}</span></a>` : '',
     s.pdf_path && (!s.pdf_locked || S.session) ? `<button class="lnq t1" data-open="sheets:${s.id}" title="${esc(t('lnSumSheet'))}">${AIC.sheets}<span>${esc(t('lnNotes'))}</span></button>` : '',
     hasLyrics(s) ? `<a class="lnq t3" href="#/lyrics/${shortId(s.id)}">${AIC.lyrics}<span>${esc(t('tLyrics'))}</span></a>` : ''].filter(Boolean).join('');
   const learnCard = `<section class="dpanel lntile">
@@ -4984,7 +5166,7 @@ function homePage(){
       ${lnF ? `<div class="lnfeat">
           <div class="fe"><span>${esc(t('lnNow'))}</span>${lnF.learn_for ? `<em>${esc(lnF.learn_for)}</em>` : ''}</div>
           <a class="ft" href="#/learning">${esc(lnF.title)}</a>
-          ${lnQuick(lnF) ? `<div class="fq">${lnQuick(lnF)}</div>` : `<p class="fs">${esc(t('lnSoon'))}</p>`}
+          ${lnQuick(lnF) ? `<div class="fq">${lnQuick(lnF)}</div>${listenRow(lnF, 'home')}` : `<p class="fs">${esc(t('lnSoon'))}</p>`}
         </div>
         ${learnList.length > 1 ? `<div class="lrows">${learnList.slice(1, 5).map((s, i) => `<a class="lrow" href="#/learning"><span class="n">${String(i + 2).padStart(2, '0')}</span>
           <span class="b"><strong>${esc(s.title)}</strong><small${s.learn_for ? ' class="g"' : ''}>${esc(s.learn_for || lnSum(s))}</small></span><span class="has">${lnHas(s)}</span></a>`).join('')}</div>` : ''}`
@@ -5539,7 +5721,7 @@ function lbSheet(from, p, label){
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.lbWho) { S.lbWho = null; render(); } });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && (S.audioEdit || S.pdfDel || S.planType || S.archAsk || S.learnEdit || S.learnMove)) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; render(); }
+  if (e.key === 'Escape' && (S.audioEdit || S.pdfDel || S.planType || S.archAsk || S.learnEdit || S.learnMove)) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.pdfDel = null; render(); }
   if (e.key === 'Enter' && e.target.id && e.target.id.startsWith('audio-')) { e.preventDefault(); const b = document.querySelector('.modal [data-audio-save]'); if (b) b.click(); }
 });
 /* first view of a period: the percentages count up while the podium rises */
@@ -6434,6 +6616,7 @@ function manageSongs(){
     return `<div class="li rrow"><span class="ftile">${AIC.music}</span><div style="flex:1;min-width:0">
         <div class="stl">${esc(s.title)}${pvTag(s)}</div><div class="sub">${esc(meta)}</div></div>
         <button class="ibtn" data-edit-song="${s.id}" aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
+        <button class="ibtn rec${recCount(s) ? ' on' : ''}" data-audio-edit="${s.id}" aria-label="${esc(recCount(s) ? t('recsN')(recCount(s)) : t('recs'))}" title="${esc(recCount(s) ? t('recsN')(recCount(s)) : t('recs'))}">${HEADSVG}</button>
         <button class="ibtn" data-archive-song="${s.id}" aria-label="${esc(lab)}" title="${esc(lab)}">${off ? AIC.restore : AIC.archive}</button>
         <button class="ibtn danger" data-del-song="${s.id}" aria-label="${esc(t('del'))}" title="${esc(t('del'))}">${TRASHSVG}</button></div>`; };
   const learn = found.filter(s => s.learning && s.active !== false).sort(lnCmp);
@@ -6443,6 +6626,7 @@ function manageSongs(){
         <div class="stl">${esc(s.title)}${pvTag(s)}</div>${meta ? `<div class="sub">${esc(meta)}</div>` : ''}</div>
         <button class="tbtn" data-learn-move="${s.id}">${esc(t('lnMove'))}</button>
         <button class="ibtn" data-learn-edit="${s.id}" aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
+        <button class="ibtn rec${recCount(s) ? ' on' : ''}" data-audio-edit="${s.id}" aria-label="${esc(recCount(s) ? t('recsN')(recCount(s)) : t('recs'))}" title="${esc(recCount(s) ? t('recsN')(recCount(s)) : t('recs'))}">${HEADSVG}</button>
         <button class="ibtn danger" data-del-song="${s.id}" aria-label="${esc(t('del'))}" title="${esc(t('del'))}">${TRASHSVG}</button></div>`; };
   const learnCard = `<div class="sec">
       <button class="chd fold2" data-toggle-learn aria-expanded="${lOpen ? 'true' : 'false'}"><h3>${esc(t('lnTitle'))}</h3><span class="n">${learn.length}</span><i class="chev${lOpen ? ' up' : ''}"></i></button>
@@ -6864,11 +7048,14 @@ function sheetsPage(kind){
         ${path ? `<button class="mini lk ${locked?'on':''}" data-lock="${kind}:${s.id}">${
             locked ? lockSVG(true) : lockSVG(false)}<span>${esc(locked ? t('makePublic') : t('makeAdminOnly'))}</span></button>
           <button class="mini danger trash" data-del-pdf="${s.id}" data-sheet-kind="${kind}">${TRASHSVG}<span>${esc(t('removePdf'))}</span></button>` : ''}
-        <button class="mini au ${s.audio_url?'on':''}" data-audio-edit="${s.id}">${LINKSVG}<span>${esc(s.audio_url ? t('audioLink') : t('audioAdd'))}</span></button>
+        <button class="mini au ${recCount(s)?'on':''}" data-audio-edit="${s.id}">${HEADSVG}<span>${esc(recCount(s) ? t('recsN')(recCount(s)) : t('recs'))}</span></button>
         <a class="mini lx" href="#/lyrics/${shortId(s.id)}" data-lyr-edit="${s.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M12 5v15M8 20h8M4 5v3M20 5v3"></path></svg><span>${esc(hasLyrics(s) ? t('editLyrics') : t('addLyrics'))}</span></a>
       </div>` : '';
       /* one recording link per song, and the words for whoever is projecting them */
-      const listen = s.audio_url
+      const lOn = S.listenOpen === 'sheets:' + s.id;
+      const listen = (s.audio_url || hasParts(s))
+        ? `<button class="mini play lsbtn${lOn ? ' on' : ''}" data-listen="sheets:${s.id}" aria-expanded="${lOn}">${PLAYSVG}<span>${esc(t('listen'))}</span>${CARETSVG}</button>`
+        : s.audio_url
         ? `<a class="mini play" href="${esc(s.audio_url)}" data-song="${s.id}" target="_blank" rel="noopener">${PLAYSVG}<span>${esc(t('listen'))}</span></a>`
         : '';
       const lyr = hasLyrics(s)
@@ -6885,7 +7072,7 @@ function sheetsPage(kind){
       const cap = `<div class="scap">${ordEv ? `<b>${String(i + 1).padStart(2, '0')}</b>` : ''}${esc(s.title)}${catName(s.category_id) ? `<i> · ${esc(catName(s.category_id))}</i>` : ''}</div>`;
       const chev = btns ? `<button class="schev${i === 0 && !traySeen() ? ' hint' : ''}" data-tray aria-expanded="${tOpen}" aria-label="${esc(t(tOpen ? 'trayHide' : 'trayShow'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 6l-6 6 6 6"></path></svg></button>` : '';
       const row = `<div class="li srow${S.session ? ' tap' : ''}"${S.session ? ` data-adm-row="${s.id}"` : ''}>${left}<div class="stray">${cap}<div class="acts sbtns">${btns}</div></div>${chev}</div>`
-        + (S.admRow === s.id ? admin : '');
+        + listenRow(s, 'sheets') + (S.admRow === s.id ? admin : '');
       return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}${S.actOpen === s.id ? ' open' : ''}" data-srow="${s.id}">${row}</div>`;
     }).join('') + foot;
 }
@@ -6969,22 +7156,319 @@ async function planTypeSave(){
   Object.assign(ev, row); S.planType = null;
   return render();
 }
+/* ---------- Listen: Full + one button per recorded part ----------
+   With only the full recording, Listen stays a plain link. With part recordings it
+   opens a row of choices under the button; files play in the app's own player. */
+function listenOpts(s){ return ['full', ...PARTS].map(p => [p, partRec(s, p)]).filter(x => x[1]); }
+function listenRow(s, ctx){
+  const key = ctx + ':' + s.id;
+  if (S.listenOpen !== key || !listenOpts(s).length) return '';
+  return `<div class="lsrow${S.listenEnter === key ? ' enter' : ''}" role="group" aria-label="${esc(t('listen') + ' · ' + s.title)}">` +
+    ['full', ...PARTS].map((p, k) => lsChip(s, p, partRec(s, p), k)).join('') + `</div>`;
+}
+function lsChip(s, p, r, k){
+  const name = esc(prtName(p));
+  if (!r) return `<span class="lsc ${p} off" style="--k:${k}" aria-disabled="true" title="${esc(t('lsNone'))}"><span class="pi">${LS_PI}</span><span class="lb">${name}</span><span class="tm">—</span></span>`;
+  if (!partInline(r)) return `<a class="lsc ${p} ext" style="--k:${k}" href="${esc(r.url)}" target="_blank" rel="noopener" data-song="${s.id}" title="${esc(hostOf(r.url))}">
+      <span class="pi">${EXTSVG}</span><span class="lb">${name}</span></a>`;
+  const d = r.dur ? fmtDur(r.dur) : '';
+  return `<button class="lsc ${p}" style="--k:${k}" data-lp="${s.id}:${p}" data-dur="${d}" aria-pressed="false" aria-label="${esc(t('recPlay') + ' · ' + prtName(p))}">
+      <span class="pi">${LS_PI}</span><span class="lb">${name}</span><span class="tm">${d}</span></button>`;
+}
+/* ---------- the part player: one audio element for the whole app, outside render() ---------- */
+function plEl(){
+  if (PL.a) return PL.a;
+  const a = PL.a = new Audio();
+  a.preload = 'metadata';
+  ['play', 'pause', 'ended', 'timeupdate', 'loadedmetadata', 'durationchange', 'waiting', 'playing', 'canplay', 'seeked', 'error'].forEach(ev =>
+    a.addEventListener(ev, () => { if (ev === 'error' && a.getAttribute('src')) { PL.err = true; a.pause(); } if (ev === 'playing') PL.err = false; plSync(); }));
+  return a;
+}
+function plFail(e){ if (e && e.name === 'AbortError') return; PL.err = true; if (PL.a) PL.a.pause(); plSync(); }
+function plStart(song, part){
+  const r = partRec(song, part);
+  if (!r) return;
+  if (!partInline(r)) { window.open(r.url, '_blank', 'noopener'); track('audio', song.id); return; }
+  const a = plEl();
+  if (PL.id === song.id && PL.part === part && a.getAttribute('src')) {
+    if (a.paused || a.ended) a.play().catch(plFail); else a.pause();
+    return;
+  }
+  PL.id = song.id; PL.part = part; PL.err = false;
+  a.src = partURL(r); a.loop = PL.loop;
+  a.play().catch(plFail);
+  track('audio', song.id);
+  if ('mediaSession' in navigator) try {
+    navigator.mediaSession.metadata = new MediaMetadata({ title: song.title, artist: prtName(part), album: document.title });
+    navigator.mediaSession.setActionHandler('play', () => plEl().play().catch(plFail));
+    navigator.mediaSession.setActionHandler('pause', () => plEl().pause());
+    navigator.mediaSession.setActionHandler('seekbackward', () => plSkip(-10));
+    navigator.mediaSession.setActionHandler('seekforward', () => plSkip(10));
+  } catch (_) {}
+  plSync();
+}
+function plSkip(n){ const a = PL.a; if (!a || !isFinite(a.duration)) return; a.currentTime = Math.max(0, Math.min(a.duration - .25, a.currentTime + n)); }
+function plStop(){
+  const a = PL.a;
+  if (a) { a.pause(); a.removeAttribute('src'); a.load(); }
+  PL.id = PL.part = null; PL.err = false;
+  plSync();
+}
+/* reflect the player on every Listen button and on the bar, without a re-render */
+function plSync(){
+  const a = PL.a, on = !!(a && PL.id), key = PL.id + ':' + PL.part;
+  const dur = on && isFinite(a.duration) ? a.duration : 0, cur = on ? a.currentTime : 0, pct = dur ? Math.min(100, cur / dur * 100) : 0;
+  const playing = on && !PL.err && !a.paused && !a.ended, loading = playing && a.readyState < 3;
+  document.querySelectorAll('[data-lp]').forEach(b => {
+    const me = on && b.dataset.lp === key;
+    b.classList.toggle('cur', me);
+    b.classList.toggle('playing', me && playing && !loading);
+    b.classList.toggle('loading', me && loading);
+    b.style.setProperty('--lp', me ? pct.toFixed(2) : '0');
+    b.setAttribute('aria-pressed', me && playing ? 'true' : 'false');
+    const tm = b.querySelector('.tm');
+    if (tm) tm.textContent = me && (cur > 0 || playing) ? fmtDur(cur) : (b.dataset.dur || '');
+  });
+  if (!on) { if (plBarEl) plBarEl.classList.remove('on'); document.body.classList.remove('plon'); return; }
+  const bar = plBarEl || plBarBuild();
+  const song = S.songs.find(x => x.id === PL.id), sig = key + ':' + S.lang;
+  if (bar.dataset.sig !== sig) {
+    bar.innerHTML = plBarHTML(); bar.dataset.sig = sig;
+    bar.querySelector('.pl-ttl').textContent = song ? song.title : '';
+    bar.querySelector('.pl-part').className = 'pl-part ' + PL.part;
+  }
+  bar.querySelector('.pl-part b').textContent = PL.err ? t('plErr') : prtName(PL.part);
+  bar.classList.add('on'); document.body.classList.add('plon');
+  bar.classList.toggle('playing', playing && !loading);
+  bar.classList.toggle('loading', loading);
+  bar.classList.toggle('err', PL.err);
+  const rg = bar.querySelector('.pl-rg');
+  if (!PL.drag) rg.value = Math.round(pct * 10);
+  bar.querySelector('.pl-trk').style.setProperty('--lp', (PL.drag ? rg.value / 10 : pct).toFixed(2));
+  bar.querySelector('.pl-cur').textContent = fmtDur(cur);
+  bar.querySelector('.pl-dur').textContent = dur ? fmtDur(dur) : '–:––';
+  const pp = bar.querySelector('.pl-pp');
+  pp.setAttribute('aria-label', t(playing ? 'plPause' : 'plPlay'));
+  const lp = bar.querySelector('[data-pl="loop"]');
+  lp.classList.toggle('on', PL.loop); lp.setAttribute('aria-pressed', PL.loop ? 'true' : 'false');
+}
+function plBarHTML(){
+  return `<button class="pl-pp" data-pl="toggle" aria-label="${esc(t('plPlay'))}">${LS_PI}</button>
+    <div class="pl-pm"><div class="pl-pt"><strong class="pl-ttl"></strong><span class="pl-part"><i></i><b></b></span><span class="pl-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
+      <div class="pl-ps"><span class="pl-cur">0:00</span><span class="pl-trk"><i class="pl-fill"></i><b class="pl-knob"></b><input class="pl-rg" type="range" min="0" max="1000" step="1" value="0" aria-label="${esc(t('plSeek'))}"></span><span class="pl-dur">–:––</span></div></div>
+    <div class="pl-k"><button data-pl="back" aria-label="${esc(t('plBack'))}" title="${esc(t('plBack'))}">${BACK10SVG}</button><button data-pl="loop" aria-label="${esc(t('plLoop'))}" title="${esc(t('plLoop'))}" aria-pressed="false">${LOOPSVG}</button><button data-pl="close" aria-label="${esc(t('plClose'))}" title="${esc(t('plClose'))}">${XSVG}</button></div>`;
+}
+function plBarBuild(){
+  const b = plBarEl = document.createElement('div');
+  b.className = 'plbar';
+  b.setAttribute('role', 'region');
+  b.setAttribute('aria-label', t('plTitle'));
+  document.body.appendChild(b);
+  b.addEventListener('click', e => {
+    const k = e.target.closest('[data-pl]'); if (!k) return;
+    const a = plEl(), v = k.dataset.pl;
+    if (v === 'toggle') { if (a.paused || a.ended) a.play().catch(plFail); else a.pause(); }
+    else if (v === 'back') plSkip(-10);
+    else if (v === 'loop') { PL.loop = !PL.loop; a.loop = PL.loop; plSync(); }
+    else if (v === 'close') plStop();
+  });
+  b.addEventListener('input', e => {
+    if (!e.target.matches('.pl-rg')) return;
+    const a = PL.a; if (!a || !isFinite(a.duration)) return;
+    a.currentTime = e.target.value / 1000 * a.duration;
+    plSync();
+  });
+  b.addEventListener('pointerdown', e => { if (e.target.matches('.pl-rg')) PL.drag = true; });
+  document.addEventListener('pointerup', () => { if (PL.drag) { PL.drag = false; plSync(); } });
+  return b;
+}
+/* ---------- director: the Recordings window (full link + one file or link per part) ---------- */
+function recModal(a){
+  const row = p => {
+    const full = p === 'full', r = partRec(a, p), key = a.id + ':' + p, job = RECUP[key];
+    const fileIn = (lab, ic) => `<label class="rbtn">${ic}<span>${esc(t(lab))}</span><input type="file" accept="${REC_ACCEPT}" data-rec-file="${p}" hidden></label>`;
+    let info, acts;
+    if (job) {
+      info = `<div class="rprog" data-rec-prog="${key}" style="--lp:${job.pct}"><div class="rpn"><span>${esc(job.name)}</span><b class="rpct">${job.pct}%</b></div><i></i></div>`;
+      acts = `<button class="rbtn" data-rec-cancel="${key}">${esc(t('recCancel'))}</button>`;
+    } else if (S.recLink === p) {
+      info = `<input class="field" id="rec-link-${p}" type="url" inputmode="url" spellcheck="false" autocomplete="off" placeholder="${esc(t('recLinkPh'))}" value="${esc(S.recDraft)}">`;
+      acts = `<button class="rbtn" data-rec-link-x>${esc(t('recCancel'))}</button><button class="rbtn go" data-rec-link-go="${p}">${esc(t('recSave'))}</button>`;
+    } else if (S.recDel === p) {
+      info = `<span class="rst warn">${esc(t('recRemoveQ'))}</span>`;
+      acts = `<button class="rbtn" data-rec-del-x>${esc(t('recKeep'))}</button><button class="rbtn danger" data-rec-del-go="${p}">${TRASHSVG}<span>${esc(t('recRemove'))}</span></button>`;
+    } else if (r) {
+      const meta = r.path ? [r.name, r.dur ? fmtDur(r.dur) : '', r.size ? fmtMB(r.size) : ''].filter(Boolean).join(' · ') : hostOf(r.url);
+      info = `<span class="rst">${esc(meta)}</span>`;
+      const play = partInline(r)
+        ? `<button class="rpl" data-lp="${a.id}:${p}" data-dur="" aria-label="${esc(t('recPlay'))}" title="${esc(t('recPlay'))}">${LS_PI}</button>`
+        : `<a class="rbtn ic" href="${esc(r.url)}" target="_blank" rel="noopener" aria-label="${esc(t('recOpen'))}" title="${esc(t('recOpen'))}">${EXTSVG}</a>`;
+      const change = r.path ? fileIn('recReplace', UPSVG) : `<button class="rbtn" data-rec-link="${p}">${LINKSVG}<span>${esc(t('recEditLink'))}</span></button>`;
+      acts = play + change + `<button class="rbtn ic danger" data-rec-del="${p}" aria-label="${esc(t('recRemove'))}" title="${esc(t('recRemove'))}">${TRASHSVG}</button>`;
+    } else {
+      info = `<span class="rst none">${esc(t('recNone'))}</span>`;
+      acts = fileIn('recUpload', UPSVG) + `<button class="rbtn" data-rec-link="${p}">${LINKSVG}<span>${esc(t('recAddLink'))}</span></button>`;
+    }
+    return `<div class="recr ${p}${job ? ' busy' : ''}${r && !job ? ' has' : ''}" data-rec-drop="${p}">
+      <span class="rtag">${full ? AIC.music : esc(prtName(p).charAt(0))}</span>
+      <div class="rinfo"><strong>${esc(full ? t('recFullL') : prtName(p))}</strong>${info}</div>
+      <div class="racts">${acts}</div></div>`;
+  };
+  return `<div class="mscrim" data-modal-x></div>
+    <div class="modal recm" role="dialog" aria-modal="true" aria-label="${esc(t('recs'))}" data-rec-drop="auto">
+      <div class="mhd"><div style="min-width:0"><h2>${esc(t('recs'))}</h2><p class="rsub">${esc(a.title)}</p></div><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
+      <div class="mbody">
+        <label class="recdrop">${UPSVG}<span class="rdt"><strong>${esc(t('recDrop'))}</strong><span>${esc(t('recDropHint'))}</span></span><span class="rbtn go">${esc(t('recChoose'))}</span><input type="file" multiple accept="${REC_ACCEPT}" data-rec-file="auto" hidden></label>
+        <div class="recl">${['full', ...PARTS].map(row).join('')}</div>
+        <p class="rfmt">${esc(t('recFormats'))}</p>
+      </div>
+      <div class="mfoot"><button class="pbtn" data-modal-x>${esc(t('recDoneBtn'))}</button></div></div>`;
+}
+function recMsg(x, size){
+  let j = {}; try { j = JSON.parse(x.responseText || '{}'); } catch (_) {}
+  const m = String(j.message || j.error || ''), code = String(j.statusCode || x.status);
+  if (/bucket not found/i.test(m)) return t('recNoSql');
+  if (/mime/i.test(m) || code === '415') return t('recType');
+  if (code === '413' || /too large|maximum allowed size|exceeded/i.test(m)) return t('recBig')(fmtMB(size));
+  if (code === '401' || code === '403' || /row-level security|unauthori[sz]ed|jwt/i.test(m)) return t('sessionLost');
+  return m || ('HTTP ' + x.status);
+}
+function audioDur(file){
+  return new Promise(res => {
+    const a = new Audio(), u = URL.createObjectURL(file);
+    let done = false;
+    const end = v => { if (done) return; done = true; URL.revokeObjectURL(u); res(v); };
+    a.preload = 'metadata';
+    a.onloadedmetadata = () => end(isFinite(a.duration) ? Math.round(a.duration) : null);
+    a.onerror = () => end(null);
+    setTimeout(() => end(null), 6000);
+    a.src = u;
+  });
+}
+/* write one part into songs.part_audio (null removes it); queued so parallel uploads can't overwrite each other */
+function recSave(song, part, rec){
+  const run = async () => {
+    const next = Object.assign({}, partsOf(song));
+    if (rec) next[part] = rec; else delete next[part];
+    const res = await sb.from('songs').update({ part_audio: next }).eq('id', song.id).select('id');
+    if (res.error && /part_audio/.test(res.error.message || '')) res.error = { message: t('recNoSql') };
+    if (!wrote(res)) return false;
+    song.part_audio = next;
+    return true;
+  };
+  const p = recQ.then(run, run);
+  recQ = p.then(() => {}, () => {});
+  return p;
+}
+function recProg(key, pct){
+  const r = document.querySelector('[data-rec-prog="' + key + '"]');
+  if (!r) return;
+  r.style.setProperty('--lp', pct);
+  const b = r.querySelector('.rpct'); if (b) b.textContent = pct + '%';
+}
+async function recUpload(song, part, file){
+  const ext = (file.name.split('.').pop() || '').toLowerCase();
+  const type = AUDIO_EXT[ext] || (/^audio\/(mpeg|mp3)$/.test(file.type) ? 'audio/mpeg' : null);
+  if (!type) return fail({ message: t('recType') });
+  if (file.size > PART_MAX) return fail({ message: t('recBig')(fmtMB(file.size)) });
+  if (!await ensureSession()) return;
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  const key = song.id + ':' + part;
+  if (RECUP[key]) RECUP[key].xhr.abort();
+  const path = song.id + '/' + part + '-' + Date.now().toString(36) + '.' + (AUDIO_EXT[ext] ? ext : 'mp3');
+  const job = RECUP[key] = { pct: 0, name: file.name, xhr: new XMLHttpRequest() };
+  const durP = audioDur(file);
+  render();
+  try {
+    await new Promise((ok, no) => {
+      const x = job.xhr;
+      x.open('POST', SUPABASE_URL + '/storage/v1/object/' + PARTS_BUCKET + '/' + path);
+      x.setRequestHeader('Authorization', 'Bearer ' + session.access_token);
+      x.setRequestHeader('apikey', SUPABASE_ANON_KEY);
+      x.setRequestHeader('Content-Type', type);
+      x.setRequestHeader('cache-control', 'max-age=31536000');     // every upload gets a new name, so caching is safe
+      x.setRequestHeader('x-upsert', 'false');
+      x.upload.onprogress = e => { if (e.lengthComputable) { job.pct = Math.min(99, Math.round(e.loaded / e.total * 100)); recProg(key, job.pct); } };
+      x.onload = () => x.status >= 200 && x.status < 300 ? ok() : no(new Error(recMsg(x, file.size)));
+      x.onerror = () => no(new Error(t('offline')));
+      x.onabort = () => no(Object.assign(new Error('aborted'), { aborted: true }));
+      x.send(file);
+    });
+  } catch (err) {
+    if (RECUP[key] === job) delete RECUP[key];
+    return err.aborted ? render() : fail(err);
+  }
+  const old = partRec(song, part);
+  if (PL.id === song.id && PL.part === part) plStop();
+  const ok = await recSave(song, part, { path, name: file.name, size: file.size, dur: await durP, at: new Date().toISOString() });
+  if (RECUP[key] === job) delete RECUP[key];
+  if (!ok) { sb.storage.from(PARTS_BUCKET).remove([path]).then(() => {}, () => {}); return render(); }
+  if (old && old.path && old.path !== path) sb.storage.from(PARTS_BUCKET).remove([old.path]).then(() => {}, () => {});
+  if (part === 'full' && song.audio_url) { const r2 = await sb.from('songs').update({ audio_url: null }).eq('id', song.id).select('id'); if (!r2.error) song.audio_url = null; }
+  okToast(t('recDone')(prtName(part)));
+  render();
+}
+function recFiles(song, files, target){
+  files = [...files].filter(f => f && f.size);
+  if (!files.length) return;
+  if (target !== 'auto' && files.length === 1) { recUpload(song, target, files[0]); return; }
+  const taken = new Set(), miss = [];
+  files.forEach(f => {
+    let p = partGuess(f.name);
+    if (!p && target !== 'auto' && !taken.has(target)) p = target;
+    if (!p || taken.has(p)) { miss.push(f.name); return; }
+    taken.add(p); recUpload(song, p, f);
+  });
+  if (miss.length) fail({ message: t('recMiss')(miss.join(', ')) });
+}
+async function recLinkSave(song, part){
+  const box = document.getElementById('rec-link-' + part);
+  let url = (box ? box.value : S.recDraft).trim();
+  if (url && !/^https?:\/\//i.test(url)) url = 'https://' + url;
+  if (url) { try { new URL(url); } catch (_) { return fail({ message: t('recBadLink') }); } }
+  if (!await ensureSession()) return;
+  if (PL.id === song.id && PL.part === part) plStop();
+  if (part === 'full') {
+    const res = await sb.from('songs').update({ audio_url: url || null }).eq('id', song.id).select('id');
+    if (!wrote(res)) return render();
+    song.audio_url = url || null;
+    const f = partsOf(song).full;
+    if (f && await recSave(song, 'full', null) && f.path) sb.storage.from(PARTS_BUCKET).remove([f.path]).then(() => {}, () => {});
+  } else {
+    const old = partRec(song, part);
+    if (!await recSave(song, part, url ? { url, at: new Date().toISOString() } : null)) return render();
+    if (old && old.path) sb.storage.from(PARTS_BUCKET).remove([old.path]).then(() => {}, () => {});
+  }
+  S.recLink = null; S.recDraft = '';
+  okToast(t('recLinkSaved'));
+  render();
+}
+async function recRemove(song, part){
+  if (!await ensureSession()) return;
+  if (PL.id === song.id && PL.part === part) plStop();
+  if (part === 'full') {
+    const f = partsOf(song).full;
+    if (f) { if (!await recSave(song, 'full', null)) return render(); if (f.path) sb.storage.from(PARTS_BUCKET).remove([f.path]).then(() => {}, () => {}); }
+    if (song.audio_url) { const res = await sb.from('songs').update({ audio_url: null }).eq('id', song.id).select('id'); if (!wrote(res)) return render(); song.audio_url = null; }
+  } else {
+    const old = partRec(song, part);
+    if (!await recSave(song, part, null)) return render();
+    if (old && old.path) sb.storage.from(PARTS_BUCKET).remove([old.path]).then(() => {}, () => {});
+  }
+  S.recDel = null;
+  render();
+}
 /* the music page's two small dialogs: a song's recording link, and removing its PDF */
 function songModal(){
-  if (!S.session || !/^#\/(sheets|learning)/.test(S.route)) return '';
+  if (!S.session || !/^#\/(sheets|learning|admin)/.test(S.route)) return '';
   const shell = (title, sub, body, foot) => `<div class="mscrim" data-modal-x></div>
     <div class="modal" role="dialog" aria-modal="true" aria-label="${esc(title)}" style="width:min(460px,calc(100vw - 24px))">
       <div class="mhd"><h2>${esc(title)}</h2><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
       <div class="mbody">${sub ? `<p style="margin:0 0 14px;font-size:14px;line-height:1.45;color:var(--muted);text-wrap:pretty">${sub}</p>` : ''}${body}</div>
       <div class="mfoot">${foot}</div></div>`;
   const a = S.audioEdit && S.songs.find(x => x.id === S.audioEdit);
-  if (a) return shell(t(a.audio_url ? 'audioLink' : 'audioAdd'), esc(a.title),
-    `<input class="field" id="audio-${a.id}" type="url" inputmode="url" spellcheck="false" autocomplete="off" placeholder="https://" value="${esc(S.audioDraft)}" style="width:100%">
-      <p style="margin:8px 0 0;font-size:12.5px;color:var(--faint)">${esc(t('audioHint'))}</p>`
-      + (a.audio_url ? `<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
-        <a class="mini play" href="${esc(a.audio_url)}" target="_blank" rel="noopener">${PLAYSVG}<span style="display:inline">${esc(t('openLink'))}</span></a>
-        <button class="mini danger" data-audio-clear="${a.id}" style="display:inline-flex;align-items:center;gap:6px">${TRASHSVG}<span>${esc(t('audioRemove'))}</span></button></div>` : ''),
-    `<button class="obtn2" data-modal-x>${esc(t('cancel'))}</button><button class="pbtn" data-audio-save="${a.id}">${esc(t('save'))}</button>`);
+  if (a) return recModal(a);
   const p = S.pdfDel && S.songs.find(x => x.id === S.pdfDel.id);
   if (p) return shell(t('removePdfT'), t('removePdfQ')(esc(p.title)), '',
     `<button class="obtn2" data-modal-x>${esc(t('cancel'))}</button><button class="pbtn" style="background:var(--red);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:7px" data-del-pdf="${p.id}" data-sheet-kind="${S.pdfDel.kind}" data-confirm="1">${TRASHSVG}${esc(t('removePdf'))}</button>`);
@@ -7050,17 +7534,19 @@ function learningPage(){
       if (!s[K.col]) return off(ic, lab);
       if (s[K.lock] && !S.session) return `<span class="lnb off" title="${esc(t('adminOnlyShort'))}">${lockSVG(true)}<span>${esc(lab)}</span></span>`;
       return `<button class="lnb ${cls}" data-open="${kind}:${s.id}">${ic}<span>${esc(lab)}</span></button>`; };
-    const has = !!(s.pdf_path || s.piano_path || s.audio_url || hasLyrics(s));
+    const has = !!(s.pdf_path || s.piano_path || s.audio_url || hasParts(s) || hasLyrics(s));
     const practice = has ? `<div class="lnpr">
         ${sheet('sheets', 't1', AIC.sheets, t('lnChoir'))}
         ${sheet('piano', 't2', AIC.piano, t('lnPiano'))}
-        ${s.audio_url ? `<a class="lnb t4" href="${esc(s.audio_url)}" data-song="${s.id}" target="_blank" rel="noopener">${AIC.play}<span>${esc(t('listen'))}</span></a>` : off(AIC.play, t('listen'))}
+        ${(s.audio_url || hasParts(s)) ? `<button class="lnb t4 lsbtn${S.listenOpen === 'learn:' + s.id ? ' on' : ''}" data-listen="learn:${s.id}" aria-expanded="${S.listenOpen === 'learn:' + s.id}">${AIC.play}<span>${esc(t('listen'))}</span>${CARETSVG}</button>`
+          : s.audio_url ? `<a class="lnb t4" href="${esc(s.audio_url)}" data-song="${s.id}" target="_blank" rel="noopener">${AIC.play}<span>${esc(t('listen'))}</span></a>` : off(AIC.play, t('listen'))}
         ${hasLyrics(s) ? `<a class="lnb t3" href="#/lyrics/${shortId(s.id)}">${AIC.lyrics}<span>${esc(t('tLyrics'))}</span></a>` : off(AIC.lyrics, t('tLyrics'))}
       </div>` : `<div class="lnsoon">${esc(t('lnSoon'))}</div>`;
     const open = !demo && S.lnTools === s.id, da = 'data-ln-demo-act';
     const foot = S.session ? `<div class="lnft">
         <button class="lnib" ${demo ? da : `data-learn-edit="${s.id}"`} aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
         <button class="lnib${open ? ' on' : ''}" ${demo ? da : `data-ln-tools="${s.id}"`} aria-expanded="${open}" aria-label="${esc(t('lnFiles'))}" title="${esc(t('lnFiles'))}">${UPSVG}</button>
+        <button class="lnib rec${!demo && recCount(s) ? ' on' : ''}" ${demo ? da : `data-audio-edit="${s.id}"`} aria-label="${esc(t('recs'))}" title="${esc(!demo && recCount(s) ? t('recsN')(recCount(s)) : t('recs'))}">${HEADSVG}</button>
         ${realN > 1 || demo ? `<span class="lnord"><button class="lnib" ${demo ? da : `data-ln-mv="${s.id}:-1"`}${!demo && i === 0 ? ' disabled' : ''} aria-label="${esc(t('lnUp'))}" title="${esc(t('lnUp'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg></button><button class="lnib" ${demo ? da : `data-ln-mv="${s.id}:1"`}${!demo && i === realN - 1 ? ' disabled' : ''} aria-label="${esc(t('lnDown'))}" title="${esc(t('lnDown'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"></path></svg></button></span>` : ''}
         <button class="lnb go" ${demo ? da : `data-learn-move="${s.id}"`}><span>${esc(t('lnMove'))}</span></button></div>` : '';
     const file = (kind, upL, rmL) => { const K = SHEETKIND[kind];
@@ -7070,14 +7556,14 @@ function learningPage(){
         : `<label class="lnt" for="up-ln-${kind}-${s.id}">${UPSVG}<span>${esc(t(upL))}</span><input id="up-ln-${kind}-${s.id}" type="file" accept="application/pdf,.pdf" data-upload="${s.id}" data-sheet-kind="${kind}" hidden></label>`; };
     const tools = open ? `<div class="lntools">
         ${file('sheets', 'lnUpChoir', 'lnRmChoir')}${file('piano', 'lnUpPiano', 'lnRmPiano')}
-        <button class="lnt" data-audio-edit="${s.id}">${LINKSVG}<span>${esc(t(s.audio_url ? 'audioLink' : 'audioAdd'))}</span></button>
+        <button class="lnt" data-audio-edit="${s.id}">${HEADSVG}<span>${esc(recCount(s) ? t('recsN')(recCount(s)) : t('recs'))}</span></button>
         <a class="lnt" href="#/lyrics/${shortId(s.id)}" data-lyr-edit="${s.id}">${LYRSVG}<span>${esc(t(hasLyrics(s) ? 'lnLyrEdit' : 'lnLyrAdd'))}</span></a></div>` : '';
     const meta = [s.subtitle, catName(s.category_id)].filter(Boolean).join(' · ');
     return `<article class="lncard${demo ? ' demo' : ''}">
       <div class="lninfo"><div class="lnh"><div class="tt"><h3>${esc(s.title)}${pvTag(s)}${demo ? `<span class="lntag">${esc(t('lnDemoTag'))}</span>` : ''}</h3>${meta ? `<p class="mt">${esc(meta)}</p>` : ''}</div>
         ${s.learn_for ? `<span class="lngoal" title="${esc(s.learn_for)}">${esc(s.learn_for)}</span>` : ''}</div>
       ${s.learn_note ? `<div class="lnnote"><b>${esc(t('lnFromDir'))}</b><p>${esc(s.learn_note)}</p></div>` : ''}</div>
-      ${practice}${foot}${tools}</article>`;
+      ${practice}${listenRow(s, 'learn')}${foot}${tools}</article>`;
   };
   const demoBtn = S.session || S.lnDemo ? `<button class="upsample" data-ln-demo>${esc(t(S.lnDemo ? 'lnDemoOff' : 'lnDemoOn'))}</button>` : '';
   const add = S.session ? `<button class="pbtn" data-learn-edit="new">＋ ${esc(t('lnAdd'))}</button>` : '';
@@ -7412,7 +7898,7 @@ function render(){
   }
   html += '</main>';
   const keep = {};
-  ['tsearch','edit-name','edit-joined','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name','edit-song-pv','em','pw'].forEach(id => {
+  ['tsearch','edit-name','edit-joined','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name','edit-song-pv','em','pw', S.audioEdit && S.recLink ? 'rec-link-' + S.recLink : ''].filter(Boolean).forEach(id => {
     const n = document.getElementById(id);
     if (n) keep[id] = { v: n.value, f: n === document.activeElement, p: n.selectionStart };
   });
@@ -7511,6 +7997,7 @@ async function signIn(){
 /* the sideways timeline keeps its place when the page redraws (a date moved, a song order deleted) */
 document.addEventListener('scroll', e => { const x = e.target; if (x && x.classList && x.classList.contains('htl')) S.htlX = x.scrollLeft; }, { capture: true, passive: true });
 function afterRender(){
+  plSync();
   { const hx = document.querySelector('.htl'); if (hx && S.htlX) hx.scrollLeft = S.htlX; }
   lbCountUp();
   document.querySelectorAll('textarea.lyrta').forEach(autoGrow);
@@ -7629,7 +8116,7 @@ document.addEventListener('input', e => {
   if (e.target.id === 'lyr-paste') { S.lyrPasteTxt = e.target.value; autoGrow(e.target); }
   const lyi = e.target.id.match(/^lyr-t-(\d+)$/);
   if (lyi && S.lyrDraft && S.lyrDraft[+lyi[1]]) { S.lyrDraft[+lyi[1]].x = e.target.value; autoGrow(e.target); }
-  if (e.target.id.startsWith('audio-') && S.audioEdit) S.audioDraft = e.target.value;   // survives any re-render
+  if (e.target.id.startsWith('rec-link-') && S.audioEdit) S.recDraft = e.target.value;   // survives any re-render
 });
 /* recordings are plain links, so they are counted here rather than in the
    delegated handler below */
@@ -7687,11 +8174,45 @@ document.addEventListener('touchmove', e => {
 }, { passive: true });
 document.addEventListener('touchend', () => { traySw = null; }, { passive: true });
 document.addEventListener('click', e => {
-  const a = e.target.closest && e.target.closest('a.mini.play');
+  const a = e.target.closest && e.target.closest('a[data-song]');
   if (a && a.dataset.song) track('audio', a.dataset.song);
 }, true);
+/* Recordings window: file pickers, drag and drop, Enter to save a link */
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (!el || !el.dataset || !el.dataset.recFile) return;
+  const song = S.songs.find(x => x.id === S.audioEdit), files = el.files ? [...el.files] : [];
+  el.value = '';
+  if (song && files.length) recFiles(song, files, el.dataset.recFile);
+});
+document.addEventListener('dragover', e => {
+  if (!S.audioEdit || !e.dataTransfer || ![...(e.dataTransfer.types || [])].includes('Files')) return;
+  e.preventDefault();
+  const z = e.target.closest && e.target.closest('[data-rec-drop]');
+  document.querySelectorAll('[data-rec-drop].drag').forEach(x => { if (x !== z) x.classList.remove('drag'); });
+  if (z) { z.classList.add('drag'); e.dataTransfer.dropEffect = 'copy'; } else e.dataTransfer.dropEffect = 'none';
+});
+document.addEventListener('dragleave', e => {
+  const z = e.target.closest && e.target.closest('[data-rec-drop]');
+  if (z && !z.contains(e.relatedTarget)) z.classList.remove('drag');
+});
+document.addEventListener('drop', e => {
+  if (!S.audioEdit) return;
+  e.preventDefault();
+  document.querySelectorAll('[data-rec-drop].drag').forEach(x => x.classList.remove('drag'));
+  const z = e.target.closest && e.target.closest('[data-rec-drop]');
+  const song = S.songs.find(x => x.id === S.audioEdit);
+  if (z && song && e.dataTransfer && e.dataTransfer.files.length) recFiles(song, e.dataTransfer.files, z.dataset.recDrop);
+});
+document.addEventListener('keydown', e => {
+  const el = e.target;
+  if (e.key !== 'Enter' || !el || !el.id || !el.id.startsWith('rec-link-')) return;
+  e.preventDefault();
+  const song = S.songs.find(x => x.id === S.audioEdit);
+  if (song) recLinkSave(song, el.id.slice(9));
+});
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-ln-mv],[data-ln-tools],[data-ln-demo],[data-ln-demo-act],[data-learn-edit],[data-learn-save],[data-learn-move],[data-toggle-learn],[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-listen],[data-lp],[data-rec-link],[data-rec-link-x],[data-rec-link-go],[data-rec-del],[data-rec-del-x],[data-rec-del-go],[data-rec-cancel],[data-ln-mv],[data-ln-tools],[data-ln-demo],[data-ln-demo-act],[data-learn-edit],[data-learn-save],[data-learn-move],[data-toggle-learn],[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -7788,7 +8309,7 @@ document.addEventListener('click', async e => {
     if (d.ptKind === 'other') { const n = document.getElementById('pt-name'); if (n && !n.value) n.focus(); }
     return; }
   if (el.hasAttribute('data-pt-save') && S.planType) return planTypeSave();
-  if (el.hasAttribute('data-modal-x')) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
+  if (el.hasAttribute('data-modal-x')) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
   if (d.toggleAbsent && S.edit) {              // present ↔ absent
     S.toast = ''; S.retry = null;
     S.edit.sel.has(d.toggleAbsent) ? S.edit.sel.delete(d.toggleAbsent)
@@ -7955,12 +8476,8 @@ document.addEventListener('click', async e => {
   if (el.hasAttribute('data-rules-cancel')) { S.rulesEdit = null; S.rulesPreview = false; return render(); }
   if (el.hasAttribute('data-rules-save')) { return saveRules(); }
   if (d.audioEdit) {
-    const open = S.audioEdit !== d.audioEdit;
-    S.audioEdit = open ? d.audioEdit : null;
-    S.audioDraft = open ? ((S.songs.find(x => x.id === d.audioEdit) || {}).audio_url || '') : '';
-    render();
-    if (open) requestAnimationFrame(() => { const b = document.getElementById('audio-' + d.audioEdit); if (b) b.focus(); });
-    return;
+    S.audioEdit = d.audioEdit; S.recLink = null; S.recDel = null; S.recDraft = '';
+    return render();
   }
   if (el.hasAttribute('data-audio-cancel')) { S.audioEdit = null; S.audioDraft = ''; return render(); }
   if (d.audioSave || d.audioClear) {
@@ -8139,6 +8656,9 @@ document.addEventListener('click', async e => {
     if (!await ensureSession()) return;
     const res = await sb.from('songs').delete().eq('id', d.delSong).select();
     if (!wrote(res)) return render();
+    { const gone = S.songs.find(x => x.id === d.delSong), files = ['full', ...PARTS].map(p => partRec(gone, p)).filter(r => r && r.path).map(r => r.path);
+      if (files.length) sb.storage.from(PARTS_BUCKET).remove(files).then(() => {}, () => {});
+      if (PL.id === d.delSong) plStop(); }
     S.songs = S.songs.filter(x => x.id !== d.delSong);
     S.eventSongs = S.eventSongs.filter(x => x.song_id !== d.delSong);
     S.editSongRow = null;
@@ -8304,6 +8824,32 @@ document.addEventListener('click', async e => {
   if (el.hasAttribute('data-toggle-cats')) { S.showCats = !S.showCats; return render(); }
   if (el.hasAttribute('data-ln-demo-act')) { e.preventDefault(); alert(t('lnDemoAct')); return; }
   if (el.hasAttribute('data-ln-demo')) { S.lnDemo = !S.lnDemo; try { S.lnDemo ? localStorage.setItem('lnDemo', '1') : localStorage.removeItem('lnDemo'); } catch (_) {} return render(); }
+  if (d.listen) {
+    const k = d.listen, open = S.listenOpen !== k;
+    S.listenOpen = open ? k : null; S.listenEnter = open ? k : null;
+    render();
+    if (open) setTimeout(() => { if (S.listenEnter === k) S.listenEnter = null; }, 800);
+    return;
+  }
+  if (d.lp) {
+    const i = d.lp.lastIndexOf(':'), id = d.lp.slice(0, i), part = d.lp.slice(i + 1);
+    const song = S.songs.find(x => x.id === id);
+    if (song) plStart(song, part);
+    return;
+  }
+  if (d.recLink) {
+    const song = S.songs.find(x => x.id === S.audioEdit), r = song && partRec(song, d.recLink);
+    S.recLink = d.recLink; S.recDel = null; S.recDraft = r && r.url ? r.url : '';
+    render();
+    requestAnimationFrame(() => { const b = document.getElementById('rec-link-' + d.recLink); if (b) { b.focus(); b.select(); } });
+    return;
+  }
+  if (el.hasAttribute('data-rec-link-x')) { S.recLink = null; S.recDraft = ''; return render(); }
+  if (d.recLinkGo) { const song = S.songs.find(x => x.id === S.audioEdit); if (song) recLinkSave(song, d.recLinkGo); return; }
+  if (d.recDel) { S.recDel = d.recDel; S.recLink = null; return render(); }
+  if (el.hasAttribute('data-rec-del-x')) { S.recDel = null; return render(); }
+  if (d.recDelGo) { const song = S.songs.find(x => x.id === S.audioEdit); if (song) recRemove(song, d.recDelGo); return; }
+  if (d.recCancel) { const j = RECUP[d.recCancel]; if (j) j.xhr.abort(); return; }
   if (d.lnMv) {                                   // reorder learning songs: swap, renumber, save what changed
     const [id, dir] = d.lnMv.split(':'), list = learnSongs().filter(x => !x._demo);
     const i = list.findIndex(x => x.id === id), j = i + Number(dir);

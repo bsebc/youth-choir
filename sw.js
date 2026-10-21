@@ -37,6 +37,9 @@ self.addEventListener('fetch', e => {
     return;
   }
 
+  // part recordings stream straight from storage (range requests) and are never stored
+  if (url.pathname.includes('/storage/v1/object/public/parts/')) return;
+
   // Supabase reads and Google Fonts: network first, cache as backup
   if (url.hostname.endsWith('.supabase.co') || url.hostname.endsWith('gstatic.com')
       || url.hostname.endsWith('googleapis.com')) {
