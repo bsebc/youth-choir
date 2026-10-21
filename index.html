@@ -1519,24 +1519,29 @@
   .lnib.on{background:var(--blue-tint);color:var(--blue-text)}
   .lnib[disabled]{opacity:.35;cursor:default;pointer-events:none}
   /* ---------- Listen: part choices, the player bar, the Recordings window ---------- */
-  .lsc,.recr{--pc:var(--blue-text);--pw:var(--blue-wash)}
+  .lsc,.recr,.rsb{--pc:var(--blue-text);--pw:var(--blue-wash)}
   .ibtn.rec.on{color:var(--teal);background:var(--teal-tint)}
   .lnib.rec.on{color:var(--tool4-ic);background:var(--tool4-bg)}
-  .lsc.soprano,.recr.soprano{--pc:var(--violet);--pw:var(--violet-wash)}
-  .lsc.alto,.recr.alto{--pc:var(--teal);--pw:var(--teal-tint)}
-  .lsc.tenor,.recr.tenor{--pc:var(--rose);--pw:var(--rose-wash)}
-  .lsc.bass,.recr.bass{--pc:var(--amber);--pw:var(--amber-wash)}
+  .lsc.soprano,.recr.soprano,.rsb.soprano{--pc:var(--violet);--pw:var(--violet-wash)}
+  .lsc.alto,.recr.alto,.rsb.alto{--pc:var(--teal);--pw:var(--teal-tint)}
+  .lsc.tenor,.recr.tenor,.rsb.tenor{--pc:var(--rose);--pw:var(--rose-wash)}
+  .lsc.bass,.recr.bass,.rsb.bass{--pc:var(--amber);--pw:var(--amber-wash)}
   .mini.lsbtn .lscar,.lnb.lsbtn .lscar,.songc .acts .mini.lsbtn .lscar{width:12px;height:12px;flex:none;transition:transform .25s ease}
   .lnb.lsbtn .lscar{margin-left:auto}
   .lsbtn.on .lscar{transform:rotate(180deg)}
   .songc .acts .mini.play.on{background:var(--teal);color:var(--card)}
   .lnb.t4.on,.lnq.t4.on{background:var(--tool4-ic);color:var(--card)}
-  .lsrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(122px,1fr));gap:8px;padding:12px 16px 14px;border-top:1px solid var(--rule);background:var(--surface-2)}
+  .lsrow{container:lsrow / inline-size;padding:12px 16px 14px;border-top:1px solid var(--rule);background:var(--surface-2)}
+  .lsg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .lsg .lsc.w2{grid-column:1/-1}
+  @container lsrow (min-width:660px){ .lsg{grid-template-columns:repeat(5,minmax(0,1fr))} .lsg .lsc,.lsg .lsc.w2{grid-column:var(--c);grid-row:var(--r)} }
   .lsc{position:relative;overflow:hidden;display:flex;align-items:center;gap:10px;min-width:0;height:48px;padding:0 12px 0 8px;border:1px solid color-mix(in srgb,var(--pc) 26%,var(--rule));border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:border-color .15s ease,box-shadow .15s ease,transform .15s ease}
   .lsc .pi{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:9px;background:var(--pw);color:var(--pc);transition:background .15s ease,color .15s ease}
   .lsc .pi svg{width:13px;height:13px}
-  .lsc .lb{flex:1;min-width:0;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .lsc .tm{flex:none;font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+  .lsc .lt{flex:1;min-width:0;display:grid;gap:2px;text-align:left}
+  .lsc .lb{min-width:0;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lsc .tm{min-width:0;font-size:11.5px;font-weight:600;line-height:1.2;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lsc .tm:empty{display:none}
   .lsc.ext .tm{font-weight:500;color:var(--faint)}
   .lsc.off{cursor:default;border-style:dashed;border-color:var(--rule);background:transparent;color:var(--faint)}
   .lsc.off .pi{background:var(--surface-2);color:var(--faint)}
@@ -1558,10 +1563,9 @@
   @keyframes lspop{from{opacity:0;transform:translateY(-8px) scale(.9)}to{opacity:1;transform:none}}
   .lncard > .lsrow{grid-column:1/-1}
   .lncard > .lsrow,.lnfeat .lsrow{padding:0;border:0;background:none}
-  .lnfeat .lsrow{margin-top:10px;grid-template-columns:repeat(2,minmax(0,1fr))}
-  .lnfeat .lsrow .lsc.full{grid-column:1/-1}
+  .lnfeat .lsrow{margin-top:10px}
   .lnfeat .lsc .tm{display:none}
-  @media (max-width:699px){ .lsrow{grid-template-columns:repeat(2,minmax(0,1fr));padding:12px} .lsrow .lsc.full{grid-column:1/-1} .lncard > .lsrow{padding:0} }
+  @media (max-width:699px){ .lsrow{padding:12px} .lncard > .lsrow{padding:0} }
   @media (hover:hover){ .lsc:not(.off):hover{border-color:var(--pc);transform:translateY(-1px)} }
   .plbar{position:fixed;z-index:var(--z-float);left:50%;bottom:calc(16px + env(safe-area-inset-bottom));width:min(720px,calc(100vw - 20px));box-sizing:border-box;display:grid;grid-template-columns:max-content minmax(0,1fr) max-content;align-items:center;gap:14px;padding:10px 12px 10px 10px;border-radius:20px;background:var(--chrome);color:#fff;box-shadow:0 22px 44px -18px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.07) inset;transform:translate(-50%,calc(100% + 48px)) scale(.96);opacity:0;pointer-events:none;transition:transform .55s cubic-bezier(.18,1.25,.32,1),opacity .25s ease}
   .plbar.on{transform:translate(-50%,0);opacity:1;pointer-events:auto}
@@ -1640,6 +1644,10 @@
   .rprog .rpn b{flex:none;color:var(--pc);font-weight:700;font-variant-numeric:tabular-nums}
   .rprog i{position:relative;display:block;height:6px;border-radius:6px;background:var(--pw);overflow:hidden}
   .rprog i::after{content:"";position:absolute;top:0;bottom:0;left:0;width:calc(var(--lp,0) * 1%);border-radius:6px;background:var(--pc);transition:width .2s ease}
+  .recsplit{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
+  .recsplit > span{margin-right:4px;font-size:12.5px;font-weight:600;color:var(--muted)}
+  .rsb{display:inline-flex;align-items:center;height:36px;box-sizing:border-box;padding:0 12px;border:1px dashed color-mix(in srgb,var(--pc) 50%,var(--rule));border-radius:10px;background:transparent;color:var(--pc);font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+  @media (hover:hover){ .rsb:hover{border-style:solid;background:var(--pw)} }
   .recm .rfmt{margin:12px 2px 0;font-size:12px;color:var(--faint)}
   @media (hover:hover){ .rbtn:hover{background:var(--surface-2)} .rbtn.go:hover{background:var(--blue-hover)} .recdrop:hover{border-color:var(--blue);background:var(--blue-wash)} }
   @media (max-width:599px){ .recr{grid-template-columns:40px minmax(0,1fr)} .recr .racts{grid-column:1/-1;justify-content:flex-start} .recdrop{flex-wrap:wrap} .recdrop .rbtn{width:100%} }
@@ -3161,7 +3169,7 @@ const STR = {
     tSingers:'Singers',tPianists:'Pianists',tConductors:'Conductors',
     conductor:'Conductor',pianist:'Pianist',markC:'C',markP:'P',
     voicePart:'Voice part',partMoved:(n,p)=>n+' → '+p+'. Attendance is unchanged.',
-    archive:'Archive',restore:'Restore',archived:'Archived',archSongs:'Archived songs',lsFull:'Full Choir',lsNone:'No recording yet',recs:'Recordings',recsN:n=>'Recordings · '+n,recDrop:'Drop MP3 files here',recDropHint:'Name each file after its part, like “Soprano.mp3” or “Full Choir.mp3”, and it goes to the right row. You can drop them all at once.',recChoose:'Choose files',recFullL:'Full Choir',recNone:'Nothing yet',recUpload:'Upload',recAddLink:'Link',recReplace:'Replace',recEditLink:'Edit link',recRemove:'Remove',recRemoveQ:'Remove this recording?',recKeep:'Keep',recCancel:'Cancel',recSave:'Save',recLinkPh:'Paste a YouTube, SoundCloud or Drive link',recFormats:'MP3, M4A, AAC or WAV, up to 50 MB each. Everyone can listen.',recDoneBtn:'Done',recDone:p=>p+' recording uploaded',recLinkSaved:'Link saved',recType:'Use an MP3, M4A, AAC or WAV file.',recBig:s=>'That file is '+s+'. The limit is 50 MB, so export it as an MP3 first.',recMiss:n=>'Couldn’t tell which part these are: '+n+'. Drop each one on its row.',recBadLink:'That doesn’t look like a link.',recNoSql:'Part recordings aren’t set up yet. Run part_recordings.sql in Supabase.',recPlay:'Play',recOpen:'Open link',plTitle:'Player',plPlay:'Play',plPause:'Pause',plBack:'Back 10 seconds',plLoop:'Repeat',plClose:'Close player',plSeek:'Position',plErr:'Couldn’t play this recording',lnTitle:'Learning',lnNow:'Now learning',lnNew:'New',lnNotes:'Sheet',lnUp:'Move up',lnDown:'Move down',lnFiles:'Files & links',lnFromDir:'From the director',lnSumSheet:'Sheet music',lnSumPiano:'Piano',lnSumRec:'Recording',lnSumLyr:'Lyrics',lnComing:'Coming soon',lnDemoOn:'Show a sample',lnDemoOff:'Hide sample',lnDemoTag:'Sample',lnDemoNote:'Sample songs made from your repertoire, to preview this page. Nothing here is saved.',lnDemoAct:'This is a sample. Nothing is saved.',lnSub:'Songs we are learning or about to learn. Practise at home with the music, the recording and the words.',lnNone:'No songs to learn right now.',lnSoon:'Music and recording coming soon.',lnTarget:'Goal',lnTargetPh:'e.g. For Christmas',lnNote:'Note for singers',lnNotePh:'e.g. Altos, learn the second verse first',lnAdd:'Add learning song',lnEditT:'Edit learning song',lnMove:'Move to repertoire',lnMoveT:'Move to the repertoire?',lnMoveQ:n=>'“'+n+'” will show in Choir music, Piano music, Lyrics and the song picker like every other song, and leave the Learning list.',lnTileNote:'Songs here show only on the Learning page until you move them to the repertoire.',lnOpen:'Open Learning page',lnChoir:'Choir sheet',lnPiano:'Piano',lnUpChoir:'Upload choir PDF',lnUpPiano:'Upload piano PDF',lnRmChoir:'Remove choir PDF',lnRmPiano:'Remove piano PDF',lnLyrAdd:'Add lyrics',lnLyrEdit:'Edit lyrics',archSongT:'Archive this song?',archSongQ:n=>'“'+n+'” will be hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Its history stays, and you can restore it from Archived songs.',archSongNote:'Archived songs keep their history and still show in past services, but are hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Restore brings them back.',
+    archive:'Archive',restore:'Restore',archived:'Archived',archSongs:'Archived songs',lsFull:'Full Choir',lsNone:'No recording yet',recSplit:'Split a part',recSplitHint:'For songs where this part divides in two',recAddX:'Remove this row',recs:'Recordings',recsN:n=>'Recordings · '+n,recDrop:'Drop MP3 files here',recDropHint:'Name each file after its part, like “Alto.mp3”, “Soprano 2.mp3” or “Full Choir.mp3”, and it goes to the right row. You can drop them all at once.',recChoose:'Choose files',recFullL:'Full Choir',recNone:'Nothing yet',recUpload:'Upload',recAddLink:'Link',recReplace:'Replace',recEditLink:'Edit link',recRemove:'Remove',recRemoveQ:'Remove this recording?',recKeep:'Keep',recCancel:'Cancel',recSave:'Save',recLinkPh:'Paste a YouTube, SoundCloud or Drive link',recFormats:'MP3, M4A, AAC or WAV, up to 50 MB each. Everyone can listen.',recDoneBtn:'Done',recDone:p=>p+' recording uploaded',recLinkSaved:'Link saved',recType:'Use an MP3, M4A, AAC or WAV file.',recBig:s=>'That file is '+s+'. The limit is 50 MB, so export it as an MP3 first.',recMiss:n=>'Couldn’t tell which part these are: '+n+'. Drop each one on its row.',recBadLink:'That doesn’t look like a link.',recNoSql:'Part recordings aren’t set up yet. Run part_recordings.sql in Supabase.',recPlay:'Play',recOpen:'Open link',plTitle:'Player',plPlay:'Play',plPause:'Pause',plBack:'Back 10 seconds',plLoop:'Repeat',plClose:'Close player',plSeek:'Position',plErr:'Couldn’t play this recording',lnTitle:'Learning',lnNow:'Now learning',lnNew:'New',lnNotes:'Sheet',lnUp:'Move up',lnDown:'Move down',lnFiles:'Files & links',lnFromDir:'From the director',lnSumSheet:'Sheet music',lnSumPiano:'Piano',lnSumRec:'Recording',lnSumLyr:'Lyrics',lnComing:'Coming soon',lnDemoOn:'Show a sample',lnDemoOff:'Hide sample',lnDemoTag:'Sample',lnDemoNote:'Sample songs made from your repertoire, to preview this page. Nothing here is saved.',lnDemoAct:'This is a sample. Nothing is saved.',lnSub:'Songs we are learning or about to learn. Practise at home with the music, the recording and the words.',lnNone:'No songs to learn right now.',lnSoon:'Music and recording coming soon.',lnTarget:'Goal',lnTargetPh:'e.g. For Christmas',lnNote:'Note for singers',lnNotePh:'e.g. Altos, learn the second verse first',lnAdd:'Add learning song',lnEditT:'Edit learning song',lnMove:'Move to repertoire',lnMoveT:'Move to the repertoire?',lnMoveQ:n=>'“'+n+'” will show in Choir music, Piano music, Lyrics and the song picker like every other song, and leave the Learning list.',lnTileNote:'Songs here show only on the Learning page until you move them to the repertoire.',lnOpen:'Open Learning page',lnChoir:'Choir sheet',lnPiano:'Piano',lnUpChoir:'Upload choir PDF',lnUpPiano:'Upload piano PDF',lnRmChoir:'Remove choir PDF',lnRmPiano:'Remove piano PDF',lnLyrAdd:'Add lyrics',lnLyrEdit:'Edit lyrics',archSongT:'Archive this song?',archSongQ:n=>'“'+n+'” will be hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Its history stays, and you can restore it from Archived songs.',archSongNote:'Archived songs keep their history and still show in past services, but are hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Restore brings them back.',
     archivedNote:'Archived singers keep all their history in the database but are hidden from the grids and summaries. Restore brings them back.',
     copyLast:'Copy last service',
     categories:'Categories',addSong:'Add song',addCat:'Add category',addSinger:'Add singer',
@@ -3287,7 +3295,7 @@ const STR = {
     tSingers:'Хористы',tPianists:'Пианисты',tConductors:'Дирижёры',
     conductor:'Дирижёр',pianist:'Пианист',markC:'Д',markP:'П',
     voicePart:'Партия',partMoved:(n,p)=>n+' → '+p+'. Посещаемость не изменилась.',
-    archive:'В архив',restore:'Вернуть',archived:'Архив',archSongs:'Песни в архиве',lsFull:'Весь хор',lsNone:'Записи пока нет',recs:'Записи',recsN:n=>'Записи · '+n,recDrop:'Перетащите сюда MP3-файлы',recDropHint:'Назовите файлы по партиям, например «Сопрано.mp3» или «Весь хор.mp3», и они попадут в нужную строку. Можно перетащить все сразу.',recChoose:'Выбрать файлы',recFullL:'Весь хор',recNone:'Пока нет',recUpload:'Загрузить',recAddLink:'Ссылка',recReplace:'Заменить',recEditLink:'Изменить ссылку',recRemove:'Удалить',recRemoveQ:'Удалить эту запись?',recKeep:'Оставить',recCancel:'Отмена',recSave:'Сохранить',recLinkPh:'Вставьте ссылку на YouTube, SoundCloud или Drive',recFormats:'MP3, M4A, AAC или WAV, до 50 МБ каждый. Слушать могут все.',recDoneBtn:'Готово',recDone:p=>'Запись «'+p+'» загружена',recLinkSaved:'Ссылка сохранена',recType:'Нужен файл MP3, M4A, AAC или WAV.',recBig:s=>'Файл весит '+s+'. Предел — 50 МБ, сохраните его как MP3.',recMiss:n=>'Не понятно, к какой партии относятся: '+n+'. Перетащите каждый файл на свою строку.',recBadLink:'Это не похоже на ссылку.',recNoSql:'Записи партий ещё не настроены. Выполните part_recordings.sql в Supabase.',recPlay:'Слушать',recOpen:'Открыть ссылку',plTitle:'Плеер',plPlay:'Играть',plPause:'Пауза',plBack:'Назад на 10 секунд',plLoop:'Повтор',plClose:'Закрыть плеер',plSeek:'Позиция',plErr:'Не удалось воспроизвести запись',lnTitle:'Разучиваем',lnNow:'Сейчас учим',lnNew:'Новое',lnNotes:'Ноты',lnUp:'Выше',lnDown:'Ниже',lnFiles:'Файлы и ссылки',lnFromDir:'От регента',lnSumSheet:'Ноты',lnSumPiano:'Фортепиано',lnSumRec:'Запись',lnSumLyr:'Текст',lnComing:'Скоро',lnDemoOn:'Показать пример',lnDemoOff:'Скрыть пример',lnDemoTag:'Пример',lnDemoNote:'Пример из ваших песен, чтобы посмотреть страницу. Ничего не сохраняется.',lnDemoAct:'Это пример. Ничего не сохраняется.',lnSub:'Песни, которые мы разучиваем или скоро начнём. Занимайтесь дома по нотам, записи и тексту.',lnNone:'Сейчас нет песен для разучивания.',lnSoon:'Ноты и запись скоро будут.',lnTarget:'Цель',lnTargetPh:'напр. К Рождеству',lnNote:'Заметка для хористов',lnNotePh:'напр. Альты, сначала выучите второй куплет',lnAdd:'Добавить песню для разучивания',lnEditT:'Песня для разучивания',lnMove:'В репертуар',lnMoveT:'Перенести в репертуар?',lnMoveQ:n=>'«'+n+'» появится в «Музыке хора», нотах для фортепиано, текстах и выборе песен, как остальные песни, и уйдёт из списка «Разучиваем».',lnTileNote:'Эти песни видны только на странице «Разучиваем», пока вы не перенесёте их в репертуар.',lnOpen:'Открыть «Разучиваем»',lnChoir:'Ноты хора',lnPiano:'Фортепиано',lnUpChoir:'Загрузить ноты хора',lnUpPiano:'Загрузить ноты фортепиано',lnRmChoir:'Убрать ноты хора',lnRmPiano:'Убрать ноты фортепиано',lnLyrAdd:'Добавить текст',lnLyrEdit:'Изменить текст',archSongT:'Отправить песню в архив?',archSongQ:n=>'«'+n+'» исчезнет из «Музыки хора», нот для фортепиано, текстов, статистики и выбора песен. История сохранится, вернуть песню можно из блока «Песни в архиве».',archSongNote:'Архивные песни сохраняют историю и видны в прошлых служениях, но скрыты из «Музыки хора», нот для фортепиано, текстов, статистики песен и выбора песен. «Вернуть» возвращает их.',
+    archive:'В архив',restore:'Вернуть',archived:'Архив',archSongs:'Песни в архиве',lsFull:'Весь хор',lsNone:'Записи пока нет',recSplit:'Разделить партию',recSplitHint:'Для песен, где партия делится на две',recAddX:'Убрать строку',recs:'Записи',recsN:n=>'Записи · '+n,recDrop:'Перетащите сюда MP3-файлы',recDropHint:'Назовите файлы по партиям, например «Альт.mp3», «Сопрано 2.mp3» или «Весь хор.mp3», и они попадут в нужную строку. Можно перетащить все сразу.',recChoose:'Выбрать файлы',recFullL:'Весь хор',recNone:'Пока нет',recUpload:'Загрузить',recAddLink:'Ссылка',recReplace:'Заменить',recEditLink:'Изменить ссылку',recRemove:'Удалить',recRemoveQ:'Удалить эту запись?',recKeep:'Оставить',recCancel:'Отмена',recSave:'Сохранить',recLinkPh:'Вставьте ссылку на YouTube, SoundCloud или Drive',recFormats:'MP3, M4A, AAC или WAV, до 50 МБ каждый. Слушать могут все.',recDoneBtn:'Готово',recDone:p=>'Запись «'+p+'» загружена',recLinkSaved:'Ссылка сохранена',recType:'Нужен файл MP3, M4A, AAC или WAV.',recBig:s=>'Файл весит '+s+'. Предел — 50 МБ, сохраните его как MP3.',recMiss:n=>'Не понятно, к какой партии относятся: '+n+'. Перетащите каждый файл на свою строку.',recBadLink:'Это не похоже на ссылку.',recNoSql:'Записи партий ещё не настроены. Выполните part_recordings.sql в Supabase.',recPlay:'Слушать',recOpen:'Открыть ссылку',plTitle:'Плеер',plPlay:'Играть',plPause:'Пауза',plBack:'Назад на 10 секунд',plLoop:'Повтор',plClose:'Закрыть плеер',plSeek:'Позиция',plErr:'Не удалось воспроизвести запись',lnTitle:'Разучиваем',lnNow:'Сейчас учим',lnNew:'Новое',lnNotes:'Ноты',lnUp:'Выше',lnDown:'Ниже',lnFiles:'Файлы и ссылки',lnFromDir:'От регента',lnSumSheet:'Ноты',lnSumPiano:'Фортепиано',lnSumRec:'Запись',lnSumLyr:'Текст',lnComing:'Скоро',lnDemoOn:'Показать пример',lnDemoOff:'Скрыть пример',lnDemoTag:'Пример',lnDemoNote:'Пример из ваших песен, чтобы посмотреть страницу. Ничего не сохраняется.',lnDemoAct:'Это пример. Ничего не сохраняется.',lnSub:'Песни, которые мы разучиваем или скоро начнём. Занимайтесь дома по нотам, записи и тексту.',lnNone:'Сейчас нет песен для разучивания.',lnSoon:'Ноты и запись скоро будут.',lnTarget:'Цель',lnTargetPh:'напр. К Рождеству',lnNote:'Заметка для хористов',lnNotePh:'напр. Альты, сначала выучите второй куплет',lnAdd:'Добавить песню для разучивания',lnEditT:'Песня для разучивания',lnMove:'В репертуар',lnMoveT:'Перенести в репертуар?',lnMoveQ:n=>'«'+n+'» появится в «Музыке хора», нотах для фортепиано, текстах и выборе песен, как остальные песни, и уйдёт из списка «Разучиваем».',lnTileNote:'Эти песни видны только на странице «Разучиваем», пока вы не перенесёте их в репертуар.',lnOpen:'Открыть «Разучиваем»',lnChoir:'Ноты хора',lnPiano:'Фортепиано',lnUpChoir:'Загрузить ноты хора',lnUpPiano:'Загрузить ноты фортепиано',lnRmChoir:'Убрать ноты хора',lnRmPiano:'Убрать ноты фортепиано',lnLyrAdd:'Добавить текст',lnLyrEdit:'Изменить текст',archSongT:'Отправить песню в архив?',archSongQ:n=>'«'+n+'» исчезнет из «Музыки хора», нот для фортепиано, текстов, статистики и выбора песен. История сохранится, вернуть песню можно из блока «Песни в архиве».',archSongNote:'Архивные песни сохраняют историю и видны в прошлых служениях, но скрыты из «Музыки хора», нот для фортепиано, текстов, статистики песен и выбора песен. «Вернуть» возвращает их.',
     archivedNote:'Архивные хористы сохраняют всю историю в базе, но не показываются в сетках и сводках. «Вернуть» возвращает их.',
     copyLast:'Скопировать прошлое служение',
     categories:'Категории',addSong:'Добавить песню',addCat:'Добавить категорию',addSinger:'Добавить хориста',
@@ -3404,6 +3412,7 @@ const PARTS = ['soprano','alto','tenor','bass'];
    Files live in the public 'parts' bucket as <song id>/<part>-<time>.<ext>; a link
    (YouTube, Drive…) can stand in for a file. The full recording stays songs.audio_url. */
 const PARTS_BUCKET = 'parts';
+const REC_KEYS = ['full', ...PARTS.flatMap(v => [v, v + '2'])];   // soprano2 etc: an optional second line for songs where a part divides
 const PART_MAX = 50 * 1024 * 1024;
 const AUDIO_EXT = { mp3: 'audio/mpeg', m4a: 'audio/mp4', aac: 'audio/aac', wav: 'audio/wav' };
 const REC_ACCEPT = 'audio/*,.mp3,.m4a,.aac,.wav';
@@ -3418,7 +3427,15 @@ const HEADSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" str
 const BACK10SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7"></path><path d="M4 4v4.5h4.5"></path><text x="12.6" y="15.6" text-anchor="middle" font-size="7.4" font-weight="700" fill="currentColor" stroke="none" font-family="inherit">10</text></svg>';
 const LOOPSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"></path><path d="M3 11V9a3 3 0 0 1 3-3h15"></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v2a3 3 0 0 1-3 3H3"></path></svg>';
 const XSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>';
-function prtName(p){ if (p === 'full') return t('lsFull'); const n = t(p) || p; return n.charAt(0) + n.slice(1).toLowerCase(); }
+function voiceOf(p){ return String(p || '').replace(/2$/, ''); }
+/* a part counts as split once its second line has a recording, is uploading, or the director has just added its row */
+function isSplit(s, v){ return !!s && (!!partRec(s, v + '2') || !!RECUP[s.id + ':' + v + '2'] || (S.audioEdit === s.id && (S.recAdd || []).includes(v + '2'))); }
+function prtName(p, s){
+  if (p === 'full') return t('lsFull');
+  const v = voiceOf(p), n0 = t(v) || v, n = n0.charAt(0) + n0.slice(1).toLowerCase();
+  return p !== v ? n + ' 2' : (isSplit(s, v) ? n + ' 1' : n);
+}
+function recTag(p, s){ const v = voiceOf(p), c = prtName(v).charAt(0); return p !== v ? c + '2' : (isSplit(s, v) ? c + '1' : c); }
 function partsOf(s){ return s && s.part_audio && typeof s.part_audio === 'object' ? s.part_audio : {}; }
 function partRec(s, p){
   if (!s) return null;
@@ -3426,8 +3443,8 @@ function partRec(s, p){
   const r = partsOf(s)[p];
   return r && (r.path || r.url) ? r : null;
 }
-function hasParts(s){ return ['full', ...PARTS].some(p => partRec(s, p)); }
-function recCount(s){ return ['full', ...PARTS].filter(p => partRec(s, p)).length; }
+function hasParts(s){ return REC_KEYS.some(p => partRec(s, p)); }
+function recCount(s){ return REC_KEYS.filter(p => partRec(s, p)).length; }
 function partURL(r){ return r.path ? SUPABASE_URL + '/storage/v1/object/public/' + PARTS_BUCKET + '/' + r.path.split('/').map(encodeURIComponent).join('/') : r.url; }
 function isAudioLink(u){ return /\.(mp3|m4a|aac|wav|ogg|oga)(\?|#|$)/i.test(u || ''); }
 function partInline(r){ return !!r.path || isAudioLink(r.url); }      // plays inside the app; other links open in a tab
@@ -3437,14 +3454,17 @@ function hostOf(u){ try { return new URL(u).hostname.replace(/^www\./, ''); } ca
 /* "Glad Tidings - Soprano.mp3", "Сопрано.m4a", "Glad Tidings S.mp3" → the part, or null */
 function partGuess(name){
   const n = (name || '').toLowerCase().replace(/\.[a-z0-9]+$/, '');
-  if (/sopr|сопр/.test(n)) return 'soprano';
-  if (/alto|(^|[^a-zа-я])alt([^a-zа-я]|$)|альт/.test(n)) return 'alto';
-  if (/tenor|тенор/.test(n)) return 'tenor';
-  if (/bass|(^|[^a-zа-я])bas([^a-zа-я]|$)|бас/.test(n)) return 'bass';
+  /* "Soprano 2", "Alto II", "Сопрано 2", "2-е сопрано", "Вторые альты" → the second line of that part */
+  const W = { soprano: 'sopr[a-z]*|сопр[а-яё]*', alto: 'alto?s?|альт[а-яё]*', tenor: 'tenor[a-z]*|тенор[а-яё]*', bass: 'bas[a-z]*|бас[а-яё]*' };
+  const hit = v => new RegExp('(' + W[v] + ')[\\s_\\-.]*(2|ii)(?![0-9a-zа-яё])').test(n) || new RegExp('(2nd|second|2-?[еяйые]|втор[а-яё]*)[\\s_\\-.]*(' + W[v] + ')').test(n) ? v + '2' : v;
+  if (/sopr|сопр/.test(n)) return hit('soprano');
+  if (/alto|(^|[^a-zа-я])alt([^a-zа-я]|$)|альт/.test(n)) return hit('alto');
+  if (/tenor|тенор/.test(n)) return hit('tenor');
+  if (/bass|(^|[^a-zа-я])bas([^a-zа-я]|$)|бас/.test(n)) return hit('bass');
   /* only after the four parts, and only whole words, so a title like «Наполни меня» or "Fully Alive" isn't taken for it */
   if (/(^|[^a-zа-я])(full|tutti)([^a-zа-я]|$)|весь хор|всего хора|полная запись|общая запись|хор полностью/.test(n)) return 'full';
-  const m = n.match(/(?:^|[\s_\-(.])([satbсатб])\)?$/);
-  return m ? { s: 'soprano', a: 'alto', t: 'tenor', b: 'bass', 'с': 'soprano', 'а': 'alto', 'т': 'tenor', 'б': 'bass' }[m[1]] : null;
+  const m = n.match(/(?:^|[\s_\-(.])([satbсатб])([12])?\)?$/);
+  return m ? { s: 'soprano', a: 'alto', t: 'tenor', b: 'bass', 'с': 'soprano', 'а': 'alto', 'т': 'tenor', 'б': 'bass' }[m[1]] + (m[2] === '2' ? '2' : '') : null;
 }
 /* One roster: a person has a voice part (or none) and may also carry the
    pianist / conductor flags, so someone who sings AND conducts is entered once. */
@@ -3591,13 +3611,14 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.45.6';
+const VERSION = '5.46.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Recordings: add a second line like Soprano 2 or Alto 2 for songs where a part divides. Listen shows it under its part',
     'Player: springier opening, a gold progress bar you can drag, and a live “now playing” indicator',
     'Recordings: Full Choir can now be an uploaded MP3 or a link, like the parts',
     'Repertoire and Learning: a Recordings button on every song opens the part recordings window',
@@ -3646,6 +3667,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Записи: можно добавить вторую партию, например «Сопрано 2» или «Альт 2», для песен, где партия делится. В «Слушать» она стоит под своей партией',
     'Плеер: плавное появление, золотая полоса прогресса, которую можно тянуть, и живой индикатор воспроизведения',
     'Записи: «Весь хор» теперь тоже можно загрузить как MP3 или добавить ссылкой, как партии',
     '«Репертуар» и «Разучиваем»: кнопка «Записи» у каждой песни открывает окно записей партий',
@@ -5725,7 +5747,7 @@ function lbSheet(from, p, label){
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.lbWho) { S.lbWho = null; render(); } });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && (S.audioEdit || S.pdfDel || S.planType || S.archAsk || S.learnEdit || S.learnMove)) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.pdfDel = null; render(); }
+  if (e.key === 'Escape' && (S.audioEdit || S.pdfDel || S.planType || S.archAsk || S.learnEdit || S.learnMove)) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.recAdd = []; S.pdfDel = null; render(); }
   if (e.key === 'Enter' && e.target.id && e.target.id.startsWith('audio-')) { e.preventDefault(); const b = document.querySelector('.modal [data-audio-save]'); if (b) b.click(); }
 });
 /* first view of a period: the percentages count up while the podium rises */
@@ -7163,21 +7185,34 @@ async function planTypeSave(){
 /* ---------- Listen: Full + one button per recorded part ----------
    With only the full recording, Listen stays a plain link. With part recordings it
    opens a row of choices under the button; files play in the app's own player. */
-function listenOpts(s){ return ['full', ...PARTS].map(p => [p, partRec(s, p)]).filter(x => x[1]); }
+/* wide rows: Full Choir, then the four parts in their own columns, with a part's second line underneath it.
+   narrow rows: two per line, a split part keeps its pair together, and a part left alone takes the whole line */
+function lsLayout(s){
+  const out = [{ p: 'full', c: 1, r: 1, w: 1 }];
+  let buf = [];
+  const flush = () => { if (buf.length % 2) buf[buf.length - 1].w = 1; buf = []; };
+  PARTS.forEach((v, i) => {
+    if (partRec(s, v + '2')) { flush(); out.push({ p: v, c: i + 2, r: 1 }, { p: v + '2', c: i + 2, r: 2 }); }
+    else { const it = { p: v, c: i + 2, r: 1 }; out.push(it); buf.push(it); }
+  });
+  flush();
+  return out;
+}
 function listenRow(s, ctx){
   const key = ctx + ':' + s.id;
-  if (S.listenOpen !== key || !listenOpts(s).length) return '';
-  return `<div class="lsrow${S.listenEnter === key ? ' enter' : ''}" role="group" aria-label="${esc(t('listen') + ' · ' + s.title)}">` +
-    ['full', ...PARTS].map((p, k) => lsChip(s, p, partRec(s, p), k)).join('') + `</div>`;
+  if (S.listenOpen !== key || !hasParts(s)) return '';
+  return `<div class="lsrow${S.listenEnter === key ? ' enter' : ''}" role="group" aria-label="${esc(t('listen') + ' · ' + s.title)}"><div class="lsg">` +
+    lsLayout(s).map((it, k) => lsChip(s, it, k)).join('') + `</div></div>`;
 }
-function lsChip(s, p, r, k){
-  const name = esc(prtName(p));
-  if (!r) return `<span class="lsc ${p} off" style="--k:${k}" aria-disabled="true" title="${esc(t('lsNone'))}"><span class="pi">${LS_PI}</span><span class="lb">${name}</span><span class="tm">—</span></span>`;
-  if (!partInline(r)) return `<a class="lsc ${p} ext" style="--k:${k}" href="${esc(r.url)}" target="_blank" rel="noopener" data-song="${s.id}" title="${esc(hostOf(r.url))}">
-      <span class="pi">${EXTSVG}</span><span class="lb">${name}</span></a>`;
+function lsChip(s, it, k){
+  const p = it.p, r = partRec(s, p), name = esc(prtName(p, s));
+  const cls = 'lsc ' + voiceOf(p) + (it.w ? ' w2' : ''), st = `--k:${k};--c:${it.c};--r:${it.r}`;
+  if (!r) return `<span class="${cls} off" style="${st}" aria-disabled="true" title="${esc(t('lsNone'))}"><span class="pi">${LS_PI}</span><span class="lt"><span class="lb">${name}</span></span></span>`;
+  if (!partInline(r)) return `<a class="${cls} ext" style="${st}" href="${esc(r.url)}" target="_blank" rel="noopener" data-song="${s.id}" title="${esc(hostOf(r.url))}">
+      <span class="pi">${EXTSVG}</span><span class="lt"><span class="lb">${name}</span><span class="tm">${esc(hostOf(r.url))}</span></span></a>`;
   const d = r.dur ? fmtDur(r.dur) : '';
-  return `<button class="lsc ${p}" style="--k:${k}" data-lp="${s.id}:${p}" data-dur="${d}" aria-pressed="false" aria-label="${esc(t('recPlay') + ' · ' + prtName(p))}">
-      <span class="pi">${LS_PI}</span><span class="lb">${name}</span><span class="tm">${d}</span></button>`;
+  return `<button class="${cls}" style="${st}" data-lp="${s.id}:${p}" data-dur="${d}" aria-pressed="false" aria-label="${esc(t('recPlay') + ' · ' + prtName(p, s))}">
+      <span class="pi">${LS_PI}</span><span class="lt"><span class="lb">${name}</span><span class="tm">${d}</span></span></button>`;
 }
 /* ---------- the part player: one audio element for the whole app, outside render() ---------- */
 function plEl(){
@@ -7203,7 +7238,7 @@ function plStart(song, part){
   a.play().catch(plFail);
   track('audio', song.id);
   if ('mediaSession' in navigator) try {
-    navigator.mediaSession.metadata = new MediaMetadata({ title: song.title, artist: prtName(part), album: document.title });
+    navigator.mediaSession.metadata = new MediaMetadata({ title: song.title, artist: prtName(part, song), album: document.title });
     navigator.mediaSession.setActionHandler('play', () => plEl().play().catch(plFail));
     navigator.mediaSession.setActionHandler('pause', () => plEl().pause());
     navigator.mediaSession.setActionHandler('seekbackward', () => plSkip(-10));
@@ -7239,9 +7274,9 @@ function plSync(){
   if (bar.dataset.sig !== sig) {
     bar.innerHTML = plBarHTML(); bar.dataset.sig = sig;
     bar.querySelector('.pl-ttl').textContent = song ? song.title : '';
-    bar.querySelector('.pl-part').className = 'pl-part ' + PL.part;
+    bar.querySelector('.pl-part').className = 'pl-part ' + voiceOf(PL.part);
   }
-  bar.querySelector('.pl-part b').textContent = PL.err ? t('plErr') : prtName(PL.part);
+  bar.querySelector('.pl-part b').textContent = PL.err ? t('plErr') : prtName(PL.part, song);
   bar.classList.add('on'); document.body.classList.add('plon');
   bar.classList.toggle('playing', playing && !loading);
   bar.classList.toggle('loading', loading);
@@ -7289,7 +7324,7 @@ function plBarBuild(){
 /* ---------- director: the Recordings window (full link + one file or link per part) ---------- */
 function recModal(a){
   const row = p => {
-    const full = p === 'full', r = partRec(a, p), key = a.id + ':' + p, job = RECUP[key];
+    const full = p === 'full', v = voiceOf(p), r = partRec(a, p), key = a.id + ':' + p, job = RECUP[key];
     const fileIn = (lab, ic) => `<label class="rbtn">${ic}<span>${esc(t(lab))}</span><input type="file" accept="${REC_ACCEPT}" data-rec-file="${p}" hidden></label>`;
     let info, acts;
     if (job) {
@@ -7311,19 +7346,23 @@ function recModal(a){
       acts = play + change + `<button class="rbtn ic danger" data-rec-del="${p}" aria-label="${esc(t('recRemove'))}" title="${esc(t('recRemove'))}">${TRASHSVG}</button>`;
     } else {
       info = `<span class="rst none">${esc(t('recNone'))}</span>`;
-      acts = fileIn('recUpload', UPSVG) + `<button class="rbtn" data-rec-link="${p}">${LINKSVG}<span>${esc(t('recAddLink'))}</span></button>`;
+      acts = fileIn('recUpload', UPSVG) + `<button class="rbtn" data-rec-link="${p}">${LINKSVG}<span>${esc(t('recAddLink'))}</span></button>`
+        + (p !== v ? `<button class="rbtn ic" data-rec-add-x="${p}" aria-label="${esc(t('recAddX'))}" title="${esc(t('recAddX'))}">${XSVG}</button>` : '');
     }
-    return `<div class="recr ${p}${job ? ' busy' : ''}${r && !job ? ' has' : ''}" data-rec-drop="${p}">
-      <span class="rtag">${full ? AIC.music : esc(prtName(p).charAt(0))}</span>
-      <div class="rinfo"><strong>${esc(full ? t('recFullL') : prtName(p))}</strong>${info}</div>
+    return `<div class="recr ${v}${p !== v ? ' n2' : ''}${job ? ' busy' : ''}${r && !job ? ' has' : ''}" data-rec-drop="${p}">
+      <span class="rtag">${full ? AIC.music : esc(recTag(p, a))}</span>
+      <div class="rinfo"><strong>${esc(full ? t('recFullL') : prtName(p, a))}</strong>${info}</div>
       <div class="racts">${acts}</div></div>`;
   };
+  const free = PARTS.filter(v => !isSplit(a, v));
+  const split = free.length ? `<div class="recsplit"><span>${esc(t('recSplit'))}</span>${free.map(v => `<button class="rsb ${v}" data-rec-add="${v}2" title="${esc(t('recSplitHint'))}">+ ${esc(prtName(v + '2'))}</button>`).join('')}</div>` : '';
   return `<div class="mscrim" data-modal-x></div>
     <div class="modal recm" role="dialog" aria-modal="true" aria-label="${esc(t('recs'))}" data-rec-drop="auto">
       <div class="mhd"><div style="min-width:0"><h2>${esc(t('recs'))}</h2><p class="rsub">${esc(a.title)}</p></div><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
       <div class="mbody">
         <label class="recdrop">${UPSVG}<span class="rdt"><strong>${esc(t('recDrop'))}</strong><span>${esc(t('recDropHint'))}</span></span><span class="rbtn go">${esc(t('recChoose'))}</span><input type="file" multiple accept="${REC_ACCEPT}" data-rec-file="auto" hidden></label>
-        <div class="recl">${['full', ...PARTS].map(row).join('')}</div>
+        <div class="recl">${['full', ...PARTS.flatMap(v => isSplit(a, v) ? [v, v + '2'] : [v])].map(row).join('')}</div>
+        ${split}
         <p class="rfmt">${esc(t('recFormats'))}</p>
       </div>
       <div class="mfoot"><button class="pbtn" data-modal-x>${esc(t('recDoneBtn'))}</button></div></div>`;
@@ -7410,7 +7449,7 @@ async function recUpload(song, part, file){
   if (!ok) { sb.storage.from(PARTS_BUCKET).remove([path]).then(() => {}, () => {}); return render(); }
   if (old && old.path && old.path !== path) sb.storage.from(PARTS_BUCKET).remove([old.path]).then(() => {}, () => {});
   if (part === 'full' && song.audio_url) { const r2 = await sb.from('songs').update({ audio_url: null }).eq('id', song.id).select('id'); if (!r2.error) song.audio_url = null; }
-  okToast(t('recDone')(prtName(part)));
+  okToast(t('recDone')(prtName(part, song)));
   render();
 }
 function recFiles(song, files, target){
@@ -7461,6 +7500,7 @@ async function recRemove(song, part){
     if (old && old.path) sb.storage.from(PARTS_BUCKET).remove([old.path]).then(() => {}, () => {});
   }
   S.recDel = null;
+  S.recAdd = (S.recAdd || []).filter(x => x !== part);
   render();
 }
 /* the music page's two small dialogs: a song's recording link, and removing its PDF */
@@ -8216,7 +8256,7 @@ document.addEventListener('keydown', e => {
   if (song) recLinkSave(song, el.id.slice(9));
 });
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-listen],[data-lp],[data-rec-link],[data-rec-link-x],[data-rec-link-go],[data-rec-del],[data-rec-del-x],[data-rec-del-go],[data-rec-cancel],[data-ln-mv],[data-ln-tools],[data-ln-demo],[data-ln-demo-act],[data-learn-edit],[data-learn-save],[data-learn-move],[data-toggle-learn],[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-listen],[data-lp],[data-rec-link],[data-rec-link-x],[data-rec-link-go],[data-rec-del],[data-rec-del-x],[data-rec-del-go],[data-rec-cancel],[data-rec-add],[data-rec-add-x],[data-ln-mv],[data-ln-tools],[data-ln-demo],[data-ln-demo-act],[data-learn-edit],[data-learn-save],[data-learn-move],[data-toggle-learn],[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -8313,7 +8353,7 @@ document.addEventListener('click', async e => {
     if (d.ptKind === 'other') { const n = document.getElementById('pt-name'); if (n && !n.value) n.focus(); }
     return; }
   if (el.hasAttribute('data-pt-save') && S.planType) return planTypeSave();
-  if (el.hasAttribute('data-modal-x')) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
+  if (el.hasAttribute('data-modal-x')) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.recAdd = []; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
   if (d.toggleAbsent && S.edit) {              // present ↔ absent
     S.toast = ''; S.retry = null;
     S.edit.sel.has(d.toggleAbsent) ? S.edit.sel.delete(d.toggleAbsent)
@@ -8480,7 +8520,7 @@ document.addEventListener('click', async e => {
   if (el.hasAttribute('data-rules-cancel')) { S.rulesEdit = null; S.rulesPreview = false; return render(); }
   if (el.hasAttribute('data-rules-save')) { return saveRules(); }
   if (d.audioEdit) {
-    S.audioEdit = d.audioEdit; S.recLink = null; S.recDel = null; S.recDraft = '';
+    S.audioEdit = d.audioEdit; S.recLink = null; S.recDel = null; S.recDraft = ''; S.recAdd = [];
     return render();
   }
   if (el.hasAttribute('data-audio-cancel')) { S.audioEdit = null; S.audioDraft = ''; return render(); }
@@ -8660,7 +8700,7 @@ document.addEventListener('click', async e => {
     if (!await ensureSession()) return;
     const res = await sb.from('songs').delete().eq('id', d.delSong).select();
     if (!wrote(res)) return render();
-    { const gone = S.songs.find(x => x.id === d.delSong), files = ['full', ...PARTS].map(p => partRec(gone, p)).filter(r => r && r.path).map(r => r.path);
+    { const gone = S.songs.find(x => x.id === d.delSong), files = REC_KEYS.map(p => partRec(gone, p)).filter(r => r && r.path).map(r => r.path);
       if (files.length) sb.storage.from(PARTS_BUCKET).remove(files).then(() => {}, () => {});
       if (PL.id === d.delSong) plStop(); }
     S.songs = S.songs.filter(x => x.id !== d.delSong);
@@ -8854,6 +8894,8 @@ document.addEventListener('click', async e => {
   if (el.hasAttribute('data-rec-del-x')) { S.recDel = null; return render(); }
   if (d.recDelGo) { const song = S.songs.find(x => x.id === S.audioEdit); if (song) recRemove(song, d.recDelGo); return; }
   if (d.recCancel) { const j = RECUP[d.recCancel]; if (j) j.xhr.abort(); return; }
+  if (d.recAdd) { S.recAdd = [...new Set([...(S.recAdd || []), d.recAdd])]; S.recLink = null; S.recDel = null; return render(); }
+  if (d.recAddX) { S.recAdd = (S.recAdd || []).filter(x => x !== d.recAddX); return render(); }
   if (d.lnMv) {                                   // reorder learning songs: swap, renumber, save what changed
     const [id, dir] = d.lnMv.split(':'), list = learnSongs().filter(x => !x._demo);
     const i = list.findIndex(x => x.id === id), j = i + Number(dir);
