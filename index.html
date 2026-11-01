@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <title>BSEBC Youth Choir</title>
 <meta name="description" content="Song orders, attendance and sheet music · Песнопения, посещаемость и ноты">
+  <!-- If this site lives on a different address, change the two URLs below to match. -->
 <!-- Link preview card. A static site returns the same HTML for every URL, so these
      describe the site as a whole; the Share buttons put the page name in the message. -->
 <meta property="og:type" content="website">
@@ -15,8 +16,8 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="ru_RU">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="favicon.svg?v=3137" type="image/svg+xml">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=3137">
+<link rel="icon" href="favicon.svg?v=3200" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=3200">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#17203a">
 <meta name="mobile-web-app-capable" content="yes">
@@ -24,7 +25,8 @@
 <meta name="apple-mobile-web-app-title" content="Youth Choir">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <script>try{var t=localStorage.getItem('bsebc-youth-theme')||'light';if(t!=='auto')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
-<style>
+<style id="legacy-css">
+@layer legacy {
   :root{
     color-scheme:light dark;
     /* -- text -- */
@@ -3133,13 +3135,265 @@
     body > *:not(#lyrprint){display:none !important}
     #lyrprint{position:static;visibility:visible;width:auto;padding:.5in;box-sizing:border-box}
   }
+}
+</style>
+<script>/* Browsers older than iOS 15.4 or Chrome 99 skip an @layer block entirely.
+   Unwrap the older styles for them, so they keep every rule. */
+if(!window.CSSLayerBlockRule){var l=document.getElementById('legacy-css');l.textContent=l.textContent.replace(/^\s*@layer legacy\s*\{/,'').replace(/\}\s*$/,'')}</script>
+<style id="v6">
+  /* =====================================================================
+     6.0 design layer — "Refined navy & gold".
+     Everything above sits in @layer legacy, so these rules win without
+     !important or longer selectors. Colours live in tokens: set a token
+     here for light AND dark, or dark mode inherits the light value.
+     ===================================================================== */
+  :root{
+    --ink:#17203a; --text-2:#47506a; --muted:#5b6378; --faint:#646b80; --placeholder:#737a8f; --disabled-ink:#8a90a2;
+    --canvas:#f3f2ee; --page:#f3f2ee; --paper:#ebe9e3; --paper-2:#f3f2ee; --stage:#ebe9e3; --skel:#ebe9e3;
+    --surface:#fff; --surface-2:#faf9f6; --card:#fff; --ic-bg:#f6f5f1; --ic-line:#e4e2db; --ic-inset:transparent; --tile-line:#d9d6cd;
+    --card-line:#e4e2db; --rule:#e6e4dd; --grid-line:#e6e4dd; --line-strong:#d9d6cd; --line-strong-2:#c9c5ba;
+    --blue:#24346c; --blue-text:#24346c; --blue-hover:#2e4282; --blue-hi:#33488f; --blue-rgb:36,52,108;
+    --blue-wash:#f1f3f9; --blue-tint:#e9ecf5; --blue-line:#c9d0e6;
+    --gold:#c9a227; --gold-hover:#d4ad35; --gold-text:#7d620a; --on-gold:#17203a;
+    --gold-soft:#dfcb82; --gold-soft-2:#e9dcae; --gold-bright:#fbeaa0; --gold-wash:#fbf3da; --gold-paper:#fdf8e8;
+    --chrome:#17203a; --chrome-rgb:23,32,58; --chrome-line:#2c3757;
+    --red:#b8392a; --red-wash:#fbecea; --red-line:#efcdc7; --green:#1a7a43; --green-text:#17643a; --green-wash:#eaf5ee; --green-line:#bfdcc9;
+    --violet:#7d620a; --violet-wash:#fbf3da; --teal:#2f6e40; --teal-tint:#edf5ef; --rose:#24346c; --rose-wash:#f1f3f9; --amber:#5a6480; --amber-wash:#eef0f4;
+    --tool3-ic:#7d620a;
+    --onnavy-btn-bg:#d9b44a; --onnavy-btn-ink:#17203a;
+    --order-aurora:none; --order-bg:#1c2748; --order-line:transparent; --op-bg:#24346c;
+    --admin-bg:#fff; --admin-line:#e4e2db; --admin-ic:#e9ecf5;
+    --thumb:#fff; --thumb-ring:rgba(23,32,58,.06); --thumb-shadow:rgba(23,32,58,.12);
+    --ios-track:#e6e4dd; --ios-track2:#dcd9d1;
+    --ring:transparent; --ring-2:rgba(23,32,58,.08); --ring-soft:rgba(23,32,58,.06);
+    --shadow-card:0 1px 2px rgba(23,32,58,.05);
+    --glass:#fff; --glass-2:#fff; --glass-3:#fff; --glass-hi:#fff; --glass-seat:#fff; --glass-in:#faf9f6;
+    --focus:#24346c; --selection-bg:#e1e6f3;
+    --dk-bg:#fff; --dk-line:#e4e2db; --dk-pill:#e9ecf5; --dk-pill-drag:#dde3f1; --dk-ink:#17203a; --dk-ink2:#47506a;
+    --v6-card-r:18px; --v6-ease:cubic-bezier(.2,.7,.2,1);
+  }
+  :root[data-theme="dark"]{
+    --ink:#e9ebf3; --text-2:#b9bfd0; --muted:#9aa1b6; --faint:#858ca2; --placeholder:#7d849b; --disabled-ink:#6a7188;
+    --canvas:#0d1220; --page:#0d1220; --paper:#1a2134; --paper-2:#111727; --stage:#1a2134; --skel:#1a2134;
+    --surface:#151b2c; --surface-2:#1a2134; --card:#151b2c; --ic-bg:#1a2134; --ic-line:#29324c; --ic-inset:transparent; --tile-line:#3a4563;
+    --card-line:#242c43; --rule:#222a40; --grid-line:#242c43; --line-strong:#2c3550; --line-strong-2:#3a4563;
+    --blue:#3b4d94; --blue-text:#a9b9f4; --blue-hover:#4659a6; --blue-hi:#5466b3; --blue-rgb:169,185,244;
+    --blue-wash:#18203a; --blue-tint:#1e2848; --blue-line:#34406a;
+    --tool1-bg:#1e2848; --tool1-ic:#a9b9f4; --tool3-ic:#e3c35c;
+    --gold:#d9b44a; --gold-hover:#e2bf57; --gold-text:#e3c35c; --on-gold:#17203a;
+    --gold-soft:#7a6427; --gold-soft-2:#4a3e1c; --gold-bright:#4e401a; --gold-wash:#2b2614; --gold-paper:#241f12; --mid:#e9b35a;
+    --chrome:#0a0e1a; --chrome-rgb:10,14,26; --chrome-hi:#141a2a; --navy-deep:#141a2a; --chrome-line:#1c2338; --chrome-line-2:#2c3550;
+    --chrome-text:#aeb5c9; --chrome-text-2:#c9cfdf; --chrome-accent:#a9b9f4; --chrome-faint:#7d849b; --on-chrome:#e9ebf3; --chrome-icon:#d9dce6;
+    --red:#f0806f; --red-wash:#3a1d1a; --red-line:#6a3530; --green:#5cc98a; --green-text:#7fd7a3; --green-wash:#13281d; --green-line:#285040;
+    --violet:#e3c35c; --violet-wash:#2b2614; --teal:#6ecf9a; --teal-tint:#14281e; --rose:#a9b9f4; --rose-wash:#18203a; --amber:#b4bacb; --amber-wash:#1f2536;
+    --onnavy-btn-bg:#d9b44a; --onnavy-btn-ink:#17203a;
+    --order-aurora:none; --order-bg:#1b2547; --order-line:transparent; --op-bg:#3b4d94;
+    --admin-bg:#151b2c; --admin-line:#2c3550; --admin-ic:#1e2848; --drawer-ink:#c9cfdf; --drawer-sel:#fff;
+    --thumb:#26314f; --thumb-ring:rgba(255,255,255,.06); --thumb-shadow:rgba(0,0,0,.4);
+    --ios-track:rgba(255,255,255,.06); --ios-track2:rgba(255,255,255,.1);
+    --shadow-rgb:0,0,0; --ring:transparent; --ring-2:rgba(255,255,255,.1); --ring-soft:rgba(255,255,255,.06); --ring-dock:rgba(255,255,255,.08);
+    --shadow-card:0 1px 2px rgba(0,0,0,.3);
+    --glass:#151b2c; --glass-2:#151b2c; --glass-3:#151b2c; --glass-hi:#1a2134; --glass-seat:#1a2134; --glass-in:#111727;
+    --drawer-bg:#0a0e1a; --scrim:rgba(0,0,0,.6);
+    --focus:#a9b9f4; --selection-bg:#2c3a6a; --glow:169,185,244; --gold-glow:217,180,74;
+    --bar:linear-gradient(90deg,#3b4d94,#6f83cf);
+    --dk-bg:#161c2e; --dk-line:#29324c; --dk-pill:#26314f; --dk-pill-drag:#2c3858; --dk-ink:#fff; --dk-ink2:#b9bfd0;
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --ink:#e9ebf3; --text-2:#b9bfd0; --muted:#9aa1b6; --faint:#858ca2; --placeholder:#7d849b; --disabled-ink:#6a7188;
+    --canvas:#0d1220; --page:#0d1220; --paper:#1a2134; --paper-2:#111727; --stage:#1a2134; --skel:#1a2134;
+    --surface:#151b2c; --surface-2:#1a2134; --card:#151b2c; --ic-bg:#1a2134; --ic-line:#29324c; --ic-inset:transparent; --tile-line:#3a4563;
+    --card-line:#242c43; --rule:#222a40; --grid-line:#242c43; --line-strong:#2c3550; --line-strong-2:#3a4563;
+    --blue:#3b4d94; --blue-text:#a9b9f4; --blue-hover:#4659a6; --blue-hi:#5466b3; --blue-rgb:169,185,244;
+    --blue-wash:#18203a; --blue-tint:#1e2848; --blue-line:#34406a;
+    --tool1-bg:#1e2848; --tool1-ic:#a9b9f4; --tool3-ic:#e3c35c;
+    --gold:#d9b44a; --gold-hover:#e2bf57; --gold-text:#e3c35c; --on-gold:#17203a;
+    --gold-soft:#7a6427; --gold-soft-2:#4a3e1c; --gold-bright:#4e401a; --gold-wash:#2b2614; --gold-paper:#241f12; --mid:#e9b35a;
+    --chrome:#0a0e1a; --chrome-rgb:10,14,26; --chrome-hi:#141a2a; --navy-deep:#141a2a; --chrome-line:#1c2338; --chrome-line-2:#2c3550;
+    --chrome-text:#aeb5c9; --chrome-text-2:#c9cfdf; --chrome-accent:#a9b9f4; --chrome-faint:#7d849b; --on-chrome:#e9ebf3; --chrome-icon:#d9dce6;
+    --red:#f0806f; --red-wash:#3a1d1a; --red-line:#6a3530; --green:#5cc98a; --green-text:#7fd7a3; --green-wash:#13281d; --green-line:#285040;
+    --violet:#e3c35c; --violet-wash:#2b2614; --teal:#6ecf9a; --teal-tint:#14281e; --rose:#a9b9f4; --rose-wash:#18203a; --amber:#b4bacb; --amber-wash:#1f2536;
+    --onnavy-btn-bg:#d9b44a; --onnavy-btn-ink:#17203a;
+    --order-aurora:none; --order-bg:#1b2547; --order-line:transparent; --op-bg:#3b4d94;
+    --admin-bg:#151b2c; --admin-line:#2c3550; --admin-ic:#1e2848; --drawer-ink:#c9cfdf; --drawer-sel:#fff;
+    --thumb:#26314f; --thumb-ring:rgba(255,255,255,.06); --thumb-shadow:rgba(0,0,0,.4);
+    --ios-track:rgba(255,255,255,.06); --ios-track2:rgba(255,255,255,.1);
+    --shadow-rgb:0,0,0; --ring:transparent; --ring-2:rgba(255,255,255,.1); --ring-soft:rgba(255,255,255,.06); --ring-dock:rgba(255,255,255,.08);
+    --shadow-card:0 1px 2px rgba(0,0,0,.3);
+    --glass:#151b2c; --glass-2:#151b2c; --glass-3:#151b2c; --glass-hi:#1a2134; --glass-seat:#1a2134; --glass-in:#111727;
+    --drawer-bg:#0a0e1a; --scrim:rgba(0,0,0,.6);
+    --focus:#a9b9f4; --selection-bg:#2c3a6a; --glow:169,185,244; --gold-glow:217,180,74;
+    --bar:linear-gradient(90deg,#3b4d94,#6f83cf);
+    --dk-bg:#161c2e; --dk-line:#29324c; --dk-pill:#26314f; --dk-pill-drag:#2c3858; --dk-ink:#fff; --dk-ink2:#b9bfd0;
+  } }
+
+  /* ---- header: navy bar, the hymnal mark, a quiet EN/RU switch ---- */
+  .mast{background:var(--chrome);border-bottom:0;box-shadow:none;gap:10px}
+  .bmark{width:34px;height:34px;border-radius:10px;background:none;box-shadow:none;overflow:hidden}
+  .bmark .logo{width:34px;height:34px;display:block}
+  .logo{filter:none}
+  .brand{color:#fff;font-weight:700;letter-spacing:-.01em}
+  .mast .lang,.dlang{background:rgba(255,255,255,.10);border:0;padding:3px;border-radius:999px}
+  .mast .lang button,.dlang button{height:30px;min-width:40px;padding:0 10px;border:0;border-radius:999px;background:transparent;
+    color:rgba(255,255,255,.75);font-size:13px;font-weight:600}
+  .mast .lang button.on,.dlang button.on{background:#fff;color:var(--ink);font-weight:700}
+  .mast .lang.hasthumb button.on,.dlang.hasthumb button.on{background:transparent;color:#17203a}
+  .mast .lang > .ithumb,.dlang > .ithumb{background:#fff;box-shadow:none}
+  .mast .themebtn,.mast .menubtn{width:40px;height:40px;border:0;border-radius:999px;background:rgba(255,255,255,.10);color:#fff}
+  .topbar{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--surface)}
+
+  /* ---- bottom bar: a solid floating capsule ---- */
+  @media (max-width:999px){
+    .dock{height:60px;padding:6px;background:var(--dk-bg);border:1px solid var(--dk-line);
+      -webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 10px 30px rgba(23,32,58,.12)}
+    .dock .dpill{top:6px;bottom:6px}
+    .dock .on .dkl{font-weight:700}
+  }
+  :root[data-theme="dark"] .dock{box-shadow:0 10px 30px rgba(0,0,0,.45)}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .dock{box-shadow:0 10px 30px rgba(0,0,0,.45)} }
+
+  /* ---- cards: one radius, a hairline and the faintest lift ---- */
+  .sec,.dsvc,.dpanel,.kpi,.lbtile,.res,.tile,.ustat,.upc,.rsvc{border-radius:var(--v6-card-r)}
+  .sec,.dpanel,.kpi{border:1px solid var(--card-line);box-shadow:var(--shadow-card)}
+  .dsvc{border:1px solid var(--card-line);box-shadow:var(--shadow-card);background-image:none}
+  .li{border-bottom-color:var(--rule)}
+
+  /* the upcoming-service hero: flat navy, gold for the one thing to do */
+  .sban{background-image:none;background-color:var(--order-bg)}
+  .sban::before,.sban::after,.dsvc .sban::before,.dsvc .sban::after{display:none}
+  .eye{color:#e3c35c}
+  .eye::before{background:#e3c35c;box-shadow:none}
+  .sstat,.sdate{color:rgba(255,255,255,.78)}
+  .sbtn{background:var(--onnavy-btn-bg);color:var(--onnavy-btn-ink);box-shadow:none}
+  .sshare{background:transparent;border:1px solid rgba(255,255,255,.28);color:#fff}
+
+  /* ---- controls ---- */
+  .seg > .ithumb,.tabs > .ithumb,.chips > .ithumb{background:var(--thumb);
+    box-shadow:0 1px 3px var(--thumb-shadow),0 0 0 .5px var(--thumb-ring)}
+  .btn{border-radius:14px}
+  .login .btn{background:var(--blue);box-shadow:none}
+  .toast{-webkit-backdrop-filter:none;backdrop-filter:none}
+  .savebar{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--surface);border-top:1px solid var(--card-line)}
+  ::selection{background:var(--selection-bg)}
+
+  /* keyboard focus: one visible ring everywhere, never on a mouse click */
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  .mast :focus-visible,.drawer :focus-visible,.sban :focus-visible{outline-color:#e3c35c}
+
+  /* states: loading, empty and failed pages share one shape */
+  .state{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:44px 24px 40px}
+  .state-ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:var(--blue-tint);color:var(--blue-text)}
+  .state-ic svg{width:26px;height:26px}
+  .state-t{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .state-b{font-size:15px;line-height:1.45;color:var(--muted);max-width:32ch}
+  .state-a{margin-top:6px}
+  .state-x{font-size:12px;color:var(--faint);max-width:40ch;word-break:break-word}
+
+  /* motion: short, and none at all when asked */
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
+      transition-duration:.001ms !important;scroll-behavior:auto !important}
+  }
+
+  /* "showing older data" banner and the attendance grid's column notice */
+  .banner{display:flex;align-items:center;gap:12px;margin:12px 12px 0;padding:10px 10px 10px 16px;border-radius:14px;
+    background:var(--gold-wash);color:var(--gold-text);border:1px solid color-mix(in srgb,var(--gold) 35%,transparent);font-size:14px;font-weight:600}
+  .banner span{flex:1;min-width:0}
+  .banner .mini{flex:none}
+  .gmore{display:flex;align-items:center;gap:12px;padding:10px 12px 10px 16px;border-bottom:1px solid var(--rule);
+    background:var(--surface-2);color:var(--muted);font-size:13px}
+  .gmore span{flex:1;min-width:0}
+  .gmore .mini{flex:none}
+
+  /* ---- admin lists: on a phone the name gets the full line, its tools sit under it ---- */
+  @media (max-width:699px){
+    .li.rrow,.li.mrow{flex-wrap:wrap;row-gap:4px;align-items:flex-start}
+    .li.rrow > div[style],.li.mrow > div[style]{flex:1 1 calc(100% - 64px) !important;align-self:center}
+    .li.rrow > div[style] + .ibtn,.li.mrow > div[style] + .ibtn,.li.mrow > div[style] + .tbtn{margin-left:52px}
+    .li.rrow .ibtn,.mrow .ibtn{width:44px;height:40px;min-width:44px;margin:0;border-radius:12px}
+    .mrow .ibtn + .ibtn{margin-left:0}
+    .li.rrow .stl,.li.mrow .stl{white-space:normal}
+  }
+  .ibtn{color:var(--text-2)}
+  .ibtn.danger{color:var(--red)}
+
+  /* ---- marking: no tinted rows, a quiet chip says the state ---- */
+  .li.here{background:var(--surface)}
+  .li.here .nm{color:var(--ink);font-weight:600}
+  .li.here .pill{background:var(--green-wash);color:var(--green-text);box-shadow:inset 0 0 0 1px var(--green-line)}
+  .li.tap .pill{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line-strong)}
+  .li.tap.here .pill{background:var(--green-wash);color:var(--green-text);box-shadow:inset 0 0 0 1px var(--green-line)}
+  .li.na{background:var(--surface-2)}
+  .li.tap.na .pill{background:var(--paper);color:var(--muted);box-shadow:none}
+
+  /* ---- sheets: one grouped list instead of a card per song ---- */
+  .sec.songc + .sec.songc{margin-top:0;border-top:0;border-top-left-radius:0;border-top-right-radius:0}
+  .sec.songc:has(+ .sec.songc){border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:1px solid var(--rule)}
+  .sec.songc:has(+ .sec.songc){box-shadow:none}
+  @media (max-width:999px){
+    .srow .schev{background:transparent;color:var(--text-2)}
+    .songc.open .srow .schev{transform:none;background:var(--blue-tint);color:var(--blue-text)}
+    .srow .schev .x{display:none}
+    .songc.open .srow .schev .x{display:block}
+    .songc.open .srow .schev .o{display:none}
+  }
+
+  /* ---- leaderboard: the same flat navy stage as the service card ---- */
+  .lbhero,.lbtile{background:var(--order-bg);border:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);box-shadow:none}
+  .lbhero::before,.lbtile::before,.lbglow{display:none}
+  .lbtile:hover{border-color:rgba(255,255,255,.14)}
+  .lbt h2::before{background:#d9b44a;box-shadow:none}
+  .lbtile .tlink{color:#e3c35c}
+
+  /* ---- usage: one accent, navy, instead of a colour per card ---- */
+  .uk,.uk-act,.uk-pages,.uk-songs,.uk-svc,.uk-lang,.uk-dev,.uk-when,.uk-rec,
+  .ukpis .k1,.ukpis .k2,.ukpis .k3,.ukpis .k4{--k:var(--blue-text);--kw:transparent}
+  .uk,.ukpis .kpi{background:var(--card)}
+  .uk .uchart i{background:var(--blue-text);opacity:.35}
+  .uk .uchart i.hi,.uk .uchart i:hover{opacity:1;background:var(--blue-text)}
+  .uk .uchart i.hi{background:var(--gold)}
+
+  /* text only a screen reader needs. It stays in the flow (1px, clipped): an
+     absolutely placed one escapes a scroll box like the seating chart's and
+     widens the whole page. */
+  .vh{display:inline-block;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0;vertical-align:top}
+
+  /* the few just outside this year's Top 10: muted text, not a faded row */
+  .lbyr li.out{opacity:1}
+  .lbyr li.out .rk,.lbyr li.out .lbn,.lbyr li.out em{color:var(--muted)}
+
+  /* ---- every tap at least 44 px: small controls keep their look and get an
+     invisible 44 px hit area centred on them ---- */
+  .seg button,.chips button,.tabs a,.mast .lang button,.mast .themebtn,.mast .menubtn,.sshare,.sstat,.sbtn,.abtn,.tlink,.pfoot a,
+  .mback,.rhead,.mbrand,button.lbwho,button.aname,button.lbchip,button.pname,button.lbname,button.lbav,button[data-song-sort],
+  .bminis[data-lbwho],.mini,.ibtn,.qx{position:relative}
+  .seg button::before,.chips button::before,.tabs a::before,.mast .lang button::before,.mast .themebtn::before,.mast .menubtn::before,
+  .sshare::before,.sstat::before,.sbtn::before,.abtn::before,.tlink::before,.pfoot a::before,.mback::before,.rhead::before,.mbrand::before,
+  button.lbwho::before,button.aname::before,button.lbchip::before,button.pname::before,button.lbname::before,button.lbav::before,
+  button[data-song-sort]::before,.bminis[data-lbwho]::before,.mini::before,.ibtn::before,.qx::before{
+    content:"";position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
+  .mast .lang,.chips{overflow:visible}
+  @media (max-width:999px){ .srow .schev{width:44px;height:44px} }
+
+  /* phones: text fields at 16 px, so focusing one never zooms the page */
+  @media (max-width:699px){
+    .field,select.field,input.field,textarea.field,[data-cat-filter],[data-song-sort-pick],[data-list-sort]{font-size:16px}
+    .qwrap .field,.searchrow .field{min-height:44px}
+    [data-cat-filter],[data-song-sort-pick],[data-list-sort]{min-height:44px}
+  }
+  [data-lbpreset],.lbshotbtn,.lball,.step.fold,button.back,button.fold,a.ft,.subtabs a{position:relative}
+  [data-lbpreset]::before,.lbshotbtn::before,.lball::before,.step.fold::before,button.back::before,button.fold::before,a.ft::before,.subtabs a::before{
+    content:"";position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
+  @media (max-width:699px){ select[data-credit]{font-size:16px;min-height:44px} }
 </style>
 </head>
 <body>
 <div class="wrap" id="app"></div>
 
 <script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+/* supabase-js, pinned and served from this site (vendor/), so the app starts offline
+   and never picks up an untested release. */
+import { createClient } from './vendor/supabase-js-2.118.0.esm.js';
 
 const SUPABASE_URL = 'https://cetjvfzgituzeiooxaex.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNldGp2ZnpnaXR1emVpb294YWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxODY0ODAsImV4cCI6MjEwMDc2MjQ4MH0.cMannk6niEUPPLBzJRo7Fs2VPWVp7LeNrvWD-DkBJl8';
@@ -3209,8 +3463,9 @@ const STR = {
     tUsage:'Usage',tUsageSub:'How the site gets used',
     uAdminOnly:'Sign in to see this page.',
     uSetup:'The usage table is not set up yet. Run supabase/usage_log.sql in the Supabase SQL editor, then reload this page.',
-    uDevices:'Devices',uOrders:'Order opens',uSheets:'Sheet opens',uListens:'Recordings',uActivity:'Activity',
-    uTopSongs:'Most opened songs',uTopServices:'Most viewed services',
+    uNone:'Nothing recorded yet.',uLoading:'Loading…',
+    uDevices:'Devices',uOrders:'Order opens',uSheets:'Sheet opens',uListens:'Recordings',
+    uActivity:'Activity',uTopSongs:'Most opened songs',uTopServices:'Most viewed services',
     uLang:'Language',uRecent:'Recent activity',uReturning:n=>n===1?'1 came back':n+' came back',uPerDevice:n=>n+' per device',uDeviceType:'Device type',uAppShare:'Opened from the home-screen icon',uDevNone:'Device types are counted from now on.',uDevSetup:'To count device types, run supabase/usage_log.sql again in the Supabase SQL editor.',uWhen:'When people look',uBusiest:'Busiest',uMorning:'morning',uAfternoon:'afternoon',uEvening:'evening',uNight:'night',uEn:'English',uRu:'Russian',dvIphone:'iPhone',dvIpad:'iPad',dvAndroid:'Android phone',dvAtablet:'Android tablet',dvMac:'Mac',dvWindows:'Windows PC',dvOther:'Other',uPerDay:'by day',uPerWeek:'by week',
     u7:'7 days',u30:'30 days',u90:'90 days',uAll:'All time',uRng7:'Past 7 Days',uRng30:'Past 30 Days',uRng90:'Past 90 Days',uRngall:'All Time',
     kOrder:'Song order',kSheet:'Sheet music',kAudio:'Recording',kPage:'Page',uPages:'Pages visited',uDevN:n=>n===1?'1 device':n+' devices',
@@ -3264,7 +3519,7 @@ const STR = {
     tAdmin:'Admin',tAdminSub:'Manage attendance, songs, members, sheets and more',
     tSignIn:'Sign in',tSignInSub:'For the choir director',
     deleteEvent:'Delete this event and everything recorded for it?',notSaved:'Not saved',retry:'Retry',offline:'Offline — showing the last loaded data.',
-    deleteSinger:'Delete this singer? Past marks stay in the ledger.',deleteSong:'Delete this song? Past services keep their record.',
+    deleteSinger:'Delete this singer for good? All of their attendance marks are deleted with them. To keep their history, use Archive instead.',deleteSong:'Delete this song for good? It also disappears from every past song order. To keep the history, use Archive instead.',
     renameSinger:'Name',renameSong:'Title',soprano:'SOPRANO',alto:'ALTO',tenor:'TENOR',bass:'BASS',
     singersN:n=>n+' singers',songsN:n=>n+' songs',sungN:(n,d)=>'sung '+n+'× · last '+(d||'—'),wasPresent:'Present',wasAbsent:'Absent',wasNA:'Not listed',
     futureSvc:'Future services',lbFull:'Full board',songTab:'Song',upcomingSvc:'Upcoming service',svcTitle:'Services',svcSub:'Song orders for every service, laid out by date.',tlUp:'Upcoming',tlPast:'Past',tlNext:'Next up',
@@ -3337,8 +3592,9 @@ const STR = {
     tUsage:'Статистика',tUsageSub:'Как пользуются сайтом',
     uAdminOnly:'Войдите, чтобы увидеть эту страницу.',
     uSetup:'Таблица статистики ещё не создана. Выполните supabase/usage_log.sql в SQL-редакторе Supabase и обновите страницу.',
-    uDevices:'Устройств',uOrders:'Открытий порядка',uSheets:'Скачиваний нот',uListens:'Прослушиваний',uActivity:'Активность',
-    uTopSongs:'Чаще всего открывали ноты',uTopServices:'Чаще всего смотрели служения',
+    uNone:'Пока нет данных.',uLoading:'Загрузка…',
+    uDevices:'Устройств',uOrders:'Открытий порядка',uSheets:'Скачиваний нот',uListens:'Прослушиваний',
+    uActivity:'Активность',uTopSongs:'Чаще всего открывали ноты',uTopServices:'Чаще всего смотрели служения',
     uLang:'Язык',uRecent:'Последние действия',uReturning:n=>'вернулись: '+n,uPerDevice:n=>n+' на устройство',uDeviceType:'Тип устройства',uAppShare:'Открывали с иконки на экране',uDevNone:'Тип устройства считается с этого момента.',uDevSetup:'Чтобы считать типы устройств, ещё раз выполните supabase/usage_log.sql в SQL-редакторе Supabase.',uWhen:'Когда смотрят',uBusiest:'Чаще всего',uMorning:'утром',uAfternoon:'днём',uEvening:'вечером',uNight:'ночью',uEn:'Английский',uRu:'Русский',dvIphone:'iPhone',dvIpad:'iPad',dvAndroid:'Android-телефон',dvAtablet:'Android-планшет',dvMac:'Mac',dvWindows:'Компьютер Windows',dvOther:'Другое',uPerDay:'по дням',uPerWeek:'по неделям',
     u7:'7 дней',u30:'30 дней',u90:'90 дней',uAll:'За всё время',uRng7:'Последние 7 дней',uRng30:'Последние 30 дней',uRng90:'Последние 90 дней',uRngall:'За всё время',
     kOrder:'Порядок песнопений',kSheet:'Ноты',kAudio:'Запись',kPage:'Страница',uPages:'Посещённые страницы',uDevN:n=>'устройств: '+n,
@@ -3392,7 +3648,7 @@ const STR = {
     tAdmin:'Админка',tAdminSub:'Управление: посещаемость, песни, хористы, ноты и другое',
     tSignIn:'Вход',tSignInSub:'Для регента',
     deleteEvent:'Удалить это событие и все его записи?',notSaved:'Не сохранено',retry:'Повторить',offline:'Нет сети — показаны последние загруженные данные.',
-    deleteSinger:'Удалить хориста? Прошлые отметки останутся в журнале.',deleteSong:'Удалить песню? История служений сохранится.',
+    deleteSinger:'Удалить хориста навсегда? Все его отметки посещаемости удалятся вместе с ним. Чтобы сохранить историю, нажмите «В архив».',deleteSong:'Удалить песню навсегда? Она исчезнет и из всех прошлых порядков служений. Чтобы сохранить историю, нажмите «В архив».',
     renameSinger:'Имя',renameSong:'Название',soprano:'СОПРАНО',alto:'АЛЬТ',tenor:'ТЕНОР',bass:'БАС',
     singersN:n=>n+' чел.',songsN:n=>n+' песен',sungN:(n,d)=>'спето '+n+' · посл. '+(d||'—'),wasPresent:'Был',wasAbsent:'Не был',wasNA:'Не в составе',
     futureSvc:'Будущие служения',lbFull:'Весь рейтинг',songTab:'Песни',upcomingSvc:'Ближайшее служение',svcTitle:'Служения',svcSub:'Порядок песен для каждого служения — по датам.',tlUp:'Предстоящие',tlPast:'Прошедшие',tlNext:'Следующее',
@@ -3402,6 +3658,31 @@ const STR = {
     tlSeePast:'Посмотреть прошедшие',tlOlder:'Показать более ранние',tlStart:'Это самое раннее служение в записях.',tlNonePast:'Прошедших служений пока нет.',tlEarlier:'Раньше',tlRangeStart:'Это начало выбранного периода.',tlShowN:n=>'Показать ещё '+n,tlLeft:n=>'ещё '+n+' за этот период',tlLaterBtn:'Позже',
     tapHint:'Сначала все отмечены как отсутствующие. Нажмите на имя, чтобы отметить присутствие.',naNote:'«Не в составе» — хорист тогда ещё не пел; такие спевки не входят в его процент.'}
 };
+/* Strings added in 6.0, kept side by side so the two languages stay in step. */
+Object.assign(STR.en, {
+  menuL:'Menu', closeL:'Close', tabsL:'Sections', clearL:'Clear search', emptySeat:'Empty seat',
+  dkAtt:'Attendance',
+  saving:'Saving…', tryAgain:'Try again', uNone:'Nothing recorded yet.', uLoading:'Loading…',
+  nothingChanged:'Nothing was changed. The item may have been removed, or your sign-in expired — reload and try again.',
+  offlineNotSaved:'You’re offline, so nothing was saved. Try again when you’re back online.',
+  loadFailedTitle:'Couldn’t load the choir’s data', loadFailedBody:'Check your connection and try again.',
+  loadStale:'Couldn’t refresh — showing what was loaded earlier.',
+  discardLeave:'You have unsaved changes. Leave without saving?',
+  gridLatest:(n, all) => 'Showing the latest ' + n + ' of ' + all + ' dates', gridShowAll:'Show all',
+  uPerMonth:'by month'
+});
+Object.assign(STR.ru, {
+  menuL:'Меню', closeL:'Закрыть', tabsL:'Разделы', clearL:'Очистить поиск', emptySeat:'Свободное место',
+  dkAtt:'Посещения',
+  saving:'Сохраняем…', tryAgain:'Повторить', uNone:'Пока нет данных.', uLoading:'Загрузка…',
+  nothingChanged:'Ничего не изменилось. Возможно, запись удалили или сеанс истёк — обновите страницу и попробуйте снова.',
+  offlineNotSaved:'Нет сети, поэтому ничего не сохранено. Попробуйте снова, когда появится связь.',
+  loadFailedTitle:'Не удалось загрузить данные хора', loadFailedBody:'Проверьте подключение и попробуйте ещё раз.',
+  loadStale:'Не удалось обновить — показаны данные, загруженные ранее.',
+  discardLeave:'Есть несохранённые изменения. Уйти без сохранения?',
+  gridLatest:(n, all) => 'Показаны последние ' + n + ' из ' + all + ' дат', gridShowAll:'Показать все',
+  uPerMonth:'по месяцам'
+});
 const MON = { en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
               ru:['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'] };
 const MONF = { en:['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -3486,7 +3767,7 @@ const conductors = () => rankedBy('is_conductor', 'conductor_id');
 /* "Семенюк Илья" → "Семенюк И." — five Семенюк make first names necessary,
    but the full pair is too long for a pill. */
 function shortName(id){
-  const p = S.singers.find(x => x.id === id);
+  const p = singerById(id);
   if (!p) return '';
   const bits = p.name.trim().split(/\s+/);
   return bits.length < 2 ? p.name : bits[0] + ' ' + bits[1][0] + '.';
@@ -3499,7 +3780,7 @@ function creditPills(row){
        + one(row.pianist_id,   t('markP'), t('pianist'));
 }
 const songRow = (evId, songId) =>
-  S.eventSongs.find(x => x.event_id === evId && x.song_id === songId);
+  (dx().byEvent.get(evId) || []).find(x => x.song_id === songId);
 const KIND_LABEL = { en:{rehearsal:'R',morning:'M',evening:'E'}, ru:{rehearsal:'Сп',morning:'Ут',evening:'Вч'} };
 const evLabel = e => e.kind === 'other' ? e.label : KIND_LABEL[S.lang][e.kind];
 
@@ -3507,11 +3788,14 @@ function normRouteBoot(h){
   const m = (h || '').match(/^#\/o\/([^/?&]+)$/);
   return m ? '#/sheets/order-' + m[1] : (h || '#/home');
 }
+/* storage can be blocked (private modes, strict settings): read it defensively */
+const lsGet = k => { try { return localStorage.getItem(k); } catch (_) { return null; } };
+const lsSet = (k, v) => { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (_) {} };
 const S = {
   ripple: true,
-  me: localStorage.getItem('bsebc-youth-me') || null,     // "That's me" on this phone
-  lang: localStorage.getItem('bsebc-youth-lang') || 'en',
-  theme: localStorage.getItem('bsebc-youth-theme') || 'light',   // light unless the user picks otherwise
+  me: lsGet('bsebc-youth-me') || null,     // "That's me" on this phone
+  lang: lsGet('bsebc-youth-lang') === 'ru' ? 'ru' : 'en',
+  theme: lsGet('bsebc-youth-theme') || 'light',   // light unless the user picks otherwise
   session: null,
   menuOpen: false,
   route: normRouteBoot(location.hash),
@@ -3551,7 +3835,7 @@ const S = {
   pending: null,                  // event being created, not written yet
   edit: null                      // buffered marks for the page being edited
 };
-const t = k => { const v = STR[S.lang][k]; return typeof v === 'function' ? v : v; };
+const t = k => { const v = STR[S.lang][k]; return v !== undefined ? v : STR.en[k] !== undefined ? STR.en[k] : k; };
 const isWide = () => window.innerWidth >= 900;
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const catName = id => { const c = S.categories.find(x => x.id === id); return c ? c.name : ''; };
@@ -3577,12 +3861,12 @@ const songDeco = s => { if (!SONG_DECO) return ''; const k = (songTheme(s) || ''
 const songTheme = s => { if (!SONG_DECO) return ''; const n = catName(s.category_id).toLowerCase();
   return /верб|palm/.test(n) ? ' th-palm' : /рожд|christmas/.test(n) ? ' th-xmas' : /пасх|easter/.test(n) ? ' th-easter' : /жатв|harvest/.test(n) ? ' th-harvest'
     : /нов\S* год|new year/.test(n) ? ' th-frost' : /небо|небес|heaven/.test(n) ? ' th-sky' : /сводн|combined|joint|mass choir/.test(n) ? ' th-joint' : /страдан|passion|suffering/.test(n) ? ' th-passion' : /прослав|praise/.test(n) ? ' th-praise' : /призыв|invitation|altar call/.test(n) ? ' th-call' : /молитв|prayer/.test(n) ? ' th-prayer' : /христианск|christian life/.test(n) ? ' th-life' : ''; };
-const catSelect = () => S.categories.length ? `<select class="field" style="width:auto;flex:0 1 auto;max-width:46%" data-cat-filter>
+const catSelect = () => S.categories.length ? `<select class="field" style="width:auto;flex:0 1 auto;max-width:46%" data-cat-filter aria-label="${esc(t('catL'))}">
   <option value="all">${esc(t('allCats'))}</option>${
   S.categories.map(c => `<option value="${c.id}"${S.catFilter===c.id?' selected':''}>${esc(c.name)}</option>`).join('')}</select>` : '';
 const catBar = () => S.categories.length ? `<div class="ctlbar" style="flex-direction:row">${catSelect()}</div>` : '';
 const qField = (ph) => `<span class="qwrap"><input class="field" id="q" enterkeyhint="search" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="${esc(t(ph || 'search'))}" value="${esc(S.query)}">${
-  S.query ? `<button class="qx" data-clear-q aria-label="clear">×</button>` : ''}</span>`;
+  S.query ? `<button class="qx" data-clear-q aria-label="${esc(t('clearL'))}">×</button>` : ''}</span>`;
 /* Russian titles and names can be typed in English letters: both sides are spelled
    out in Latin and loosened (y/j/i, kh/h, sch/sh, doubled letters…) before comparing. */
 const CYR = {а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ё:'e',ж:'zh',з:'z',и:'i',й:'i',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'ts',ч:'ch',ш:'sh',щ:'sh',ъ:'',ы:'i',ь:'',э:'e',ю:'iu',я:'ia',і:'i',ї:'i',є:'e',ґ:'g'};
@@ -3612,12 +3896,43 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.48.0';
+const VERSION = '6.0.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
-const NOTES = { '5': {
+const NOTES = { '6': {
+  en: [
+    'New look: refined navy and gold, a new hymnal logo, and a calmer dark mode in the same colours',
+    'Security: only the director’s account can make changes',
+    'Attendance and song orders save in one step, so a dropped connection can never leave half a change',
+    'A change the database refuses is always reported as not saved, never shown as saved',
+    'Cancelling a date keeps its marks, so undoing the cancellation brings them back',
+    'The app opens without a connection: it no longer depends on an outside site',
+    'Signing out with no connection no longer loses your sign-in or unsaved marks',
+    'Leaving a page with unsaved marks asks first',
+    'Attendance grid: over a long period the latest 160 dates show first, with Show all',
+    'If the data can’t load, the page says so and offers Try again',
+    'Choir music: songs in one tidy list; the ⋯ button shows each song’s buttons',
+    'Easier with screen readers and keyboards, larger tap targets, readable contrast throughout',
+    'Phones: text fields no longer zoom the page',
+  ],
+  ru: [
+    'Новый вид: строгий тёмно-синий с золотом, новый логотип и спокойная тёмная тема в тех же цветах',
+    'Безопасность: вносить изменения может только учётная запись регента',
+    'Посещаемость и порядок песен сохраняются одним шагом — обрыв связи не оставит изменение наполовину',
+    'Если база данных не приняла изменение, приложение сообщает, что оно не сохранено',
+    'Отмена даты сохраняет отметки: если отмену снять, они вернутся',
+    'Приложение открывается без интернета: сторонний сайт ему больше не нужен',
+    'Выход без связи больше не сбрасывает вход и несохранённые отметки',
+    'Уход со страницы с несохранёнными отметками требует подтверждения',
+    'Сетка посещаемости: за долгий период сначала видны последние 160 дат, остальные — по кнопке «Показать все»',
+    'Если данные не загрузились, страница сообщает об этом и предлагает повторить',
+    'Ноты хора: песни одним аккуратным списком; кнопка ⋯ открывает кнопки песни',
+    'Удобнее с экранным диктором и клавиатурой, крупнее зоны нажатия, читаемый контраст везде',
+    'На телефоне поля ввода больше не увеличивают страницу',
+  ]
+}, '5': {
   en: [
     'Dark mode: redesigned with deeper, cleaner colours; voice parts and attendance colours now match light mode',
     'Dark mode: back to the earlier colours',
@@ -3830,7 +4145,21 @@ const NOTES = { '5': {
     'Исправлено: строки в «Сводке» и «Кто вёл» снова раскрываются'
   ]
 } };
-function shift(months){ const d = new Date(); d.setMonth(d.getMonth() - months); return localISO(d); }
+/* months back from today, clamped to the target month's length (31 March minus
+   one month is 28/29 February, not 3 March) */
+function shift(months){
+  const d = new Date(), day = d.getDate();
+  d.setDate(1); d.setMonth(d.getMonth() - months);
+  d.setDate(Math.min(day, new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate()));
+  return localISO(d);
+}
+/* a preset is a moving window: recomputed on every load and on return to the
+   app, so a home-screen app resumed days later still means "the last 6 months" */
+function presetStart(p){
+  if (p === 'all') { const first = S.events.reduce((m, e) => e.date < m ? e.date : m, today()); return S.events.length ? first : EPOCH; }
+  return shift(+p);
+}
+function refreshRange(){ if (S.preset && (S.preset === 'all' || +S.preset > 0)) { S.from = presetStart(S.preset); S.to = today(); } }
 function fmtLong(iso){ const [y,m,d] = iso.split('-').map(Number);
   return S.lang === 'en' ? MONF.en[m-1] + ' ' + d + ', ' + y : d + ' ' + MONF.ru[m-1] + ' ' + y; }
 function fmtShort(iso){ const [y,m,d] = iso.split('-');
@@ -3856,7 +4185,16 @@ async function selectAll(table, order){
     from += STEP;
   }
 }
+/* All or nothing: a read that fails part-way must never replace good data with
+   a partial copy — a missing absence row reads as "present", so a half-loaded
+   ledger looks better than the truth. On failure the last complete load stays
+   on screen with a notice and a retry; with nothing loaded yet, the page says
+   so instead of showing empty lists. Each load is numbered so that an older,
+   slower answer can't overwrite a newer one. */
+let loadSeq = 0;
+const missingTable = e => e && (e.code === '42P01' || e.code === 'PGRST205' || /does not exist|schema cache/i.test(e.message || ''));
 async function load(silent){
+  const seq = ++loadSeq;
   if (!silent) { S.loading = true; render(); }
   const [si, so, ev, ab, es, sc, doc] = await Promise.all([
     selectAll('singers', ['part','sort_order','name']),
@@ -3867,16 +4205,47 @@ async function load(silent){
     selectAll('song_categories', ['name']),
     sb.from('documents').select('*').eq('key','rules').maybeSingle()
   ]);
-  const err = [si,so,ev,ab,es].find(r => r.error);
-  S.error = err ? err.error.message : '';
+  if (seq !== loadSeq) return;
+  const err = [si, so, ev, ab, es].find(r => r.error) || (sc.error && !missingTable(sc.error) ? sc : null)
+    || (doc.error && !missingTable(doc.error) ? doc : null);
+  S.loading = false;
+  if (err) {
+    S.loadError = (err.error && err.error.message) || 'error';
+    render();
+    return;
+  }
+  S.loadError = ''; S.loaded = true;
   S.singers = si.data || []; S.songs = so.data || []; S.events = ev.data || [];
   S.absences = ab.data || []; S.eventSongs = es.data || [];
   S.categories = sc.error ? [] : (sc.data || []);
   S.rules = doc.error ? null : doc.data;
-  S.loading = false; render();
+  refreshRange();
+  render();
   prefetchSheets();
   trackRoute();
 }
+
+/* Lookups by id, built at most once per render (and again whenever the data
+   arrays change in between). The grids used to search the arrays for every
+   cell: the all-time attendance grid took seconds per tap on a phone. */
+let _dx = null;
+function dx(){
+  const k = _dx, sig = S.singers.length + ':' + S.events.length + ':' + S.absences.length + ':' + S.eventSongs.length + ':' + S.songs.length;
+  if (k && k.tick === renderTick && k.sig === sig && k.si === S.singers && k.ev === S.events
+      && k.ab === S.absences && k.es === S.eventSongs && k.so === S.songs) return k;
+  const singer = new Map(), event = new Map(), song = new Map(), abs = new Map(), byEvent = new Map(), absEv = new Set();
+  S.singers.forEach(x => singer.set(x.id, x));
+  S.events.forEach(x => event.set(x.id, x));
+  S.songs.forEach(x => song.set(x.id, x));
+  S.absences.forEach(a => { abs.set(a.event_id + '|' + a.singer_id, a); absEv.add(a.event_id); });
+  S.eventSongs.forEach(x => { const l = byEvent.get(x.event_id); if (l) l.push(x); else byEvent.set(x.event_id, [x]); });
+  _dx = { tick: renderTick, sig, si: S.singers, ev: S.events, ab: S.absences, es: S.eventSongs, so: S.songs,
+          singer, event, song, abs, byEvent, absEv };
+  return _dx;
+}
+function songById(id){ return dx().song.get(id); }
+function singerById(id){ return dx().singer.get(id); }
+function eventById(id){ return dx().event.get(id); }
 
 /* Three states per singer per event. Only the exceptions are stored:
    an absences row with status 'absent' (missed it) or 'not_listed' (was not in
@@ -3890,12 +4259,12 @@ function countsFrom(sg, kind){
 function attStatus(e,s){
   /* The singer's dates win over any stored mark: events before they joined (or, for
      services, before they started singing at services) never count either way. */
-  const sg = S.singers.find(x => x.id === s);
+  const sg = singerById(s);
   if (sg) {
-    const evt = S.events.find(x => x.id === e), from = evt && countsFrom(sg, evt.kind);
+    const evt = eventById(e), from = evt && countsFrom(sg, evt.kind);
     if (from && evt.date < from) return 'na';
   }
-  const a = S.absences.find(x => x.event_id === e && x.singer_id === s);
+  const a = dx().abs.get(e + '|' + s);
   if (a) return a.status === 'not_listed' ? 'na' : 'absent';
   return 'present';                              // no row = present
 }
@@ -3911,12 +4280,12 @@ function attCount(ev, sid){
   const of = ev.length - na;
   return { miss, na, of, came: of - miss, pct: of ? Math.round((of - miss) / of * 100) : null };
 }
-const wasSung  = (e,s) => S.eventSongs.some(x => x.event_id === e && x.song_id === s);
+const wasSung  = (e,s) => (dx().byEvent.get(e) || []).some(x => x.song_id === s);
 /* the songs of one service, in the order the director set */
 function songsFor(evId){
-  return S.eventSongs.filter(x => x.event_id === evId)
+  return (dx().byEvent.get(evId) || [])
     .slice().sort((a,b) => (a.position ?? 9999) - (b.position ?? 9999))
-    .map(x => S.songs.find(s => s.id === x.song_id)).filter(Boolean);
+    .map(x => songById(x.song_id)).filter(Boolean);
 }
 /* Order links carry only the first 8 characters of the event's id: a full uuid
    made the shared message unwieldy. Nothing about the stored data changes — the
@@ -3929,7 +4298,7 @@ function lastSungBefore(songId, beforeIso, exceptEvId){
   let best = null;
   for (const x of S.eventSongs) {
     if (x.song_id !== songId || (exceptEvId && x.event_id === exceptEvId)) continue;
-    const e = S.events.find(y => y.id === x.event_id);
+    const e = eventById(x.event_id);
     if (!e || e.cancelled) continue;
     if (beforeIso && e.date > beforeIso) continue;
     if (!best || e.date > best) best = e.date;
@@ -4009,28 +4378,49 @@ async function loadUsage(){
   if (S.usageLoading) return;
   S.usageLoading = true;
   const want = S.usagePeriod;
-  const ask = cols => { let q = sb.from('usage_log').select(cols).order('at', { ascending: false }).limit(20000);
-    if (want !== 'all') q = q.gte('at', new Date(Date.now() - want * 86400000).toISOString()); return q; };
-  let r = await ask('kind,ref,vid,lang,at,device,app');
+  /* the API returns at most 1,000 rows per request: read in pages (newest first,
+     id breaking ties so pages never overlap), up to 20,000 rows */
+  const ask = async cols => {
+    let rows = [];
+    for (let from = 0; from < 20000; from += 1000) {
+      let q = sb.from('usage_log').select(cols).order('at', { ascending: false }).order('id', { ascending: false });
+      if (want !== 'all') q = q.gte('at', new Date(Date.now() - want * 86400000).toISOString());
+      const r = await q.range(from, from + 999);
+      if (r.error) return r;
+      rows = rows.concat(r.data || []);
+      if ((r.data || []).length < 1000) break;
+    }
+    return { data: rows, error: null };
+  };
+  let r = await ask('id,kind,ref,vid,lang,at,device,app');
   S.usageNoDevice = false;
-  if (r.error) { const r2 = await ask('kind,ref,vid,lang,at'); if (!r2.error) { r = r2; S.usageNoDevice = true; } }
+  if (r.error) { const r2 = await ask('id,kind,ref,vid,lang,at'); if (!r2.error) { r = r2; S.usageNoDevice = true; } }
   S.usageLoading = false;
   S.usageErr = r.error ? r.error.message : '';
-  S.usage = r.error ? [] : (r.data || []);
+  S.usageMissing = !!(r.error && missingTable(r.error));
+  /* Anyone can add rows, so take only well-formed ones. The server stamps the
+     time itself; a day's slack keeps a phone whose clock is off from hiding the
+     latest rows, while still dropping anything dated far ahead. */
+  const soon = Date.now() + 86400000, KINDS = ['order', 'sheet', 'audio', 'page'];
+  S.usage = r.error ? [] : (r.data || []).filter(x => x && KINDS.includes(x.kind) && Date.parse(x.at) <= soon);
   S.usageFor = want;
   S.usageRip = true;
   render();
 }
-/* One column per day, or per week once the window is longer than six weeks. */
+/* One column per day, per week past six weeks, per month past a year. Days are
+   the choir's own calendar days, not UTC ones (which end at 8 pm in New York). */
+const dayNum = d => Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000);
+const dayISO = n => new Date(n * 86400000).toISOString().slice(0, 10);
 function usageBuckets(u){
-  const days = S.usagePeriod === 'all' ? 84 : S.usagePeriod;
-  const step = days <= 45 ? 1 : 7;
+  const todayN = dayNum(new Date());
+  const oldest = u.reduce((m, x) => Math.min(m, dayNum(new Date(x.at))), todayN);
+  const days = S.usagePeriod === 'all' ? Math.max(7, todayN - oldest + 1) : +S.usagePeriod;
+  const step = days <= 45 ? 1 : days <= 400 ? 7 : 30;
   const n = Math.ceil(days / step);
-  const span = step * 86400000;
-  const end = Date.parse(today()) + 86400000;
-  const arr = Array.from({ length: n }, (_, i) => ({ n: 0, at: end - (n - i) * span }));
+  const startN = todayN - n * step + 1;
+  const arr = Array.from({ length: n }, (_, i) => ({ n: 0, day: startN + i * step }));
   u.forEach(x => {
-    const i = Math.floor((Date.parse(x.at) - arr[0].at) / span);
+    const i = Math.floor((dayNum(new Date(x.at)) - startN) / step);
     if (i >= 0 && i < n) arr[i].n++;
   });
   return { arr, step };
@@ -4042,7 +4432,9 @@ function usagePage(){
   const chips = `<div class="chips">${[[7,'u7'],[30,'u30'],[90,'u90'],['all','uAll']].map(([v,l]) =>
       `<button data-uperiod="${v}" class="${String(S.usagePeriod)===String(v)?'on':''}">${esc(t(l))}</button>`).join('')}</div>`;
   const wrap = body => head + `<div class="ctlbar">${periodPill('usage', t('uRng' + S.usagePeriod), chips)}</div>` + body;
-  if (S.usageErr) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uSetup'))}</div></div></div>`);
+  if (S.usageErr && S.usageMissing) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uSetup'))}</div></div></div>`);
+  if (S.usageErr) return wrap(stateBlock({ icon: 'offline', title: t('loadFailedTitle'), body: t('loadFailedBody'), detail: S.usageErr, alert: true,
+    action: `<button class="sb go" data-uperiod="${esc(String(S.usagePeriod))}">${esc(t('tryAgain'))}</button>` }));
   if (!S.usage) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uLoading'))}</div></div></div>`);
   const u = S.usage;
   const rip = S.usageRip; S.usageRip = false; if (rip) setTimeout(usageCount, 0);
@@ -4051,7 +4443,7 @@ function usagePage(){
   const n = k => u.filter(x => x.kind === k).length;
   const vids = new Set(u.map(x => x.vid).filter(Boolean));
   const dayOf = x => localISO(new Date(x.at));
-  const daysBy = {};
+  const daysBy = Object.create(null);   // keys come from anyone's device: no prototype to trip over
   u.forEach(x => { if (x.vid) (daysBy[x.vid] = daysBy[x.vid] || new Set()).add(dayOf(x)); });
   const returning = Object.values(daysBy).filter(s => s.size > 1).length;
   const per = v => vids.size ? (Math.round(v / vids.size * 10) / 10).toLocaleString(S.lang) : '0';
@@ -4067,13 +4459,13 @@ function usagePage(){
   const { arr, step } = usageBuckets(u);
   const max = Math.max(1, ...arr.map(b => b.n));
   const chart = `<section class="dpanel uk uk-act" style="--d:4">
-      <div class="phd"><h2><span class="lbic">${AIC.chart}</span>${esc(t('uActivity'))}</h2><span class="pcap">${esc(t(step === 1 ? 'uPerDay' : 'uPerWeek'))}</span></div>
+      <div class="phd"><h2><span class="lbic">${AIC.chart}</span>${esc(t('uActivity'))}</h2><span class="pcap">${esc(t(step === 1 ? 'uPerDay' : step === 7 ? 'uPerWeek' : 'uPerMonth'))}</span></div>
       <div class="uchart">${arr.map((b, i) =>
         `<i class="${b.n === max && b.n ? 'hi' : ''}" style="--i:${i};height:${Math.round(b.n / max * 100)}%" title="${b.n}"></i>`).join('')}</div>
-      <div class="uaxis"><span>${esc(fmtPill(localISO(new Date(arr[0].at))))}</span><span>${esc(fmtPill(today()))}</span></div>
+      <div class="uaxis"><span>${esc(fmtPill(dayISO(arr[0].day)))}</span><span>${esc(fmtPill(today()))}</span></div>
     </section>`;
   const tally = (pred, name) => {
-    const m = {};
+    const m = Object.create(null);
     u.filter(pred).forEach(x => { if (x.ref) m[x.ref] = (m[x.ref] || 0) + 1; });
     return Object.entries(m).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([id, c]) => [name(id), c]);
   };
@@ -4084,7 +4476,7 @@ function usagePage(){
         <div class="ubar"><em style="--i:${i};width:${Math.round(c / rows[0][1] * 100)}%"></em></div></div>`).join('')}</div>`
         : `<p class="pcap">${esc(t('uNone'))}</p>`}
     </section>`;
-  const songRank = tally(x => x.kind === 'sheet' || x.kind === 'audio', id => (S.songs.find(y => y.id === id) || {}).title || '—');
+  const songRank = tally(x => x.kind === 'sheet' || x.kind === 'audio', id => (songById(id) || {}).title || '—');
   const svcRank = tally(x => x.kind === 'order', id => {
     const e = findEvent(id);
     return e ? (e.name || kindWord(e)) + ' · ' + fmtPill(e.date) : '—';
@@ -4100,7 +4492,7 @@ function usagePage(){
     </section>`;
   /* device type: one vote per device, its latest reading */
   const DV = [['iphone','dvIphone','var(--blue)'],['ipad','dvIpad','var(--teal)'],['android','dvAndroid','var(--green)'],['atablet','dvAtablet','var(--violet)'],['mac','dvMac','var(--amber)'],['windows','dvWindows','var(--rose)'],['other','dvOther','var(--faint)']];
-  const byVid = {};
+  const byVid = Object.create(null);
   u.forEach(x => { if (x.vid && x.device && !byVid[x.vid]) byVid[x.vid] = x; });   // newest first
   const dv = Object.values(byVid), dvN = dv.length;
   const appN = dv.filter(x => x.app).length;
@@ -4127,7 +4519,7 @@ function usagePage(){
   const refName = x => {
     if (x.kind === 'page') return pageName(x.ref);
     if (x.kind === 'order') { const e = findEvent(x.ref); return e ? (e.name || kindWord(e)) + ' · ' + fmtPill(e.date) : '—'; }
-    return (S.songs.find(y => y.id === x.ref) || {}).title || '—';
+    return (songById(x.ref) || {}).title || '—';
   };
   const recent = `<section class="dpanel uk uk-rec" style="--d:11">
       <div class="phd"><h2><span class="lbic">${UIC.clock}</span>${esc(t('uRecent'))}</h2></div>
@@ -4137,7 +4529,7 @@ function usagePage(){
         <span class="un">${esc(agoShort(x.at))}</span></div>`).join('')}</div>
     </section>`;
   /* pages: views and distinct devices per page */
-  const pv = {};
+  const pv = Object.create(null);
   u.filter(x => x.kind === 'page' && x.ref).forEach(x => { const o = pv[x.ref] = pv[x.ref] || { n: 0, d: new Set() }; o.n++; if (x.vid) o.d.add(x.vid); });
   const pRows = Object.entries(pv).sort((a, b) => b[1].n - a[1].n);
   const pages = `<section class="dpanel uk uk-pages" style="--d:5">
@@ -4239,7 +4631,7 @@ function latestService(){
 }
 const inRange  = (d,a,b) => d >= a && d <= b;
 
-const hasAtt = e => e.attendance_taken || S.absences.some(a => a.event_id === e.id);
+const hasAtt = e => e.attendance_taken || dx().absEv.has(e.id);
 const hasSongs = e => songsFor(e.id).length > 0;
 function gridEvents(){
   return S.events.filter(hasAtt).filter(e => inRange(e.date, S.from, S.to))
@@ -4271,11 +4663,11 @@ function songStats(id, from, to){
   const now = today();
   const rows = S.eventSongs.filter(x => {
     if (x.song_id !== id) return false;
-    const e = S.events.find(y => y.id === x.event_id);
+    const e = eventById(x.event_id);
     if (!e || e.cancelled || e.date > now) return false;   // planned ahead or called off: not sung
     return !from || inRange(e.date, from, to);
   });
-  const dates = rows.map(r => (S.events.find(e => e.id === r.event_id) || {}).date).filter(Boolean).sort();
+  const dates = rows.map(r => (eventById(r.event_id) || {}).date).filter(Boolean).sort();
   const lastISO = dates.length ? dates[dates.length-1] : '';
   return { n: rows.length, lastISO, last: lastISO ? fmtShort(lastISO) : '' };
 }
@@ -4321,7 +4713,7 @@ function seatNames(){
   return out;
 }
 function seatPlace(id, target){
-  const map = seatMap(), from = seatEff(S.singers.find(s => s.id === id));
+  const map = seatMap(), from = seatEff(singerById(id));
   const sitting = target ? map.get(seatKey(target)) : null;
   if (sitting && sitting.id !== id) S.seatEdit.set(sitting.id, from || null);   // swap, don't overwrite
   S.seatEdit.set(id, target);
@@ -4331,7 +4723,7 @@ function seatDelta(){
   const out = [];
   if (!S.seatEdit) return out;
   S.seatEdit.forEach((v, id) => {
-    const s = S.singers.find(x => x.id === id);
+    const s = singerById(id);
     if (s && seatKey(seatOf(s)) !== seatKey(v)) out.push({ s, v });
   });
   return out;
@@ -4368,7 +4760,7 @@ function seatingPage(){
         ${colOrder.map(c => {
           const who = map.get(p + ':' + r + ':' + c), on = who && S.seatSel === who.id;
           return `<button class="seat ${who?'':'empty'} ${on?'sel':''}" lang="ru" data-seat="${p}:${r}:${c}"${
-            who?` title="${esc(who.name)}" aria-label="${esc(who.name)}"`:''}>${who?esc(label.get(who.id) || who.name):''}</button>`;
+            who?` title="${esc(who.name)}" aria-label="${esc(who.name)}"`:''}>${who?esc(label.get(who.id) || who.name):`<span class="vh">${esc(t('emptySeat'))}</span>`}</button>`;
         }).join('')}
         ${gutterFirst ? '' : gut(r)}
       </div>`).join('');
@@ -4581,7 +4973,7 @@ const AIC = {
   moon: AI('<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>'),
   auto: AI('<circle cx="12" cy="12" r="9"></circle><path d="M12 18a6 6 0 0 0 0-12v12z" fill="currentColor" stroke="none"></path>')
 };
-const LOGOSVG = '<svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(0 6.5)"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path></g></svg>';
+const LOGOSVG = '<svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22.5" fill="#f7f3e8"></rect><rect x="0.5" y="0.5" width="99" height="99" rx="22" fill="none" stroke="#ddd6c4"></rect><rect x="47" y="15" width="6" height="34" rx="1.5" fill="#c9a227"></rect><rect x="37" y="23" width="26" height="6" rx="1.5" fill="#c9a227"></rect><path d="M18 47C30 45 42 47 50 53L50 82C42 76 30 74 18 76Z" fill="#1c2850"></path><path d="M82 47C70 45 58 47 50 53L50 82C58 76 70 74 82 76Z" fill="#1c2850"></path><path d="M50 53V82" stroke="#f7f3e8" stroke-width="2.5"></path></svg>';
 /* which part of the workspace a route belongs to — the sidebar groups and the
    breadcrumb read from the same table */
 /* [section, page, link]: the first crumb links back one step. Deeper pages
@@ -4639,16 +5031,16 @@ function mast(){
     <button class="themebtn msbtn" data-msearch-open aria-label="${esc(t('findSong'))}" title="${esc(t('findSong'))}">${AIC.search}</button>
     ${themeBtn()}
     <div class="msrch" role="search">
-      <label class="msf">${AIC.search}<input class="tsin" id="msearch" type="search" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" placeholder="${esc(t('findSong'))}" aria-label="${esc(t('findSong'))}" aria-expanded="false" aria-autocomplete="list" tabindex="${S.msOpen ? '0' : '-1'}"></label>
+      <label class="msf">${AIC.search}<input class="tsin" id="msearch" type="search" role="combobox" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" placeholder="${esc(t('findSong'))}" aria-label="${esc(t('findSong'))}" aria-expanded="false" aria-autocomplete="list" tabindex="${S.msOpen ? '0' : '-1'}"></label>
       <button class="mscancel" data-msearch-close tabindex="${S.msOpen ? '0' : '-1'}">${esc(t('cancel'))}</button>
       <div class="tsugg" role="listbox" hidden></div>
     </div>
-    <button class="menubtn" data-menu aria-label="Menu" aria-expanded="${S.menuOpen?'true':'false'}">${AIC.more}</button>
+    <button class="menubtn" data-menu aria-label="${esc(t('menuL'))}" aria-expanded="${S.menuOpen?'true':'false'}">${AIC.more}</button>
   </div>
   <header class="topbar">
     <div class="crumbs">${back ? `<a class="cback" href="${back}">${esc(sec)}</a>` : `<span>${esc(sec)}</span>`}${AIC.chev}<strong>${esc(page)}</strong></div>
     <div class="tacts">
-      <label class="findsong" role="search">${AIC.search}<input class="tsin" id="tsearch" type="search" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" placeholder="${esc(t('findSong'))}" aria-label="${esc(t('findSong'))}" aria-expanded="false" aria-autocomplete="list"><div class="tsugg" role="listbox" hidden></div></label>
+      <label class="findsong" role="search">${AIC.search}<input class="tsin" id="tsearch" type="search" role="combobox" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" placeholder="${esc(t('findSong'))}" aria-label="${esc(t('findSong'))}" aria-expanded="false" aria-autocomplete="list"><div class="tsugg" role="listbox" hidden></div></label>
       <span class="tdiv"></span>
       ${langSeg()}${themeBtn()}
     </div>
@@ -4695,10 +5087,10 @@ function dock(){
   const k = dockKey(S.route || '#/home');
   const ic = key => `<i class="dki">${DKI[key][0].replace('<svg', '<svg class="o"')}${DKI[key][1].replace('<svg', '<svg class="f"')}</i>`;
   const a = (href, key, label) => `<a href="${href}" data-tab="${key}" class="${k===key?'on':''}" aria-label="${esc(label)}">${ic(key)}<em class="dkl">${esc(label)}</em></a>`;
-  return `<nav class="dock" aria-label="Tabs"><i class="dpill" aria-hidden="true"></i>
+  return `<nav class="dock" aria-label="${esc(t('tabsL'))}"><i class="dpill" aria-hidden="true"></i>
     ${a('#/home','home', t('home'))}
     ${a('#/sheets','music', t('dkMusic'))}
-    ${a('#/attendance/summary','att', t('attendance'))}
+    ${a('#/attendance/summary','att', t('dkAtt'))}
     ${a('#/songs/summary','songs', t('dkSongs'))}
     <button data-menu class="${S.menuOpen || k==='more'?'on':''}" aria-label="${esc(t('more'))}" aria-expanded="${S.menuOpen?'true':'false'}">${ic('more')}<em class="dkl">${esc(t('more'))}</em></button>
   </nav>`;
@@ -4977,10 +5369,10 @@ function drawerNav(){
     ? `<div class="dacct in"><span class="dav">${AIC.user}</span><span class="grow2"><strong>${esc(t('dirWs'))}</strong><small>${esc(t('signedIn'))}</small></span><a class="dout" href="#/home" data-signout aria-label="${esc(t('signout'))}" title="${esc(t('signout'))}">${AIC.out}</a></div>`
     : `<a class="dacct${r.startsWith('#/login')?' on':''}" href="#/login"><span class="dav">${AIC.user}</span><span class="grow2"><strong>${esc(t('dirSignin'))}</strong><small>${esc(t('dirSigninSub'))}</small></span>${AIC.chev}</a>`;
   return `<div class="scrim${S.menuOpen?' on':''}" data-menu-x></div>
-  <nav class="drawer${S.menuOpen?' on':''}" aria-label="Menu">
+  <nav class="drawer${S.menuOpen?' on':''}" aria-label="${esc(t('menuL'))}">
     <div class="dhead">
       <a class="dbrand" href="#/home"><span class="bmark">${LOGOSVG}</span><span class="bword">${esc(t('appName'))}<small>${esc(t('appTag'))}</small></span></a>
-      <button class="x" data-menu-x aria-label="Close">
+      <button class="x" data-menu-x aria-label="${esc(t('closeL'))}">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"></path></svg>
       </button>
     </div>
@@ -5327,8 +5719,15 @@ function rangeCtrl(kind, typeFilter){
 const topBar = html => html ? `<div class="topctl">${html}</div>` : '';
 const pageHead = () => '<div class="dtop"></div>';
 /* ---------- public: attendance ---------- */
+/* Long ranges draw only the newest columns at first (the grid opens on the
+   newest dates): nine years of services is 30,000 cells, and laying those out
+   took seconds per tap on a phone. The tallies always count the whole range. */
+const GRID_COLS = 160;
+const gridKey = () => S.from + '|' + S.to + '|' + S.typeFilter;
 function attendanceGrid(top){
-  const ev = gridEvents();
+  const allEv = gridEvents();
+  const ev = S.gridAllKey !== gridKey() && allEv.length > GRID_COLS ? allEv.slice(-GRID_COLS) : allEv;
+  const hiddenN = allEv.length - ev.length;
   const months = [];
   ev.forEach(e => { const k = monthKey(e.date); const last = months[months.length-1];
     if (last && last.k === k) last.n++; else months.push({k, n:1}); });
@@ -5349,14 +5748,15 @@ function attendanceGrid(top){
           const st = attStatus(e.id, s.id);
           return `<div class="cell ${e.kind!=='rehearsal'?'svc':''} ${st==='na'?'na':''}">${
             st==='absent' ? '<i class="ab">' + esc(S.lang==='en'?'A':'Н') + '</i>' : st==='na' ? '–' : '<i class="pr">✓</i>'}</div>`; }).join('');
-        const c = attCount(ev, s.id);
+        const c = attCount(allEv, s.id);
         return `<div class="row"><div class="name">${esc(s.name)}</div>
           <div class="tally ${c.pct===null?'':c.pct>=50?'ok':c.pct>=10?'mid':'low'}">${c.of ? c.came + '/' + c.of : '—'}</div>${cells}<div class="tail"></div></div>`;
       }).join('');
   }).join('');
 
   if (!ev.length) return (top || '') + `<div class="msg">${esc(t('noEvents'))}</div>`;
-  return `<div class="scroll">${topBar(top)}<div class="gwrap">${head}${body}</div>
+  const more = hiddenN ? `<div class="gmore"><span>${esc(t('gridLatest')(ev.length, allEv.length))}</span><button class="mini" data-grid-more>${esc(t('gridShowAll'))}</button></div>` : '';
+  return `<div class="scroll">${topBar(top)}${more}<div class="gwrap">${head}${body}</div>
     <div class="legend endbar">
       <span><i class="pr">✓</i> ${esc(t('present'))}</span>
       <span><i>${S.lang==='en'?'A':'Н'}</i> ${esc(t('absent'))}</span>
@@ -5622,7 +6022,7 @@ function leaderPage(){
     `<button data-lbpreset="${v}" class="${p === v ? 'on' : ''}" aria-pressed="${p === v}"><b class="lbfull">${esc(t('lbP' + v))}</b><b class="lbshort">${esc(t('lbPs' + v))}</b></button>`).join('')}</div></div>`;
   if (!T.ranked.length) return `<div class="lbpage"><section class="lbhero lbempty"><div class="lbhh"><h1><span class="lbtro">${AIC.trophy}</span>${esc(t('lbLeaders'))}</h1></div>${picker}<p class="lbemptyp">${esc(t('lbNone'))}</p></section></div>`;
   const av = (s, cls) => `<span class="lbav ${s.part || ''} ${cls || ''}">${avIn(s)}</span>`;
-  const who = (s, coins) => `<button class="lbwho${s.id === S.me ? ' me' : ''}" data-lbwho="${s.id}">${av(s)}<span class="lbn">${esc(s.name)}</span>${coins === 0 ? '' : bMinis(s, from, null, coins)}</button>`;
+  const who = (s, coins) => `<button class="lbwho${s.id === S.me ? ' me' : ''}" data-lbwho="${s.id}">${av(s)}<span class="lbn">${esc(s.name)}</span>${coins === 0 ? '' : bMinis(s, from, null, coins).replace(' role="button" tabindex="-1"', '')}</button>`;
   const groups = podGroups(T.ranked), pod = groups.slice(0, 3);
   /* the stage: three steps, the rank struck into each block, a crown over first place */
   /* one step per rank; singers who tie share it (up to three shown by name, more fold into "+N") */
@@ -5750,7 +6150,7 @@ function leaderPage(){
 }
 /* tapping a name: every badge that person holds right now, and their year-end trophies */
 function lbSheet(from, p, label){
-  const s = S.lbWho && S.singers.find(x => x.id === S.lbWho);
+  const s = S.lbWho && singerById(S.lbWho);
   if (!s) { S.lbOpen = null; return ''; }
   const still = S.lbOpen === s.id ? ' still' : ''; S.lbOpen = s.id;
   const B = badgesFor(s, from).filter(b => b.earned), Y = yearAwards(s).won, R = { c: badgeHolders(from) }, me = S.me === s.id;
@@ -6038,7 +6438,7 @@ function songsByService(){
 }
 function songDates(songId){
   return S.eventSongs.filter(x => x.song_id === songId)
-    .map(x => S.events.find(e => e.id === x.event_id))
+    .map(x => eventById(x.event_id))
     .filter(e => e && inRange(e.date, S.from, S.to))
     .sort((a,b) => a.date < b.date ? 1 : -1);
 }
@@ -6063,7 +6463,7 @@ function creditRows(){
     bump(x.pianist_id, 'p', x.song_id, date);
   });
   return [...acc.entries()]
-    .map(([id, a]) => ({ person: S.singers.find(s => s.id === id), ...a }))
+    .map(([id, a]) => ({ person: singerById(id), ...a }))
     .filter(r => r.person)
     .filter(r => S.peopleRole === 'all' ? true : S.peopleRole === 'conductors' ? r.c : r.p)
     .sort((a, b) => (b.c + b.p) - (a.c + a.p) || a.person.name.localeCompare(b.person.name, 'ru'));
@@ -6083,7 +6483,7 @@ function songsPeople(){
       const open = S.openPerson === r.person.id, total = r.c + r.p;
       const role = r.c && r.p ? t('bothRoles') : r.c ? t('conductor') : t('pianist');
       const songs = open ? [...r.songs.entries()]
-        .map(([id, n]) => ({ s: S.songs.find(x => x.id === id), n }))
+        .map(([id, n]) => ({ s: songById(id), n }))
         .filter(x => x.s).sort((a, b) => b.n - a.n || a.s.title.localeCompare(b.s.title, 'ru')) : [];
       return `<div class="li tap ${open?'on':''}" data-person="${r.person.id}">
         <div style="flex:1;min-width:0">
@@ -6312,13 +6712,19 @@ function servicesPage(past){
   </div>`;
 }
 async function planMove(id, date){
-  const ev = S.events.find(x => x.id === id);
+  const ev = eventById(id);
   if (!ev || !date || date === ev.date) return;
+  /* typing a year into a date field fires "change" for every digit (0002, 0020…):
+     only a real, upcoming date moves a service, one move at a time */
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || date < today() || date > '2100-12-31' || S.planMoving) return;
   if (S.events.some(x => x.id !== id && x.date === date && x.kind === ev.kind && (x.name || '') === (ev.name || ''))) { alert(t('upClash')); return render(); }
   if (!await ensureSession()) return render();
-  const res = await sb.from('events').update({ date }).eq('id', id).select();
-  if (!wrote(res)) return render();
-  ev.date = date; S.events.sort((a, b) => a.date < b.date ? -1 : 1);
+  S.planMoving = id;
+  try {
+    const res = await sb.from('events').update({ date }).eq('id', id).select();
+    if (!wrote(res)) return render();
+    ev.date = date; S.events.sort((a, b) => a.date < b.date ? -1 : 1);
+  } finally { S.planMoving = null; }
   return render();
 }
 /* first Sunday slot (morning, then evening) from this week on with no song order yet */
@@ -6456,7 +6862,7 @@ function editFor(mode, ev){
     const sel = new Map(base);
     /* nothing marked yet: everyone starts absent and the director taps who came */
     if (mode === 'att' && (ev.id === 'new' || !hasAtt(ev)))
-      S.singers.forEach(s => { if (s.active !== false) { const f = countsFrom(s, ev.kind); sel.set(s.id, f && ev.date && ev.date < f ? 'na' : 'absent'); } });
+      S.singers.forEach(s => { if (s.active !== false && isSinger(s)) { const f = countsFrom(s, ev.kind); sel.set(s.id, f && ev.date && ev.date < f ? 'na' : 'absent'); } });
     S.edit = { key, mode, evId: ev.id, base, sel,
                wasCancelled: !!ev.cancelled, cancelled: !!ev.cancelled };
   }
@@ -6519,7 +6925,7 @@ function saveBar(mode){
     <div class="savebar">
       <div class="st ${dirty ? 'live' : ''}">${esc(status)}</div>
       <button class="sb ghost" data-cancel-marks="${mode}">${esc(t('cancel'))}</button>
-      <button class="sb go" data-save-marks ${dirty ? '' : 'disabled'}>${esc(t('save'))}</button>
+      <button class="sb go" data-save-marks ${dirty && !S.saving ? '' : 'disabled'}${S.saving ? ' aria-busy="true"' : ''}>${esc(S.saving ? t('saving') : t('save'))}</button>
     </div>`;
 }
 function markAttendance(ev){
@@ -6567,7 +6973,7 @@ function creditsCard(){
       <div class="note">${esc(t('noRolesYet'))}</div></div>`;
   return `<div class="sec"><div class="sectbar">${esc(t('credits'))}<em>${esc(t('optional'))}</em></div>` +
     ids.map((id, i) => {
-      const s = S.songs.find(x => x.id === id); if (!s) return '';
+      const s = songById(id); if (!s) return '';
       return `<div class="crow">
         <div class="ct"><span>${i + 1}</span>${esc(s.title)}</div>
         <div class="cf">
@@ -6582,7 +6988,7 @@ function orderCard(){
   if (!ids.length) return '';
   return `<div class="sec"><div class="sectbar">${esc(t('order'))}</div>` +
     ids.map((id, i) => {
-      const s = S.songs.find(x => x.id === id); if (!s) return '';
+      const s = songById(id); if (!s) return '';
       return `<div class="li"><div class="ord">${i + 1}</div>
         <div style="flex:1;min-width:0"><div style="font-size:var(--fs-15);line-height:1.2">${esc(s.title)}</div>
         ${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}</div>
@@ -6781,7 +7187,7 @@ function adminModal(){
         ${cats({ id: 'new-song-cat', v: '' })}
         <label class="fl"><span>${esc(t('pvL'))}</span><input class="field" id="new-song-pv" inputmode="numeric"></label></div>`,
       `<button class="pbtn" data-add-song>${esc(t('saveSong'))}</button>`);
-    const s = S.editSongRow && S.songs.find(x => x.id === S.editSongRow);
+    const s = S.editSongRow && songById(S.editSongRow);
     if (s) return shell(t('editSongT'), `<div class="fgrid">
         <label class="fl full"><span>${esc(t('titleL'))}</span><input class="field" id="edit-song-title" value="${esc(s.title)}"></label>
         <label class="fl full"><span>${esc(t('subtitle'))}</span><input class="field" id="edit-song-sub" value="${esc(s.subtitle || '')}"></label>
@@ -6809,7 +7215,7 @@ function adminModal(){
         <label class="fl full"><span>${esc(t('nameL'))}</span><input class="field" id="new-role-name"></label></div>`,
         `<button class="pbtn" data-add-role="${role}">${esc(t('save'))}</button>`);
     }
-    const p = S.editPerson && S.singers.find(x => x.id === S.editPerson);
+    const p = S.editPerson && singerById(S.editPerson);
     if (p) return shell(t('editMemberT'), `<div class="fgrid">
         <div class="fl full phrow"><span class="av phav">${avIn(p)}</span><div class="phbtns">
           <label class="mini"><input type="file" accept="image/*" data-photo-for="${p.id}" hidden>${esc(t(p.photo_path ? 'phChange' : 'phAdd'))}</label>
@@ -7117,7 +7523,7 @@ function sheetsPage(kind){
       const btns = [listen, dl, lyr, more].filter(Boolean).map((b, k) => b.replace('class="mini', `style="--k:${k}" class="mini`)).join('');
       const tOpen = S.actOpen === s.id;
       const cap = `<div class="scap">${ordEv ? `<b>${String(i + 1).padStart(2, '0')}</b>` : ''}${esc(s.title)}${catName(s.category_id) ? `<i> · ${esc(catName(s.category_id))}</i>` : ''}</div>`;
-      const chev = btns ? `<button class="schev${i === 0 && !traySeen() ? ' hint' : ''}" data-tray aria-expanded="${tOpen}" aria-label="${esc(t(tOpen ? 'trayHide' : 'trayShow'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 6l-6 6 6 6"></path></svg></button>` : '';
+      const chev = btns ? `<button class="schev${i === 0 && !traySeen() ? ' hint' : ''}" data-tray aria-expanded="${tOpen}" aria-label="${esc(t(tOpen ? 'trayHide' : 'trayShow'))}"><svg class="o" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.9"></circle><circle cx="12" cy="12" r="1.9"></circle><circle cx="18.5" cy="12" r="1.9"></circle></svg><svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>` : '';
       const row = `<div class="li srow${S.session ? ' tap' : ''}"${S.session ? ` data-adm-row="${s.id}"` : ''}>${left}<div class="stray">${cap}<div class="acts sbtns">${btns}</div></div>${chev}</div>`
         + listenRow(s, 'sheets') + (S.admRow === s.id ? admin : '');
       return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}${S.actOpen === s.id ? ' open' : ''}" data-srow="${s.id}">${row}</div>`;
@@ -7131,11 +7537,11 @@ function learnModal(){
       <div class="mhd"><h2>${esc(title)}</h2><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
       <div class="mbody">${body}</div>
       <div class="mfoot"><button class="obtn2" data-modal-x>${esc(t('cancel'))}</button>${go}</div></div>`;
-  const mv = S.learnMove && S.songs.find(x => x.id === S.learnMove);
+  const mv = S.learnMove && songById(S.learnMove);
   if (mv) return shell(t('lnMoveT'), `<p style="margin:0;font-size:14px;line-height:1.5;color:var(--muted);text-wrap:pretty">${esc(t('lnMoveQ')(mv.title))}</p>`,
     `<button class="pbtn" data-learn-move="${mv.id}" data-confirm="1">${esc(t('lnMove'))}</button>`);
   if (!S.learnEdit) return '';
-  const s = S.learnEdit === 'new' ? {} : S.songs.find(x => x.id === S.learnEdit);
+  const s = S.learnEdit === 'new' ? {} : songById(S.learnEdit);
   if (!s) return '';
   const cats = S.categories.length ? `<label class="fl"><span>${esc(t('catL'))}</span><select class="field" id="ln-cat">
       <option value="">${esc(t('noCat'))}</option>${S.categories.map(c => `<option value="${c.id}"${s.category_id === c.id ? ' selected' : ''}>${esc(c.name)}</option>`).join('')}</select></label>` : '';
@@ -7150,7 +7556,7 @@ function learnModal(){
 }
 /* Repertoire: confirm before a song is archived (restoring needs no question) */
 function archSongModal(){
-  const sg = S.archAsk && S.session && S.songs.find(x => x.id === S.archAsk);
+  const sg = S.archAsk && S.session && songById(S.archAsk);
   if (!sg) return '';
   return `<div class="mscrim" data-modal-x></div>
     <div class="modal" role="dialog" aria-modal="true" aria-label="${esc(t('archSongT'))}" style="width:min(440px,calc(100vw - 24px))">
@@ -7160,7 +7566,7 @@ function archSongModal(){
 }
 /* Plan a service: change a planned service's type (morning, evening, or a named event) */
 function planTypeModal(){
-  const P = S.planType, ev = P && S.session && S.events.find(x => x.id === P.id);
+  const P = S.planType, ev = P && S.session && eventById(P.id);
   if (!ev) return '';
   const other = P.kind === 'other';
   const opt = k => `<div class="opt${P.kind === k ? ' on' : ''}" role="radio" aria-checked="${P.kind === k}" tabindex="0" data-pt-kind="${k}">
@@ -7186,7 +7592,7 @@ function ptRead(){ const n = document.getElementById('pt-name'), l = document.ge
   if (n) S.planType.name = n.value; if (l) S.planType.label = l.value; }
 async function planTypeSave(){
   ptRead();
-  const P = S.planType, ev = S.events.find(x => x.id === P.id);
+  const P = S.planType, ev = eventById(P.id);
   if (!ev) { S.planType = null; return render(); }
   const other = P.kind === 'other', name = other ? (P.name || '').trim() : null;
   if (other && !name) { alert(t('ptNeedName')); return; }
@@ -7291,7 +7697,7 @@ function plSync(){
   });
   if (!on) { if (plBarEl) plBarEl.classList.remove('on'); document.body.classList.remove('plon'); return; }
   const bar = plBarEl || plBarBuild();
-  const song = S.songs.find(x => x.id === PL.id), sig = key + ':' + S.lang;
+  const song = songById(PL.id), sig = key + ':' + S.lang;
   if (bar.dataset.sig !== sig) {
     bar.innerHTML = plBarHTML(); bar.dataset.sig = sig;
     bar.querySelector('.pl-ttl').textContent = song ? song.title : '';
@@ -7530,9 +7936,9 @@ function songModal(){
       <div class="mhd"><h2>${esc(title)}</h2><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
       <div class="mbody">${sub ? `<p style="margin:0 0 14px;font-size:14px;line-height:1.45;color:var(--muted);text-wrap:pretty">${sub}</p>` : ''}${body}</div>
       <div class="mfoot">${foot}</div></div>`;
-  const a = S.audioEdit && S.songs.find(x => x.id === S.audioEdit);
+  const a = S.audioEdit && songById(S.audioEdit);
   if (a) return recModal(a);
-  const p = S.pdfDel && S.songs.find(x => x.id === S.pdfDel.id);
+  const p = S.pdfDel && songById(S.pdfDel.id);
   if (p) return shell(t('removePdfT'), t('removePdfQ')(esc(p.title)), '',
     `<button class="obtn2" data-modal-x>${esc(t('cancel'))}</button><button class="pbtn" style="background:var(--red);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:7px" data-del-pdf="${p.id}" data-sheet-kind="${S.pdfDel.kind}" data-confirm="1">${TRASHSVG}${esc(t('removePdf'))}</button>`);
   return '';
@@ -7577,7 +7983,7 @@ function songByToken(tok){
   return S.songs.find(s => String(s.id) === tok) || S.songs.find(s => shortId(s.id) === tok) || null;
 }
 function startLyrDraft(id){
-  const s = S.songs.find(x => x.id === id);
+  const s = songById(id);
   const blocks = Array.isArray(s && s.lyrics) ? s.lyrics.map(b => ({ t: BLK[b.t] ? b.t : 'v', x: String(b.x || '') })) : [];
   S.lyrDraft = blocks.length ? blocks : [{ t:'v', x:'' }];
   S.lyrPv = s && s.pv_number != null ? String(s.pv_number) : '';
@@ -7739,23 +8145,22 @@ function download(name, text){
   a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+/* a cell that starts with = + - @ (or a tab/CR) would run as a formula when the
+   file is opened in a spreadsheet: prefix it with an apostrophe */
+const q = v => { let x = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(x)) x = "'" + x; return '"' + x.replace(/"/g, '""') + '"'; };
 
-/* Full-database backup: every table, paged past PostgREST's 1000-row cap. */
+/* Full-database backup: every table the app keeps, read in pages with a unique
+   ordering (unordered pages can skip or repeat rows), the rules included. */
 async function fullBackup(){
   S.backingUp = true; render();
   try {
     const dump = { exported_at: new Date().toISOString(), app: document.title, tables: {} };
-    for (const tbl of ['singers','events','songs','song_categories','absences','event_songs']) {
-      const rows = [];
-      for (let fromRow = 0;;) {
-        const { data, error } = await sb.from(tbl).select('*').range(fromRow, fromRow + 999);
-        if (error) throw error;
-        rows.push(...data);
-        if (data.length < 1000) break;
-        fromRow += 1000;
-      }
-      dump.tables[tbl] = rows;
+    const TABLES = { singers: ['id'], events: ['id'], songs: ['id'], song_categories: ['id'],
+                     absences: ['event_id', 'singer_id'], event_songs: ['event_id', 'song_id'], documents: ['key'] };
+    for (const [tbl, order] of Object.entries(TABLES)) {
+      const r = await selectAll(tbl, order);
+      if (r.error) throw r.error;
+      dump.tables[tbl] = r.data;
     }
     const stamp = today();
     const url = URL.createObjectURL(new Blob([JSON.stringify(dump, null, 1)], { type:'application/json' }));
@@ -7772,20 +8177,21 @@ function exportCSV(kind){
   const ev = S.events.filter(kind === 'att' ? hasAtt : hasSongs)
     .filter(e => inRange(e.date, xf, today()))
     .slice().sort((a,b) => a.date < b.date ? -1 : 1);
+  const from = ev.length ? ev[0].date : xf;    // "All time" names the file from its first date
   if (kind === 'att') {
     const head = ['singer','part', ...ev.map(e => e.date + ' ' + evLabel(e))];
     const rows = PARTS.flatMap(p => S.singers.filter(s => s.part === p && s.active !== false).map(s =>
       [s.name, p, ...ev.map(e => { if (e.cancelled) return 'Cancelled';
         const st = attStatus(e.id, s.id);
         return st === 'absent' ? 'Absent' : st === 'na' ? 'Not Listed' : 'Present'; })]));
-    download('attendance-' + S.from + '_' + S.to + '.csv', [head, ...rows].map(r => r.map(q).join(',')).join('\n'));
+    download('attendance-' + from + '_' + today() + '.csv', [head, ...rows].map(r => r.map(q).join(',')).join('\n'));
   } else {
     const head = ['date','event','no','song','subtitle'];
     const rows = [];
     ev.forEach(e => songsFor(e.id).forEach((s, i) => {
       rows.push([e.date, e.name || e.kind, i + 1, s.title, s.subtitle]);
     }));
-    download('songs-' + S.from + '_' + S.to + '.csv', [head, ...rows].map(r => r.map(q).join(',')).join('\n'));
+    download('songs-' + from + '_' + today() + '.csv', [head, ...rows].map(r => r.map(q).join(',')).join('\n'));
   }
 }
 
@@ -7878,6 +8284,9 @@ function render(){
   captureThumbs();
   document.documentElement.lang = S.lang;
   if (S.theme === 'dark' || S.theme === 'light') document.documentElement.dataset.theme = S.theme; else delete document.documentElement.dataset.theme;
+  { // the browser's own bar matches the header in either theme
+    const tc = document.querySelector('meta[name="theme-color"]'), want = effTheme() === 'dark' ? '#0a0e1a' : '#17203a';
+    if (tc && tc.content !== want) tc.content = want; }
   const r = S.route;
   const onLogin = r.startsWith('#/login');
   /* iOS AutoFill gives up silently if the password field it is filling is
@@ -7895,13 +8304,19 @@ function render(){
     + `<main class="pg">` + (!r || r === '#' || r === '#/' || r.startsWith('#/home') ? homeSkel() : `<div class="skel" aria-label="${esc(t('loading'))}">` + '<div class="sk"></div>'.repeat(7) + `</div>`) + `</main>`;
     wasLoading = true; return; }
   html += '<main class="pg">';
+  const loadFatal = S.loadError && !S.loaded && !onLogin;
+  if (S.loadError && S.loaded && !onLogin) html += `<div class="banner" role="status"><span>${esc(t('loadStale'))}</span><button class="mini" data-retry-load>${esc(t('tryAgain'))}</button></div>`;
 
-  if (r.startsWith('#/admin')) {
+  if (loadFatal) {
+    html += publicNav('') + stateBlock({ icon: 'offline', title: t('loadFailedTitle'), body: t('loadFailedBody'),
+      action: `<button class="sb go" data-retry-load>${esc(t('tryAgain'))}</button>`, detail: S.loadError, alert: true });
+  }
+  else if (r.startsWith('#/admin')) {
     if (!S.session) { location.hash = '#/login'; return; }
     const seg = r.split('/');          // #, admin, section, id?
     const section = seg[2] || 'attendance', id = seg[3];
     const ev = id === 'new' ? (S.pending ? Object.assign({ id: 'new' }, S.pending) : null)
-             : id ? S.events.find(e => e.id === id) : null;
+             : id ? eventById(id) : null;
     const admKey = section === 'attendance' ? 'att'
       : section === 'songs' ? 'songs'
       : section === 'songlist' ? 'list'
@@ -7961,17 +8376,60 @@ function render(){
   }
   html += '</main>';
   const keep = {};
-  ['tsearch','edit-name','edit-joined','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name','edit-song-pv','em','pw', S.audioEdit && S.recLink ? 'rec-link-' + S.recLink : ''].filter(Boolean).forEach(id => {
+  const LISTED = ['tsearch','edit-name','edit-joined','edit-song-title','edit-song-sub','edit-cat-name','new-cat-name','edit-song-pv','em','pw', S.audioEdit && S.recLink ? 'rec-link-' + S.recLink : ''].filter(Boolean);
+  LISTED.forEach(id => {
     const n = document.getElementById(id);
     if (n) keep[id] = { v: n.value, f: n === document.activeElement, p: n.selectionStart };
   });
-  document.getElementById('app').innerHTML = html + adminModal() + songModal() + planTypeModal() + archSongModal() + learnModal() + toastHTML();
+  /* Background redraws (a refresh on return to the app, a toast timing out, a
+     token refresh) must not undo what someone is typing in a dialog: any other
+     field changed since it was drawn keeps the change, as long as the redraw
+     starts it from the same value. */
+  const appEl = document.getElementById('app'), changed = [];
+  appEl.querySelectorAll('input[id], select[id], textarea[id]').forEach(n => {
+    if (LISTED.includes(n.id) || n.type === 'file' || n.type === 'hidden') return;
+    if (n.type === 'checkbox' || n.type === 'radio') { if (n.checked !== n.defaultChecked) changed.push({ id: n.id, c: n.checked, dc: n.defaultChecked }); return; }
+    if (n.tagName === 'SELECT') { const d = selDefault(n); if (n.value !== d) changed.push({ id: n.id, v: n.value, dv: d }); return; }
+    if (n.value !== n.defaultValue) changed.push({ id: n.id, v: n.value, dv: n.defaultValue, f: n === document.activeElement, p: n.selectionStart });
+  });
+  appEl.innerHTML = html + adminModal() + songModal() + planTypeModal() + archSongModal() + learnModal() + toastHTML();
   requestAnimationFrame(fitMissed);
   Object.entries(keep).forEach(([id, k]) => {
     const n = document.getElementById(id);
     if (n) { n.value = k.v; if (k.f) { n.focus(); try { n.setSelectionRange(k.p, k.p); } catch (err) {} } }
   });
+  changed.forEach(k => {
+    const n = document.getElementById(k.id); if (!n) return;
+    if ('c' in k) { if (n.defaultChecked === k.dc) n.checked = k.c; return; }
+    if (n.tagName === 'SELECT') { if (selDefault(n) === k.dv) n.value = k.v; return; }
+    if (n.defaultValue === k.dv) { n.value = k.v; if (k.f) { n.focus(); try { n.setSelectionRange(k.p, k.p); } catch (err) {} } }
+  });
   afterRender();
+}
+
+/* One look for every empty, offline and error state: an icon, a line saying
+   what is (or isn't) here, what to do about it, and the one action that helps. */
+const STATE_IC = {
+  offline: '<path d="M2 8.8a15 15 0 0 1 4.4-2.6M22 8.8A15 15 0 0 0 10.6 4.6M5 12.6a10 10 0 0 1 3.3-2M19 12.6a10 10 0 0 0-4.2-2.4M8.5 16.4a5 5 0 0 1 7 0"></path><path d="M12 20h.01"></path><path d="m3 3 18 18"></path>',
+  empty: '<path d="M4 7h16M4 12h16M4 17h10"></path>',
+  music: '<path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>',
+  calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"></rect><path d="M3.5 9.5h17M8 3v4M16 3v4"></path>',
+  search: '<circle cx="11" cy="11" r="6.5"></circle><path d="m20 20-4.2-4.2"></path>'
+};
+function stateBlock({ icon = 'empty', title, body, action = '', detail = '', alert = false }){
+  return `<div class="state"${alert ? ' role="alert"' : ''}>
+    <div class="state-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${STATE_IC[icon] || STATE_IC.empty}</svg></div>
+    <div class="state-t">${esc(title)}</div>
+    ${body ? `<div class="state-b">${esc(body)}</div>` : ''}
+    ${action ? `<div class="state-a">${action}</div>` : ''}
+    ${detail ? `<div class="state-x">${esc(detail)}</div>` : ''}
+  </div>`;
+}
+
+/* the option a <select> was drawn with */
+function selDefault(n){
+  const o = [...n.options].find(x => x.defaultSelected) || n.options[0];
+  return o ? o.value : '';
 }
 
 function toastHTML(){
@@ -8115,15 +8573,103 @@ function afterRender(){
   sc.addEventListener('scroll', () => { S.scrollLeft = sc.scrollLeft; }, { passive: true });
 }
 
+/* Save one marking page. The whole change — the event itself, the rows that go
+   and the rows that come — is applied by save_marks() in one transaction, so a
+   dropped connection can never leave half of it behind (a new event with nobody
+   absent would count everyone present). Until that function exists in the
+   database (supabase/migrations/20261102000100_atomic_marks.sql) the older
+   step-by-step save runs instead. */
+async function saveMarks(E){
+  if (!await ensureSession()) return;
+  S.toast = ''; S.retry = null;
+  const isAtt = E.mode === 'att';
+  /* Cancelling changes only the flag. Marks already stored stay (every count
+     skips a cancelled date anyway), so "Not cancelled after all" brings them
+     back; a date that was never marked stays unmarked. */
+  if (isAttCancelled(E)) E.sel = new Map(E.base);
+  const { del, ins } = editDelta();
+  const row = (k, v) => isAtt
+    ? { singer_id: k, status: v === 'na' ? 'not_listed' : 'absent' }
+    : { song_id: k, position: v.pos, conductor_id: v.c || null, pianist_id: v.p || null };
+  const insRows = ins.map(([k, v]) => row(k, v));
+  const evRow0 = E.evId === 'new' ? null : eventById(E.evId);
+  const event = E.evId === 'new'
+    ? Object.assign({}, S.pending, { cancelled: !!E.cancelled })
+    : Object.assign({ id: E.evId },
+        E.newDate && evRow0 && E.newDate !== evRow0.date ? { date: E.newDate } : {},
+        E.newType || {},
+        E.cancelled !== E.wasCancelled ? { cancelled: E.cancelled } : {});
+  const r = await sb.rpc('save_marks', { p_event: event, p_mode: E.mode, p_del: del, p_ins: insRows });
+  let evId;
+  if (!r.error) evId = r.data;
+  else if (/PGRST202|42883/.test(r.error.code || '')) { evId = await saveMarksStepwise(E, event, del, insRows); if (!evId) return; }
+  else return fail(r.error);
+  // mirror the change locally until the silent re-read below lands
+  let evRow = eventById(evId);
+  if (!evRow) {
+    evRow = Object.assign({ name: null, cancelled: false, attendance_taken: false }, event, { id: evId });
+    S.events.push(evRow); S.events.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+  } else Object.assign(evRow, event, { id: evId });
+  evRow.cancelled = !!E.cancelled;
+  if (isAtt && !E.cancelled) evRow.attendance_taken = true;
+  S.pending = null;
+  const rows = [...E.sel].map(([k, v]) => Object.assign({ event_id: evId }, row(k, v)));
+  if (isAtt) S.absences = S.absences.filter(a => a.event_id !== evId).concat(rows);
+  else S.eventSongs = S.eventSongs.filter(x => x.event_id !== evId).concat(rows);
+  S.edit = null; okToast(t('savedOk'));
+  location.hash = '#/admin/' + (isAtt ? 'attendance' : 'songs');
+  load(true);   // silent re-read, so the grids match the database exactly
+}
+/* The pre-save_marks path, kept only for a database without the function. Each
+   step is checked, and a new event's "attendance taken" flag is set last, so a
+   save that stops halfway leaves an event that still reads as unmarked; the page
+   stays on that event, and pressing Save again finishes the job. */
+async function saveMarksStepwise(E, event, del, insRows){
+  const isAtt = E.mode === 'att', table = isAtt ? 'absences' : 'event_songs', col = isAtt ? 'singer_id' : 'song_id';
+  let evId = E.evId;
+  if (evId === 'new') {
+    const { data, error } = await sb.from('events').insert(Object.assign({}, event, { attendance_taken: false })).select().single();
+    if (error) { fail(error); return null; }
+    evId = data.id;
+    S.events.push(data); S.events.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+    E.evId = evId; E.key = E.mode + ':' + evId; S.pending = null;
+    S.route = '#/admin/' + (isAtt ? 'attendance' : 'songs') + '/' + evId;
+    history.replaceState(null, '', S.route);
+  } else {
+    const patch = Object.assign({}, event); delete patch.id;
+    if (Object.keys(patch).length) { const res = await sb.from('events').update(patch).eq('id', evId).select('id'); if (!wrote(res)) return null; }
+  }
+  if (del.length) {
+    const { data, error } = await sb.from(table).delete().eq('event_id', evId).in(col, del).select(col);
+    if (error) { fail(error); return null; }
+    if ((data || []).length < del.length) { fail({ message: t('nothingChanged') }); ensureSession(); return null; }
+  }
+  if (insRows.length) {
+    const { error } = await sb.from(table).insert(insRows.map(x => Object.assign({ event_id: evId }, x)));
+    if (error) { fail(error); return null; }
+  }
+  if (isAtt && !E.cancelled) { const res = await sb.from('events').update({ attendance_taken: true }).eq('id', evId).select('id'); if (!wrote(res)) return null; }
+  return evId;
+}
+
 /* An expired access token is rejected by row-level security with no error object —
    the write simply affects nothing. Refresh before every admin write, and treat
    "zero rows changed" as a lost session rather than a success. */
+/* A refresh that fails only because there is no connection is not a dead
+   session: signing out then would throw away the refresh token and whatever the
+   director had marked but not yet saved. Keep both, say nothing was saved. */
+const netError = e => !navigator.onLine || !!(e && (e.name === 'AuthRetryableFetchError' || e.status === 0
+  || /fetch|network|load failed/i.test(e.message || '')));
 async function ensureSession(){
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session) { S.session = null; render(); return false; }
+  const { data: { session }, error: getErr } = await sb.auth.getSession();
+  if (!session) {
+    if (S.session && netError(getErr)) { fail({ message: t('offlineNotSaved') }); return false; }
+    S.session = null; render(); return false;
+  }
   if ((session.expires_at || 0) * 1000 - Date.now() < 60000) {
     const { data, error } = await sb.auth.refreshSession();
     if (error || !data.session) {
+      if (netError(error)) { fail({ message: t('offlineNotSaved') }); return false; }
       // The stored token is dead. Clear it locally, or every later call retries
       // it and Supabase logs another "Invalid Refresh Token".
       await sb.auth.signOut({ scope: 'local' }).catch(() => {});
@@ -8134,11 +8680,14 @@ async function ensureSession(){
   return true;
 }
 
+/* A write that changed no rows was refused or found nothing to change: report
+   it, never show it as saved. If the sign-in has really lapsed, ensureSession()
+   takes the director back to sign in. */
 function wrote(res){
   if (res.error) { fail(res.error); return false; }
   if (Array.isArray(res.data) && res.data.length === 0) {
-    fail({ message: t('sessionLost') });
-    S.session = null;
+    fail({ message: t('nothingChanged') });
+    ensureSession();
     return false;
   }
   return true;
@@ -8244,7 +8793,7 @@ document.addEventListener('click', e => {
 document.addEventListener('change', e => {
   const el = e.target;
   if (!el || !el.dataset || !el.dataset.recFile) return;
-  const song = S.songs.find(x => x.id === S.audioEdit), files = el.files ? [...el.files] : [];
+  const song = songById(S.audioEdit), files = el.files ? [...el.files] : [];
   el.value = '';
   if (song && files.length) recFiles(song, files, el.dataset.recFile);
 });
@@ -8264,26 +8813,29 @@ document.addEventListener('drop', e => {
   e.preventDefault();
   document.querySelectorAll('[data-rec-drop].drag').forEach(x => x.classList.remove('drag'));
   const z = e.target.closest && e.target.closest('[data-rec-drop]');
-  const song = S.songs.find(x => x.id === S.audioEdit);
+  const song = songById(S.audioEdit);
   if (z && song && e.dataTransfer && e.dataTransfer.files.length) recFiles(song, e.dataTransfer.files, z.dataset.recDrop);
 });
 document.addEventListener('keydown', e => {
   const el = e.target;
   if (e.key !== 'Enter' || !el || !el.id || !el.id.startsWith('rec-link-')) return;
   e.preventDefault();
-  const song = S.songs.find(x => x.id === S.audioEdit);
+  const song = songById(S.audioEdit);
   if (song) recLinkSave(song, el.id.slice(9));
 });
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-listen],[data-lp],[data-rec-link],[data-rec-link-x],[data-rec-link-go],[data-rec-del],[data-rec-del-x],[data-rec-del-go],[data-rec-cancel],[data-rec-add],[data-rec-add-x],[data-ln-mv],[data-ln-tools],[data-ln-demo],[data-ln-demo-act],[data-learn-edit],[data-learn-save],[data-learn-move],[data-toggle-learn],[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-retry-load],[data-grid-more],[data-listen],[data-lp],[data-rec-link],[data-rec-link-x],[data-rec-link-go],[data-rec-del],[data-rec-del-x],[data-rec-del-go],[data-rec-cancel],[data-rec-add],[data-rec-add-x],[data-ln-mv],[data-ln-tools],[data-ln-demo],[data-ln-demo-act],[data-learn-edit],[data-learn-save],[data-learn-move],[data-toggle-learn],[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
-  if (d.lang) { S.lang = d.lang; localStorage.setItem('bsebc-youth-lang', d.lang); return render(); }
+  if (el.hasAttribute('data-grid-more')) { S.gridAllKey = gridKey(); return render(); }
+  if (el.hasAttribute('data-retry-load')) return load(!!S.loaded);
 
-  if (el.hasAttribute('data-theme-flip')) { const next = effTheme() === 'dark' ? 'light' : 'dark'; S.theme = next; localStorage.setItem('bsebc-youth-theme', next); return paint(render); }
+  if (d.lang) { S.lang = d.lang === 'ru' ? 'ru' : 'en'; lsSet('bsebc-youth-lang', S.lang); return render(); }
 
-  if (d.themeSet) { S.theme = d.themeSet; localStorage.setItem('bsebc-youth-theme', d.themeSet); return paint(render); }
+  if (el.hasAttribute('data-theme-flip')) { const next = effTheme() === 'dark' ? 'light' : 'dark'; S.theme = next; lsSet('bsebc-youth-theme', next); return paint(render); }
+
+  if (d.themeSet) { S.theme = d.themeSet; lsSet('bsebc-youth-theme', d.themeSet); return paint(render); }
 
   if (el.hasAttribute('data-toggle-range')) {
     // open in place so the pill itself grows; no re-render, so it animates both ways
@@ -8298,10 +8850,8 @@ document.addEventListener('click', async e => {
   }
   if (d.preset) {
     // "All" starts at the earliest entry rather than centuries back
-    const first = S.events.reduce((m, e) => e.date < m ? e.date : m, today());
-    const start = d.preset === 'all' ? (S.events.length ? first : EPOCH) : shift(+d.preset);
     S.preset = d.preset; S.rangeSet = true;
-    S.from = start; S.to = today();
+    S.from = presetStart(d.preset); S.to = today();
     return render();
   }
   if (d.type) { if (d.scope === 'sum') S.sumType = d.type; else S.typeFilter = d.type; return render(); }
@@ -8328,7 +8878,7 @@ document.addEventListener('click', async e => {
   }
   if (el.hasAttribute('data-mmiss')) { S.mMissAll = !S.mMissAll; return render(); }
   if (d.shareMember) {
-    const s = S.singers.find(x => x.id === d.shareMember); if (!s) return;
+    const s = singerById(d.shareMember); if (!s) return;
     const url = pageURL(memberLink(s) + '?p=' + memberPreset()), title = s.name + ' · ' + t('mTitle');
     if (navigator.share) { navigator.share({ title, url }).catch(() => {}); return; }
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(() => okToast(t('mLinkCopied')), () => { legacyCopy(url); okToast(t('mLinkCopied')); });
@@ -8365,7 +8915,7 @@ document.addEventListener('click', async e => {
     return;
   }
 
-  if (d.planType) { const ev0 = S.events.find(x => x.id === d.planType), ev = ev0 && S.edit && S.edit.evId === ev0.id && S.edit.newType ? S.edit.newType : ev0; if (ev) S.planType = { id: ev0.id, kind: ev.kind === 'rehearsal' ? 'morning' : ev.kind, name: ev.name || '', label: ev.kind === 'other' ? (ev.label || '') : '' }; return render(); }
+  if (d.planType) { const ev0 = eventById(d.planType), ev = ev0 && S.edit && S.edit.evId === ev0.id && S.edit.newType ? S.edit.newType : ev0; if (ev) S.planType = { id: ev0.id, kind: ev.kind === 'rehearsal' ? 'morning' : ev.kind, name: ev.name || '', label: ev.kind === 'other' ? (ev.label || '') : '' }; return render(); }
   if (d.ptKind && S.planType) { ptRead(); S.planType.kind = d.ptKind;
     document.querySelectorAll('.modal [data-pt-kind]').forEach(o => { const on = o.dataset.ptKind === d.ptKind; o.classList.toggle('on', on); o.setAttribute('aria-checked', on); });
     const box = document.getElementById('pt-other'); if (box) box.style.display = d.ptKind === 'other' ? 'grid' : 'none';
@@ -8411,56 +8961,10 @@ document.addEventListener('click', async e => {
     return;
   }
   if (el.hasAttribute('data-save-marks')) {
-    const E = S.edit; if (!E) return;
-    if (!await ensureSession()) return;
-    S.toast = ''; S.retry = null;
-    let evId = E.evId;
-    if (evId === 'new') {
-      const { data, error } = await sb.from('events')
-        .insert(Object.assign({}, S.pending,
-          { cancelled: !!E.cancelled, attendance_taken: E.mode === 'att' })).select().single();
-      if (error) return fail(error);
-      S.events.push(data); S.events.sort((a,b) => a.date < b.date ? -1 : 1);
-      evId = data.id; S.pending = null;
-    }
-    const evRow0 = S.events.find(x => x.id === evId);
-    const patch = {};
-    if (E.newDate && evRow0 && E.newDate !== evRow0.date) patch.date = E.newDate;
-    if (E.newType) Object.assign(patch, E.newType);
-    if (E.cancelled !== E.wasCancelled) patch.cancelled = E.cancelled;
-    if (E.mode === 'att' && evRow0 && !evRow0.attendance_taken) patch.attendance_taken = true;
-    if (Object.keys(patch).length && E.evId !== 'new') {
-      const { error } = await sb.from('events').update(patch).eq('id', evId);
-      if (error) return fail(error);
-      if (patch.date && evRow0) evRow0.date = patch.date;
-      if (E.newType && evRow0) Object.assign(evRow0, E.newType);
-    }
-    const evRow = S.events.find(x => x.id === evId);
-    if (evRow) { evRow.cancelled = E.cancelled; if (E.mode === 'att') evRow.attendance_taken = true; }
-    if (isAttCancelled(E)) E.sel = new Map();      // a cancelled date records nobody
-    const isAtt = E.mode === 'att';
-    const table = isAtt ? 'absences' : 'event_songs';
-    const col   = isAtt ? 'singer_id' : 'song_id';
-    const row   = (k, v) => isAtt
-      ? { event_id: evId, singer_id: k, status: v === 'na' ? 'not_listed' : 'absent' }
-      : { event_id: evId, song_id: k, position: v.pos,
-          conductor_id: v.c || null, pianist_id: v.p || null };
-    const { del, ins } = editDelta();
-    if (del.length) {   // delete first: a state change is a delete + insert
-      const { error } = await sb.from(table).delete().eq('event_id', evId).in(col, del);
-      if (error) return fail(error);
-    }
-    if (ins.length) {
-      const { error } = await sb.from(table).insert(ins.map(([k,v]) => row(k,v)));
-      if (error) return fail(error);
-    }
-    const rows = [...E.sel].map(([k,v]) => row(k,v));
-    if (E.mode === 'att') S.absences = S.absences.filter(a => a.event_id !== evId).concat(rows);
-    else S.eventSongs = S.eventSongs.filter(x => x.event_id !== evId).concat(rows);
-    S.edit = null; okToast(t('savedOk'));
-    location.hash = '#/admin/' + (E.mode === 'att' ? 'attendance' : 'songs');
-    render();
-    return load(true);   // silent re-read, so the grids match the database exactly
+    const E = S.edit; if (!E || S.saving) return;   // a second tap while saving must not save twice
+    S.saving = true; render();
+    try { await saveMarks(E); } finally { S.saving = false; render(); }
+    return;
   }
 
   if (d.delEvent) {
@@ -8476,7 +8980,7 @@ document.addEventListener('click', async e => {
   }
   if (d.open) {
     const [kind, id] = d.open.split(':'), K = SHEETKIND[kind];
-    const song = S.songs.find(s => s.id === id);
+    const song = songById(id);
     if (!song || !song[K.col]) return;
     const w = window.open('', '_blank');          // opened before the await, or the popup blocker eats it
     /* offline, or the signing call failed: fall back to the stored copy */
@@ -8500,7 +9004,7 @@ document.addEventListener('click', async e => {
   }
   if (d.lock) {
     const [kind, id] = d.lock.split(':'), K = SHEETKIND[kind];
-    const song = S.songs.find(s => s.id === id);
+    const song = songById(id);
     if (!song || !song[K.col]) return;
     if (!await ensureSession()) return;
     const next = !song[K.lock];
@@ -8511,20 +9015,21 @@ document.addEventListener('click', async e => {
       const mv = await sb.storage.from(K.bucket).move(from, to);
       if (mv.error) return fail(mv.error);
     }
-    const { error } = await sb.from('songs').update({ [K.col]: to, [K.lock]: next }).eq('id', song.id);
-    if (error) { await sb.storage.from(K.bucket).move(to, from); return fail(error); }
+    const res = await sb.from('songs').update({ [K.col]: to, [K.lock]: next }).eq('id', song.id).select('id');
+    if (!wrote(res)) { if (to !== from) await sb.storage.from(K.bucket).move(to, from); return render(); }
     song[K.col] = to; song[K.lock] = next;
     return render();
   }
   if (d.delPdf) {
     const K = SHEETKIND[d.sheetKind || 'sheets'];
-    const song = S.songs.find(s => s.id === d.delPdf);
+    const song = songById(d.delPdf);
     if (!song || !song[K.col]) return;
     if (!d.confirm) { S.pdfDel = { id: song.id, kind: d.sheetKind || 'sheets' }; return render(); }
     S.pdfDel = null;
+    if (!await ensureSession()) return render();
     const path = song[K.col];
-    const { error } = await sb.from('songs').update({ [K.col]: null }).eq('id', song.id);
-    if (error) return fail(error);
+    const res = await sb.from('songs').update({ [K.col]: null }).eq('id', song.id).select('id');
+    if (!wrote(res)) return render();
     song[K.col] = null; render();
     await sb.storage.from(K.bucket).remove([path]);
     return;
@@ -8553,7 +9058,7 @@ document.addEventListener('click', async e => {
     if (!await ensureSession()) return;
     const res = await sb.from('songs').update({ audio_url: url }).eq('id', id).select();
     if (!wrote(res)) return render();
-    const song = S.songs.find(x => x.id === id);
+    const song = songById(id);
     if (song) song.audio_url = url;
     S.audioEdit = null; S.audioDraft = '';
     okToast(t('audioSaved')); return render();
@@ -8616,9 +9121,9 @@ document.addEventListener('click', async e => {
     if (lyrDirty() && !confirm(t('discardQ'))) return;
     S.lyrFor = null; S.lyrDraft = null; return render();
   }
-  if (d.lyrPrint) { const song = S.songs.find(x => x.id === d.lyrPrint); if (song) printLyrics(song); return; }
+  if (d.lyrPrint) { const song = songById(d.lyrPrint); if (song) printLyrics(song); return; }
   if (d.lyrCopy) {
-    const song = S.songs.find(x => x.id === d.lyrCopy);
+    const song = songById(d.lyrCopy);
     if (!song || !hasLyrics(song)) return;
     /* One blank line between blocks, because SoftProjector cuts slides on it.
        Verses run bare — their order says what they are — but a chorus, bridge or
@@ -8639,7 +9144,7 @@ document.addEventListener('click', async e => {
     const res = await sb.from('songs').update({ lyrics: blocks.length ? blocks : null, pv_number: pv })
       .eq('id', d.lyrSave).select();
     if (!wrote(res)) return render();
-    const song = S.songs.find(x => x.id === d.lyrSave);
+    const song = songById(d.lyrSave);
     if (song) { song.lyrics = blocks.length ? blocks : null; song.pv_number = pv; }
     S.lyrFor = null; S.lyrDraft = null; okToast(t('lyrSaved'));
     return render();
@@ -8719,7 +9224,7 @@ document.addEventListener('click', async e => {
     if (!await ensureSession()) return;
     const res = await sb.from('songs').delete().eq('id', d.delSong).select();
     if (!wrote(res)) return render();
-    { const gone = S.songs.find(x => x.id === d.delSong), files = REC_KEYS.map(p => partRec(gone, p)).filter(r => r && r.path).map(r => r.path);
+    { const gone = songById(d.delSong), files = REC_KEYS.map(p => partRec(gone, p)).filter(r => r && r.path).map(r => r.path);
       if (files.length) sb.storage.from(PARTS_BUCKET).remove(files).then(() => {}, () => {});
       if (PL.id === d.delSong) plStop(); }
     S.songs = S.songs.filter(x => x.id !== d.delSong);
@@ -8751,7 +9256,7 @@ document.addEventListener('click', async e => {
     return render();
   }
   if (d.dropRole) {
-    const s = S.singers.find(x => x.id === d.dropRole);
+    const s = singerById(d.dropRole);
     const role = S.memTab === 'pianists' ? 'is_pianist' : 'is_conductor';
     if (!s || !confirm(t('confirmDropRole'))) return;
     if (!await ensureSession()) return;
@@ -8760,7 +9265,7 @@ document.addEventListener('click', async e => {
     s[role] = false; S.editPerson = null; return render();
   }
   if (d.delSinger) {
-    const person = S.singers.find(x => x.id === d.delSinger);
+    const person = singerById(d.delSinger);
     if (S.memTab !== 'singers' && person && isSinger(person)) {
       alert(t('singerKeepNote')); return;        // they sing; only the role can go
     }
@@ -8779,7 +9284,7 @@ document.addEventListener('click', async e => {
   }
 
   if (d.savePerson) {
-    const s = S.singers.find(x => x.id === d.savePerson);
+    const s = singerById(d.savePerson);
     const inp = document.getElementById('edit-name');
     const clean = inp ? inp.value.trim() : '';
     if (!s || !clean) return;
@@ -8788,7 +9293,12 @@ document.addEventListener('click', async e => {
     const patch = { name: clean };
     if (jd) patch.joined_on = jd.value || null;
     const sd = document.getElementById('edit-svc');       // same as joined = no separate start
-    if (sd) patch.service_start = sd.value && sd.value !== (jd ? jd.value : '') ? sd.value : null;
+    if (sd) {
+      /* untouched and never set separately: still "same as joined", even when the
+         joined date itself moved (the field was only showing the old joined date) */
+      if (sd.value === sd.defaultValue && !s.service_start) patch.service_start = null;
+      else patch.service_start = sd.value && sd.value !== (jd ? jd.value : '') ? sd.value : null;
+    }
     const pe = document.getElementById('edit-part'), ce = document.getElementById('edit-is-c'), pc = document.getElementById('edit-is-p');
     if (pe && pe.value) patch.part = pe.value;            // a voice part can change, but not be cleared here — singers keep their history
     if (ce) patch.is_conductor = ce.checked;
@@ -8799,7 +9309,7 @@ document.addEventListener('click', async e => {
     S.editPerson = null; return render();
   }
   if (d.photoDel) {
-    const s = S.singers.find(x => x.id === d.photoDel);
+    const s = singerById(d.photoDel);
     if (!s || !s.photo_path) return;
     if (!await ensureSession()) return;
     const old = s.photo_path;
@@ -8811,7 +9321,7 @@ document.addEventListener('click', async e => {
   }
   if (el.hasAttribute('data-cancel-person')) { S.editPerson = null; return render(); }
   if (d.archiveSinger) {
-    const s = S.singers.find(x => x.id === d.archiveSinger);
+    const s = singerById(d.archiveSinger);
     if (!s) return;
     if (!await ensureSession()) return;
     const next = s.active === false;               // true = restore
@@ -8820,7 +9330,7 @@ document.addEventListener('click', async e => {
     s.active = next; S.editPerson = null; return render();
   }
   if (d.saveSongRow) {
-    const s = S.songs.find(x => x.id === d.saveSongRow);
+    const s = songById(d.saveSongRow);
     const tt = document.getElementById('edit-song-title'), ss = document.getElementById('edit-song-sub');
     const clean = tt ? tt.value.trim() : '';
     if (!s || !clean) return;
@@ -8896,22 +9406,22 @@ document.addEventListener('click', async e => {
   }
   if (d.lp) {
     const i = d.lp.lastIndexOf(':'), id = d.lp.slice(0, i), part = d.lp.slice(i + 1);
-    const song = S.songs.find(x => x.id === id);
+    const song = songById(id);
     if (song) plStart(song, part);
     return;
   }
   if (d.recLink) {
-    const song = S.songs.find(x => x.id === S.audioEdit), r = song && partRec(song, d.recLink);
+    const song = songById(S.audioEdit), r = song && partRec(song, d.recLink);
     S.recLink = d.recLink; S.recDel = null; S.recDraft = r && r.url ? r.url : '';
     render();
     requestAnimationFrame(() => { const b = document.getElementById('rec-link-' + d.recLink); if (b) { b.focus(); b.select(); } });
     return;
   }
   if (el.hasAttribute('data-rec-link-x')) { S.recLink = null; S.recDraft = ''; return render(); }
-  if (d.recLinkGo) { const song = S.songs.find(x => x.id === S.audioEdit); if (song) recLinkSave(song, d.recLinkGo); return; }
+  if (d.recLinkGo) { const song = songById(S.audioEdit); if (song) recLinkSave(song, d.recLinkGo); return; }
   if (d.recDel) { S.recDel = d.recDel; S.recLink = null; return render(); }
   if (el.hasAttribute('data-rec-del-x')) { S.recDel = null; return render(); }
-  if (d.recDelGo) { const song = S.songs.find(x => x.id === S.audioEdit); if (song) recRemove(song, d.recDelGo); return; }
+  if (d.recDelGo) { const song = songById(S.audioEdit); if (song) recRemove(song, d.recDelGo); return; }
   if (d.recCancel) { const j = RECUP[d.recCancel]; if (j) j.xhr.abort(); return; }
   if (d.recAdd) { S.recAdd = [...new Set([...(S.recAdd || []), d.recAdd])]; S.recLink = null; S.recDel = null; return render(); }
   if (d.recAddX) { S.recAdd = (S.recAdd || []).filter(x => x !== d.recAddX); return render(); }
@@ -8944,7 +9454,7 @@ document.addEventListener('click', async e => {
       if (error) return fail(error);
       S.songs.push(data);
     } else {
-      const s = S.songs.find(x => x.id === S.learnEdit);
+      const s = songById(S.learnEdit);
       if (!s) { S.learnEdit = null; return render(); }
       const res = await sb.from('songs').update(row).eq('id', s.id).select();
       if (!wrote(res)) return render();
@@ -8953,7 +9463,7 @@ document.addEventListener('click', async e => {
     S.songs.sort((a, b) => a.title.localeCompare(b.title)); S.learnEdit = null; return render();
   }
   if (d.learnMove) {
-    const s = S.songs.find(x => x.id === d.learnMove);
+    const s = songById(d.learnMove);
     if (!s) return;
     if (!d.confirm) { S.learnMove = s.id; return render(); }
     if (!await ensureSession()) return;
@@ -8963,7 +9473,7 @@ document.addEventListener('click', async e => {
   }
   if (el.hasAttribute('data-toggle-arch-songs')) { S.archSongsOpen = !S.archSongsOpen; return render(); }
   if (d.archiveSong) {
-    const s = S.songs.find(x => x.id === d.archiveSong);
+    const s = songById(d.archiveSong);
     if (!s) return;
     if (!await ensureSession()) return;
     const next = s.active === false;               // true = restore
@@ -9009,19 +9519,23 @@ document.addEventListener('click', async e => {
     if (S.catFilter === d.delCat) S.catFilter = 'all';
     return render();
   }
-  if (el.hasAttribute('data-signout')) { await sb.auth.signOut(); S.session = null; location.hash = '#/home'; return; }
+  if (el.hasAttribute('data-signout')) {
+    const { error } = await sb.auth.signOut().catch(err => ({ error: err }));
+    if (error) await sb.auth.signOut({ scope: 'local' }).catch(() => {});   // offline: still forget it on this device
+    S.session = null; S.usage = null; location.hash = '#/home'; return;
+  }
 });
 
 document.addEventListener('change', async e => {
   const el = e.target;
   if (el.dataset && el.dataset.photoFor) {
-    const s = S.singers.find(x => x.id === el.dataset.photoFor), file = el.files && el.files[0];
+    const s = singerById(el.dataset.photoFor), file = el.files && el.files[0];
     el.value = '';
     if (s && file) uploadPhoto(s, file);
     return;
   }
   if (el.dataset.setPart) {
-    const s = S.singers.find(x => x.id === el.dataset.setPart);
+    const s = singerById(el.dataset.setPart);
     const was = s.part, next = el.value;
     if (!s || was === next) return;
     if (!await ensureSession()) { el.value = was; return; }
@@ -9052,12 +9566,12 @@ document.addEventListener('change', async e => {
     if (!await ensureSession()) return;
     const res = await sb.from('singers').update({ [role]: true }).eq('id', id).select();
     if (!wrote(res)) return render();
-    const p = S.singers.find(x => x.id === id);
+    const p = singerById(id);
     if (p) p[role] = true;
     return render();
   }
   if (el.dataset.upload) {
-    const song = S.songs.find(s => s.id === el.dataset.upload);
+    const song = songById(el.dataset.upload);
     const file = el.files && el.files[0];
     if (!song || !file) return;
     if (file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)) { alert(t('pdfOnly')); return; }
@@ -9065,11 +9579,12 @@ document.addEventListener('change', async e => {
     const old = song[K.col];
     const path = sheetPath(song[K.lock], song.id);
     el.value = '';                        // so picking the same file again still fires
+    if (!await ensureSession()) return;
     S.uploading = kind + ':' + song.id; render();
     const up = await sb.storage.from(K.bucket).upload(path, file, { contentType: 'application/pdf' });
     if (up.error) { S.uploading = null; return fail(up.error); }
-    const { error } = await sb.from('songs').update({ [K.col]: path }).eq('id', song.id);
-    if (error) { S.uploading = null; await sb.storage.from(K.bucket).remove([path]); return fail(error); }
+    const res = await sb.from('songs').update({ [K.col]: path }).eq('id', song.id).select('id');
+    if (!wrote(res)) { S.uploading = null; await sb.storage.from(K.bucket).remove([path]); return render(); }
     song[K.col] = path;
     if (old) await sb.storage.from(K.bucket).remove([old]);
     S.uploading = null; return render();
@@ -9086,13 +9601,29 @@ document.addEventListener('change', e => {
     if (e.target.value) { S.edit.newDate = e.target.value; render(); }
   }
 });
+/* The search box redraws the list once typing pauses, not on every keystroke
+   (that lagged on long lists), and never while an input method is composing a
+   word (redrawing then broke Android keyboards). */
+let qTimer = null, qLast = 0;
+function qRender(){
+  /* The first keystroke redraws at once; while typing goes on, at most one
+     redraw per 140 ms, and always one after the last key. */
+  const run = () => {
+    qLast = Date.now(); qTimer = null;
+    const live = document.getElementById('q'), focused = live && live === document.activeElement;
+    const pos = live ? live.selectionStart : null;
+    render();
+    const again = document.getElementById('q');
+    if (again && focused) { again.focus(); if (pos != null) try { again.setSelectionRange(pos, pos); } catch (_) {} }
+  };
+  if (qTimer) return;                      // a redraw is already on its way and will read S.query
+  const wait = 140 - (Date.now() - qLast);
+  if (wait <= 0) run(); else qTimer = setTimeout(run, wait);
+}
 document.addEventListener('input', e => {
-  if (e.target.id === 'q') {
-    S.query = e.target.value;
-    const pos = e.target.selectionStart; render();
-    const again = document.getElementById('q'); if (again) { again.focus(); again.setSelectionRange(pos, pos); }
-  }
+  if (e.target.id === 'q') { S.query = e.target.value; if (!e.isComposing) qRender(); }
 });
+document.addEventListener('compositionend', e => { if (e.target && e.target.id === 'q') { S.query = e.target.value; qRender(); } });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && S.menuOpen) dismissMenu();
   if (e.key === 'Escape' && (S.addOpen || S.editSongRow || S.editPerson || S.editCat) && document.querySelector('.modal')) { S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; render(); }
@@ -9168,7 +9699,7 @@ function tsDraw(){
 }
 function tsGo(k){
   k = String(k || ''); const id = k.slice(2);
-  const m = k[0] === 'm' && S.singers.find(x => x.id === id), s = k[0] === 's' && S.songs.find(x => x.id === id);
+  const m = k[0] === 'm' && singerById(id), s = k[0] === 's' && songById(id);
   if (!m && !s) return;
   document.querySelectorAll('.tsin').forEach(i => { i.value = ''; i.blur(); });
   msClose();
@@ -9280,7 +9811,21 @@ document.addEventListener('keydown', e => {
     e.target.value = ''; tsDraw(); e.target.blur();
   }
 });
+/* Marks, the seating plan and the rules are buffered until Save: leaving with
+   changes asks first (tab bar, Back, links) instead of dropping them silently. */
+function unsavedOn(route){
+  if (/^#\/admin\/(attendance|songs)\/./.test(route)) return !S.saving && editDirty();
+  if (route.startsWith('#/seating')) return !!(S.seatEdit && S.seatEdit.size);
+  if (route.startsWith('#/rules') && S.rulesEdit) return S.rulesEdit.en !== ((S.rules && S.rules.body_en) || '') || S.rulesEdit.ru !== ((S.rules && S.rules.body_ru) || '');
+  return false;
+}
+window.addEventListener('beforeunload', e => { if (S.route && unsavedOn(S.route)) { e.preventDefault(); e.returnValue = ''; } });
 window.addEventListener('hashchange', () => {
+  const nextRoute = normRoute(location.hash), here = (S.route || '').split('?')[0];
+  if (here && nextRoute.split('?')[0] !== here && !nextRoute.startsWith('#/login') && unsavedOn(S.route) && !confirm(t('discardLeave'))) {
+    history.replaceState(null, '', S.route);    // stay, with the changes intact
+    return;
+  }
   S.reviewKey = null;
   S.ripple = true;
   const prevPage = (S.route || '').split('?')[0], prevFull = S.route || '';
@@ -9299,7 +9844,20 @@ window.addEventListener('hashchange', () => {
   if (!S.route.startsWith('#/rules')) { S.rulesEdit = null; S.rulesPreview = false; }
   S.error = ''; S.query = ''; S.editPerson = null; S.editSongRow = null; S.editCat = null; S.addOpen = null;
   render();
+  if (S.route.split('?')[0] !== prevPage) enterPage();
 });
+/* A new page settles in rather than snapping: a short fade of what changed.
+   Opacity only — a transform here would re-anchor the toast and dialogs inside
+   the page for the length of the fade. The header stays put. */
+function enterPage(){
+  const app = document.getElementById('app');
+  if (!app) return;
+  [...app.children].forEach(k => {
+    if (!k.animate || (k.classList && (k.classList.contains('mast') || k.classList.contains('topbar') || k.classList.contains('drawer')
+      || k.classList.contains('savebar') || k.classList.contains('scrim')))) return;
+    k.animate([{ opacity: 0 }, { opacity: 1 }], { duration: calm() ? 100 : 180, easing: EASE.fade });
+  });
+}
 
 /* ---------- boot ---------- */
 if ('serviceWorker' in navigator) {

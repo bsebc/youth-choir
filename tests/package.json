@@ -1,0 +1,15 @@
+{
+  "name": "bsebc-choir-tests",
+  "private": true,
+  "type": "module",
+  "description": "Local copy of the choir app's stack (Postgres + a Supabase stand-in) for testing changes before they go live",
+  "scripts": {
+    "api": "node api_test.mjs",
+    "e2e": "node e2e_test.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0",
+    "esbuild": "^0.25.0",
+    "pg": "^8.16.0"
+  }
+}
