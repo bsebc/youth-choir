@@ -1629,6 +1629,44 @@
   .lnt span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .lnt.danger,.lnt.danger svg{color:var(--red)}
   .lnempty{padding:48px 20px;border:1px dashed var(--line-strong-2);border-radius:18px;text-align:center;font-size:14px;color:var(--muted)}
+  /* 5.51 folders: a section per folder, a switcher to show one, the add-from-repertoire list */
+  .lnfbar{margin:-4px 0 20px}
+  .chips.lnchips{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;max-width:100%;width:max-content}
+  .chips.lnchips::-webkit-scrollbar{display:none}
+  .chips.lnchips a{position:relative;z-index:1;flex:none;padding:7px 14px;max-width:18em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-radius:var(--r-pill);font-size:var(--fs-13-5);font-weight:600;letter-spacing:-.1px;color:var(--text-2);text-decoration:none}
+  .chips.lnchips a.on{color:var(--ink);font-weight:600}
+  .lnfold{margin:0 0 28px}
+  .lnfold:last-child{margin-bottom:6px}
+  .lnfh{display:flex;align-items:center;gap:8px;min-height:46px;margin:0 2px 10px}
+  .lnfh .lnfi{width:20px;height:20px;flex:none;color:var(--gold-text)}
+  .lnfh h2{margin:0;min-width:0;font-size:19px;font-weight:700;letter-spacing:-.35px;line-height:1.25;color:var(--ink);overflow-wrap:anywhere}
+  .lnfh .lnfn{flex:none;font-size:13px;color:var(--muted);white-space:nowrap}
+  .lnfh .lnfacts{display:flex;gap:6px;margin-left:auto;flex:none}
+  .lnkeep{display:flex;align-items:flex-start;gap:10px;margin:16px 0 0;font-size:14px;line-height:1.4;color:var(--ink);cursor:pointer}
+  .lnkeep input,.lnprow input{width:20px;height:20px;margin:0;flex:none;accent-color:var(--blue)}
+  .lnrt{font-size:16px;font-weight:600;line-height:1.35;color:var(--ink)}
+  .lnrh{margin:6px 0 0;font-size:12.5px;line-height:1.45;color:var(--muted);text-wrap:pretty}
+  .lnfmvs{display:flex;gap:8px;margin:14px 0 0}
+  .lnfmv{display:inline-flex;align-items:center;gap:6px}
+  .lnfmv svg{width:16px;height:16px}
+  .lnfmv[disabled]{opacity:.4;cursor:default}
+  .mfoot .lnfrm{margin-right:auto;color:var(--red)}
+  .lnpsub{margin:0;font-size:13.5px;line-height:1.45;color:var(--muted)}
+  .lnplist{max-height:min(44vh,360px);overflow-y:auto;overscroll-behavior:contain;margin:12px 0 14px;border:1px solid var(--rule);border-radius:12px;background:var(--card)}
+  .lnprow{display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 14px;border-bottom:1px solid var(--rule);cursor:pointer}
+  .lnprow:last-child{border-bottom:0}
+  .lnprow .b{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .lnprow .t{font-size:15px;line-height:1.3;color:var(--ink);overflow-wrap:anywhere}
+  .lnprow .m{font-size:12.5px;color:var(--muted)}
+  .lnprow .m.new{color:var(--gold-text);font-weight:600}
+  .lnprow.dis{cursor:default}
+  .lnprow.dis .t{color:var(--muted)}
+  .lnpnone{padding:22px 14px;text-align:center;font-size:13px;color:var(--muted)}
+  [data-ln-pick-add][disabled]{opacity:.45;cursor:default;box-shadow:none}
+  /* a service's footer with the director's third action: labels stay on one line and
+     the row wraps instead (Show all songs and Share on one line, Add to Learning below) */
+  .obar .oacts .mini{white-space:nowrap}
+  @media (max-width:700px){ .obar .oacts .mini{flex:1 1 auto} }
   .dpanel.lntile{display:flex;flex-direction:column;min-width:0}
   .lntile .lntag{margin-left:6px}
   .lntile .lrows{flex:1;display:flex;flex-direction:column;gap:2px;margin:10px -12px 0}
@@ -1659,6 +1697,22 @@
   @media (max-width:1399px){ .lntile .lrow:nth-child(n+4){display:none} }
   @media (max-width:699px){ .lntile .lrow:nth-child(n+3){display:none} .lnfeat .ft{font-size:17px} }
   .lntile .lnone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:150px}
+  /* 5.51: a row per folder, with its numbers */
+  .lntile .lnfrs{flex:1;display:flex;flex-direction:column;gap:2px;margin:12px -12px 0}
+  .lnfr{display:flex;align-items:center;gap:14px;min-width:0;padding:12px;border-radius:12px;color:var(--ink);text-decoration:none;transition:background .15s ease}
+  .lnfr .lnfic{display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:12px;background:var(--tool3-bg);color:var(--tool3-ic)}
+  .lnfr .lnfic svg{width:20px;height:20px;color:inherit}
+  .lnfr .b{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+  .lnfr strong{font-size:15px;font-weight:650;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s ease}
+  .lnfr small{font-size:12.5px;line-height:1.35;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lnfr small em{font-style:normal;font-weight:600;color:var(--gold-text)}
+  .lnsts{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:2px}
+  .lnst{display:inline-flex;align-items:center;gap:5px;font-size:12px;line-height:1.2;color:var(--muted)}
+  .lnst svg{width:13px;height:13px;flex:none}
+  .lnst b{font-weight:600;font-variant-numeric:tabular-nums}
+  .lnst.all{color:var(--green)}
+  .lnfr > svg{width:16px;height:16px;flex:none;color:var(--faint)}
+  @media (hover:hover){ .lnfr:hover{background:var(--surface-2)} .lnfr:hover strong{color:var(--blue-text)} }
   .lntile .lnico{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:var(--tool3-bg);color:var(--tool3-ic)}
   .lntile .lnico svg{width:20px;height:20px}
   .dlib{margin-top:20px}
@@ -3190,9 +3244,9 @@
       box-shadow:0 14px 36px -14px rgba(var(--shadow-rgb),.38),0 2px 6px -2px rgba(var(--shadow-rgb),.1),0 0 0 1px var(--dk-line)}
   }
   /* a page's switchers stay where they are; only their thumb glides */
-  html.vt-on::view-transition-group(v-stay-tabs),html.vt-on::view-transition-group(v-stay-ctl),html.vt-on::view-transition-group(v-stay-top),html.vt-on::view-transition-group(v-stay-search),html.vt-on::view-transition-group(v-stay-obar){animation-duration:.39s;animation-timing-function:var(--spring-nav)}
-  html.vt-on::view-transition-old(v-stay-tabs),html.vt-on::view-transition-old(v-stay-ctl),html.vt-on::view-transition-old(v-stay-top),html.vt-on::view-transition-old(v-stay-search),html.vt-on::view-transition-old(v-stay-obar){display:none}
-  html.vt-on::view-transition-new(v-stay-tabs),html.vt-on::view-transition-new(v-stay-ctl),html.vt-on::view-transition-new(v-stay-top),html.vt-on::view-transition-new(v-stay-search),html.vt-on::view-transition-new(v-stay-obar){animation:none}
+  html.vt-on::view-transition-group(v-stay-tabs),html.vt-on::view-transition-group(v-stay-ctl),html.vt-on::view-transition-group(v-stay-top),html.vt-on::view-transition-group(v-stay-search),html.vt-on::view-transition-group(v-stay-obar),html.vt-on::view-transition-group(v-stay-lnf){animation-duration:.39s;animation-timing-function:var(--spring-nav)}
+  html.vt-on::view-transition-old(v-stay-tabs),html.vt-on::view-transition-old(v-stay-ctl),html.vt-on::view-transition-old(v-stay-top),html.vt-on::view-transition-old(v-stay-search),html.vt-on::view-transition-old(v-stay-obar),html.vt-on::view-transition-old(v-stay-lnf){display:none}
+  html.vt-on::view-transition-new(v-stay-tabs),html.vt-on::view-transition-new(v-stay-ctl),html.vt-on::view-transition-new(v-stay-top),html.vt-on::view-transition-new(v-stay-search),html.vt-on::view-transition-new(v-stay-obar),html.vt-on::view-transition-new(v-stay-lnf){animation:none}
 
   /* drilling in, on a phone: the new page slides in from the right edge over the old
      one, which eases a third of the way left; going back reverses it. A soft edge
@@ -3262,7 +3316,7 @@ const STR = {
     tSingers:'Singers',tPianists:'Pianists',tConductors:'Conductors',
     conductor:'Conductor',pianist:'Pianist',markC:'C',markP:'P',
     voicePart:'Voice part',partMoved:(n,p)=>n+' → '+p+'. Attendance is unchanged.',
-    archive:'Archive',restore:'Restore',archived:'Archived',archSongs:'Archived songs',lsFull:'Full Choir',lsNone:'No recording yet',recSplit:'Split a part',recSplitHint:'For songs where this part divides in two',recAddX:'Remove this row',recs:'Recordings',recsN:n=>'Recordings · '+n,recDrop:'Drop MP3 files here',recDropHint:'Name each file after its part, like “Alto.mp3”, “Soprano 2.mp3” or “Full Choir.mp3”, and it goes to the right row. You can drop them all at once.',recChoose:'Choose files',recFullL:'Full Choir',recNone:'Nothing yet',recUpload:'Upload',recAddLink:'Link',recReplace:'Replace',recEditLink:'Edit link',recRemove:'Remove',recRemoveQ:'Remove this recording?',recKeep:'Keep',recCancel:'Cancel',recSave:'Save',recLinkPh:'Paste a YouTube, SoundCloud or Drive link',recFormats:'MP3, M4A, AAC or WAV, up to 50 MB each. Everyone can listen.',recDoneBtn:'Done',recDone:p=>p+' recording uploaded',recLinkSaved:'Link saved',recType:'Use an MP3, M4A, AAC or WAV file.',recBig:s=>'That file is '+s+'. The limit is 50 MB, so export it as an MP3 first.',recMiss:n=>'Couldn’t tell which part these are: '+n+'. Drop each one on its row.',recBadLink:'That doesn’t look like a link.',recNoSql:'Part recordings aren’t set up yet. Run part_recordings.sql in Supabase.',recPlay:'Play',recOpen:'Open link',plTitle:'Player',plPlay:'Play',plPause:'Pause',plBack:'Back 10 seconds',plFwd:'Forward 10 seconds',plLoop:'Repeat',plClose:'Close player',plSeek:'Position',plErr:'Couldn’t play this recording',lnTitle:'Learning',lnNow:'Now learning',lnNew:'New',lnNotes:'Sheet',lnUp:'Move up',lnDown:'Move down',lnFiles:'Files & links',lnFromDir:'From the director',lnSumSheet:'Sheet music',lnSumPiano:'Piano',lnSumRec:'Recording',lnSumLyr:'Lyrics',lnComing:'Coming soon',lnDemoOn:'Show a sample',lnDemoOff:'Hide sample',lnDemoTag:'Sample',lnDemoNote:'Sample songs made from your repertoire, to preview this page. Nothing here is saved.',lnDemoAct:'This is a sample. Nothing is saved.',lnSub:'Songs we are learning or about to learn. Practise at home with the music, the recording and the words.',lnNone:'No songs to learn right now.',lnSoon:'Music and recording coming soon.',lnTarget:'Goal',lnTargetPh:'e.g. For Christmas',lnNote:'Note for singers',lnNotePh:'e.g. Altos, learn the second verse first',lnAdd:'Add learning song',lnEditT:'Edit learning song',lnMove:'Move to repertoire',lnMoveT:'Move to the repertoire?',lnMoveQ:n=>'“'+n+'” will show in Choir music, Piano music, Lyrics and the song picker like every other song, and leave the Learning list.',lnTileNote:'Songs here show only on the Learning page until you move them to the repertoire.',lnOpen:'Open Learning page',lnChoir:'Choir sheet',lnPiano:'Piano',lnUpChoir:'Upload choir PDF',lnUpPiano:'Upload piano PDF',lnRmChoir:'Remove choir PDF',lnRmPiano:'Remove piano PDF',lnLyrAdd:'Add lyrics',lnLyrEdit:'Edit lyrics',archSongT:'Archive this song?',archSongQ:n=>'“'+n+'” will be hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Its history stays, and you can restore it from Archived songs.',archSongNote:'Archived songs keep their history and still show in past services, but are hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Restore brings them back.',
+    archive:'Archive',restore:'Restore',archived:'Archived',archSongs:'Archived songs',lsFull:'Full Choir',lsNone:'No recording yet',recSplit:'Split a part',recSplitHint:'For songs where this part divides in two',recAddX:'Remove this row',recs:'Recordings',recsN:n=>'Recordings · '+n,recDrop:'Drop MP3 files here',recDropHint:'Name each file after its part, like “Alto.mp3”, “Soprano 2.mp3” or “Full Choir.mp3”, and it goes to the right row. You can drop them all at once.',recChoose:'Choose files',recFullL:'Full Choir',recNone:'Nothing yet',recUpload:'Upload',recAddLink:'Link',recReplace:'Replace',recEditLink:'Edit link',recRemove:'Remove',recRemoveQ:'Remove this recording?',recKeep:'Keep',recCancel:'Cancel',recSave:'Save',recLinkPh:'Paste a YouTube, SoundCloud or Drive link',recFormats:'MP3, M4A, AAC or WAV, up to 50 MB each. Everyone can listen.',recDoneBtn:'Done',recDone:p=>p+' recording uploaded',recLinkSaved:'Link saved',recType:'Use an MP3, M4A, AAC or WAV file.',recBig:s=>'That file is '+s+'. The limit is 50 MB, so export it as an MP3 first.',recMiss:n=>'Couldn’t tell which part these are: '+n+'. Drop each one on its row.',recBadLink:'That doesn’t look like a link.',recNoSql:'Part recordings aren’t set up yet. Run part_recordings.sql in Supabase.',recPlay:'Play',recOpen:'Open link',plTitle:'Player',plPlay:'Play',plPause:'Pause',plBack:'Back 10 seconds',plFwd:'Forward 10 seconds',plLoop:'Repeat',plClose:'Close player',plSeek:'Position',plErr:'Couldn’t play this recording',lnTitle:'Learning',lnNow:'Now learning',lnNew:'New',lnNotes:'Sheet',lnUp:'Move up',lnDown:'Move down',lnFiles:'Files & links',lnFromDir:'From the director',lnSumSheet:'Sheet music',lnSumPiano:'Piano',lnSumRec:'Recording',lnSumLyr:'Lyrics',lnComing:'Coming soon',lnDemoOn:'Show a sample',lnDemoOff:'Hide sample',lnDemoTag:'Sample',lnDemoNote:'Sample songs made from your repertoire, to preview this page. Nothing here is saved.',lnDemoAct:'This is a sample. Nothing is saved.',lnSub:'Songs we are learning or about to learn. Practise at home with the music, the recording and the words.',lnNone:'No songs to learn right now.',lnSoon:'Music and recording coming soon.',lnTarget:'Folder',lnTargetPh:'e.g. For Christmas',lnNote:'Note for singers',lnNotePh:'e.g. Altos, learn the second verse first',lnAdd:'Add learning song',lnEditT:'Edit learning song',lnMove:'Move to repertoire',lnMoveT:'Move to the repertoire?',lnMoveQ:n=>'“'+n+'” will show in Choir music, Piano music, Lyrics and the song picker like every other song.',lnTileNote:'Songs here show only on the Learning page until you move them to the repertoire.',lnOpen:'Open Learning page',lnChoir:'Choir sheet',lnPiano:'Piano',lnUpChoir:'Upload choir PDF',lnUpPiano:'Upload piano PDF',lnRmChoir:'Remove choir PDF',lnRmPiano:'Remove piano PDF',lnLyrAdd:'Add lyrics',lnLyrEdit:'Edit lyrics',archSongT:'Archive this song?',archSongQ:n=>'“'+n+'” will be hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Its history stays, and you can restore it from Archived songs.',archSongNote:'Archived songs keep their history and still show in past services, but are hidden from Choir music, Piano music, Lyrics, song stats and the song picker. Restore brings them back.',
     archivedNote:'Archived singers keep all their history in the database but are hidden from the grids and summaries. Restore brings them back.',
     copyLast:'Copy last service',
     categories:'Categories',addSong:'Add song',addCat:'Add category',addSinger:'Add singer',
@@ -3389,7 +3443,7 @@ const STR = {
     tSingers:'Хористы',tPianists:'Пианисты',tConductors:'Дирижёры',
     conductor:'Дирижёр',pianist:'Пианист',markC:'Д',markP:'П',
     voicePart:'Партия',partMoved:(n,p)=>n+' → '+p+'. Посещаемость не изменилась.',
-    archive:'В архив',restore:'Вернуть',archived:'Архив',archSongs:'Песни в архиве',lsFull:'Весь хор',lsNone:'Записи пока нет',recSplit:'Разделить партию',recSplitHint:'Для песен, где партия делится на две',recAddX:'Убрать строку',recs:'Записи',recsN:n=>'Записи · '+n,recDrop:'Перетащите сюда MP3-файлы',recDropHint:'Назовите файлы по партиям, например «Альт.mp3», «Сопрано 2.mp3» или «Весь хор.mp3», и они попадут в нужную строку. Можно перетащить все сразу.',recChoose:'Выбрать файлы',recFullL:'Весь хор',recNone:'Пока нет',recUpload:'Загрузить',recAddLink:'Ссылка',recReplace:'Заменить',recEditLink:'Изменить ссылку',recRemove:'Удалить',recRemoveQ:'Удалить эту запись?',recKeep:'Оставить',recCancel:'Отмена',recSave:'Сохранить',recLinkPh:'Вставьте ссылку на YouTube, SoundCloud или Drive',recFormats:'MP3, M4A, AAC или WAV, до 50 МБ каждый. Слушать могут все.',recDoneBtn:'Готово',recDone:p=>'Запись «'+p+'» загружена',recLinkSaved:'Ссылка сохранена',recType:'Нужен файл MP3, M4A, AAC или WAV.',recBig:s=>'Файл весит '+s+'. Предел — 50 МБ, сохраните его как MP3.',recMiss:n=>'Не понятно, к какой партии относятся: '+n+'. Перетащите каждый файл на свою строку.',recBadLink:'Это не похоже на ссылку.',recNoSql:'Записи партий ещё не настроены. Выполните part_recordings.sql в Supabase.',recPlay:'Слушать',recOpen:'Открыть ссылку',plTitle:'Плеер',plPlay:'Играть',plPause:'Пауза',plBack:'Назад на 10 секунд',plFwd:'Вперёд на 10 секунд',plLoop:'Повтор',plClose:'Закрыть плеер',plSeek:'Позиция',plErr:'Не удалось воспроизвести запись',lnTitle:'Разучиваем',lnNow:'Сейчас учим',lnNew:'Новое',lnNotes:'Ноты',lnUp:'Выше',lnDown:'Ниже',lnFiles:'Файлы и ссылки',lnFromDir:'От регента',lnSumSheet:'Ноты',lnSumPiano:'Фортепиано',lnSumRec:'Запись',lnSumLyr:'Текст',lnComing:'Скоро',lnDemoOn:'Показать пример',lnDemoOff:'Скрыть пример',lnDemoTag:'Пример',lnDemoNote:'Пример из ваших песен, чтобы посмотреть страницу. Ничего не сохраняется.',lnDemoAct:'Это пример. Ничего не сохраняется.',lnSub:'Песни, которые мы разучиваем или скоро начнём. Занимайтесь дома по нотам, записи и тексту.',lnNone:'Сейчас нет песен для разучивания.',lnSoon:'Ноты и запись скоро будут.',lnTarget:'Цель',lnTargetPh:'напр. К Рождеству',lnNote:'Заметка для хористов',lnNotePh:'напр. Альты, сначала выучите второй куплет',lnAdd:'Добавить песню для разучивания',lnEditT:'Песня для разучивания',lnMove:'В репертуар',lnMoveT:'Перенести в репертуар?',lnMoveQ:n=>'«'+n+'» появится в «Музыке хора», нотах для фортепиано, текстах и выборе песен, как остальные песни, и уйдёт из списка «Разучиваем».',lnTileNote:'Эти песни видны только на странице «Разучиваем», пока вы не перенесёте их в репертуар.',lnOpen:'Открыть «Разучиваем»',lnChoir:'Ноты хора',lnPiano:'Фортепиано',lnUpChoir:'Загрузить ноты хора',lnUpPiano:'Загрузить ноты фортепиано',lnRmChoir:'Убрать ноты хора',lnRmPiano:'Убрать ноты фортепиано',lnLyrAdd:'Добавить текст',lnLyrEdit:'Изменить текст',archSongT:'Отправить песню в архив?',archSongQ:n=>'«'+n+'» исчезнет из «Музыки хора», нот для фортепиано, текстов, статистики и выбора песен. История сохранится, вернуть песню можно из блока «Песни в архиве».',archSongNote:'Архивные песни сохраняют историю и видны в прошлых служениях, но скрыты из «Музыки хора», нот для фортепиано, текстов, статистики песен и выбора песен. «Вернуть» возвращает их.',
+    archive:'В архив',restore:'Вернуть',archived:'Архив',archSongs:'Песни в архиве',lsFull:'Весь хор',lsNone:'Записи пока нет',recSplit:'Разделить партию',recSplitHint:'Для песен, где партия делится на две',recAddX:'Убрать строку',recs:'Записи',recsN:n=>'Записи · '+n,recDrop:'Перетащите сюда MP3-файлы',recDropHint:'Назовите файлы по партиям, например «Альт.mp3», «Сопрано 2.mp3» или «Весь хор.mp3», и они попадут в нужную строку. Можно перетащить все сразу.',recChoose:'Выбрать файлы',recFullL:'Весь хор',recNone:'Пока нет',recUpload:'Загрузить',recAddLink:'Ссылка',recReplace:'Заменить',recEditLink:'Изменить ссылку',recRemove:'Удалить',recRemoveQ:'Удалить эту запись?',recKeep:'Оставить',recCancel:'Отмена',recSave:'Сохранить',recLinkPh:'Вставьте ссылку на YouTube, SoundCloud или Drive',recFormats:'MP3, M4A, AAC или WAV, до 50 МБ каждый. Слушать могут все.',recDoneBtn:'Готово',recDone:p=>'Запись «'+p+'» загружена',recLinkSaved:'Ссылка сохранена',recType:'Нужен файл MP3, M4A, AAC или WAV.',recBig:s=>'Файл весит '+s+'. Предел — 50 МБ, сохраните его как MP3.',recMiss:n=>'Не понятно, к какой партии относятся: '+n+'. Перетащите каждый файл на свою строку.',recBadLink:'Это не похоже на ссылку.',recNoSql:'Записи партий ещё не настроены. Выполните part_recordings.sql в Supabase.',recPlay:'Слушать',recOpen:'Открыть ссылку',plTitle:'Плеер',plPlay:'Играть',plPause:'Пауза',plBack:'Назад на 10 секунд',plFwd:'Вперёд на 10 секунд',plLoop:'Повтор',plClose:'Закрыть плеер',plSeek:'Позиция',plErr:'Не удалось воспроизвести запись',lnTitle:'Разучиваем',lnNow:'Сейчас учим',lnNew:'Новое',lnNotes:'Ноты',lnUp:'Выше',lnDown:'Ниже',lnFiles:'Файлы и ссылки',lnFromDir:'От регента',lnSumSheet:'Ноты',lnSumPiano:'Фортепиано',lnSumRec:'Запись',lnSumLyr:'Текст',lnComing:'Скоро',lnDemoOn:'Показать пример',lnDemoOff:'Скрыть пример',lnDemoTag:'Пример',lnDemoNote:'Пример из ваших песен, чтобы посмотреть страницу. Ничего не сохраняется.',lnDemoAct:'Это пример. Ничего не сохраняется.',lnSub:'Песни, которые мы разучиваем или скоро начнём. Занимайтесь дома по нотам, записи и тексту.',lnNone:'Сейчас нет песен для разучивания.',lnSoon:'Ноты и запись скоро будут.',lnTarget:'Папка',lnTargetPh:'напр. На Рождество',lnNote:'Заметка для хористов',lnNotePh:'напр. Альты, сначала выучите второй куплет',lnAdd:'Добавить песню для разучивания',lnEditT:'Песня для разучивания',lnMove:'В репертуар',lnMoveT:'Перенести в репертуар?',lnMoveQ:n=>'«'+n+'» появится в «Музыке хора», нотах для фортепиано, текстах и выборе песен, как остальные песни.',lnTileNote:'Эти песни видны только на странице «Разучиваем», пока вы не перенесёте их в репертуар.',lnOpen:'Открыть «Разучиваем»',lnChoir:'Ноты хора',lnPiano:'Фортепиано',lnUpChoir:'Загрузить ноты хора',lnUpPiano:'Загрузить ноты фортепиано',lnRmChoir:'Убрать ноты хора',lnRmPiano:'Убрать ноты фортепиано',lnLyrAdd:'Добавить текст',lnLyrEdit:'Изменить текст',archSongT:'Отправить песню в архив?',archSongQ:n=>'«'+n+'» исчезнет из «Музыки хора», нот для фортепиано, текстов, статистики и выбора песен. История сохранится, вернуть песню можно из блока «Песни в архиве».',archSongNote:'Архивные песни сохраняют историю и видны в прошлых служениях, но скрыты из «Музыки хора», нот для фортепиано, текстов, статистики песен и выбора песен. «Вернуть» возвращает их.',
     archivedNote:'Архивные хористы сохраняют всю историю в базе, но не показываются в сетках и сводках. «Вернуть» возвращает их.',
     copyLast:'Скопировать прошлое служение',
     categories:'Категории',addSong:'Добавить песню',addCat:'Добавить категорию',addSinger:'Добавить хориста',
@@ -3497,7 +3551,7 @@ const STR = {
     tlSeePast:'Посмотреть прошедшие',tlOlder:'Показать более ранние',tlStart:'Это самое раннее служение в записях.',tlNonePast:'Прошедших служений пока нет.',tlEarlier:'Раньше',tlRangeStart:'Это начало выбранного периода.',tlShowN:n=>'Показать ещё '+n,tlLeft:n=>'ещё '+n+' за этот период',tlLaterBtn:'Позже',
     tapHint:'Сначала все отмечены как отсутствующие. Нажмите на имя, чтобы отметить присутствие.',naNote:'«Не в составе» — хорист тогда ещё не пел; такие спевки не входят в его процент.'}
 };
-/* Strings added in 6.0, kept side by side so the two languages stay in step. */
+/* Strings added from 5.50 on, kept side by side so the two languages stay in step. */
 Object.assign(STR.en, {
   menuL:'Menu', closeL:'Close', tabsL:'Sections', clearL:'Clear search', emptySeat:'Empty seat',
   dkAtt:'Attendance',
@@ -3508,7 +3562,24 @@ Object.assign(STR.en, {
   loadStale:'Couldn’t refresh — showing what was loaded earlier.',
   discardLeave:'You have unsaved changes. Leave without saving?',
   gridLatest:(n, all) => 'Showing the latest ' + n + ' of ' + all + ' dates', gridShowAll:'Show all',
-  uPerMonth:'by month'
+  uPerMonth:'by month',
+  lnNewSong:'New song', lnFromRep:'From repertoire', lnOther:'Other songs', lnFoldersL:'Folders',
+  lnFEdit:'Edit folder', lnFName:'Folder name', lnFUp:'Move up', lnFDown:'Move down', lnFRemove:'Remove folder',
+  lnFRemoveHint:'Removing a folder keeps its songs on the Learning page, under Other songs.',
+  lnInRep:'In repertoire', lnDone:'Done learning', lnDoneMsg: n => '“' + n + '” is learned and stays in the repertoire',
+  lnKeep:'Keep it on the Learning page until it’s learned',
+  lnRepEdit:'This song is in the repertoire, where its title and details are edited.',
+  lnPickT:'Add from the repertoire', lnPickSvcT:'Add to Learning', lnPickHint:'Songs never sung before are ticked.',
+  lnPickNone:'No songs found', lnOnList:'Already on the Learning page', lnNever:'Never sung',
+  lnSungN: n => 'Sung ' + n + (n === 1 ? ' time' : ' times'),
+  lnAddN: n => n ? 'Add ' + (n === 1 ? '1 song' : n + ' songs') : 'Add',
+  lnAddedN: (n, f) => (n === 1 ? '1 song' : n + ' songs') + ' added to Learning' + (f ? ' · ' + f : ''),
+  lnToLearn:'Add to Learning',
+  lnAllSongs:'All songs', lnFoldersN: n => n + (n === 1 ? ' folder' : ' folders'),
+  lnNextSvc:'The next service with one of these songs',
+  lnInDays: n => n <= 0 ? 'today' : n === 1 ? 'tomorrow' : 'in ' + n + ' days',
+  lnStSheet: (m, n) => m + ' of ' + n + ' with sheet music', lnStRec: (m, n) => m + ' of ' + n + ' with a recording',
+  lnStLyr: (m, n) => m + ' of ' + n + ' with lyrics'
 });
 // ruN() is the app's Russian plural helper (one / few / many), defined further down
 Object.assign(STR.ru, {
@@ -3523,7 +3594,24 @@ Object.assign(STR.ru, {
   loadStale:'Не удалось обновить — показаны данные, загруженные ранее.',
   discardLeave:'Есть несохранённые изменения. Уйти без сохранения?',
   gridLatest:(n, all) => 'Показаны последние ' + n + ' из ' + all + ' дат', gridShowAll:'Показать все',
-  uPerMonth:'по месяцам'
+  uPerMonth:'по месяцам',
+  lnNewSong:'Новая песня', lnFromRep:'Из репертуара', lnOther:'Другие песни', lnFoldersL:'Папки',
+  lnFEdit:'Изменить папку', lnFName:'Название папки', lnFUp:'Выше', lnFDown:'Ниже', lnFRemove:'Убрать папку',
+  lnFRemoveHint:'Если убрать папку, её песни останутся в «Разучиваем», в разделе «Другие песни».',
+  lnInRep:'В репертуаре', lnDone:'Выучили', lnDoneMsg: n => 'Песня «' + n + '» выучена и остаётся в репертуаре',
+  lnKeep:'Оставить в «Разучиваем», пока не выучим',
+  lnRepEdit:'Эта песня есть в репертуаре — название и данные меняются там.',
+  lnPickT:'Добавить из репертуара', lnPickSvcT:'Добавить в «Разучиваем»', lnPickHint:'Отмечены песни, которые ещё не пели.',
+  lnPickNone:'Песни не найдены', lnOnList:'Уже в «Разучиваем»', lnNever:'Ещё не пели',
+  lnSungN: n => 'Пели ' + n + ' ' + ruN(n, 'раз', 'раза', 'раз'),
+  lnAddN: n => n ? 'Добавить ' + n + ' ' + ruN(n, 'песню', 'песни', 'песен') : 'Добавить',
+  lnAddedN: (n, f) => n + ' ' + ruN(n, 'песня добавлена', 'песни добавлены', 'песен добавлено') + ' в «Разучиваем»' + (f ? ' · ' + f : ''),
+  lnToLearn:'В «Разучиваем»',
+  lnAllSongs:'Все песни', lnFoldersN: n => n + ' ' + ruN(n, 'папка', 'папки', 'папок'),
+  lnNextSvc:'Ближайшее служение с одной из этих песен',
+  lnInDays: n => n <= 0 ? 'сегодня' : n === 1 ? 'завтра' : 'через ' + n + ' ' + ruN(n, 'день', 'дня', 'дней'),
+  lnStSheet: (m, n) => 'ноты: ' + m + ' из ' + n, lnStRec: (m, n) => 'записи: ' + m + ' из ' + n,
+  lnStLyr: (m, n) => 'тексты: ' + m + ' из ' + n
 });
 const MON = { en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
               ru:['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'] };
@@ -3738,13 +3826,16 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.50.0';
+const VERSION = '5.51.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Learning: folders, such as Congress or For Christmas. Songs with the same folder are grouped, and singers can show one folder at a time',
+    'Learning: songs already in the repertoire can be added from the Learning page or from a service’s song list, without entering them again',
+    'Moving a song into the repertoire can keep it on the Learning page until it’s learned; Done learning takes it off',
     'Smoother movement, as on an iPhone: deeper pages slide in and back out, Back returns you to where you were, tabs and switchers change without a flash, and dialogs leave the way they came',
     'Security: only the director’s account can make changes',
     'Attendance and song orders save in one step, so a dropped connection can never leave half a change',
@@ -3814,6 +3905,9 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    '«Разучиваем»: папки, например «Конгресс» или «На Рождество». Песни одной папки собраны вместе, и можно смотреть одну папку',
+    '«Разучиваем»: песни, которые уже есть в репертуаре, можно добавить со страницы «Разучиваем» или из списка песен служения, не вводя их заново',
+    'Песню можно перенести в репертуар и оставить в «Разучиваем», пока её не выучат; кнопка «Выучили» убирает её оттуда',
     'Плавнее движение, как на iPhone: вложенные страницы выезжают и уезжают обратно, «Назад» возвращает туда, где вы были, вкладки и переключатели меняются без вспышки, окна закрываются так же, как открылись',
     'Безопасность: вносить изменения может только учётная запись регента',
     'Посещаемость и порядок песен сохраняются одним шагом — обрыв связи не оставит изменение наполовину',
@@ -4474,8 +4568,40 @@ function gridEvents(){
 const liveSongs = () => S.songs.filter(s => s.active !== false && !s.learning);
 /* the director's order first (learn_order), then anything never placed, by title */
 const lnCmp = (a, b) => (a.learn_order ?? 1e9) - (b.learn_order ?? 1e9) || a.title.localeCompare(b.title, 'ru');
-const learnSongs = () => { const real = S.songs.filter(s => s.learning && s.active !== false).sort(lnCmp);
-  return S.lnDemo ? real.concat(learnDemo()) : real; };
+/* The Learning page holds songs not in the repertoire yet (learning) and repertoire
+   songs the choir is still learning (learn_listed). A song's folder is its Goal
+   (learn_for): songs with the same one, in any letter case, share a folder. */
+const onLearning = s => s.active !== false && !!(s.learning || s.learn_listed);
+const lnFolder = s => String((s && s.learn_for) || '').replace(/\s+/g, ' ').trim();
+/* folders in the order of their first song, songs without one last */
+function learnGroups(list){
+  const by = new Map();
+  list.slice().sort(lnCmp).forEach(s => { const f = lnFolder(s), k = f.toLowerCase();
+    if (!by.has(k)) by.set(k, { name: f, key: f ? 'f:' + k : 'o', songs: [] }); by.get(k).songs.push(s); });
+  return [...by.values()].sort((a, b) => (!a.name) - (!b.name)
+    || (a.songs[0].learn_order ?? 1e9) - (b.songs[0].learn_order ?? 1e9) || a.name.localeCompare(b.name, 'ru'));
+}
+const learnReal = () => S.songs.filter(onLearning);
+const learnSongs = () => learnGroups(S.lnDemo ? learnReal().concat(learnDemo()) : learnReal()).flatMap(g => g.songs);
+const lnFolders = () => learnGroups(learnReal()).filter(g => g.name).map(g => g.name);
+/* a typed folder name, tidied, in the spelling of a folder that already exists
+   (except `keep`, the folder being renamed, so its letter case can change) */
+function lnCanon(v, keep){
+  const f = String(v || '').replace(/\s+/g, ' ').trim().slice(0, 80), k = f.toLowerCase();
+  return (k && k !== String(keep || '').toLowerCase() && lnFolders().find(x => x.toLowerCase() === k)) || f;
+}
+/* The folder the Learning page shows is part of its address, #/learning?f=<folder>
+   (~ for Other songs), so the home tile and a shared link can open one folder. */
+function lnRouteKey(){
+  const f = new URLSearchParams((S.route || '').split('?')[1] || '').get('f');
+  if (f == null) return '';
+  if (f === '~') return 'o';
+  const n = f.replace(/\s+/g, ' ').trim().toLowerCase();
+  return n ? 'f:' + n : '';
+}
+const lnHref = g => '#/learning' + (g ? '?f=' + (g.name ? encodeURIComponent(g.name) : '~') : '');
+/* the folder being shown, for new songs to land in */
+const lnSelName = () => { const g = learnGroups(learnReal()).find(x => x.name && x.key === lnRouteKey()); return g ? g.name : ''; };
 /* sample mode for the Learning page: four real songs dressed up as learning songs, never saved.
    Switched with the "Show a sample" link on the Learning page; remembered on this device. */
 S.lnDemo = false; try { localStorage.removeItem('lnDemo'); } catch (_) {}
@@ -5424,24 +5550,28 @@ function homePage(){
     </section>`;
   const learnList = learnSongs();
   const lnNew = today() <= LEARN_NEW_UNTIL;
-  const lnSum = s => [s.pdf_path && t('lnSumSheet'), s.piano_path && t('lnSumPiano'), (s.audio_url || hasParts(s)) && t('lnSumRec'), hasLyrics(s) && t('lnSumLyr')].filter(Boolean).join(' · ') || t('lnComing');
-  const lnHas = s => [s.pdf_path && AIC.sheets, (s.audio_url || hasParts(s)) && AIC.play, hasLyrics(s) && AIC.lyrics].filter(Boolean).join('');
-  const lnF = learnList[0];
-  const lnQuick = s => [
-    (s.audio_url || hasParts(s)) ? `<button class="lnq t4 lsbtn${S.listenOpen === 'home:' + s.id ? ' on' : ''}" data-listen="home:${s.id}" aria-expanded="${S.listenOpen === 'home:' + s.id}">${AIC.play}<span>${esc(t('listen'))}</span></button>`
-      : s.audio_url ? `<a class="lnq t4" href="${esc(s.audio_url)}" data-song="${s.id}" target="_blank" rel="noopener">${AIC.play}<span>${esc(t('listen'))}</span></a>` : '',
-    s.pdf_path && (!s.pdf_locked || S.session) ? `<button class="lnq t1" data-open="sheets:${s.id}" title="${esc(t('lnSumSheet'))}">${AIC.sheets}<span>${esc(t('lnNotes'))}</span></button>` : '',
-    hasLyrics(s) ? `<a class="lnq t3" href="#/lyrics/${shortId(s.id)}">${AIC.lyrics}<span>${esc(t('tLyrics'))}</span></a>` : ''].filter(Boolean).join('');
+  /* a row per folder: its songs, what they have to practise with, and the next service
+     that sings one of them. A tap opens the Learning page on that folder. */
+  const lnGroups = learnGroups(learnReal()), lnNamed = lnGroups.filter(g => g.name).length;
+  const lnUp = new Map(), lnToday = today();
+  S.eventSongs.forEach(x => { const e = eventById(x.event_id);
+    if (e && !e.cancelled && e.date >= lnToday) { const d = lnUp.get(x.song_id); if (!d || e.date < d) lnUp.set(x.song_id, e.date); } });
+  const lnDays = iso => Math.round((Date.parse(iso + 'T12:00:00') - Date.parse(lnToday + 'T12:00:00')) / 86400000);
+  const lnRow = g => {
+    const n = g.songs.length, next = g.songs.map(x => lnUp.get(x.id)).filter(Boolean).sort()[0];
+    const st = (ic, k, has) => { const m = g.songs.filter(has).length, say = t(k)(m, n);
+      return `<span class="lnst${m === n ? ' all' : ''}" title="${esc(say)}">${ic}<b aria-hidden="true">${m}/${n}</b><span class="vh">${esc(say)}</span></span>`; };
+    return `<a class="lnfr" href="${esc(lnHref(lnNamed ? g : null))}">
+      <span class="lnfic">${g.name ? FOLDERSVG : AIC.learn}</span>
+      <span class="b"><strong>${esc(g.name || t(lnNamed ? 'lnOther' : 'lnAllSongs'))}</strong>
+        <small>${esc(t('songsCount')(n))}${next ? ` · <em title="${esc(t('lnNextSvc'))}">${esc(dayShort(next))}, ${esc(t('lnInDays')(lnDays(next)))}</em>` : ''}</small>
+        <span class="lnsts">${st(AIC.sheets, 'lnStSheet', x => !!x.pdf_path)}${st(AIC.play, 'lnStRec', x => !!(x.audio_url || hasParts(x)))}${st(AIC.lyrics, 'lnStLyr', hasLyrics)}</span></span>
+      ${AIC.chev}</a>`;
+  };
   const learnCard = `<section class="dpanel lntile">
-      <div class="lnhead"><span class="lnico">${AIC.learn}</span><div style="min-width:0"><h2>${esc(t('lnTitle'))}${S.lnDemo ? ` <span class="lntag">${esc(t('lnDemoTag'))}</span>` : ''}</h2>
-        <p>${esc(learnList.length ? t('songsCount')(learnList.length) : t('lnNone'))}</p></div>${lnNew ? `<span class="lnnew${S.ripple ? ' rip' : ''}">${esc(t('lnNew'))}</span>` : ''}</div>
-      ${lnF ? `<div class="lnfeat">
-          <div class="fe"><span>${esc(t('lnNow'))}</span>${lnF.learn_for ? `<em>${esc(lnF.learn_for)}</em>` : ''}</div>
-          <a class="ft" href="#/learning">${esc(lnF.title)}</a>
-          ${lnQuick(lnF) ? `<div class="fq">${lnQuick(lnF)}</div>${listenRow(lnF, 'home')}` : `<p class="fs">${esc(t('lnSoon'))}</p>`}
-        </div>
-        ${learnList.length > 1 ? `<div class="lrows">${learnList.slice(1, 5).map((s, i) => `<a class="lrow" href="#/learning"><span class="n">${String(i + 2).padStart(2, '0')}</span>
-          <span class="b"><strong>${esc(s.title)}</strong><small${s.learn_for ? ' class="g"' : ''}>${esc(s.learn_for || lnSum(s))}</small></span><span class="has">${lnHas(s)}</span></a>`).join('')}</div>` : ''}`
+      <div class="lnhead"><span class="lnico">${AIC.learn}</span><div style="min-width:0"><h2>${esc(t('lnTitle'))}</h2>
+        <p>${esc(learnList.length ? (lnNamed ? t('lnFoldersN')(lnNamed) + ' · ' : '') + t('songsCount')(learnList.length) : t('lnNone'))}</p></div>${lnNew ? `<span class="lnnew${S.ripple ? ' rip' : ''}">${esc(t('lnNew'))}</span>` : ''}</div>
+      ${learnList.length ? `<div class="lnfrs">${lnGroups.slice(0, 5).map(lnRow).join('')}</div>`
         : `<div class="lnone"><span class="lnico">${AIC.learn}</span>${S.session ? `<a class="tlink" href="#/learning">＋ ${esc(t('lnAdd'))}</a>` : ''}</div>`}
       <div class="pfoot c"><a href="#/learning">${esc(t('viewAll'))}${AIC.arrow}</a></div>
     </section>`;
@@ -7298,6 +7428,7 @@ function sheetsPage(kind){
   const foot = ordEv ? `<div class="obar ofootbar"><span class="oacts">
       <a class="mini" href="#/sheets${kind==='piano'?'/piano':''}">${esc(t('showAllSheets'))}</a>
       <button class="mini shr" data-share-order="${ordEv.id}">${SHARESVG}${esc(t('shareBtn'))}</button>
+      ${S.session ? `<button class="mini" data-ln-pick="${ordEv.id}">＋ ${esc(t('lnToLearn'))}</button>` : ''}
     </span></div>` : '';
   let list = (ordIds ? S.songs : liveSongs()).filter(s => (S.catFilter === 'all' || s.category_id === S.catFilter) && songMatch(s, S.query));
   if (ordIds) list = ordIds.map(id => list.find(s => s.id === id)).filter(Boolean);
@@ -7362,20 +7493,48 @@ function sheetsPage(kind){
       return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}${S.actOpen === s.id ? ' open' : ''}" data-srow="${s.id}">${row}</div>`;
     }).join('') + foot;
 }
-/* learning songs: add or edit one, and confirm moving it into the repertoire */
+/* learning songs: add or edit one, confirm moving it into the repertoire, rename,
+   move or remove a folder, and add repertoire songs to the page */
 function learnModal(){
   if (!S.session) return '';
-  const shell = (title, body, go) => `<div class="mscrim" data-modal-x></div>
+  const shell = (title, body, go, left) => `<div class="mscrim" data-modal-x></div>
     <div class="modal" role="dialog" aria-modal="true" aria-label="${esc(title)}" style="width:min(480px,calc(100vw - 24px))">
       <div class="mhd"><h2>${esc(title)}</h2><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
       <div class="mbody">${body}</div>
-      <div class="mfoot"><button class="obtn2" data-modal-x>${esc(t('cancel'))}</button>${go}</div></div>`;
+      <div class="mfoot">${left || ''}<button class="obtn2" data-modal-x>${esc(t('cancel'))}</button>${go}</div></div>`;
+  /* the folder box suggests the folders there are, so a typo doesn't start a new one */
+  const flist = `<datalist id="ln-flist">${lnFolders().map(f => `<option value="${esc(f)}"></option>`).join('')}</datalist>`;
+  const folderField = (id, val) => `<label class="fl full"><span>${esc(t('lnTarget'))}</span><input class="field" id="${id}" list="ln-flist" value="${esc(val)}" placeholder="${esc(t('lnTargetPh'))}" autocomplete="off" maxlength="80"></label>`;
+  if (S.lnPick) {
+    const P = S.lnPick, ev = P.from !== 'rep' ? eventById(P.from) : null, n = lnPickN();
+    const top = ev ? `<p class="lnpsub">${esc(String(ev.name || '').trim() || t(ev.kind))} · ${esc(fmtLong(ev.date))}. ${esc(t('lnPickHint'))}</p>`
+      : `<input class="field" id="ln-pick-q" type="search" value="${esc(P.q)}" placeholder="${esc(t('searchPv'))}" aria-label="${esc(t('searchPv'))}" autocomplete="off">`;
+    return shell(t(ev ? 'lnPickSvcT' : 'lnPickT'), `${top}<div class="lnplist">${lnPickRows()}</div><div class="fgrid">${folderField('ln-pick-folder', P.folder)}</div>${flist}`,
+      `<button class="pbtn" data-ln-pick-add${n ? '' : ' disabled'}>${esc(t('lnAddN')(n))}</button>`);
+  }
+  if (S.lnFold != null) {
+    const named = learnGroups(learnReal()).filter(g => g.name), i = named.findIndex(g => g.key === 'f:' + S.lnFold.toLowerCase());
+    if (i < 0) return '';
+    const g = named[i], mvb = (dir, lab, ic, dis) => `<button class="obtn2 lnfmv" data-ln-fmv="${dir}" data-ln-fname="${esc(g.name)}"${dis ? ' disabled' : ''}>${ic}<span>${esc(t(lab))}</span></button>`;
+    return shell(t('lnFEdit'), `<div class="fgrid"><label class="fl full"><span>${esc(t('lnFName'))}</span><input class="field" id="ln-fname" value="${esc(g.name)}" autocomplete="off" maxlength="80"></label></div>
+      ${named.length > 1 ? `<div class="lnfmvs">${mvb(-1, 'lnFUp', UPAR, i === 0)}${mvb(1, 'lnFDown', DNAR, i === named.length - 1)}</div>` : ''}
+      <p class="lnrh">${esc(t('lnFRemoveHint'))}</p>`,
+      `<button class="pbtn" data-ln-fsave>${esc(t('save'))}</button>`,
+      `<button class="obtn2 lnfrm" data-ln-fremove>${esc(t('lnFRemove'))}</button>`);
+  }
   const mv = S.learnMove && songById(S.learnMove);
-  if (mv) return shell(t('lnMoveT'), `<p style="margin:0;font-size:14px;line-height:1.5;color:var(--muted);text-wrap:pretty">${esc(t('lnMoveQ')(mv.title))}</p>`,
+  if (mv) return shell(t('lnMoveT'), `<p style="margin:0;font-size:14px;line-height:1.5;color:var(--muted);text-wrap:pretty">${esc(t('lnMoveQ')(mv.title))}</p>
+      <label class="lnkeep"><input type="checkbox" id="ln-keep" checked><span>${esc(t('lnKeep'))}</span></label>`,
     `<button class="pbtn" data-learn-move="${mv.id}" data-confirm="1">${esc(t('lnMove'))}</button>`);
   if (!S.learnEdit) return '';
-  const s = S.learnEdit === 'new' ? {} : songById(S.learnEdit);
+  const s = S.learnEdit === 'new' ? { learn_for: lnSelName() } : songById(S.learnEdit);
   if (!s) return '';
+  const noteField = `<label class="fl full"><span>${esc(t('lnNote'))}</span><textarea class="field" id="ln-note" rows="3" placeholder="${esc(t('lnNotePh'))}" style="height:auto;min-height:84px;padding-top:10px;padding-bottom:10px;resize:vertical;line-height:1.45">${esc(s.learn_note || '')}</textarea></label>`;
+  /* a repertoire song keeps its title and details where they live; here only its folder and note */
+  if (s.id && !s.learning) return shell(t('lnEditT'), `<div class="fgrid">
+      <div class="fl full"><span>${esc(t('titleL'))}</span><div class="lnrt">${esc(s.title)}${pvTag(s)}</div><p class="lnrh">${esc(t('lnRepEdit'))}</p></div>
+      ${folderField('ln-for', lnFolder(s))}${noteField}</div>${flist}`,
+    `<button class="pbtn" data-learn-save>${esc(t('save'))}</button>`);
   const cats = S.categories.length ? `<label class="fl"><span>${esc(t('catL'))}</span><select class="field" id="ln-cat">
       <option value="">${esc(t('noCat'))}</option>${S.categories.map(c => `<option value="${c.id}"${s.category_id === c.id ? ' selected' : ''}>${esc(c.name)}</option>`).join('')}</select></label>` : '';
   return shell(t(S.learnEdit === 'new' ? 'lnAdd' : 'lnEditT'), `<div class="fgrid">
@@ -7383,8 +7542,7 @@ function learnModal(){
       <label class="fl full"><span>${esc(t('subtitle'))}</span><input class="field" id="ln-sub" value="${esc(s.subtitle || '')}" autocomplete="off"></label>
       ${cats}
       <label class="fl"><span>${esc(t('pvL'))}</span><input class="field" id="ln-pv" inputmode="numeric" value="${esc(s.pv_number == null ? '' : s.pv_number)}"></label>
-      <label class="fl full"><span>${esc(t('lnTarget'))}</span><input class="field" id="ln-for" value="${esc(s.learn_for || '')}" placeholder="${esc(t('lnTargetPh'))}" autocomplete="off"></label>
-      <label class="fl full"><span>${esc(t('lnNote'))}</span><textarea class="field" id="ln-note" rows="3" placeholder="${esc(t('lnNotePh'))}" style="height:auto;min-height:84px;padding-top:10px;padding-bottom:10px;resize:vertical;line-height:1.45">${esc(s.learn_note || '')}</textarea></label></div>`,
+      ${folderField('ln-for', lnFolder(s))}${noteField}</div>${flist}`,
     `<button class="pbtn" data-learn-save>${esc(t('save'))}</button>`);
 }
 /* Repertoire: confirm before a song is archived (restoring needs no question) */
@@ -7826,12 +7984,16 @@ function startLyrDraft(id){
 const lyrDirty = () => JSON.stringify([S.lyrDraft, S.lyrPv]) !== S.lyrWas;
 /* ---------- learning: songs the choir is learning, open to every singer ---------- */
 const UPSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M7 9l5-5 5 5M5 20h14"></path></svg>';
+const UPAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg>';
+const DNAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"></path></svg>';
+const FOLDERSVG = '<svg class="lnfi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.6l2 2.2h7.4A2.5 2.5 0 0 1 21 9.7v7.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"></path></svg>';
 function learningPage(){
-  const list = learnSongs();
+  const groups = learnGroups(S.lnDemo ? learnReal().concat(learnDemo()) : learnReal());
+  const total = groups.reduce((n, g) => n + g.songs.length, 0);
   const off = (ic, lab) => `<span class="lnb off" aria-disabled="true">${ic}<span>${esc(lab)}</span></span>`;
-  const realN = list.filter(x => !x._demo).length;
-  const card = (s, i) => {
-    const demo = !!s._demo;
+  /* i: place in its folder of n; rep: a repertoire song the choir is still learning */
+  const card = (s, i, n) => {
+    const demo = !!s._demo, rep = !demo && !s.learning;
     const sheet = (kind, cls, ic, lab) => { const K = SHEETKIND[kind];
       if (!s[K.col]) return off(ic, lab);
       if (s[K.lock] && !S.session) return `<span class="lnb off" title="${esc(t('adminOnlyShort'))}">${lockSVG(true)}<span>${esc(lab)}</span></span>`;
@@ -7849,8 +8011,9 @@ function learningPage(){
         <button class="lnib" ${demo ? da : `data-learn-edit="${s.id}"`} aria-label="${esc(t('edit'))}" title="${esc(t('edit'))}">${PENSVG}</button>
         <button class="lnib${open ? ' on' : ''}" ${demo ? da : `data-ln-tools="${s.id}"`} aria-expanded="${open}" aria-label="${esc(t('lnFiles'))}" title="${esc(t('lnFiles'))}">${UPSVG}</button>
         <button class="lnib rec${!demo && recCount(s) ? ' on' : ''}" ${demo ? da : `data-audio-edit="${s.id}"`} aria-label="${esc(t('recs'))}" title="${esc(!demo && recCount(s) ? t('recsN')(recCount(s)) : t('recs'))}">${HEADSVG}</button>
-        ${realN > 1 || demo ? `<span class="lnord"><button class="lnib" ${demo ? da : `data-ln-mv="${s.id}:-1"`}${!demo && i === 0 ? ' disabled' : ''} aria-label="${esc(t('lnUp'))}" title="${esc(t('lnUp'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg></button><button class="lnib" ${demo ? da : `data-ln-mv="${s.id}:1"`}${!demo && i === realN - 1 ? ' disabled' : ''} aria-label="${esc(t('lnDown'))}" title="${esc(t('lnDown'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"></path></svg></button></span>` : ''}
-        <button class="lnb go" ${demo ? da : `data-learn-move="${s.id}"`}><span>${esc(t('lnMove'))}</span></button></div>` : '';
+        ${n > 1 ? `<span class="lnord"><button class="lnib" ${demo ? da : `data-ln-mv="${s.id}:-1"`}${!demo && i === 0 ? ' disabled' : ''} aria-label="${esc(t('lnUp'))}" title="${esc(t('lnUp'))}">${UPAR}</button><button class="lnib" ${demo ? da : `data-ln-mv="${s.id}:1"`}${!demo && i === n - 1 ? ' disabled' : ''} aria-label="${esc(t('lnDown'))}" title="${esc(t('lnDown'))}">${DNAR}</button></span>` : ''}
+        ${rep ? `<button class="lnb go" data-ln-done="${s.id}"><span>${esc(t('lnDone'))}</span></button>`
+          : `<button class="lnb go" ${demo ? da : `data-learn-move="${s.id}"`}><span>${esc(t('lnMove'))}</span></button>`}</div>` : '';
     const file = (kind, upL, rmL) => { const K = SHEETKIND[kind];
       if (S.uploading === kind + ':' + s.id) return `<span class="lnt">${esc(t('uploading'))}</span>`;
       return s[K.col]
@@ -7862,16 +8025,62 @@ function learningPage(){
         <a class="lnt" href="#/lyrics/${shortId(s.id)}" data-lyr-edit="${s.id}">${LYRSVG}<span>${esc(t(hasLyrics(s) ? 'lnLyrEdit' : 'lnLyrAdd'))}</span></a></div>` : '';
     const meta = [s.subtitle, catName(s.category_id)].filter(Boolean).join(' · ');
     return `<article class="lncard${demo ? ' demo' : ''}">
-      <div class="lninfo"><div class="lnh"><div class="tt"><h3>${esc(s.title)}${pvTag(s)}${demo ? `<span class="lntag">${esc(t('lnDemoTag'))}</span>` : ''}</h3>${meta ? `<p class="mt">${esc(meta)}</p>` : ''}</div>
-        ${s.learn_for ? `<span class="lngoal" title="${esc(s.learn_for)}">${esc(s.learn_for)}</span>` : ''}</div>
+      <div class="lninfo"><div class="lnh"><div class="tt"><h3>${esc(s.title)}${pvTag(s)}${demo ? `<span class="lntag">${esc(t('lnDemoTag'))}</span>` : ''}${rep && S.session ? `<span class="lntag">${esc(t('lnInRep'))}</span>` : ''}</h3>${meta ? `<p class="mt">${esc(meta)}</p>` : ''}</div></div>
       ${s.learn_note ? `<div class="lnnote"><b>${esc(t('lnFromDir'))}</b><p>${esc(s.learn_note)}</p></div>` : ''}</div>
       ${practice}${listenRow(s, 'learn')}${foot}${tools}</article>`;
   };
-  const demoBtn = '';
-  const add = S.session ? `<button class="lnadd" data-learn-edit="new">＋ ${esc(t('lnAdd'))}</button>` : '';
-  return pageHead() + `<div class="lnhd"><div><h1>${esc(t('lnTitle'))}</h1>${list.length ? `<p>${esc(t('songsCount')(list.length))}</p>` : ''}</div>${demoBtn || add ? `<div class="acts">${demoBtn}${add}</div>` : ''}</div>` +
-    (S.lnDemo ? `<p class="lndemo">${esc(t('lnDemoNote'))}</p>` : '') +
-    (list.length ? `<div class="lngrid">${list.map(card).join('')}</div>` : `<div class="lnempty">${esc(t('lnNone'))}</div>`);
+  /* a section per folder (songs without one last, as Other songs), and a switcher to
+     show one folder at a time once there is more than one */
+  const rk = lnRouteKey(), sel = groups.length > 1 && groups.some(g => g.key === rk) ? rk : '';
+  const filed = groups.some(g => g.name);
+  const chips = groups.length > 1 ? `<div class="lnfbar"><div class="chips lnchips" role="group" aria-label="${esc(t('lnFoldersL'))}">` +
+    [['', t('all'), lnHref(null)]].concat(groups.map(g => [g.key, g.name || t('lnOther'), lnHref(g)]))
+      .map(([k, l, h]) => `<a href="${esc(h)}" data-ln-folder="${esc(k)}" class="${sel === k ? 'on' : ''}"${sel === k ? ' aria-current="true"' : ''}>${esc(l)}</a>`).join('') + '</div></div>' : '';
+  const section = g => {
+    const live = !g.songs.some(x => x._demo);
+    const head = filed ? `<div class="lnfh">${g.name ? FOLDERSVG : ''}<h2>${esc(g.name || t('lnOther'))}</h2><span class="lnfn">${esc(t('songsCount')(g.songs.length))}</span>${S.session && g.name && live
+      ? `<span class="lnfacts"><button class="lnib" data-ln-fedit="${esc(g.name)}" aria-label="${esc(t('lnFEdit'))}" title="${esc(t('lnFEdit'))}">${PENSVG}</button></span>` : ''}</div>` : '';
+    return `<section class="lnfold">${head}<div class="lngrid">${g.songs.map((s, i) => card(s, i, g.songs.length)).join('')}</div></section>`;
+  };
+  const add = S.session ? `<button class="lnadd" data-learn-edit="new">＋ ${esc(t('lnNewSong'))}</button><button class="lnadd" data-ln-pick="rep">＋ ${esc(t('lnFromRep'))}</button>` : '';
+  return pageHead() + `<div class="lnhd"><div><h1>${esc(t('lnTitle'))}</h1>${total ? `<p>${esc(t('songsCount')(total))}</p>` : ''}</div>${add ? `<div class="acts">${add}</div>` : ''}</div>` +
+    (S.lnDemo ? `<p class="lndemo">${esc(t('lnDemoNote'))}</p>` : '') + chips +
+    (total ? groups.filter(g => !sel || g.key === sel).map(section).join('') : `<div class="lnempty">${esc(t('lnNone'))}</div>`);
+}
+/* ---------- Learning: adding repertoire songs ----------
+   From the Learning page (search the repertoire) or from one service's song list,
+   where songs never sung before come ticked. A song already on the page is shown
+   ticked and can't be picked twice. Typing redraws only the list, so the field
+   keeps its focus. */
+function lnPickRows(){
+  const P = S.lnPick;
+  if (!P) return '';
+  const ev = P.from !== 'rep' ? eventById(P.from) : null;
+  const pool = ev ? songsFor(ev.id) : liveSongs().filter(x => songMatch(x, P.q)).sort((x, y) => x.title.localeCompare(y.title, 'ru'));
+  if (!pool.length) return `<div class="lnpnone">${esc(t('lnPickNone'))}</div>`;
+  return pool.map(x => { const on = onLearning(x), n = songStats(x.id).n;
+    return `<label class="lnprow${on ? ' dis' : ''}"><input type="checkbox" data-ln-pick-id="${x.id}"${on || P.sel.has(x.id) ? ' checked' : ''}${on ? ' disabled' : ''}>
+      <span class="b"><span class="t">${esc(x.title)}${pvTag(x)}</span><span class="m${on || n ? '' : ' new'}">${esc(on ? t('lnOnList') : n ? t('lnSungN')(n) : t('lnNever'))}</span></span></label>`; }).join('');
+}
+const lnPickN = () => S.lnPick ? [...S.lnPick.sel].filter(id => { const x = songById(id); return x && !x.learning && !onLearning(x); }).length : 0;
+function lnPickCount(){
+  const b = document.querySelector('[data-ln-pick-add]'), n = lnPickN();
+  if (b) { b.textContent = t('lnAddN')(n); b.disabled = !n; }
+}
+function lnPickDraw(){
+  const box = document.querySelector('.lnplist');
+  if (box) box.innerHTML = lnPickRows();
+  lnPickCount();
+}
+/* Learning order: number every song in page order, folder by folder, and save what
+   changed. If any write is refused, the page goes back and the data is re-read. */
+async function lnRenumber(groups){
+  const changed = groups.flatMap(g => g.songs).map((x, k) => [x, k, x.learn_order]).filter(([x, k]) => x.learn_order !== k);
+  if (!changed.length) return render();
+  changed.forEach(([x, k]) => { x.learn_order = k; }); render();
+  const res = await Promise.all(changed.map(([x, k]) => sb.from('songs').update({ learn_order: k }).eq('id', x.id).select('id')));
+  const bad = res.find(r => r.error || !r.data || !r.data.length);
+  if (bad) { changed.forEach(([x, , was]) => { x.learn_order = was; }); wrote(bad); render(); load(true); }
 }
 function lyricsRoute(){
   const song = songByToken(S.route.split('/')[2]);
@@ -8177,10 +8386,10 @@ function navKind(from, to){
   if (dt > df) return 'push';
   if (dt < df) return 'pop';
   const base = to.split('?')[0];
-  return [...document.querySelectorAll('#app .tabs a[href], #app .seg a[href], #app .subtabs a[href]')]
+  return [...document.querySelectorAll('#app .tabs a[href], #app .seg a[href], #app .subtabs a[href], #app .lnchips a[href]')]
     .some(a => a.getAttribute('href').split('?')[0] === base) ? 'seg' : 'tab';
 }
-const NAV_STAY = [['tabs', 'v-stay-tabs'], ['ctlbar', 'v-stay-ctl'], ['topctl', 'v-stay-top'], ['searchrow', 'v-stay-search'], ['obar', 'v-stay-obar']];
+const NAV_STAY = [['tabs', 'v-stay-tabs'], ['ctlbar', 'v-stay-ctl'], ['topctl', 'v-stay-top'], ['searchrow', 'v-stay-search'], ['obar', 'v-stay-obar'], ['lnfbar', 'v-stay-lnf']];
 function nameStay(on){
   const app = document.getElementById('app');
   if (app) NAV_STAY.forEach(([c, n]) => { const el = app.querySelector('.' + c); if (el) el.style.viewTransitionName = on ? n : ''; });
@@ -8763,7 +8972,7 @@ document.addEventListener('keydown', e => {
   if (song) recLinkSave(song, el.id.slice(9));
 });
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-retry-load],[data-grid-more],[data-listen],[data-lp],[data-rec-link],[data-rec-link-x],[data-rec-link-go],[data-rec-del],[data-rec-del-x],[data-rec-del-go],[data-rec-cancel],[data-rec-add],[data-rec-add-x],[data-ln-mv],[data-ln-tools],[data-ln-demo],[data-ln-demo-act],[data-learn-edit],[data-learn-save],[data-learn-move],[data-toggle-learn],[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-retry-load],[data-grid-more],[data-listen],[data-lp],[data-rec-link],[data-rec-link-x],[data-rec-link-go],[data-rec-del],[data-rec-del-x],[data-rec-del-go],[data-rec-cancel],[data-rec-add],[data-rec-add-x],[data-ln-mv],[data-ln-fmv],[data-ln-fedit],[data-ln-fsave],[data-ln-fremove],[data-ln-folder],[data-ln-pick],[data-ln-pick-add],[data-ln-done],[data-ln-tools],[data-ln-demo],[data-ln-demo-act],[data-learn-edit],[data-learn-save],[data-learn-move],[data-toggle-learn],[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -8862,7 +9071,7 @@ document.addEventListener('click', async e => {
     if (d.ptKind === 'other') { const n = document.getElementById('pt-name'); if (n && !n.value) n.focus(); }
     return; }
   if (el.hasAttribute('data-pt-save') && S.planType) return planTypeSave();
-  if (el.hasAttribute('data-modal-x')) return closeLayer(() => { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.recAdd = []; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; });
+  if (el.hasAttribute('data-modal-x')) return closeLayer(() => { S.learnEdit = null; S.learnMove = null; S.lnPick = null; S.lnFold = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.recAdd = []; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; });
   if (d.toggleAbsent && S.edit) {              // present ↔ absent
     S.toast = ''; S.retry = null;
     S.edit.sel.has(d.toggleAbsent) ? S.edit.sel.delete(d.toggleAbsent)
@@ -9368,40 +9577,108 @@ document.addEventListener('click', async e => {
   if (d.recCancel) { const j = RECUP[d.recCancel]; if (j) j.xhr.abort(); return; }
   if (d.recAdd) { S.recAdd = [...new Set([...(S.recAdd || []), d.recAdd])]; S.recLink = null; S.recDel = null; return render(); }
   if (d.recAddX) { S.recAdd = (S.recAdd || []).filter(x => x !== d.recAddX); return render(); }
-  if (d.lnMv) {                                   // reorder learning songs: swap, renumber, save what changed
-    const [id, dir] = d.lnMv.split(':'), list = learnSongs().filter(x => !x._demo);
-    const i = list.findIndex(x => x.id === id), j = i + Number(dir);
-    if (i < 0 || j < 0 || j >= list.length) return;
+  if (d.lnMv) {                                   // reorder within a folder; every song renumbered in page order
+    const [id, dir] = d.lnMv.split(':'), groups = learnGroups(learnReal());
+    const g = groups.find(x => x.songs.some(y => y.id === id));
+    const i = g ? g.songs.findIndex(x => x.id === id) : -1, j = i + Number(dir);
+    if (i < 0 || j < 0 || j >= g.songs.length) return;
     if (!await ensureSession()) return;
-    [list[i], list[j]] = [list[j], list[i]];
-    const changed = list.map((x, k) => [x, k, x.learn_order]).filter(([x, k]) => x.learn_order !== k);
-    changed.forEach(([x, k]) => { x.learn_order = k; }); render();
-    const res = await Promise.all(changed.map(([x, k]) => sb.from('songs').update({ learn_order: k }).eq('id', x.id).select()));
-    const bad = res.find(r => r.error || !r.data || !r.data.length);
-    if (bad) { changed.forEach(([x, , was]) => { x.learn_order = was; }); wrote(bad); return render(); }
-    return;
+    [g.songs[i], g.songs[j]] = [g.songs[j], g.songs[i]];
+    return lnRenumber(groups);
+  }
+  if (d.lnFmv) {                                  // a whole folder up or down; songs without one stay last
+    const groups = learnGroups(learnReal()), named = groups.filter(x => x.name);
+    const i = named.findIndex(x => x.key === 'f:' + String(d.lnFname || '').toLowerCase()), j = i + Number(d.lnFmv);
+    if (i < 0 || j < 0 || j >= named.length) return;
+    if (!await ensureSession()) return;
+    [named[i], named[j]] = [named[j], named[i]];
+    S.lnFold = null;
+    return lnRenumber(named.concat(groups.filter(x => !x.name)));
+  }
+  if (el.hasAttribute('data-ln-folder')) { e.preventDefault(); location.replace(el.getAttribute('href')); return; }
+  if (d.lnFedit) { S.lnFold = d.lnFedit; return render(); }
+  if ((el.hasAttribute('data-ln-fsave') || el.hasAttribute('data-ln-fremove')) && S.lnFold != null) {
+    const g = learnGroups(learnReal()).find(x => x.name && x.key === 'f:' + S.lnFold.toLowerCase());
+    if (!g) return closeLayer(() => { S.lnFold = null; });
+    const inp = document.getElementById('ln-fname'), removing = el.hasAttribute('data-ln-fremove');
+    const next = removing ? '' : lnCanon(inp ? inp.value : g.name, g.name);
+    if (!removing && !next) { if (inp) inp.focus(); return; }          // an empty name: Remove folder does that
+    if (next === g.name) return closeLayer(() => { S.lnFold = null; });
+    if (!await ensureSession()) return;
+    const ids = g.songs.map(x => x.id);
+    const res = await sb.from('songs').update({ learn_for: next || null }).in('id', ids).select('id');
+    if (res.error) return fail(res.error);
+    const done = new Set((res.data || []).map(r => r.id));
+    g.songs.forEach(x => { if (done.has(x.id)) x.learn_for = next || null; });
+    if (done.size !== ids.length) { fail({ message: t('nothingChanged') }); return render(); }
+    if (lnRouteKey() === g.key) {                   // showing that folder: follow it to its new name
+      const nr = next ? lnHref({ name: next }) : '#/learning';
+      history.replaceState(null, '', nr); S.route = normRoute(nr);
+    }
+    return closeLayer(() => { S.lnFold = null; });
+  }
+  if (d.lnPick) {
+    if (d.lnPick === 'rep') S.lnPick = { from: 'rep', sel: new Set(), q: '', folder: lnSelName() };
+    else {
+      const ev = eventById(d.lnPick);
+      if (!ev) return;
+      const fresh = songsFor(ev.id).filter(x => !onLearning(x) && !songStats(x.id).n);   // never sung yet
+      S.lnPick = { from: ev.id, sel: new Set(fresh.map(x => x.id)), q: '', folder: lnCanon(ev.name || '') };
+    }
+    return render();
+  }
+  if (el.hasAttribute('data-ln-pick-add') && S.lnPick) {
+    const fEl = document.getElementById('ln-pick-folder');
+    const folder = lnCanon(fEl ? fEl.value : S.lnPick.folder);
+    const ids = [...S.lnPick.sel].filter(id => { const x = songById(id); return x && !x.learning && !onLearning(x); });
+    if (!ids.length) return;
+    if (!await ensureSession()) return;
+    el.disabled = true;
+    const row = { learn_listed: true, learn_for: folder || null, learn_order: null };
+    const res = await sb.from('songs').update(row).in('id', ids).select('id');
+    if (res.error) { el.disabled = false; return fail(res.error); }
+    const done = (res.data || []).map(r => r.id);
+    done.forEach(id => { const x = songById(id); if (x) Object.assign(x, row); });
+    if (done.length !== ids.length) { el.disabled = false; fail({ message: t('nothingChanged') }); return render(); }
+    okToast(t('lnAddedN')(done.length, folder));
+    return closeLayer(() => { S.lnPick = null; });
+  }
+  if (d.lnDone) {                                 // learned: off the Learning page, still in the repertoire
+    const x = songById(d.lnDone);
+    if (!x) return;
+    if (!await ensureSession()) return;
+    const res = await sb.from('songs').update({ learn_listed: false }).eq('id', x.id).select('id');
+    if (!wrote(res)) return render();
+    x.learn_listed = false; okToast(t('lnDoneMsg')(x.title));
+    return swap();
   }
   if (d.lnTools) { S.lnTools = S.lnTools === d.lnTools ? null : d.lnTools; return render(); }
   if (d.learnEdit) { S.learnEdit = d.learnEdit; S.learnMove = null; return render(); }
   if (el.hasAttribute('data-toggle-learn')) { S.learnOpen = !S.learnOpen; return render(); }
   if (el.hasAttribute('data-learn-save') && S.learnEdit) {
     const v = id => { const x = document.getElementById(id); return x ? x.value.trim() : ''; };
-    const title = v('ln-title');
+    const cur = S.learnEdit === 'new' ? null : songById(S.learnEdit);
+    if (S.learnEdit !== 'new' && !cur) { S.learnEdit = null; return render(); }
+    const rep = !!cur && !cur.learning;            // in the repertoire: only its folder and note change here
+    const title = rep ? cur.title : v('ln-title');
     if (!title) { const x = document.getElementById('ln-title'); if (x) x.focus(); return; }
     if (!await ensureSession()) return;
-    const pd = v('ln-pv').replace(/\D/g, '');
-    const row = { title, subtitle: v('ln-sub') || null, category_id: v('ln-cat') || null, pv_number: pd ? +pd : null,
-                  learn_for: v('ln-for') || null, learn_note: v('ln-note') || null };
-    if (S.learnEdit === 'new') {
+    const folder = lnCanon(v('ln-for'));
+    let row;
+    if (rep) row = { learn_for: folder || null, learn_note: v('ln-note') || null };
+    else { const pd = v('ln-pv').replace(/\D/g, '');
+      row = { title, subtitle: v('ln-sub') || null, category_id: v('ln-cat') || null, pv_number: pd ? +pd : null,
+              learn_for: folder || null, learn_note: v('ln-note') || null }; }
+    /* filed into another folder: to the end of it, so the folders keep their order */
+    if (cur && lnFolder(cur).toLowerCase() !== folder.toLowerCase()) row.learn_order = null;
+    if (!cur) {
       const { data, error } = await sb.from('songs').insert(Object.assign({ learning: true }, row)).select().single();
       if (error) return fail(error);
       S.songs.push(data);
     } else {
-      const s = songById(S.learnEdit);
-      if (!s) { S.learnEdit = null; return render(); }
-      const res = await sb.from('songs').update(row).eq('id', s.id).select();
+      const res = await sb.from('songs').update(row).eq('id', cur.id).select();
       if (!wrote(res)) return render();
-      Object.assign(s, row);
+      Object.assign(cur, row);
     }
     S.songs.sort((a, b) => a.title.localeCompare(b.title)); S.learnEdit = null; return render();
   }
@@ -9409,10 +9686,12 @@ document.addEventListener('click', async e => {
     const s = songById(d.learnMove);
     if (!s) return;
     if (!d.confirm) { S.learnMove = s.id; return render(); }
+    /* "keep it on the Learning page until it's learned", on unless unticked */
+    const kb = document.getElementById('ln-keep'), keep = kb ? kb.checked : true;
     if (!await ensureSession()) return;
-    const res = await sb.from('songs').update({ learning: false }).eq('id', s.id).select();
+    const res = await sb.from('songs').update({ learning: false, learn_listed: keep }).eq('id', s.id).select();
     if (!wrote(res)) return render();
-    s.learning = false; S.learnMove = null; return render();
+    s.learning = false; s.learn_listed = keep; S.learnMove = null; return render();
   }
   if (el.hasAttribute('data-toggle-arch-songs')) { S.archSongsOpen = !S.archSongsOpen; return render(); }
   if (d.archiveSong) {
@@ -9567,9 +9846,24 @@ document.addEventListener('input', e => {
   if (e.target.id === 'q') { S.query = e.target.value; if (!e.isComposing) qRender(); }
 });
 document.addEventListener('compositionend', e => { if (e.target && e.target.id === 'q') { S.query = e.target.value; qRender(); } });
+/* Learning picker: the search redraws only its list; ticks and the folder box are
+   kept in state, so a redraw of the page doesn't lose them */
+document.addEventListener('input', e => {
+  const P = S.lnPick;
+  if (!P || !e.target) return;
+  if (e.target.id === 'ln-pick-q') { P.q = e.target.value; lnPickDraw(); }
+  else if (e.target.id === 'ln-pick-folder') P.folder = e.target.value;
+});
+document.addEventListener('change', e => {
+  const P = S.lnPick, id = e.target && e.target.dataset ? e.target.dataset.lnPickId : null;
+  if (!P || !id) return;
+  if (e.target.checked) P.sel.add(id); else P.sel.delete(id);
+  lnPickCount();
+});
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && S.menuOpen) dismissMenu();
-  if (e.key === 'Escape' && (S.addOpen || S.editSongRow || S.editPerson || S.editCat) && document.querySelector('.modal')) closeLayer(() => { S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; });
+  if (e.key === 'Escape' && (S.addOpen || S.editSongRow || S.editPerson || S.editCat || S.learnEdit || S.learnMove || S.lnPick || S.lnFold != null) && document.querySelector('.modal'))
+    closeLayer(() => { S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; S.learnEdit = null; S.learnMove = null; S.lnPick = null; S.lnFold = null; });
 });
 window.addEventListener('hashchange', () => {
   requestAnimationFrame(() => {          // after the route handler paints the new page
@@ -9788,6 +10082,7 @@ window.addEventListener('hashchange', () => {
   if (!S.route.startsWith('#/seating')) { S.seatEdit = null; S.seatSel = null; }
   if (!S.route.startsWith('#/rules')) { S.rulesEdit = null; S.rulesPreview = false; }
   S.error = ''; S.query = ''; S.editPerson = null; S.editSongRow = null; S.editCat = null; S.addOpen = null;
+  S.learnEdit = null; S.learnMove = null; S.lnPick = null; S.lnFold = null;
   const kind = navKind(prevFull, S.route);
   S.ripple = kind !== 'pop';                     // back shows the page as it was left
   const backTo = kind === 'pop' ? navScroll.get(S.route) : undefined;

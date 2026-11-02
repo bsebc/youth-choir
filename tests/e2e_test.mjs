@@ -45,6 +45,9 @@ const DB = process.env.DB || 'e2e_' + CHOIR;
 const STORE = '/tmp/harness-storage/' + DB;   // where start.sh keeps this stack's files
 const BASE = 'http://127.0.0.1:' + PORT;
 const NOW = '2026-11-01T15:30:00Z';           // pw.mjs's fixed clock: 10:30 on a Sunday in New York
+/* the usage page drops rows dated more than a day past the device's clock; rows the app
+   adds during a run carry the real time, which drifts past the fixed one */
+const SOON = new Date(Date.parse(NOW) + 86400000).toISOString();
 const ONLY = process.env.ONLY ? new RegExp(process.env.ONLY) : null;
 const VERBOSE = !!process.env.VERBOSE;
 const K = KEYS[CHOIR];
@@ -58,6 +61,7 @@ const UI = {
   kpi: 'a.kpi',                                         // home stat tiles; told apart by href
   card: 'article',                                      // one learning card
   cardTitle: 'article h3',                              // its song title
+  folderHead: 'main section h2',                        // a Learning folder's heading
   pageTitle: 'main h1',                                 // the song title on a lyrics page
   doc: 'main article',                                  // the rendered rules document
   docHead: 'h1,h2,h3,h4', docItem: 'li',                // its headings and list items
@@ -195,8 +199,24 @@ async function loadModel() {
   m.hasAtt = e => !!e.attendance_taken || m.absEv.has(e.id);
   m.live = songs.filter(s => s.active !== false && !s.learning);
   m.members = singers.filter(s => s.part && s.active !== false);
-  m.learn = songs.filter(s => s.learning && s.active !== false)
-    .sort((a, b) => (a.learn_order ?? 1e9) - (b.learn_order ?? 1e9) || ruCmp(a.title, b.title));
+  /* the Learning page: songs not in the repertoire yet and repertoire songs still being
+     learned, folder by folder (a folder is the Goal; letter case aside), folders in the
+     order of their first song, songs without one last */
+  {
+    const cmp = (a, b) => (a.learn_order ?? 1e9) - (b.learn_order ?? 1e9) || ruCmp(a.title, b.title);
+    const by = new Map();
+    songs.filter(s => s.active !== false && (s.learning || s.learn_listed)).sort(cmp).forEach(s => {
+      const f = String(s.learn_for || '').replace(/\s+/g, ' ').trim(), k = f.toLowerCase();
+      if (!by.has(k)) by.set(k, { name: f, key: f ? 'f:' + k : 'o', songs: [] });
+      by.get(k).songs.push(s);
+    });
+    m.learnGroups = [...by.values()].sort((a, b) => (!a.name) - (!b.name)
+      || (a.songs[0].learn_order ?? 1e9) - (b.songs[0].learn_order ?? 1e9) || ruCmp(a.name, b.name));
+    m.learn = m.learnGroups.flatMap(g => g.songs);
+  }
+  /* times a song was sung: services up to today that were not called off */
+  m.sung = id => eventSongs.filter(x => { if (x.song_id !== id) return false; const e = events.find(v => v.id === x.event_id);
+    return e && !e.cancelled && e.date <= TODAY; }).length;
   /* the rules: before a singer's start date nothing counts (services count from
      "sings at services from"), not_listed is not counted, absent is a miss, no row is present */
   m.countsFrom = (s, kind) => { const j = s.joined_on || null, v = kind === 'rehearsal' ? null : (s.service_start || null); return j && v ? (v > j ? v : j) : (v || j); };
@@ -381,10 +401,10 @@ async function guestChecks() {
       ok(card, `next service card (${svc.date} ${svc.kind}) with ${songs.length} song links not found`);
       inOrder(card, [svc.name || t(svc.kind), fmtLong(svc.date), ...songs.map(s => s.title)], 'next service card');
     } else ok((await text(page)).includes(t('noOrderYet')), 'no service: "' + t('noOrderYet') + '" expected');
-    const lnLinks = await page.$$eval(UI.main + ' a[href="#/learning"]', as => as.map(a => a.innerText));
-    if (M.learn.length) {
-      const shown = M.learn.slice(0, 5).map(s => s.title);
-      inOrder(lnLinks.join('\n'), shown, 'Learning card');
+    const lnLinks = await page.$$eval(UI.main + ' a[href^="#/learning"]', as => as.map(a => a.innerText));
+    if (M.learn.length) {                       // the Learning card: a row per folder, in the page's order
+      const named = M.learnGroups.some(g => g.name);
+      inOrder(lnLinks.join('\n'), M.learnGroups.slice(0, 5).map(g => g.name || t(named ? 'lnOther' : 'lnAllSongs')), 'Learning card folders');
       ok((await text(page)).includes(t('songsCount', M.learn.length)), 'Learning count "' + t('songsCount', M.learn.length) + '" missing');
     }
     const B = M.board(shift(3), TODAY);
@@ -680,6 +700,17 @@ async function guestChecks() {
     if (M.learn.length) ok((await text(page)).includes(t('songsCount', M.learn.length)), 'count missing');
     const noted = M.learn.find(s => s.learn_note);
     if (noted) ok((await text(page)).includes(noted.learn_note), 'director\'s note missing');
+    if (M.learnGroups.some(g => g.name)) eq(await page.$$eval(UI.folderHead, h => h.map(x => x.innerText.trim())),
+      M.learnGroups.map(g => g.name || t('lnOther')), 'folder headings in order');
+    // the home card opens one folder; its address says which, so it can be shared
+    const g = M.learnGroups.find(x => x.name);
+    if (g) {
+      await go(page, '#/home');
+      await tap(page, `${UI.main} a[href="#/learning?f=${encodeURIComponent(g.name)}"]`);
+      await atHash(page, '#/learning?f=' + encodeURIComponent(g.name));
+      await until(async () => JSON.stringify(await page.$$eval(UI.cardTitle, (h, re) => h.map(x => x.innerText.replace(new RegExp(re), '').trim()), UI.pvTag.source))
+        === JSON.stringify(g.songs.map(x => x.title)), 'only that folder\'s songs');
+    }
   });
 
   await check('A12', 'lyrics: a song\'s lyrics display; print view opens; special characters stay text', async () => {
@@ -1249,30 +1280,123 @@ async function directorChecks() {
     inOrder(await text(page), ['Правила для проверки', 'Первый пункт', 'Второй пункт', 'Обычный абзац.'], 'rules page after saving');
   });
 
-  await check('D14', 'learning: add a learning song, reorder, move it to the repertoire', async () => {
+  await check('D14', 'learning: add a song into a folder, reorder it there, move it to the repertoire and keep it, then mark it learned', async () => {
     const title = 'Песнь для разучивания Э2Э';
+    M = await loadModel();
+    const folder = (M.learnGroups.find(g => g.name) || { name: 'К Пасхе' }).name;
     const page = await director('#/learning');
     await tap(page, '[data-learn-edit="new"]');
     await page.fill('#ln-title', title);
-    await page.fill('#ln-for', 'К Пасхе');
+    await page.fill('#ln-for', folder.toLowerCase());          // another letter case: still that folder
     await page.fill('#ln-note', 'Альты учат второй куплет');
     await tap(page, '[data-learn-save]');
     const s = await until(() => one(`select * from songs where title = ${lit(title)}`), 'the learning song row');
-    eq([s.learning, s.learn_for, s.learn_note, s.active], [true, 'К Пасхе', 'Альты учат второй куплет', true], 'learning song');
+    eq([s.learning, s.learn_for, s.learn_note, s.active, s.learn_listed], [true, folder, 'Альты учат второй куплет', true, false], 'learning song');
     M = await loadModel();
-    const order = M.learn.map(x => x.id), i = order.indexOf(s.id);
-    ok(i >= 0, 'new song not in the learning list');
-    await until(async () => JSON.stringify(await page.$$eval(UI.cardTitle, (h, re) => h.map(x => x.innerText.replace(new RegExp(re), '').trim()), UI.pvTag.source)) === JSON.stringify(M.learn.map(x => x.title)), 'the learning page to list it in order');
+    const g = M.learnGroups.find(x => x.name === folder), i = g.songs.findIndex(x => x.id === s.id);
+    ok(i >= 0, 'new song not in its folder');
+    const titles = async () => JSON.stringify(await page.$$eval(UI.cardTitle, (h, re) => h.map(x => x.innerText.replace(new RegExp(re), '').trim()), UI.pvTag.source));
+    await until(async () => await titles() === JSON.stringify(M.learn.map(x => x.title)), 'the learning page to list it in order');
+    ok(g.songs.length > 1, 'only one song in the folder');
     const dir = i > 0 ? -1 : 1, j = i + dir;
-    ok(j < order.length, 'only one learning song');
     await tap(page, `[data-ln-mv="${s.id}:${dir}"]`);
-    [order[i], order[j]] = [order[j], order[i]];
-    await until(async () => JSON.stringify((await sql('select id from songs where learning and active order by learn_order nulls last, title')).map(r => r.id)) === JSON.stringify(order), 'the new order to be saved');
+    [g.songs[i], g.songs[j]] = [g.songs[j], g.songs[i]];
+    const want = M.learnGroups.flatMap(x => x.songs).map(x => x.id);
+    await until(async () => JSON.stringify((await sql('select id from songs where active and (learning or learn_listed) order by learn_order nulls last, title')).map(r => r.id)) === JSON.stringify(want), 'the new order to be saved');
     await tap(page, `[data-learn-move="${s.id}"]:not([data-confirm])`);
+    ok(await page.locator('#ln-keep').isChecked(), 'keep on Learning is not ticked by default');
     await tap(page, `[data-learn-move="${s.id}"][data-confirm]`);
-    await until(async () => (await one(`select learning from songs where id = ${lit(s.id)}`)).learning === false, 'moved to the repertoire');
+    await until(async () => { const r = await one(`select learning, learn_listed from songs where id = ${lit(s.id)}`); return r.learning === false && r.learn_listed === true; }, 'moved to the repertoire and kept on Learning');
+    await until(async () => await page.locator(`[data-ln-done="${s.id}"]`).count(), 'its Done learning button');
     await go(page, '#/sheets');
     ok(await page.locator(`[data-srow="${s.id}"]`).count(), 'moved song not in Choir music');
+    await go(page, '#/learning');
+    await tap(page, `[data-ln-done="${s.id}"]`);
+    await until(async () => (await one(`select learn_listed from songs where id = ${lit(s.id)}`)).learn_listed === false, 'marked learned');
+    await until(async () => !(await page.locator(`[data-ln-done="${s.id}"]`).count()), 'it to leave the page');
+    ok((await toastText(page)).includes(t('lnDoneMsg', s.title)), 'no word that it was learned');
+    // moving without keeping takes it off the page, as before
+    const other = M.learn.find(x => x.learning && x.id !== s.id);
+    if (other) {
+      await tap(page, `[data-learn-move="${other.id}"]:not([data-confirm])`);
+      await page.locator('#ln-keep').uncheck();
+      await tap(page, `[data-learn-move="${other.id}"][data-confirm]`);
+      await until(async () => { const r = await one(`select learning, learn_listed from songs where id = ${lit(other.id)}`); return r.learning === false && r.learn_listed === false; }, 'moved without keeping');
+      await until(async () => !(await page.locator(`[data-learn-move="${other.id}"]`).count()), 'it to leave the page');
+    }
+  });
+
+  await check('D18', 'learning folders: show one folder, add repertoire songs into a new one, move, rename and remove it', async () => {
+    M = await loadModel();
+    const page = await director('#/learning');
+    const heads = () => page.$$eval(UI.folderHead, h => h.map(x => x.innerText.trim()));
+    const titles = () => page.$$eval(UI.cardTitle, (h, re) => h.map(x => x.innerText.replace(new RegExp(re), '').trim()), UI.pvTag.source);
+    eq(await heads(), M.learnGroups.map(g => g.name || t('lnOther')), 'folder headings');
+    if (M.learnGroups.length > 1) {
+      const g1 = M.learnGroups[1];
+      await tap(page, `[data-ln-folder="${g1.key}"]`);
+      await until(async () => JSON.stringify(await titles()) === JSON.stringify(g1.songs.map(x => x.title)), 'only that folder\'s songs');
+      await tap(page, '[data-ln-folder=""]');
+      await until(async () => (await titles()).length === M.learn.length, 'every folder again');
+    }
+    // two repertoire songs, picked by searching, into a new folder
+    const [A, B] = M.live.filter(x => !x.learn_listed).slice(0, 2), F1 = 'На Рождество Э2Э', F2 = 'Рождество Э2Э';
+    await tap(page, '[data-ln-pick="rep"]');
+    for (const x of [A, B]) {
+      await page.fill('#ln-pick-q', x.title);
+      await until(async () => await page.locator(`[data-ln-pick-id="${x.id}"]`).count(), 'the song in the list');
+      await page.locator(`[data-ln-pick-id="${x.id}"]`).check();
+    }
+    ok((await page.locator('[data-ln-pick-add]').innerText()).includes(t('lnAddN', 2)), 'the button does not count two songs');
+    await page.fill('#ln-pick-folder', F1);
+    await tap(page, '[data-ln-pick-add]');
+    const rows = () => sql(`select id, learning, learn_listed, learn_for from songs where id in (${lit(A.id)}, ${lit(B.id)}) order by id`);
+    await until(async () => (await rows()).every(r => r.learn_listed === true && r.learning === false && r.learn_for === F1), 'both songs on Learning, in the new folder');
+    await until(async () => (await toastText(page)).includes(t('lnAddedN', 2, F1)), 'word that they were added', 2400);
+    const named = M.learnGroups.filter(g => g.name).map(g => g.name), rest = M.learnGroups.some(g => !g.name) ? [t('lnOther')] : [];
+    await until(async () => JSON.stringify(await heads()) === JSON.stringify(named.concat(F1, rest)), 'the new folder last among the folders');
+    ok(await page.locator(`[data-ln-done="${A.id}"]`).count(), 'a repertoire song has no Done learning button');
+    // move the new folder up one place; it stays there after a reload
+    if (named.length) {
+      await tap(page, `[data-ln-fedit="${F1}"]`);
+      await tap(page, '[data-ln-fmv="-1"]');
+      const moved = named.slice(0, -1).concat(F1, named[named.length - 1], rest);
+      await until(async () => JSON.stringify(await heads()) === JSON.stringify(moved), 'the folder one place up');
+      await until(async () => { M = await loadModel(); return JSON.stringify(M.learnGroups.map(g => g.name || t('lnOther'))) === JSON.stringify(moved); }, 'the folder order to be saved');
+    }
+    // rename it, then remove it: its songs stay, under Other songs
+    await tap(page, `[data-ln-fedit="${F1}"]`);
+    await page.fill('#ln-fname', F2);
+    await tap(page, '[data-ln-fsave]');
+    await until(async () => (await rows()).every(r => r.learn_for === F2), 'the folder renamed');
+    await tap(page, `[data-ln-fedit="${F2}"]`);
+    await tap(page, '[data-ln-fremove]');
+    await until(async () => (await rows()).every(r => r.learn_for === null && r.learn_listed === true), 'the folder removed, its songs kept');
+    await until(async () => (await heads()).includes(t('lnOther')), 'an Other songs section');
+    await go(page, '#/sheets');
+    ok(await page.locator(`[data-srow="${A.id}"]`).count(), 'a song on Learning left Choir music');
+  });
+
+  await check('D19', 'learning from a service: its songs never sung before come ticked; they join an existing folder', async () => {
+    M = await loadModel();
+    const up = M.events.filter(e => e.date > TODAY && !e.cancelled && M.songsFor(e.id).length).sort((a, b) => a.date.localeCompare(b.date));
+    const ev = up.find(e => M.songsFor(e.id).some(x => !x.learning && !x.learn_listed && !M.sung(x.id))) || up[0];   // one with a song never sung, if any
+    ok(ev, 'no upcoming service with songs');
+    const songs = M.songsFor(ev.id), onL = x => x.active !== false && (x.learning || x.learn_listed);
+    const fresh = songs.filter(x => !onL(x) && !M.sung(x.id)).map(x => x.id);
+    const page = await director('#/sheets/order-' + short(ev.id));
+    await tap(page, `[data-ln-pick="${ev.id}"]`);
+    for (const x of songs) eq(await page.locator(`[data-ln-pick-id="${x.id}"]`).isChecked(), onL(x) || fresh.includes(x.id), `"${x.title}" ticked`);
+    const pick = fresh.length ? fresh : [songs.find(x => !onL(x)).id];
+    if (!fresh.length) await page.locator(`[data-ln-pick-id="${pick[0]}"]`).check();
+    const folder = (M.learnGroups.find(g => g.name) || {}).name;
+    ok(folder, 'no folder to join');
+    await page.fill('#ln-pick-folder', folder.toUpperCase());           // the existing folder, typed in capitals
+    await tap(page, '[data-ln-pick-add]');
+    await until(async () => (await sql(`select learn_listed, learn_for from songs where id in (${pick.map(lit).join(',')})`)).every(r => r.learn_listed === true && r.learn_for === folder), 'the songs on Learning, in that folder');
+    await go(page, '#/learning');
+    const g = (await loadModel()).learnGroups.find(x => x.name === folder);
+    ok(pick.every(id => g.songs.some(x => x.id === id)), 'the songs are not in the folder');
   });
 
   await check('D15', 'usage page loads for the director only', async () => {
@@ -1287,7 +1411,7 @@ async function directorChecks() {
       const since = new URL((await req).url()).searchParams.get('at').replace(/^gte\./, '');
       await until(async () => await page.locator('[data-count]').count() >= 4, 'the usage figures');
       const got = (await page.$$eval('[data-count]', x => x.map(e => +e.dataset.count))).slice(0, 4);
-      const w = await one(`select count(distinct vid) d, count(*) filter (where kind = 'order') o, count(*) filter (where kind = 'sheet') s, count(*) filter (where kind = 'audio') a from usage_log where at >= ${lit(since)}`);
+      const w = await one(`select count(distinct vid) d, count(*) filter (where kind = 'order') o, count(*) filter (where kind = 'sheet') s, count(*) filter (where kind = 'audio') a from usage_log where at >= ${lit(since)} and at <= ${lit(SOON)}`);
       eq(got, [+w.d, +w.o, +w.s, +w.a], `devices / order opens / sheet opens / recordings (${period} days)`);
     };
     await figures(30);

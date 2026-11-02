@@ -44,7 +44,8 @@ const ids = await one(`select
   (select name from storage.objects where bucket_id = 'sheets' and name like 'locked/%' limit 1) as locked,
   (select name from storage.objects where bucket_id = 'sheets' and name not like 'locked/%' limit 1) as open,
   (select name from storage.objects where bucket_id = 'photos' limit 1) as photo,
-  exists (select 1 from information_schema.columns where table_name = 'events' and column_name = 'demo') as senior`);
+  exists (select 1 from information_schema.columns where table_name = 'events' and column_name = 'demo') as senior,
+  exists (select 1 from information_schema.columns where table_name = 'songs' and column_name = 'learn_listed') as listed`);
 
 // ---------------- guest ----------------
 for (const t of ['singers', 'songs', 'events', 'absences', 'event_songs', 'song_categories', 'documents']) {
@@ -117,6 +118,11 @@ if (intruder) {
   check('I2', 'an outside account cannot rename songs', after.title !== 'Чужое название', `update ${upd.status}, title now ${after.title}`);
   check('I3', 'an outside account cannot delete attendance', after.a === ids.absences, `delete ${del.status}, absences ${after.a}/${ids.absences}`);
   check('I4', 'an outside account cannot rewrite the rules', after.rules !== 'hacked', `upsert ${doc.status}`);
+  if (ids.listed) {                       // 5.51: repertoire songs on the Learning page
+    const ul = await api('PATCH', `/rest/v1/songs?id=eq.${ids.song}`, Object.assign({ body: { learn_listed: true }, headers: rep }, T));
+    const now = await one(`select learn_listed from songs where id = '${ids.song}'`);
+    check('I9', 'an outside account cannot put songs on the Learning page', now.learn_listed === false, `update ${ul.status}, learn_listed ${now.learn_listed}`);
+  }
   const log = await api('GET', '/rest/v1/usage_log?select=*&limit=5', T);
   check('I5', 'an outside account cannot read the usage log', log.status >= 400 || (Array.isArray(log.json) && log.json.length === 0), `${log.status}, ${Array.isArray(log.json) ? log.json.length + ' rows' : ''}`);
   const up = await api('POST', '/storage/v1/object/photos/intruder/x.jpg', Object.assign({ body: 'x', raw: true, headers: { 'Content-Type': 'image/jpeg', 'x-upsert': 'true' } }, T));
@@ -153,6 +159,13 @@ if (dir) {
   check('W4', 'director sets a song order', es.status === 201, es.status + ' ' + es.text.slice(0, 80));
   const so = await api('PATCH', `/rest/v1/songs?id=eq.${ids.song}`, Object.assign({ body: { subtitle: 'обр. для хора', lyrics: [{ t: 'v', x: 'строка' }] }, headers: rep }, T));
   check('W5', 'director edits a song', so.status === 200 && so.json && so.json.length === 1, so.status + ' ' + so.text.slice(0, 80));
+  if (ids.listed) {
+    const on = await api('PATCH', `/rest/v1/songs?id=eq.${ids.song}`, Object.assign({ body: { learn_listed: true, learn_for: 'Тест' }, headers: rep }, T));
+    const off = await api('PATCH', `/rest/v1/songs?id=eq.${ids.song}`, Object.assign({ body: { learn_listed: false }, headers: rep }, T));
+    const r = await one(`select learn_listed, learning from songs where id = '${ids.song}'`);
+    check('W13', 'director puts a repertoire song on the Learning page and takes it off', on.status === 200 && on.json && on.json[0] && on.json[0].learn_listed === true
+      && off.status === 200 && r.learn_listed === false && r.learning === false, `${on.status}/${off.status}, now ${JSON.stringify(r)}`);
+  }
   const c = await api('POST', '/rest/v1/song_categories', Object.assign({ body: { name: 'Тестовая' }, headers: rep }, T));
   check('W6', 'director adds a category', c.status === 201, String(c.status));
   const d = await api('POST', '/rest/v1/documents?on_conflict=key', Object.assign({ body: { key: 'rules', body_ru: '# Правила', body_en: '# Rules' }, headers: { Prefer: 'resolution=merge-duplicates,return=representation' } }, T));
