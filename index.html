@@ -8089,6 +8089,30 @@ function learningPage(){
       : filed ? `<div class="lnfolds">${groups.map(folder).join('')}</div>`
       : `<div class="lngrid">${groups[0].songs.map((x, j) => card(x, j, groups[0].songs.length)).join('')}</div>`);
 }
+/* Opening and closing a folder redraws only that card, not the page: a full redraw
+   at the end of the slide was a visible hitch. Closing turns the arrow and the icon
+   at once, then slides away only the part of the folder that is on screen. */
+function lnRedraw(k){
+  const q = `.lnfold[data-k="${CSS.escape(k)}"]`, cur = document.querySelector('#app ' + q);
+  const tpl = document.createElement('template'); tpl.innerHTML = learningPage();
+  const next = tpl.content.querySelector(q);
+  if (cur && next) cur.replaceWith(next); else render();
+}
+function lnClose(k, then){
+  const sec = document.querySelector(`#app .lnfold[data-k="${CSS.escape(k)}"]`), body = sec && sec.querySelector(':scope > .lnfbody');
+  const done = () => { then(); lnRedraw(k); };
+  if (!body) return done();
+  sec.classList.remove('open');
+  const tog = sec.querySelector('[data-ln-ftog]'); if (tog) tog.setAttribute('aria-expanded', 'false');
+  const ic = sec.querySelector('.lnfic'); if (ic && ic.querySelector('.lnfi')) ic.innerHTML = FOLDERSVG;
+  const h = Math.max(0, Math.min(body.offsetHeight, innerHeight - body.getBoundingClientRect().top));
+  if (calm() || !h || !body.animate) return done();
+  body.style.height = h + 'px'; body.style.overflow = 'hidden';
+  const a = body.animate([{ height: h + 'px', opacity: 1 }, { height: '0px', opacity: 0 }],
+    { duration: Math.round(Math.min(340, 220 + h / 10)), easing: EASE.drawer, fill: 'forwards' });
+  let fired = false; const fin = () => { if (!fired) { fired = true; done(); } };
+  a.onfinish = a.oncancel = fin; setTimeout(fin, 600);
+}
 /* ---------- Learning: adding repertoire songs ----------
    From the Learning page (search the repertoire) or from one service's song list,
    where songs never sung before come ticked. A song already on the page is shown
@@ -9643,11 +9667,10 @@ document.addEventListener('click', async e => {
     return lnRenumber(named.concat(groups.filter(x => !x.name)));
   }
   if (d.lnFtog) {                                 // one folder open at a time; the other closes first
-    const k = d.lnFtog, body = key => `.lnfold[data-k="${CSS.escape(key)}"] > .lnfbody`;
-    const was = [...lnOpenSet()][0];
-    if (was === k) return collapse(body(k), () => { lnShow(''); render(); });
-    const open = () => { lnShow(k); render(); reveal(body(k)); };
-    return was ? collapse(body(was), open) : open();
+    const k = d.lnFtog, was = [...lnOpenSet()][0];
+    if (was === k) return lnClose(k, () => lnShow(''));
+    const open = () => { lnShow(k); lnRedraw(k); reveal(`#app .lnfold[data-k="${CSS.escape(k)}"] > .lnfbody`); };
+    return was ? lnClose(was, open) : open();
   }
   if (d.lnShare) {                                // the folder's songs and its link, ready to paste into a chat
     const g = learnGroups(learnReal()).find(x => x.key === d.lnShare);
