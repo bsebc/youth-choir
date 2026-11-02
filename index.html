@@ -3136,7 +3136,7 @@
   }
 </style>
 <style>
-  /* 5.49: the states the fixes added (data that could not load, an out-of-date
+  /* 5.50: the states the fixes added (data that could not load, an out-of-date
      banner, the attendance grid's "latest dates" notice) and text only screen
      readers need, drawn in the existing look. */
   .state{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:40px 24px}
@@ -3155,21 +3155,24 @@
   .vh{display:inline-block;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0;vertical-align:top}
 </style>
 <style>
-  /* 5.49 motion. Springs as iOS uses them: "smooth" (no overshoot, 0.47 s) for pages and
-     sheets, "snappy" (about 1% overshoot, 0.37 s) for dialogs, toasts and segment slides.
-     Kept short: taps wait while a page transition plays, as on iOS.
-     Browsers without linear() get close cubic-bezier stand-ins. */
-  :root{ --spring-smooth:cubic-bezier(.22,.8,.26,1); --spring-snappy:cubic-bezier(.2,.9,.25,1.02); }
+  /* 5.50 motion, modelled on iOS. Springs: "nav" (no overshoot, 0.39 s) for pages that
+     slide, "smooth" (no overshoot, 0.47 s) for sheets and the menu, "snappy" (about 1%
+     overshoot, 0.37 s) for dialogs and toasts. Browsers without linear() get close
+     cubic-bezier stand-ins. */
+  :root{ --spring-nav:cubic-bezier(.22,.8,.26,1); --spring-smooth:cubic-bezier(.22,.8,.26,1); --spring-snappy:cubic-bezier(.2,.9,.25,1.02); }
   @supports (transition-timing-function:linear(0, 1)){ :root{
+    --spring-nav:linear(0, 0.0233, 0.0802, 0.1557, 0.2396, 0.3251, 0.408, 0.4856, 0.5565, 0.6202, 0.6765, 0.7259, 0.7687, 0.8056, 0.8371, 0.864, 0.8867, 0.9058, 0.9219, 0.9354, 0.9466, 0.956, 0.9638, 0.9702, 0.9755, 0.9799, 0.9836, 0.9866, 0.989, 0.991, 0.9927, 0.994, 0.9951, 1);
     --spring-smooth:linear(0, 0.0209, 0.0724, 0.1417, 0.2197, 0.3004, 0.3796, 0.4547, 0.5244, 0.5878, 0.6446, 0.6951, 0.7395, 0.7783, 0.8118, 0.8408, 0.8657, 0.8869, 0.905, 0.9204, 0.9334, 0.9443, 0.9535, 0.9613, 0.9678, 0.9733, 0.9778, 0.9816, 0.9848, 0.9874, 0.9896, 0.9914, 0.9929, 0.9941, 0.9952, 1);
-    --spring-snappy:linear(0, 0.0175, 0.0628, 0.1266, 0.2018, 0.2827, 0.3651, 0.4457, 0.5224, 0.5938, 0.6589, 0.7173, 0.769, 0.814, 0.8527, 0.8857, 0.9133, 0.9361, 0.9548, 0.9698, 0.9816, 0.9908, 0.9977, 1.0028, 1.0064, 1.0088, 1.0103, 1.011, 1.0111, 1.0108, 1.0103, 1.0095, 1.0087, 1.0078, 1.0069, 1);
+    --spring-snappy:linear(0, 0.0175, 0.0628, 0.1266, 0.2018, 0.2827, 0.3651, 0.4457, 0.5224, 0.5938, 0.6589, 0.7173, 0.769, 0.814, 0.8527, 0.8857, 0.9133, 0.9361, 0.9548, 0.9698, 0.9816, 0.9908, 0.9977, 1.0028, 1.0064, 1.0088, 1.0103, 1.011, 1.0111, 1.0108, 1.0103, 1.0095, 1.0087, 1.0078, 1.0069, 1)
   } }
 
   /* ---- moving between pages (View Transitions; see navTransition) ----
      The page stays usable while a transition plays. */
   ::view-transition{pointer-events:none}
   /* header, tab bar, sidebar and toast are captured on their own and stay put */
-  html.vt-on .mast{view-transition-name:v-mast}
+  /* the phone header scrolls with the page, so it only stays put when it is in place on
+     both pages (navTransition sets vt-mast); otherwise it travels with its page */
+  html.vt-mast .mast{view-transition-name:v-mast}
   html.vt-on .topbar{view-transition-name:v-topbar}
   html.vt-on #dockhost .dock{view-transition-name:v-dock}
   html.vt-on .toast{view-transition-name:v-toast}
@@ -3180,43 +3183,34 @@
   html.vt-nav::view-transition-old(v-side),html.vt-nav::view-transition-old(v-toast){display:none}
   html.vt-nav::view-transition-new(v-mast),html.vt-nav::view-transition-new(v-topbar),html.vt-nav::view-transition-new(v-dock),
   html.vt-nav::view-transition-new(v-side),html.vt-nav::view-transition-new(v-toast){animation:none}
+  /* the tab bar's frosted glass spilled into square corners while captured: clip it to
+     the capsule, and carry the capsule's own shadow outside the clip */
+  @media (max-width:999px){
+    html.vt-on::view-transition-group(v-dock){border-radius:var(--r-pill);overflow:clip;
+      box-shadow:0 14px 36px -14px rgba(var(--shadow-rgb),.38),0 2px 6px -2px rgba(var(--shadow-rgb),.1),0 0 0 1px var(--dk-line)}
+  }
   /* a page's switchers stay where they are; only their thumb glides */
-  html.vt-on::view-transition-group(v-stay-tabs),html.vt-on::view-transition-group(v-stay-ctl),html.vt-on::view-transition-group(v-stay-top),
-  html.vt-on::view-transition-group(v-stay-search),html.vt-on::view-transition-group(v-stay-obar){animation-duration:.37s;animation-timing-function:var(--spring-snappy)}
-  html.vt-on::view-transition-old(v-stay-tabs),html.vt-on::view-transition-old(v-stay-ctl),html.vt-on::view-transition-old(v-stay-top),
-  html.vt-on::view-transition-old(v-stay-search),html.vt-on::view-transition-old(v-stay-obar){display:none}
-  html.vt-on::view-transition-new(v-stay-tabs),html.vt-on::view-transition-new(v-stay-ctl),html.vt-on::view-transition-new(v-stay-top),
-  html.vt-on::view-transition-new(v-stay-search),html.vt-on::view-transition-new(v-stay-obar){animation:none}
+  html.vt-on::view-transition-group(v-stay-tabs),html.vt-on::view-transition-group(v-stay-ctl),html.vt-on::view-transition-group(v-stay-top),html.vt-on::view-transition-group(v-stay-search),html.vt-on::view-transition-group(v-stay-obar){animation-duration:.39s;animation-timing-function:var(--spring-nav)}
+  html.vt-on::view-transition-old(v-stay-tabs),html.vt-on::view-transition-old(v-stay-ctl),html.vt-on::view-transition-old(v-stay-top),html.vt-on::view-transition-old(v-stay-search),html.vt-on::view-transition-old(v-stay-obar){display:none}
+  html.vt-on::view-transition-new(v-stay-tabs),html.vt-on::view-transition-new(v-stay-ctl),html.vt-on::view-transition-new(v-stay-top),html.vt-on::view-transition-new(v-stay-search),html.vt-on::view-transition-new(v-stay-obar){animation:none}
 
-  /* deeper: the new page slides in over the old, which eases left and dims */
-  html.vt-push::view-transition-old(root){animation:vtPushOut .47s var(--spring-smooth) both;mix-blend-mode:normal}
-  html.vt-push::view-transition-new(root){animation:vtPushIn .47s var(--spring-smooth) both;mix-blend-mode:normal;box-shadow:-12px 0 32px -14px rgba(0,0,0,.28)}
-  /* back: the reverse, the page leaving on top */
-  html.vt-pop::view-transition-old(root){animation:vtPopOut .47s var(--spring-smooth) both;mix-blend-mode:normal;z-index:1;box-shadow:-12px 0 32px -14px rgba(0,0,0,.28)}
-  html.vt-pop::view-transition-new(root){animation:vtPopIn .47s var(--spring-smooth) both;mix-blend-mode:normal}
+  /* drilling in, on a phone: the new page slides in from the right edge over the old
+     one, which eases a third of the way left; going back reverses it. A soft edge
+     shadow, and no dimming filter, which costs a phone a full-screen repaint. */
+  html.vt-push::view-transition-old(root){animation:vtPushOut .39s var(--spring-nav) both}
+  html.vt-push::view-transition-new(root){animation:vtPushIn .39s var(--spring-nav) both;box-shadow:-8px 0 24px -10px rgba(0,0,0,.2)}
+  html.vt-pop::view-transition-old(root){animation:vtPopOut .39s var(--spring-nav) both;z-index:1;box-shadow:-8px 0 24px -10px rgba(0,0,0,.2)}
+  html.vt-pop::view-transition-new(root){animation:vtPopIn .39s var(--spring-nav) both}
   @keyframes vtPushIn{from{transform:translateX(100%)}}
-  @keyframes vtPushOut{to{transform:translateX(-30%);filter:brightness(.94)}}
+  @keyframes vtPushOut{to{transform:translateX(-30%)}}
   @keyframes vtPopOut{to{transform:translateX(100%)}}
-  @keyframes vtPopIn{from{transform:translateX(-30%);filter:brightness(.94)}}
-  /* tab bar and menu: tabs are not a hierarchy, so they dissolve without moving */
-  html.vt-tab::view-transition-old(root){animation:vtFadeOut .2s cubic-bezier(.4,0,1,1) both}
-  html.vt-tab::view-transition-new(root){animation:vtFadeIn .32s cubic-bezier(0,0,.2,1) both}
-  /* a segment beside this one: a short slide in the direction of the tap */
-  html.vt-next::view-transition-old(root){animation:vtOutL .37s var(--spring-snappy) both;mix-blend-mode:normal}
-  html.vt-next::view-transition-new(root){animation:vtInR .37s var(--spring-snappy) both;mix-blend-mode:normal}
-  html.vt-prev::view-transition-old(root){animation:vtOutR .37s var(--spring-snappy) both;mix-blend-mode:normal}
-  html.vt-prev::view-transition-new(root){animation:vtInL .37s var(--spring-snappy) both;mix-blend-mode:normal}
-  @keyframes vtOutL{to{opacity:0;transform:translateX(-6%)}}
-  @keyframes vtInR{from{opacity:0;transform:translateX(6%)}}
-  @keyframes vtOutR{to{opacity:0;transform:translateX(6%)}}
-  @keyframes vtInL{from{opacity:0;transform:translateX(-6%)}}
-  /* a period or filter changed: the figures dissolve into the new ones */
-  html.vt-swap::view-transition-old(root){animation:vtFadeOut .16s ease-out both}
-  html.vt-swap::view-transition-new(root){animation:vtFadeIn .26s cubic-bezier(0,0,.2,1) both}
-  /* Reduce Motion: every kind becomes a short dissolve */
-  html.vt-fade::view-transition-old(root){animation:vtFadeOut .15s linear both}
-  html.vt-fade::view-transition-new(root){animation:vtFadeIn .15s linear both}
-  @keyframes vtFadeOut{to{opacity:0}}
+  @keyframes vtPopIn{from{transform:translateX(-30%)}}
+  /* everything else (tab bar, menu, a switcher, a period or a filter, and every move on
+     a wide screen or with Reduce Motion) dissolves: the new page fades in over the old
+     one, which stays solid underneath. Fading both at once let the black behind them
+     show through half-way, which read as a flash. */
+  html.vt-fade::view-transition-old(root){animation:none}
+  html.vt-fade::view-transition-new(root){animation:vtFadeIn .2s cubic-bezier(.2,0,0,1) both}
   @keyframes vtFadeIn{from{opacity:0}}
 
   /* ---- dialogs, sheets, the menu and toasts arrive on springs ---- */
@@ -3744,14 +3738,14 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.49.0';
+const VERSION = '5.50.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
-    'Smoother movement: deeper pages slide in and back out, tabs dissolve, segments glide, and dialogs leave the way they came',
+    'Smoother movement, as on an iPhone: deeper pages slide in and back out, Back returns you to where you were, tabs and switchers change without a flash, and dialogs leave the way they came',
     'Security: only the director’s account can make changes',
     'Attendance and song orders save in one step, so a dropped connection can never leave half a change',
     'A change the database refuses is always reported as not saved',
@@ -3820,7 +3814,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
-    'Плавнее движение: вложенные страницы выезжают и уезжают обратно, вкладки сменяются растворением, сегменты скользят, окна закрываются так же, как открылись',
+    'Плавнее движение, как на iPhone: вложенные страницы выезжают и уезжают обратно, «Назад» возвращает туда, где вы были, вкладки и переключатели меняются без вспышки, окна закрываются так же, как открылись',
     'Безопасность: вносить изменения может только учётная запись регента',
     'Посещаемость и порядок песен сохраняются одним шагом — обрыв связи не оставит изменение наполовину',
     'Если база данных не приняла изменение, приложение сообщает, что оно не сохранено',
@@ -4937,7 +4931,9 @@ function dock(){
 function syncDock(){
   let host = document.getElementById('dockhost');
   if (!host) { host = document.createElement('div'); host.id = 'dockhost'; document.body.appendChild(host); }
-  if (!host.firstChild || host.dataset.lang !== S.lang) { host.innerHTML = dock(); host.dataset.lang = S.lang; }
+  /* data-dock-lang, not data-lang: the click handler treats any [data-lang] around a
+     tap as the language switch, so every tab tap used to redraw the page once more */
+  if (!host.firstChild || host.dataset.dockLang !== S.lang) { host.innerHTML = dock(); host.dataset.dockLang = S.lang; }
   const dk = host.querySelector('.dock');
   if (!dk) return;
   const more = dk.querySelector('[data-menu]');
@@ -8148,72 +8144,81 @@ function hideToast(){
 }
 
 /* ---------- moving between pages ----------
-   Every render rebuilds the page, which suits View Transitions: the browser keeps
-   a picture of the old page and moves it out while the new one comes in. How it
-   moves says where you went:
-     push / pop   a deeper page slides in from the right; going back reverses it
-     tab          the tab bar or the menu: a dissolve, no movement
-     next / prev  a segment beside this one: a short slide toward the tap
-     swap         a period or a filter: the figures dissolve into the new ones
-   The header, tab bar, sidebar and toast stay still, and so do the page's
-   switchers, whose thumbs glide on their own. Nothing here touches data: it only
-   decides how render() is shown. Without View Transitions the page changes as
-   before (with the fade-in further down); with Reduce Motion every kind is a
-   short dissolve. */
+   Every render rebuilds the page, which suits View Transitions: the browser keeps a
+   picture of the old page while the new one comes in. Modelled on iOS:
+     push / pop   on a phone, a deeper page slides in from the right over the old one;
+                  going back reverses it and lands where you were scrolled, without
+                  replaying the page's entrance
+     fade         everything else: the tab bar, the menu, a switcher on the page, a
+                  period or a filter, and every move on a wide screen or with Reduce
+                  Motion. The new page dissolves in over the old one.
+   The header, tab bar, sidebar and toast stay still, and on a switch within a page
+   so do its switchers, whose thumbs glide on their own. A back swipe the browser has
+   already animated (Safari) is not animated a second time. Nothing here touches
+   data: it only decides how render() is shown. */
 let navSource = '';
 document.addEventListener('click', e => {
   const n = e.target && e.target.closest ? e.target : null;
   navSource = n && (n.closest('.dock') || n.closest('.drawer')) ? 'tab' : '';
 }, true);
+let uaSwiped = false;
+window.addEventListener('popstate', e => { uaSwiped = !!e.hasUAVisualTransition; });
 const NAV_ITEM = /^([0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}|[0-9a-f]{8}|new|order-.+)$/i;
 function navDepth(r){
   const p = (r || '').split('?')[0].replace(/^#\/?/, '').split('/').filter(Boolean);
   if (!p.length || p[0] === 'home') return 0;
   return NAV_ITEM.test(p[p.length - 1]) ? 2 : 1;      // a singer, a service, a song, a date: one level down
 }
+/* push, pop, seg (a switcher on this page) or tab */
 function navKind(from, to){
   const src = navSource; navSource = '';
   if (!from || src) return 'tab';
   const df = navDepth(from), dt = navDepth(to);
   if (dt > df) return 'push';
   if (dt < df) return 'pop';
-  /* the same level: a segment of a switcher on this page slides toward the tap */
   const base = to.split('?')[0];
-  const link = [...document.querySelectorAll('#app .tabs a[href], #app .seg a[href], #app .subtabs a[href]')]
-    .find(a => a.getAttribute('href').split('?')[0] === base);
-  const on = link && link.parentElement && link.parentElement.querySelector('a.on');
-  if (link && on && link !== on) return link.getBoundingClientRect().left > on.getBoundingClientRect().left ? 'next' : 'prev';
-  return 'tab';
+  return [...document.querySelectorAll('#app .tabs a[href], #app .seg a[href], #app .subtabs a[href]')]
+    .some(a => a.getAttribute('href').split('?')[0] === base) ? 'seg' : 'tab';
 }
 const NAV_STAY = [['tabs', 'v-stay-tabs'], ['ctlbar', 'v-stay-ctl'], ['topctl', 'v-stay-top'], ['searchrow', 'v-stay-search'], ['obar', 'v-stay-obar']];
-function nameStay(){
+function nameStay(on){
   const app = document.getElementById('app');
-  if (app) NAV_STAY.forEach(([c, n]) => { const el = app.querySelector('.' + c); if (el) el.style.viewTransitionName = n; });
+  if (app) NAV_STAY.forEach(([c, n]) => { const el = app.querySelector('.' + c); if (el) el.style.viewTransitionName = on ? n : ''; });
 }
-const NAV_KINDS = ['vt-push', 'vt-pop', 'vt-tab', 'vt-next', 'vt-prev', 'vt-swap', 'vt-fade'];
+const NAV_KINDS = ['vt-push', 'vt-pop', 'vt-fade', 'vt-mast'];
 let navVT = null;
-function navTransition(kind, update){
+function navTransition(kind, update, toY){
   const root = document.documentElement;
   if (!document.startViewTransition || document.visibilityState !== 'visible') return update();
-  const k = calm() ? 'vt-fade' : 'vt-' + kind;
-  const keep = !calm() && (kind === 'next' || kind === 'prev' || kind === 'swap');
+  /* slides belong to a phone's stack of pages; with the sidebar (1000px and up) a page
+     swaps beside it, so it dissolves */
+  const slide = (kind === 'push' || kind === 'pop') && !calm() && !matchMedia('(min-width:1000px)').matches;
+  const keep = kind === 'seg';
   root.classList.remove(...NAV_KINDS);
-  root.classList.add('vt-on', 'vt-nav', k);
-  if (keep) nameStay();
+  root.classList.add('vt-on', 'vt-nav', slide ? 'vt-' + kind : 'vt-fade');
+  const y0 = window.scrollY, y1 = toY == null ? y0 : toY;     // toY: where the new page will be scrolled
+  if (y0 < 1 && y1 < 1) root.classList.add('vt-mast');
+  if (keep) nameStay(true);
   let vt;
   try {
     vt = document.startViewTransition(() => {
       try { update(); } catch (e) { console.error(e); }
-      if (keep) nameStay();
+      if (keep) nameStay(true);
     });
   } catch (e) { root.classList.remove('vt-on', 'vt-nav', ...NAV_KINDS); return update(); }
   navVT = vt;
-  const done = () => { if (navVT === vt) { navVT = null; root.classList.remove('vt-on', 'vt-nav', ...NAV_KINDS); } };
+  /* the names come off afterwards: left on, a later slide would leave the switchers behind */
+  const done = () => { if (navVT === vt) { navVT = null; root.classList.remove('vt-on', 'vt-nav', ...NAV_KINDS); if (keep) nameStay(false); } };
   vt.finished.then(done, done);
   if (vt.ready) vt.ready.catch(() => {});
 }
 /* a period or filter changed on this page */
-const swap = () => navTransition('swap', render);
+const swap = () => navTransition('seg', render);
+/* Where each page was scrolled when it was left, for going back to it. The browser
+   is told not to restore positions itself: it did so before the new page was drawn,
+   on top of the old one. */
+const navScroll = new Map();
+try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (_) {}
 
 /* ---------- render ---------- */
 function render(){
@@ -8765,7 +8770,8 @@ document.addEventListener('click', async e => {
   if (el.hasAttribute('data-grid-more')) { S.gridAllKey = gridKey(); return render(); }
   if (el.hasAttribute('data-retry-load')) return load(!!S.loaded);
 
-  if (d.lang) { S.lang = d.lang === 'ru' ? 'ru' : 'en'; lsSet('bsebc-youth-lang', S.lang); return paint(render); }
+  if (d.lang) { const L = d.lang === 'ru' ? 'ru' : 'en'; if (L === S.lang) return;     // the language already shown
+    S.lang = L; lsSet('bsebc-youth-lang', S.lang); return paint(render); }
 
   if (el.hasAttribute('data-theme-flip')) { const next = effTheme() === 'dark' ? 'light' : 'dark'; S.theme = next; lsSet('bsebc-youth-theme', next); return paint(render); }
 
@@ -9759,14 +9765,15 @@ function unsavedOn(route){
 }
 window.addEventListener('beforeunload', e => { if (S.route && unsavedOn(S.route)) { e.preventDefault(); e.returnValue = ''; } });
 window.addEventListener('hashchange', () => {
+  const swiped = uaSwiped; uaSwiped = false;
   const nextRoute = normRoute(location.hash), here = (S.route || '').split('?')[0];
   if (here && nextRoute.split('?')[0] !== here && !nextRoute.startsWith('#/login') && unsavedOn(S.route) && !confirm(t('discardLeave'))) {
     history.replaceState(null, '', S.route);    // stay, with the changes intact
     return;
   }
   S.reviewKey = null;
-  S.ripple = true;
   const prevPage = (S.route || '').split('?')[0], prevFull = S.route || '';
+  if (prevFull) navScroll.set(prevFull, window.scrollY);
   S.route = normRoute(location.hash);
   if (S.route.startsWith('#/member') && prevFull && !prevFull.startsWith('#/member')) S.memberFrom = prevFull;
   if (S.route.split('?')[0] !== prevPage) S.mMissAll = false;   // where the report card was opened from
@@ -9781,7 +9788,15 @@ window.addEventListener('hashchange', () => {
   if (!S.route.startsWith('#/seating')) { S.seatEdit = null; S.seatSel = null; }
   if (!S.route.startsWith('#/rules')) { S.rulesEdit = null; S.rulesPreview = false; }
   S.error = ''; S.query = ''; S.editPerson = null; S.editSongRow = null; S.editCat = null; S.addOpen = null;
-  navTransition(navKind(prevFull, S.route), () => { if (toTop) window.scrollTo(0, 0); render(); });
+  const kind = navKind(prevFull, S.route);
+  S.ripple = kind !== 'pop';                     // back shows the page as it was left
+  const backTo = kind === 'pop' ? navScroll.get(S.route) : undefined;
+  const show = () => {
+    if (toTop && backTo == null) window.scrollTo(0, 0);
+    render();
+    if (backTo != null) window.scrollTo(0, backTo);
+  };
+  if (swiped) show(); else navTransition(kind, show, backTo != null ? backTo : toTop ? 0 : window.scrollY);
 });
 
 /* ---------- boot ---------- */

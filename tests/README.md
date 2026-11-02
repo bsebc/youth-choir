@@ -29,6 +29,9 @@ Supabase or GitHub.
 - **`a11y.mjs`** — axe-core accessibility scan (WCAG 2.1 A/AA) of every main screen.
 - **`motion_frames.mjs`** — triggers each kind of transition (page push and back, tab,
   segment, filter, dialog, sheet, language) and saves a frozen mid-motion frame of each.
+- **`seq_frames.mjs`** — one transition frame by frame: start on `HASH`, tap `CLICK` (or run
+  `JS`), then step every animation through `TIMES` ms and save each frame; `THEME`, `W`/`H`,
+  `SCROLL` and `PRE` set the scene. This is how the 5.49 flash was found.
 - **`targets.mjs`** — phone ergonomics at 390 px: tap targets under 44 px and text
   fields under 16 px (iOS zooms the page when one is focused).
 - **`sync_check.mjs`** — compares this app with the other choir's and reports any
