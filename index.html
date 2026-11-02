@@ -16,8 +16,8 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="ru_RU">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="favicon.svg?v=3200" type="image/svg+xml">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=3200">
+<link rel="icon" href="favicon.svg?v=3137" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=3137">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#17203a">
 <meta name="mobile-web-app-capable" content="yes">
@@ -25,8 +25,7 @@
 <meta name="apple-mobile-web-app-title" content="Youth Choir">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <script>try{var t=localStorage.getItem('bsebc-youth-theme')||'light';if(t!=='auto')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
-<style id="legacy-css">
-@layer legacy {
+<style>
   :root{
     color-scheme:light dark;
     /* -- text -- */
@@ -3135,256 +3134,102 @@
     body > *:not(#lyrprint){display:none !important}
     #lyrprint{position:static;visibility:visible;width:auto;padding:.5in;box-sizing:border-box}
   }
-}
 </style>
-<script>/* Browsers older than iOS 15.4 or Chrome 99 skip an @layer block entirely.
-   Unwrap the older styles for them, so they keep every rule. */
-if(!window.CSSLayerBlockRule){var l=document.getElementById('legacy-css');l.textContent=l.textContent.replace(/^\s*@layer legacy\s*\{/,'').replace(/\}\s*$/,'')}</script>
-<style id="v6">
-  /* =====================================================================
-     6.0 design layer — "Refined navy & gold".
-     Everything above sits in @layer legacy, so these rules win without
-     !important or longer selectors. Colours live in tokens: set a token
-     here for light AND dark, or dark mode inherits the light value.
-     ===================================================================== */
-  :root{
-    --ink:#17203a; --text-2:#47506a; --muted:#5b6378; --faint:#646b80; --placeholder:#737a8f; --disabled-ink:#8a90a2;
-    --canvas:#f3f2ee; --page:#f3f2ee; --paper:#ebe9e3; --paper-2:#f3f2ee; --stage:#ebe9e3; --skel:#ebe9e3;
-    --surface:#fff; --surface-2:#faf9f6; --card:#fff; --ic-bg:#f6f5f1; --ic-line:#e4e2db; --ic-inset:transparent; --tile-line:#d9d6cd;
-    --card-line:#e4e2db; --rule:#e6e4dd; --grid-line:#e6e4dd; --line-strong:#d9d6cd; --line-strong-2:#c9c5ba;
-    --blue:#24346c; --blue-text:#24346c; --blue-hover:#2e4282; --blue-hi:#33488f; --blue-rgb:36,52,108;
-    --blue-wash:#f1f3f9; --blue-tint:#e9ecf5; --blue-line:#c9d0e6;
-    --gold:#c9a227; --gold-hover:#d4ad35; --gold-text:#7d620a; --on-gold:#17203a;
-    --gold-soft:#dfcb82; --gold-soft-2:#e9dcae; --gold-bright:#fbeaa0; --gold-wash:#fbf3da; --gold-paper:#fdf8e8;
-    --chrome:#17203a; --chrome-rgb:23,32,58; --chrome-line:#2c3757;
-    --red:#b8392a; --red-wash:#fbecea; --red-line:#efcdc7; --green:#1a7a43; --green-text:#17643a; --green-wash:#eaf5ee; --green-line:#bfdcc9;
-    --violet:#7d620a; --violet-wash:#fbf3da; --teal:#2f6e40; --teal-tint:#edf5ef; --rose:#24346c; --rose-wash:#f1f3f9; --amber:#5a6480; --amber-wash:#eef0f4;
-    --tool2-ic:#2f6e40; --tool3-ic:#7d620a;
-    --onnavy-btn-bg:#d9b44a; --onnavy-btn-ink:#17203a;
-    --order-aurora:none; --order-bg:#1c2748; --order-line:transparent; --op-bg:#24346c;
-    --admin-bg:#fff; --admin-line:#e4e2db; --admin-ic:#e9ecf5;
-    --thumb:#fff; --thumb-ring:rgba(23,32,58,.06); --thumb-shadow:rgba(23,32,58,.12);
-    --ios-track:#e6e4dd; --ios-track2:#dcd9d1;
-    --ring:transparent; --ring-2:rgba(23,32,58,.08); --ring-soft:rgba(23,32,58,.06);
-    --shadow-card:0 1px 2px rgba(23,32,58,.05);
-    --glass:#fff; --glass-2:#fff; --glass-3:#fff; --glass-hi:#fff; --glass-seat:#fff; --glass-in:#faf9f6;
-    --focus:#24346c; --selection-bg:#e1e6f3;
-    --dk-bg:#fff; --dk-line:#e4e2db; --dk-pill:#e9ecf5; --dk-pill-drag:#dde3f1; --dk-ink:#17203a; --dk-ink2:#47506a;
-    --v6-card-r:18px; --v6-ease:cubic-bezier(.2,.7,.2,1);
-  }
-  :root[data-theme="dark"]{
-    --ink:#e9ebf3; --text-2:#b9bfd0; --muted:#9aa1b6; --faint:#858ca2; --placeholder:#7d849b; --disabled-ink:#6a7188;
-    --canvas:#0d1220; --page:#0d1220; --paper:#1a2134; --paper-2:#111727; --stage:#1a2134; --skel:#1a2134;
-    --surface:#151b2c; --surface-2:#1a2134; --card:#151b2c; --ic-bg:#1a2134; --ic-line:#29324c; --ic-inset:transparent; --tile-line:#3a4563;
-    --card-line:#242c43; --rule:#222a40; --grid-line:#242c43; --line-strong:#2c3550; --line-strong-2:#3a4563;
-    --blue:#3b4d94; --blue-text:#a9b9f4; --blue-hover:#4659a6; --blue-hi:#5466b3; --blue-rgb:169,185,244;
-    --blue-wash:#18203a; --blue-tint:#1e2848; --blue-line:#34406a;
-    --tool1-bg:#1e2848; --tool1-ic:#a9b9f4; --tool2-ic:#7dd3a3; --tool3-ic:#e3c35c;
-    --gold:#d9b44a; --gold-hover:#e2bf57; --gold-text:#e3c35c; --on-gold:#17203a;
-    --gold-soft:#7a6427; --gold-soft-2:#4a3e1c; --gold-bright:#4e401a; --gold-wash:#2b2614; --gold-paper:#241f12; --mid:#e9b35a;
-    --chrome:#0a0e1a; --chrome-rgb:10,14,26; --chrome-hi:#141a2a; --navy-deep:#141a2a; --chrome-line:#1c2338; --chrome-line-2:#2c3550;
-    --chrome-text:#aeb5c9; --chrome-text-2:#c9cfdf; --chrome-accent:#a9b9f4; --chrome-faint:#7d849b; --on-chrome:#e9ebf3; --chrome-icon:#d9dce6;
-    --red:#f0806f; --red-wash:#3a1d1a; --red-line:#6a3530; --green:#5cc98a; --green-text:#7fd7a3; --green-wash:#13281d; --green-line:#285040;
-    --violet:#e3c35c; --violet-wash:#2b2614; --teal:#6ecf9a; --teal-tint:#14281e; --rose:#a9b9f4; --rose-wash:#18203a; --amber:#b4bacb; --amber-wash:#1f2536;
-    --onnavy-btn-bg:#d9b44a; --onnavy-btn-ink:#17203a;
-    --order-aurora:none; --order-bg:#1b2547; --order-line:transparent; --op-bg:#3b4d94;
-    --admin-bg:#151b2c; --admin-line:#2c3550; --admin-ic:#1e2848; --drawer-ink:#c9cfdf; --drawer-sel:#fff;
-    --thumb:#26314f; --thumb-ring:rgba(255,255,255,.06); --thumb-shadow:rgba(0,0,0,.4);
-    --ios-track:rgba(255,255,255,.06); --ios-track2:rgba(255,255,255,.1);
-    --shadow-rgb:0,0,0; --ring:transparent; --ring-2:rgba(255,255,255,.1); --ring-soft:rgba(255,255,255,.06); --ring-dock:rgba(255,255,255,.08);
-    --shadow-card:0 1px 2px rgba(0,0,0,.3);
-    --glass:#151b2c; --glass-2:#151b2c; --glass-3:#151b2c; --glass-hi:#1a2134; --glass-seat:#1a2134; --glass-in:#111727;
-    --drawer-bg:#0a0e1a; --scrim:rgba(0,0,0,.6);
-    --focus:#a9b9f4; --selection-bg:#2c3a6a; --glow:169,185,244; --gold-glow:217,180,74;
-    --bar:linear-gradient(90deg,#3b4d94,#6f83cf);
-    --dk-bg:#161c2e; --dk-line:#29324c; --dk-pill:#26314f; --dk-pill-drag:#2c3858; --dk-ink:#fff; --dk-ink2:#b9bfd0;
-  }
-  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
-    --ink:#e9ebf3; --text-2:#b9bfd0; --muted:#9aa1b6; --faint:#858ca2; --placeholder:#7d849b; --disabled-ink:#6a7188;
-    --canvas:#0d1220; --page:#0d1220; --paper:#1a2134; --paper-2:#111727; --stage:#1a2134; --skel:#1a2134;
-    --surface:#151b2c; --surface-2:#1a2134; --card:#151b2c; --ic-bg:#1a2134; --ic-line:#29324c; --ic-inset:transparent; --tile-line:#3a4563;
-    --card-line:#242c43; --rule:#222a40; --grid-line:#242c43; --line-strong:#2c3550; --line-strong-2:#3a4563;
-    --blue:#3b4d94; --blue-text:#a9b9f4; --blue-hover:#4659a6; --blue-hi:#5466b3; --blue-rgb:169,185,244;
-    --blue-wash:#18203a; --blue-tint:#1e2848; --blue-line:#34406a;
-    --tool1-bg:#1e2848; --tool1-ic:#a9b9f4; --tool2-ic:#7dd3a3; --tool3-ic:#e3c35c;
-    --gold:#d9b44a; --gold-hover:#e2bf57; --gold-text:#e3c35c; --on-gold:#17203a;
-    --gold-soft:#7a6427; --gold-soft-2:#4a3e1c; --gold-bright:#4e401a; --gold-wash:#2b2614; --gold-paper:#241f12; --mid:#e9b35a;
-    --chrome:#0a0e1a; --chrome-rgb:10,14,26; --chrome-hi:#141a2a; --navy-deep:#141a2a; --chrome-line:#1c2338; --chrome-line-2:#2c3550;
-    --chrome-text:#aeb5c9; --chrome-text-2:#c9cfdf; --chrome-accent:#a9b9f4; --chrome-faint:#7d849b; --on-chrome:#e9ebf3; --chrome-icon:#d9dce6;
-    --red:#f0806f; --red-wash:#3a1d1a; --red-line:#6a3530; --green:#5cc98a; --green-text:#7fd7a3; --green-wash:#13281d; --green-line:#285040;
-    --violet:#e3c35c; --violet-wash:#2b2614; --teal:#6ecf9a; --teal-tint:#14281e; --rose:#a9b9f4; --rose-wash:#18203a; --amber:#b4bacb; --amber-wash:#1f2536;
-    --onnavy-btn-bg:#d9b44a; --onnavy-btn-ink:#17203a;
-    --order-aurora:none; --order-bg:#1b2547; --order-line:transparent; --op-bg:#3b4d94;
-    --admin-bg:#151b2c; --admin-line:#2c3550; --admin-ic:#1e2848; --drawer-ink:#c9cfdf; --drawer-sel:#fff;
-    --thumb:#26314f; --thumb-ring:rgba(255,255,255,.06); --thumb-shadow:rgba(0,0,0,.4);
-    --ios-track:rgba(255,255,255,.06); --ios-track2:rgba(255,255,255,.1);
-    --shadow-rgb:0,0,0; --ring:transparent; --ring-2:rgba(255,255,255,.1); --ring-soft:rgba(255,255,255,.06); --ring-dock:rgba(255,255,255,.08);
-    --shadow-card:0 1px 2px rgba(0,0,0,.3);
-    --glass:#151b2c; --glass-2:#151b2c; --glass-3:#151b2c; --glass-hi:#1a2134; --glass-seat:#1a2134; --glass-in:#111727;
-    --drawer-bg:#0a0e1a; --scrim:rgba(0,0,0,.6);
-    --focus:#a9b9f4; --selection-bg:#2c3a6a; --glow:169,185,244; --gold-glow:217,180,74;
-    --bar:linear-gradient(90deg,#3b4d94,#6f83cf);
-    --dk-bg:#161c2e; --dk-line:#29324c; --dk-pill:#26314f; --dk-pill-drag:#2c3858; --dk-ink:#fff; --dk-ink2:#b9bfd0;
+<style>
+  /* 5.49: the states the fixes added (data that could not load, an out-of-date
+     banner, the attendance grid's "latest dates" notice) and text only screen
+     readers need, drawn in the existing look. */
+  .state{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:40px 24px}
+  .state-ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--blue-tint);color:var(--blue-text)}
+  .state-ic svg{width:24px;height:24px}
+  .state-t{font-size:var(--fs-17);font-weight:700;color:var(--ink)}
+  .state-b{font-size:var(--fs-15);line-height:1.45;color:var(--muted);max-width:32ch}
+  .state-a{margin-top:6px}
+  .state-x{font-size:var(--fs-12);color:var(--faint);max-width:40ch;word-break:break-word}
+  .banner{display:flex;align-items:center;gap:12px;margin:12px 12px 0;padding:10px 10px 10px 16px;border-radius:var(--r-xl);
+    background:var(--gold-wash);color:var(--gold-text);font-size:var(--fs-14);font-weight:600}
+  .gmore{display:flex;align-items:center;gap:12px;padding:10px 12px 10px 16px;border-bottom:1px solid var(--rule);
+    background:var(--surface-2);color:var(--muted);font-size:var(--fs-13)}
+  .banner span,.gmore span{flex:1;min-width:0}
+  .banner .mini,.gmore .mini{flex:none}
+  .vh{display:inline-block;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0;vertical-align:top}
+</style>
+<style>
+  /* 5.49 motion. Springs as iOS uses them: "smooth" (no overshoot, 0.47 s) for pages and
+     sheets, "snappy" (about 1% overshoot, 0.37 s) for dialogs, toasts and segment slides.
+     Kept short: taps wait while a page transition plays, as on iOS.
+     Browsers without linear() get close cubic-bezier stand-ins. */
+  :root{ --spring-smooth:cubic-bezier(.22,.8,.26,1); --spring-snappy:cubic-bezier(.2,.9,.25,1.02); }
+  @supports (transition-timing-function:linear(0, 1)){ :root{
+    --spring-smooth:linear(0, 0.0209, 0.0724, 0.1417, 0.2197, 0.3004, 0.3796, 0.4547, 0.5244, 0.5878, 0.6446, 0.6951, 0.7395, 0.7783, 0.8118, 0.8408, 0.8657, 0.8869, 0.905, 0.9204, 0.9334, 0.9443, 0.9535, 0.9613, 0.9678, 0.9733, 0.9778, 0.9816, 0.9848, 0.9874, 0.9896, 0.9914, 0.9929, 0.9941, 0.9952, 1);
+    --spring-snappy:linear(0, 0.0175, 0.0628, 0.1266, 0.2018, 0.2827, 0.3651, 0.4457, 0.5224, 0.5938, 0.6589, 0.7173, 0.769, 0.814, 0.8527, 0.8857, 0.9133, 0.9361, 0.9548, 0.9698, 0.9816, 0.9908, 0.9977, 1.0028, 1.0064, 1.0088, 1.0103, 1.011, 1.0111, 1.0108, 1.0103, 1.0095, 1.0087, 1.0078, 1.0069, 1);
   } }
 
-  /* ---- header: navy bar, the hymnal mark, a quiet EN/RU switch ---- */
-  .mast{background:var(--chrome);border-bottom:0;box-shadow:none;gap:10px}
-  .bmark{width:34px;height:34px;border-radius:10px;background:none;box-shadow:none;overflow:hidden}
-  .bmark .logo{width:34px;height:34px;display:block}
-  .logo{filter:none}
-  .brand{color:#fff;font-weight:700;letter-spacing:-.01em}
-  .mast .lang,.dlang{background:rgba(255,255,255,.10);border:0;padding:3px;border-radius:999px}
-  .mast .lang button,.dlang button{height:30px;min-width:40px;padding:0 10px;border:0;border-radius:999px;background:transparent;
-    color:rgba(255,255,255,.75);font-size:13px;font-weight:600}
-  .mast .lang button.on,.dlang button.on{background:#fff;color:var(--ink);font-weight:700}
-  .mast .lang.hasthumb button.on,.dlang.hasthumb button.on{background:transparent;color:#17203a}
-  .mast .lang > .ithumb,.dlang > .ithumb{background:#fff;box-shadow:none}
-  .mast .themebtn,.mast .menubtn{width:40px;height:40px;border:0;border-radius:999px;background:rgba(255,255,255,.10);color:#fff}
-  .topbar{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--surface)}
+  /* ---- moving between pages (View Transitions; see navTransition) ----
+     The page stays usable while a transition plays. */
+  ::view-transition{pointer-events:none}
+  /* header, tab bar, sidebar and toast are captured on their own and stay put */
+  html.vt-on .mast{view-transition-name:v-mast}
+  html.vt-on .topbar{view-transition-name:v-topbar}
+  html.vt-on #dockhost .dock{view-transition-name:v-dock}
+  html.vt-on .toast{view-transition-name:v-toast}
+  @media (min-width:1000px){ html.vt-on .drawer{view-transition-name:v-side} }
+  html.vt-nav::view-transition-group(v-mast),html.vt-nav::view-transition-group(v-topbar),html.vt-nav::view-transition-group(v-dock),
+  html.vt-nav::view-transition-group(v-side),html.vt-nav::view-transition-group(v-toast){animation:none}
+  html.vt-nav::view-transition-old(v-mast),html.vt-nav::view-transition-old(v-topbar),html.vt-nav::view-transition-old(v-dock),
+  html.vt-nav::view-transition-old(v-side),html.vt-nav::view-transition-old(v-toast){display:none}
+  html.vt-nav::view-transition-new(v-mast),html.vt-nav::view-transition-new(v-topbar),html.vt-nav::view-transition-new(v-dock),
+  html.vt-nav::view-transition-new(v-side),html.vt-nav::view-transition-new(v-toast){animation:none}
+  /* a page's switchers stay where they are; only their thumb glides */
+  html.vt-on::view-transition-group(v-stay-tabs),html.vt-on::view-transition-group(v-stay-ctl),html.vt-on::view-transition-group(v-stay-top),
+  html.vt-on::view-transition-group(v-stay-search),html.vt-on::view-transition-group(v-stay-obar){animation-duration:.37s;animation-timing-function:var(--spring-snappy)}
+  html.vt-on::view-transition-old(v-stay-tabs),html.vt-on::view-transition-old(v-stay-ctl),html.vt-on::view-transition-old(v-stay-top),
+  html.vt-on::view-transition-old(v-stay-search),html.vt-on::view-transition-old(v-stay-obar){display:none}
+  html.vt-on::view-transition-new(v-stay-tabs),html.vt-on::view-transition-new(v-stay-ctl),html.vt-on::view-transition-new(v-stay-top),
+  html.vt-on::view-transition-new(v-stay-search),html.vt-on::view-transition-new(v-stay-obar){animation:none}
 
-  /* ---- bottom bar: a solid floating capsule ---- */
-  @media (max-width:999px){
-    .dock{height:60px;padding:6px;background:var(--dk-bg);border:1px solid var(--dk-line);
-      -webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 10px 30px rgba(23,32,58,.12)}
-    .dock .dpill{top:6px;bottom:6px}
-    .dock .on .dkl{font-weight:700}
+  /* deeper: the new page slides in over the old, which eases left and dims */
+  html.vt-push::view-transition-old(root){animation:vtPushOut .47s var(--spring-smooth) both;mix-blend-mode:normal}
+  html.vt-push::view-transition-new(root){animation:vtPushIn .47s var(--spring-smooth) both;mix-blend-mode:normal;box-shadow:-12px 0 32px -14px rgba(0,0,0,.28)}
+  /* back: the reverse, the page leaving on top */
+  html.vt-pop::view-transition-old(root){animation:vtPopOut .47s var(--spring-smooth) both;mix-blend-mode:normal;z-index:1;box-shadow:-12px 0 32px -14px rgba(0,0,0,.28)}
+  html.vt-pop::view-transition-new(root){animation:vtPopIn .47s var(--spring-smooth) both;mix-blend-mode:normal}
+  @keyframes vtPushIn{from{transform:translateX(100%)}}
+  @keyframes vtPushOut{to{transform:translateX(-30%);filter:brightness(.94)}}
+  @keyframes vtPopOut{to{transform:translateX(100%)}}
+  @keyframes vtPopIn{from{transform:translateX(-30%);filter:brightness(.94)}}
+  /* tab bar and menu: tabs are not a hierarchy, so they dissolve without moving */
+  html.vt-tab::view-transition-old(root){animation:vtFadeOut .2s cubic-bezier(.4,0,1,1) both}
+  html.vt-tab::view-transition-new(root){animation:vtFadeIn .32s cubic-bezier(0,0,.2,1) both}
+  /* a segment beside this one: a short slide in the direction of the tap */
+  html.vt-next::view-transition-old(root){animation:vtOutL .37s var(--spring-snappy) both;mix-blend-mode:normal}
+  html.vt-next::view-transition-new(root){animation:vtInR .37s var(--spring-snappy) both;mix-blend-mode:normal}
+  html.vt-prev::view-transition-old(root){animation:vtOutR .37s var(--spring-snappy) both;mix-blend-mode:normal}
+  html.vt-prev::view-transition-new(root){animation:vtInL .37s var(--spring-snappy) both;mix-blend-mode:normal}
+  @keyframes vtOutL{to{opacity:0;transform:translateX(-6%)}}
+  @keyframes vtInR{from{opacity:0;transform:translateX(6%)}}
+  @keyframes vtOutR{to{opacity:0;transform:translateX(6%)}}
+  @keyframes vtInL{from{opacity:0;transform:translateX(-6%)}}
+  /* a period or filter changed: the figures dissolve into the new ones */
+  html.vt-swap::view-transition-old(root){animation:vtFadeOut .16s ease-out both}
+  html.vt-swap::view-transition-new(root){animation:vtFadeIn .26s cubic-bezier(0,0,.2,1) both}
+  /* Reduce Motion: every kind becomes a short dissolve */
+  html.vt-fade::view-transition-old(root){animation:vtFadeOut .15s linear both}
+  html.vt-fade::view-transition-new(root){animation:vtFadeIn .15s linear both}
+  @keyframes vtFadeOut{to{opacity:0}}
+  @keyframes vtFadeIn{from{opacity:0}}
+
+  /* ---- dialogs, sheets, the menu and toasts arrive on springs ---- */
+  @media (prefers-reduced-motion:no-preference){
+    .modal{animation:modalin .37s var(--spring-snappy)}
+    @keyframes modalin{from{opacity:0;transform:translate(-50%,calc(-50% + 14px)) scale(.96)}}
+    .drawer.on{animation:din .47s var(--spring-smooth)}
+    .toast{animation:toastin .37s var(--spring-snappy)}
+    @keyframes toastin{from{opacity:0;transform:translateY(14px) scale(.97)}}
   }
-  :root[data-theme="dark"] .dock{box-shadow:0 10px 30px rgba(0,0,0,.45)}
-  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .dock{box-shadow:0 10px 30px rgba(0,0,0,.45)} }
-
-  /* ---- cards: one radius, a hairline and the faintest lift ---- */
-  .sec,.dsvc,.dpanel,.kpi,.lbtile,.res,.tile,.ustat,.upc,.rsvc{border-radius:var(--v6-card-r)}
-  .sec,.dpanel,.kpi{border:1px solid var(--card-line);box-shadow:var(--shadow-card)}
-  .dsvc{border:1px solid var(--card-line);box-shadow:var(--shadow-card);background-image:none}
-  .li{border-bottom-color:var(--rule)}
-
-  /* the upcoming-service hero: flat navy, gold for the one thing to do */
-  .sban{background-image:none;background-color:var(--order-bg)}
-  .sban::before,.sban::after,.dsvc .sban::before,.dsvc .sban::after{display:none}
-  .eye{color:#e3c35c}
-  .eye::before{background:#e3c35c;box-shadow:none}
-  .sstat,.sdate{color:rgba(255,255,255,.78)}
-  .sbtn{background:var(--onnavy-btn-bg);color:var(--onnavy-btn-ink);box-shadow:none}
-  .sshare{background:transparent;border:1px solid rgba(255,255,255,.28);color:#fff}
-
-  /* ---- controls ---- */
-  .seg > .ithumb,.tabs > .ithumb,.chips > .ithumb{background:var(--thumb);
-    box-shadow:0 1px 3px var(--thumb-shadow),0 0 0 .5px var(--thumb-ring)}
-  .btn{border-radius:14px}
-  .login .btn{background:var(--blue);box-shadow:none}
-  .toast{-webkit-backdrop-filter:none;backdrop-filter:none}
-  .savebar{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--surface);border-top:1px solid var(--card-line)}
-  ::selection{background:var(--selection-bg)}
-
-  /* keyboard focus: one visible ring everywhere, never on a mouse click */
-  :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-  .mast :focus-visible,.drawer :focus-visible,.sban :focus-visible{outline-color:#e3c35c}
-
-  /* states: loading, empty and failed pages share one shape */
-  .state{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:44px 24px 40px}
-  .state-ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:var(--blue-tint);color:var(--blue-text)}
-  .state-ic svg{width:26px;height:26px}
-  .state-t{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
-  .state-b{font-size:15px;line-height:1.45;color:var(--muted);max-width:32ch}
-  .state-a{margin-top:6px}
-  .state-x{font-size:12px;color:var(--faint);max-width:40ch;word-break:break-word}
-
-  /* motion: short, and none at all when asked */
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
-      transition-duration:.001ms !important;scroll-behavior:auto !important}
+  @media (prefers-reduced-motion:no-preference) and (max-width:699px){
+    .lbsheet{animation:lbsl .47s var(--spring-smooth) both}
   }
-
-  /* "showing older data" banner and the attendance grid's column notice */
-  .banner{display:flex;align-items:center;gap:12px;margin:12px 12px 0;padding:10px 10px 10px 16px;border-radius:14px;
-    background:var(--gold-wash);color:var(--gold-text);border:1px solid color-mix(in srgb,var(--gold) 35%,transparent);font-size:14px;font-weight:600}
-  .banner span{flex:1;min-width:0}
-  .banner .mini{flex:none}
-  .gmore{display:flex;align-items:center;gap:12px;padding:10px 12px 10px 16px;border-bottom:1px solid var(--rule);
-    background:var(--surface-2);color:var(--muted);font-size:13px}
-  .gmore span{flex:1;min-width:0}
-  .gmore .mini{flex:none}
-
-  /* ---- admin lists: on a phone the name gets the full line, its tools sit under it ---- */
-  @media (max-width:699px){
-    .li.rrow,.li.mrow{flex-wrap:wrap;row-gap:4px;align-items:flex-start}
-    .li.rrow > div[style],.li.mrow > div[style]{flex:1 1 calc(100% - 64px) !important;align-self:center}
-    .li.rrow > div[style] + .ibtn,.li.mrow > div[style] + .ibtn,.li.mrow > div[style] + .tbtn{margin-left:52px}
-    .li.rrow .ibtn,.mrow .ibtn{width:44px;height:40px;min-width:44px;margin:0;border-radius:12px}
-    .mrow .ibtn + .ibtn{margin-left:0}
-    .li.rrow .stl,.li.mrow .stl{white-space:normal}
-  }
-  .ibtn{color:var(--text-2)}
-  .ibtn.danger{color:var(--red)}
-
-  /* ---- marking: no tinted rows, a quiet chip says the state ---- */
-  .li.here{background:var(--surface)}
-  .li.here .nm{color:var(--ink);font-weight:600}
-  .li.here .pill{background:var(--green-wash);color:var(--green-text);box-shadow:inset 0 0 0 1px var(--green-line)}
-  .li.tap .pill{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line-strong)}
-  .li.tap.here .pill{background:var(--green-wash);color:var(--green-text);box-shadow:inset 0 0 0 1px var(--green-line)}
-  .li.na{background:var(--surface-2)}
-  .li.tap.na .pill{background:var(--paper);color:var(--muted);box-shadow:none}
-
-  /* ---- sheets: one grouped list instead of a card per song ---- */
-  .sec.songc + .sec.songc{margin-top:0;border-top:0;border-top-left-radius:0;border-top-right-radius:0}
-  .sec.songc:has(+ .sec.songc){border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:1px solid var(--rule)}
-  .sec.songc:has(+ .sec.songc){box-shadow:none}
-  @media (max-width:999px){
-    .srow .schev{background:transparent;color:var(--text-2)}
-    .songc.open .srow .schev{transform:none;background:var(--blue-tint);color:var(--blue-text)}
-    .srow .schev .x{display:none}
-    .songc.open .srow .schev .x{display:block}
-    .songc.open .srow .schev .o{display:none}
-  }
-
-  /* ---- leaderboard: the same flat navy stage as the service card ---- */
-  .lbhero,.lbtile{background:var(--order-bg);border:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);box-shadow:none}
-  .lbhero::before,.lbtile::before,.lbglow{display:none}
-  .lbtile:hover{border-color:rgba(255,255,255,.14)}
-  .lbt h2::before{background:#d9b44a;box-shadow:none}
-  .lbtile .tlink{color:#e3c35c}
-
-  /* ---- usage: one accent, navy, instead of a colour per card ---- */
-  .uk,.uk-act,.uk-pages,.uk-songs,.uk-svc,.uk-lang,.uk-dev,.uk-when,.uk-rec,
-  .ukpis .k1,.ukpis .k2,.ukpis .k3,.ukpis .k4{--k:var(--blue-text);--kw:transparent}
-  .uk,.ukpis .kpi{background:var(--card)}
-  .uk .uchart i{background:var(--blue-text);opacity:.35}
-  .uk .uchart i.hi,.uk .uchart i:hover{opacity:1;background:var(--blue-text)}
-  .uk .uchart i.hi{background:var(--gold)}
-
-  /* text only a screen reader needs. It stays in the flow (1px, clipped): an
-     absolutely placed one escapes a scroll box like the seating chart's and
-     widens the whole page. */
-  .vh{display:inline-block;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0;vertical-align:top}
-
-  /* the few just outside this year's Top 10: muted text, not a faded row */
-  .lbyr li.out{opacity:1}
-  .lbyr li.out .rk,.lbyr li.out .lbn,.lbyr li.out em{color:var(--muted)}
-
-  /* ---- every tap at least 44 px: small controls keep their look and get an
-     invisible 44 px hit area centred on them ---- */
-  .seg button,.chips button,.tabs a,.mast .lang button,.mast .themebtn,.mast .menubtn,.sshare,.sstat,.sbtn,.abtn,.tlink,.pfoot a,
-  .mback,.rhead,.mbrand,button.lbwho,button.aname,button.lbchip,button.pname,button.lbname,button.lbav,button[data-song-sort],
-  .bminis[data-lbwho],.mini,.ibtn,.qx{position:relative}
-  .seg button::before,.chips button::before,.tabs a::before,.mast .lang button::before,.mast .themebtn::before,.mast .menubtn::before,
-  .sshare::before,.sstat::before,.sbtn::before,.abtn::before,.tlink::before,.pfoot a::before,.mback::before,.rhead::before,.mbrand::before,
-  button.lbwho::before,button.aname::before,button.lbchip::before,button.pname::before,button.lbname::before,button.lbav::before,
-  button[data-song-sort]::before,.bminis[data-lbwho]::before,.mini::before,.ibtn::before,.qx::before{
-    content:"";position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
-  .mast .lang,.chips{overflow:visible}
-  @media (max-width:999px){ .srow .schev{width:44px;height:44px} }
-
-  /* phones: text fields at 16 px, so focusing one never zooms the page */
-  @media (max-width:699px){
-    .field,select.field,input.field,textarea.field,[data-cat-filter],[data-song-sort-pick],[data-list-sort]{font-size:16px}
-    .qwrap .field,.searchrow .field{min-height:44px}
-    [data-cat-filter],[data-song-sort-pick],[data-list-sort]{min-height:44px}
-  }
-  [data-lbpreset],.lbshotbtn,.lball,.step.fold,button.back,button.fold,a.ft,.subtabs a,.lnq{position:relative}
-  [data-lbpreset]::before,.lbshotbtn::before,.lball::before,.step.fold::before,button.back::before,button.fold::before,a.ft::before,.subtabs a::before,.lnq::before{
-    content:"";position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
-  @media (max-width:699px){ select[data-credit]{font-size:16px;min-height:44px} }
 </style>
 </head>
 <body>
@@ -3660,7 +3505,6 @@ const STR = {
 };
 /* Strings added in 6.0, kept side by side so the two languages stay in step. */
 Object.assign(STR.en, {
-  searchPvS:'Title or №',
   menuL:'Menu', closeL:'Close', tabsL:'Sections', clearL:'Clear search', emptySeat:'Empty seat',
   dkAtt:'Attendance',
   saving:'Saving…', tryAgain:'Try again', uNone:'Nothing recorded yet.', uLoading:'Loading…',
@@ -3674,7 +3518,6 @@ Object.assign(STR.en, {
 });
 // ruN() is the app's Russian plural helper (one / few / many), defined further down
 Object.assign(STR.ru, {
-  searchPvS:'Название или №',
   unsavedN: n => n + ' ' + ruN(n, 'несохранённое изменение', 'несохранённых изменения', 'несохранённых изменений'),
   songsN: n => n + ' ' + ruN(n, 'песня', 'песни', 'песен'),
   menuL:'Меню', closeL:'Закрыть', tabsL:'Разделы', clearL:'Очистить поиск', emptySeat:'Свободное место',
@@ -3870,10 +3713,7 @@ const catSelect = () => S.categories.length ? `<select class="field" style="widt
   <option value="all">${esc(t('allCats'))}</option>${
   S.categories.map(c => `<option value="${c.id}"${S.catFilter===c.id?' selected':''}>${esc(c.name)}</option>`).join('')}</select>` : '';
 const catBar = () => S.categories.length ? `<div class="ctlbar" style="flex-direction:row">${catSelect()}</div>` : '';
-/* On a phone the long hint would be cut off beside the category picker: show
-   the short one there, and keep the full wording as the field's spoken name. */
-const qHint = ph => (ph === 'searchPv' && matchMedia('(max-width:699px)').matches) ? t('searchPvS') : t(ph || 'search');
-const qField = (ph) => `<span class="qwrap"><input class="field" id="q" enterkeyhint="search" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="${esc(qHint(ph))}" aria-label="${esc(t(ph || 'search'))}" value="${esc(S.query)}">${
+const qField = (ph) => `<span class="qwrap"><input class="field" id="q" enterkeyhint="search" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="${esc(t(ph || 'search'))}" aria-label="${esc(t(ph || 'search'))}" value="${esc(S.query)}">${
   S.query ? `<button class="qx" data-clear-q aria-label="${esc(t('clearL'))}">×</button>` : ''}</span>`;
 /* Russian titles and names can be typed in English letters: both sides are spelled
    out in Latin and loosened (y/j/i, kh/h, sch/sh, doubled letters…) before comparing. */
@@ -3904,44 +3744,23 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '6.0.0';
+const VERSION = '5.49.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
-const NOTES = { '6': {
+const NOTES = { '5': {
   en: [
-    'New look: refined navy and gold, a new hymnal logo, and a calmer dark mode in the same colours',
+    'Smoother movement: deeper pages slide in and back out, tabs dissolve, segments glide, and dialogs leave the way they came',
     'Security: only the director’s account can make changes',
     'Attendance and song orders save in one step, so a dropped connection can never leave half a change',
-    'A change the database refuses is always reported as not saved, never shown as saved',
+    'A change the database refuses is always reported as not saved',
     'Cancelling a date keeps its marks, so undoing the cancellation brings them back',
     'The app opens without a connection: it no longer depends on an outside site',
     'Signing out with no connection no longer loses your sign-in or unsaved marks',
     'Leaving a page with unsaved marks asks first',
     'Attendance grid: over a long period the latest 160 dates show first, with Show all',
     'If the data can’t load, the page says so and offers Try again',
-    'Choir music: songs in one tidy list; the ⋯ button shows each song’s buttons',
-    'Easier with screen readers and keyboards, larger tap targets, readable contrast throughout',
-    'Phones: text fields no longer zoom the page',
-  ],
-  ru: [
-    'Новый вид: строгий тёмно-синий с золотом, новый логотип и спокойная тёмная тема в тех же цветах',
-    'Безопасность: вносить изменения может только учётная запись регента',
-    'Посещаемость и порядок песен сохраняются одним шагом — обрыв связи не оставит изменение наполовину',
-    'Если база данных не приняла изменение, приложение сообщает, что оно не сохранено',
-    'Отмена даты сохраняет отметки: если отмену снять, они вернутся',
-    'Приложение открывается без интернета: сторонний сайт ему больше не нужен',
-    'Выход без связи больше не сбрасывает вход и несохранённые отметки',
-    'Уход со страницы с несохранёнными отметками требует подтверждения',
-    'Сетка посещаемости: за долгий период сначала видны последние 160 дат, остальные — по кнопке «Показать все»',
-    'Если данные не загрузились, страница сообщает об этом и предлагает повторить',
-    'Ноты хора: песни одним аккуратным списком; кнопка ⋯ открывает кнопки песни',
-    'Удобнее с экранным диктором и клавиатурой, крупнее зоны нажатия, читаемый контраст везде',
-    'На телефоне поля ввода больше не увеличивают страницу',
-  ]
-}, '5': {
-  en: [
     'Dark mode: redesigned with deeper, cleaner colours; voice parts and attendance colours now match light mode',
     'Dark mode: back to the earlier colours',
     'Menu: Learning moved to the top of the music library, with a highlighted count',
@@ -4001,6 +3820,16 @@ const NOTES = { '6': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Плавнее движение: вложенные страницы выезжают и уезжают обратно, вкладки сменяются растворением, сегменты скользят, окна закрываются так же, как открылись',
+    'Безопасность: вносить изменения может только учётная запись регента',
+    'Посещаемость и порядок песен сохраняются одним шагом — обрыв связи не оставит изменение наполовину',
+    'Если база данных не приняла изменение, приложение сообщает, что оно не сохранено',
+    'Отмена даты сохраняет отметки: если отмену снять, они вернутся',
+    'Приложение открывается без интернета: сторонний сайт ему больше не нужен',
+    'Выход без связи больше не сбрасывает вход и несохранённые отметки',
+    'Уход со страницы с несохранёнными отметками требует подтверждения',
+    'Сетка посещаемости: за долгий период сначала видны последние 160 дат, остальные — по кнопке «Показать все»',
+    'Если данные не загрузились, страница сообщает об этом и предлагает повторить',
     'Тёмная тема: новый дизайн с более глубокими и чистыми цветами; цвета партий и посещаемости теперь как в светлой теме',
     'Тёмная тема: вернулись прежние цвета',
     'Меню: «Разучиваем» теперь первым в нотной библиотеке, с выделенным счётчиком',
@@ -4981,7 +4810,7 @@ const AIC = {
   moon: AI('<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>'),
   auto: AI('<circle cx="12" cy="12" r="9"></circle><path d="M12 18a6 6 0 0 0 0-12v12z" fill="currentColor" stroke="none"></path>')
 };
-const LOGOSVG = '<svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22.5" fill="#f7f3e8"></rect><rect x="0.5" y="0.5" width="99" height="99" rx="22" fill="none" stroke="#ddd6c4"></rect><rect x="47" y="15" width="6" height="34" rx="1.5" fill="#c9a227"></rect><rect x="37" y="23" width="26" height="6" rx="1.5" fill="#c9a227"></rect><path d="M18 47C30 45 42 47 50 53L50 82C42 76 30 74 18 76Z" fill="#1c2850"></path><path d="M82 47C70 45 58 47 50 53L50 82C58 76 70 74 82 76Z" fill="#1c2850"></path><path d="M50 53V82" stroke="#f7f3e8" stroke-width="2.5"></path></svg>';
+const LOGOSVG = '<svg class="logo" viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(0 6.5)"><rect x="56.5" y="10" width="7" height="45" fill="#c9a227"></rect><rect x="44" y="23" width="32" height="7" fill="#c9a227"></rect><path d="M16 45 L60 57 L60 97 L16 85 Z" fill="#eff0ec"></path><path d="M104 45 L60 57 L60 97 L104 85 Z" fill="#eff0ec"></path><path d="M60 57 L60 97" stroke="#17203a" stroke-width="2.5"></path></g></svg>';
 /* which part of the workspace a route belongs to — the sidebar groups and the
    breadcrumb read from the same table */
 /* [section, page, link]: the first crumb links back one step. Deeper pages
@@ -7488,7 +7317,7 @@ function sheetsPage(kind){
          The full song list has no order to speak of and stays unnumbered. */
       const left = (ordEv ? `<span class="ord">${String(i + 1).padStart(2, '0')}${songDeco(s)}</span>` : `<span class="ftile">${kind === 'piano' ? AIC.piano : AIC.sheets}${songDeco(s)}</span>`) + `<div class="stxt" style="flex:1;min-width:0">
           <div class="stitle" style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}${pvTag(s)}</div>
-          <div class="smeta">${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}${catName(s.category_id) ? `<div class="scat">${esc(catName(s.category_id))}</div>` : ''}${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}${locked ? `<div class="sub" style="font-style:normal;color:var(--gold-text)">${esc(t('adminOnly'))}</div>` : ''}</div>
+          <div class="smeta">${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}${catName(s.category_id) ? `<div class="scat">${esc(catName(s.category_id))}</div>` : ''}${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}${locked ? `<div class="sub" style="font-style:normal;color:var(--gold)">${esc(t('adminOnly'))}</div>` : ''}</div>
         </div>`;
       if (busy) return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}${S.actOpen === s.id ? ' open' : ''}" data-srow="${s.id}"><div class="li">${left}<div style="color:var(--blue-text);font-weight:600;font-size:var(--fs-14)">${esc(t('uploading'))}</div></div></div>`;
       /* Files are served through short-lived signed URLs, so an admin-only PDF
@@ -7531,7 +7360,7 @@ function sheetsPage(kind){
       const btns = [listen, dl, lyr, more].filter(Boolean).map((b, k) => b.replace('class="mini', `style="--k:${k}" class="mini`)).join('');
       const tOpen = S.actOpen === s.id;
       const cap = `<div class="scap">${ordEv ? `<b>${String(i + 1).padStart(2, '0')}</b>` : ''}${esc(s.title)}${catName(s.category_id) ? `<i> · ${esc(catName(s.category_id))}</i>` : ''}</div>`;
-      const chev = btns ? `<button class="schev${i === 0 && !traySeen() ? ' hint' : ''}" data-tray aria-expanded="${tOpen}" aria-label="${esc(t(tOpen ? 'trayHide' : 'trayShow'))}"><svg class="o" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.9"></circle><circle cx="12" cy="12" r="1.9"></circle><circle cx="18.5" cy="12" r="1.9"></circle></svg><svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>` : '';
+      const chev = btns ? `<button class="schev${i === 0 && !traySeen() ? ' hint' : ''}" data-tray aria-expanded="${tOpen}" aria-label="${esc(t(tOpen ? 'trayHide' : 'trayShow'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 6l-6 6 6 6"></path></svg></button>` : '';
       const row = `<div class="li srow${S.session ? ' tap' : ''}"${S.session ? ` data-adm-row="${s.id}"` : ''}>${left}<div class="stray">${cap}<div class="acts sbtns">${btns}</div></div>${chev}</div>`
         + listenRow(s, 'sheets') + (S.admRow === s.id ? admin : '');
       return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}${S.actOpen === s.id ? ' open' : ''}" data-srow="${s.id}">${row}</div>`;
@@ -8210,7 +8039,10 @@ function exportCSV(kind){
    change are queued here and claimed by afterRender. */
 const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const EASE = { out:'cubic-bezier(.2,.8,.3,1)', drawer:'cubic-bezier(.32,.72,0,1)',
-               fade:'cubic-bezier(.33,0,.2,1)' };
+               fade:'cubic-bezier(.33,0,.2,1)', exit:'cubic-bezier(.4,0,1,1)' };
+/* the two springs defined in CSS (--spring-smooth, --spring-snappy), so script
+   animations move the same way; a cubic-bezier stand-in where linear() is unknown */
+const spring = k => (getComputedStyle(document.documentElement).getPropertyValue('--spring-' + k) || '').trim() || EASE.out;
 let pendingReveal = null;     // selector of a panel that should grow open
 let pendingPop = null;        // selector of an element that should land
 let menuClosing = false;      // an exit slide is in flight
@@ -8236,16 +8068,26 @@ function reveal(sel){
   const was = el.style.overflow;
   el.style.overflow = 'hidden';
   const a = el.animate([{height:'0px',opacity:0},{height:h+'px',opacity:1}],
-    { duration:200, easing:EASE.out });
+    { duration:300, easing:EASE.drawer });
   a.onfinish = a.oncancel = () => { el.style.overflow = was; };
+}
+/* ...and closes the same way: the live panel folds away on the same curve, then
+   the page re-renders without it. The state is already closed when this runs. */
+function collapse(sel, then){
+  const el = sel && document.querySelector(sel);
+  if (!el || !el.animate || calm()) return then();
+  const h = el.getBoundingClientRect().height;
+  if (!h) return then();
+  el.style.overflow = 'hidden';
+  playOut([{ el, ms:240, easing:EASE.drawer, kf:[{height:h+'px', opacity:1}, {height:'0px', opacity:0}] }], then);
 }
 /* One thing lands; the seat it left stays put. Two moving things read as a glitch. */
 function pop(sel){
   const el = sel && document.querySelector(sel);
   if (!el || !el.animate) return;
   el.animate(calm() ? [{opacity:0},{opacity:1}]
-    : [{opacity:0,transform:'scale(.94)'},{opacity:1,transform:'none'}],
-    { duration:calm() ? 120 : 140, easing:EASE.out });
+    : [{opacity:0,transform:'scale(.92)'},{opacity:1,transform:'none'}],
+    { duration:calm() ? 120 : 370, easing:calm() ? EASE.out : spring('snappy') });
 }
 /* The shimmer is replaced by a whole page of fresh geometry in one frame. The
    masthead was already there, so it does not take part. */
@@ -8261,7 +8103,8 @@ function fadeInBody(){
    the whole document, let it. */
 function paint(fn){
   if (calm() || !document.startViewTransition) return fn();
-  document.startViewTransition(fn);
+  const vt = document.startViewTransition(fn);
+  if (vt.ready) vt.ready.catch(() => {});        // a newer transition may cut this one short
 }
 /* The menu arrives over 300ms and used to leave in a single frame, while the
    scrim behind it faded — the two disagreed. A dismissal plays the slide back
@@ -8279,6 +8122,24 @@ function dismissMenu(){
       kf:[{opacity:1},{opacity:0}] }
   ], () => { menuClosing = false; if (!S.menuOpen) render(); });
 }
+/* A dialog or sheet leaves the way it came. The state closes at once, so a
+   render in between cannot bring it back; the live nodes play the exit (a dialog
+   sinks and fades, a phone sheet slides down), then the page re-renders. */
+function closeLayer(apply){
+  const nodes = ['.modal', '.lbsheet', '.mscrim', '.lbscrim'].map(q => document.querySelector(q));
+  apply();
+  const exit = el => {
+    const cs = getComputedStyle(el), base = cs.transform === 'none' ? '' : cs.transform + ' ';
+    if (el.classList.contains('lbsheet') && cs.bottom === '0px')
+      return { el, ms:300, easing:EASE.drawer, kf:[{transform:base || 'none'}, {transform:base + 'translateY(100%)'}] };
+    return { el, ms:180, easing:EASE.exit, kf:[{opacity:1, transform:base || 'none'}, {opacity:0, transform:base + 'translateY(8px) scale(.97)'}] };
+  };
+  const specs = [];
+  if (nodes[0]) specs.push(exit(nodes[0]));
+  if (nodes[1]) specs.push(exit(nodes[1]));
+  [nodes[2], nodes[3]].forEach(n => n && specs.push({ el:n, ms:200, easing:'ease', kf:[{opacity:1},{opacity:0}] }));
+  playOut(specs, render);
+}
 /* It arrives from 8px below; it leaves the same way. */
 function hideToast(){
   playOut([{ el:document.querySelector('.toast'), ms:160, easing:'ease-out',
@@ -8286,15 +8147,80 @@ function hideToast(){
     () => { S.toast = ''; S.toastOk = false; S.retry = null; render(); });
 }
 
+/* ---------- moving between pages ----------
+   Every render rebuilds the page, which suits View Transitions: the browser keeps
+   a picture of the old page and moves it out while the new one comes in. How it
+   moves says where you went:
+     push / pop   a deeper page slides in from the right; going back reverses it
+     tab          the tab bar or the menu: a dissolve, no movement
+     next / prev  a segment beside this one: a short slide toward the tap
+     swap         a period or a filter: the figures dissolve into the new ones
+   The header, tab bar, sidebar and toast stay still, and so do the page's
+   switchers, whose thumbs glide on their own. Nothing here touches data: it only
+   decides how render() is shown. Without View Transitions the page changes as
+   before (with the fade-in further down); with Reduce Motion every kind is a
+   short dissolve. */
+let navSource = '';
+document.addEventListener('click', e => {
+  const n = e.target && e.target.closest ? e.target : null;
+  navSource = n && (n.closest('.dock') || n.closest('.drawer')) ? 'tab' : '';
+}, true);
+const NAV_ITEM = /^([0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}|[0-9a-f]{8}|new|order-.+)$/i;
+function navDepth(r){
+  const p = (r || '').split('?')[0].replace(/^#\/?/, '').split('/').filter(Boolean);
+  if (!p.length || p[0] === 'home') return 0;
+  return NAV_ITEM.test(p[p.length - 1]) ? 2 : 1;      // a singer, a service, a song, a date: one level down
+}
+function navKind(from, to){
+  const src = navSource; navSource = '';
+  if (!from || src) return 'tab';
+  const df = navDepth(from), dt = navDepth(to);
+  if (dt > df) return 'push';
+  if (dt < df) return 'pop';
+  /* the same level: a segment of a switcher on this page slides toward the tap */
+  const base = to.split('?')[0];
+  const link = [...document.querySelectorAll('#app .tabs a[href], #app .seg a[href], #app .subtabs a[href]')]
+    .find(a => a.getAttribute('href').split('?')[0] === base);
+  const on = link && link.parentElement && link.parentElement.querySelector('a.on');
+  if (link && on && link !== on) return link.getBoundingClientRect().left > on.getBoundingClientRect().left ? 'next' : 'prev';
+  return 'tab';
+}
+const NAV_STAY = [['tabs', 'v-stay-tabs'], ['ctlbar', 'v-stay-ctl'], ['topctl', 'v-stay-top'], ['searchrow', 'v-stay-search'], ['obar', 'v-stay-obar']];
+function nameStay(){
+  const app = document.getElementById('app');
+  if (app) NAV_STAY.forEach(([c, n]) => { const el = app.querySelector('.' + c); if (el) el.style.viewTransitionName = n; });
+}
+const NAV_KINDS = ['vt-push', 'vt-pop', 'vt-tab', 'vt-next', 'vt-prev', 'vt-swap', 'vt-fade'];
+let navVT = null;
+function navTransition(kind, update){
+  const root = document.documentElement;
+  if (!document.startViewTransition || document.visibilityState !== 'visible') return update();
+  const k = calm() ? 'vt-fade' : 'vt-' + kind;
+  const keep = !calm() && (kind === 'next' || kind === 'prev' || kind === 'swap');
+  root.classList.remove(...NAV_KINDS);
+  root.classList.add('vt-on', 'vt-nav', k);
+  if (keep) nameStay();
+  let vt;
+  try {
+    vt = document.startViewTransition(() => {
+      try { update(); } catch (e) { console.error(e); }
+      if (keep) nameStay();
+    });
+  } catch (e) { root.classList.remove('vt-on', 'vt-nav', ...NAV_KINDS); return update(); }
+  navVT = vt;
+  const done = () => { if (navVT === vt) { navVT = null; root.classList.remove('vt-on', 'vt-nav', ...NAV_KINDS); } };
+  vt.finished.then(done, done);
+  if (vt.ready) vt.ready.catch(() => {});
+}
+/* a period or filter changed on this page */
+const swap = () => navTransition('swap', render);
+
 /* ---------- render ---------- */
 function render(){
   renderTick++;
   captureThumbs();
   document.documentElement.lang = S.lang;
   if (S.theme === 'dark' || S.theme === 'light') document.documentElement.dataset.theme = S.theme; else delete document.documentElement.dataset.theme;
-  { // the browser's own bar matches the header in either theme
-    const tc = document.querySelector('meta[name="theme-color"]'), want = effTheme() === 'dark' ? '#0a0e1a' : '#17203a';
-    if (tc && tc.content !== want) tc.content = want; }
   const r = S.route;
   const onLogin = r.startsWith('#/login');
   /* iOS AutoFill gives up silently if the password field it is filling is
@@ -8839,7 +8765,7 @@ document.addEventListener('click', async e => {
   if (el.hasAttribute('data-grid-more')) { S.gridAllKey = gridKey(); return render(); }
   if (el.hasAttribute('data-retry-load')) return load(!!S.loaded);
 
-  if (d.lang) { S.lang = d.lang === 'ru' ? 'ru' : 'en'; lsSet('bsebc-youth-lang', S.lang); return render(); }
+  if (d.lang) { S.lang = d.lang === 'ru' ? 'ru' : 'en'; lsSet('bsebc-youth-lang', S.lang); return paint(render); }
 
   if (el.hasAttribute('data-theme-flip')) { const next = effTheme() === 'dark' ? 'light' : 'dark'; S.theme = next; lsSet('bsebc-youth-theme', next); return paint(render); }
 
@@ -8860,29 +8786,29 @@ document.addEventListener('click', async e => {
     // "All" starts at the earliest entry rather than centuries back
     S.preset = d.preset; S.rangeSet = true;
     S.from = presetStart(d.preset); S.to = today();
-    return render();
+    return swap();
   }
-  if (d.type) { if (d.scope === 'sum') S.sumType = d.type; else S.typeFilter = d.type; return render(); }
+  if (d.type) { if (d.scope === 'sum') S.sumType = d.type; else S.typeFilter = d.type; return swap(); }
   if (el.hasAttribute('data-toggle-pick')) {
     const picked = S.edit ? S.edit.sel.size : 0;
     S.pickOpen = !(S.pickOpen === null ? picked < 3 : S.pickOpen);
     return render();
   }
-  if (d.peopleRole) { S.peopleRole = d.peopleRole; S.openPerson = null; return render(); }
+  if (d.peopleRole) { S.peopleRole = d.peopleRole; S.openPerson = null; return swap(); }
   if (d.person) { S.openPerson = S.openPerson === d.person ? null : d.person; return render(); }
-  if (d.lbpreset) { S.lbPreset = d.lbpreset; S.lbTie = 0; return render(); }
+  if (d.lbpreset) { S.lbPreset = d.lbpreset; S.lbTie = 0; return swap(); }
   if (d.lbtie !== undefined) { const k = +d.lbtie; S.lbTie = k && S.lbTie !== k ? k : 0; return render(); }
   if (d.lbme !== undefined) { S.me = d.lbme || null; try { S.me ? localStorage.setItem('bsebc-youth-me', S.me) : localStorage.removeItem('bsebc-youth-me'); } catch (err) {} return render(); }
   if (el.hasAttribute('data-lball')) { S.lbAll = !S.lbAll; return render(); }
   if (el.hasAttribute('data-lbshot')) { el.disabled = true; lbShot().catch(err => console.error(err)).finally(() => { el.disabled = false; }); return; }
   if (d.lbwho) { S.lbWho = d.lbwho; return render(); }
-  if (el.hasAttribute('data-lbclose')) { S.lbWho = null; return render(); }
+  if (el.hasAttribute('data-lbclose')) return closeLayer(() => { S.lbWho = null; });
   if (d.mpreset) {
     S.mPreset = d.mpreset; S.mMissAll = false;
     try { localStorage.setItem('mPreset', d.mpreset); } catch (_) {}
     const base = (S.route || '').split('?')[0], nr = base + '?p=' + d.mpreset;
     S.route = nr; history.replaceState(null, '', nr);          // the address bar (and any copy of it) keeps the period
-    return render();
+    return swap();
   }
   if (el.hasAttribute('data-mmiss')) { S.mMissAll = !S.mMissAll; return render(); }
   if (d.shareMember) {
@@ -8895,10 +8821,10 @@ document.addEventListener('click', async e => {
   }
   if (el.hasAttribute('data-up-demo-act')) { e.preventDefault(); alert(t('upDemoAct')); return; }
   if (el.hasAttribute('data-up-demo')) { S.upDemo = !S.upDemo; return render(); }
-  if (d.songSort) { S.songSort = d.songSort; return render(); }
+  if (d.songSort) { S.songSort = d.songSort; return swap(); }
   if (d.songDates) { S.openSong = S.openSong === d.songDates ? null : d.songDates; return render(); }
-  if (d.entType) { S.entType = d.entType; S.entPage = 0; return render(); }
-  if (d.entYear) { S.entYear = d.entYear; S.entPage = 0; return render(); }
+  if (d.entType) { S.entType = d.entType; S.entPage = 0; return swap(); }
+  if (d.entYear) { S.entYear = d.entYear; S.entPage = 0; return swap(); }
   if (d.entPage !== undefined && el.hasAttribute('data-ent-page')) {
     S.entPage = Math.max(0, +d.entPage);
     window.scrollTo(0, 0);
@@ -8930,7 +8856,7 @@ document.addEventListener('click', async e => {
     if (d.ptKind === 'other') { const n = document.getElementById('pt-name'); if (n && !n.value) n.focus(); }
     return; }
   if (el.hasAttribute('data-pt-save') && S.planType) return planTypeSave();
-  if (el.hasAttribute('data-modal-x')) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.recAdd = []; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; return render(); }
+  if (el.hasAttribute('data-modal-x')) return closeLayer(() => { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.recAdd = []; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; });
   if (d.toggleAbsent && S.edit) {              // present ↔ absent
     S.toast = ''; S.retry = null;
     S.edit.sel.has(d.toggleAbsent) ? S.edit.sel.delete(d.toggleAbsent)
@@ -9071,8 +8997,8 @@ document.addEventListener('click', async e => {
     S.audioEdit = null; S.audioDraft = '';
     okToast(t('audioSaved')); return render();
   }
-  if (d.seatView) { S.seatView = d.seatView; return render(); }
-  if (d.seatPart) { S.seatPart = d.seatPart; return render(); }
+  if (d.seatView) { S.seatView = d.seatView; return swap(); }
+  if (d.seatPart) { S.seatPart = d.seatPart; return swap(); }
   if (el.hasAttribute('data-seat-edit')) { S.seatEdit = new Map(); S.seatSel = null; return render(); }
   if (el.hasAttribute('data-seat-cancel')) { S.seatEdit = null; S.seatSel = null; return render(); }
   if (el.hasAttribute('data-seat-unseat')) { if (S.seatSel) seatPlace(S.seatSel, null); return render(); }
@@ -9327,7 +9253,7 @@ document.addEventListener('click', async e => {
     sb.storage.from('photos').remove([old]).then(() => {}, () => {});
     return render();
   }
-  if (el.hasAttribute('data-cancel-person')) { S.editPerson = null; return render(); }
+  if (el.hasAttribute('data-cancel-person')) return closeLayer(() => { S.editPerson = null; });
   if (d.archiveSinger) {
     const s = singerById(d.archiveSinger);
     if (!s) return;
@@ -9356,7 +9282,7 @@ document.addEventListener('click', async e => {
     S.songs.sort((a,b) => a.title.localeCompare(b.title));
     S.editSongRow = null; return render();
   }
-  if (el.hasAttribute('data-cancel-song-row')) { S.editSongRow = null; return render(); }
+  if (el.hasAttribute('data-cancel-song-row')) return closeLayer(() => { S.editSongRow = null; });
   if (d.copyLast && S.edit) {                      // prefill from the previous service
     const rows = S.eventSongs.filter(x => x.event_id === d.copyLast)
       .slice().sort((a,b) => (a.position ?? 9999) - (b.position ?? 9999));
@@ -9373,7 +9299,8 @@ document.addEventListener('click', async e => {
   if (el.hasAttribute('data-notes')) {
     e.preventDefault();
     S.showNotes = !S.showNotes;
-    if (S.showNotes) pendingReveal = '.notespanel';
+    if (!S.showNotes) return collapse('.notespanel', render);
+    pendingReveal = '.notespanel';
     render();
     if (S.showNotes) {                       // bring the panel into view, it sits below the fold
       const p = document.querySelector('.notespanel');
@@ -9383,12 +9310,14 @@ document.addEventListener('click', async e => {
   }
   if (el.hasAttribute('data-export-toggle')) {
     S.exportOpen = !S.exportOpen;
-    if (S.exportOpen) pendingReveal = '[data-fold="export"]';
+    if (!S.exportOpen) return collapse('[data-fold="export"]', render);
+    pendingReveal = '[data-fold="export"]';
     return render();
   }
   if (el.hasAttribute('data-recent-toggle')) {
     S.recentOpen = !S.recentOpen;
-    if (S.recentOpen) pendingReveal = '[data-fold="recent"]';
+    if (!S.recentOpen) return collapse('[data-fold="recent"]', render);
+    pendingReveal = '[data-fold="recent"]';
     return render();
   }
   if (d.uperiod) {
@@ -9504,7 +9433,7 @@ document.addEventListener('click', async e => {
     return render();
   }
   if (d.editCat) { S.editCat = S.editCat === d.editCat ? null : d.editCat; return render(); }
-  if (el.hasAttribute('data-cancel-cat')) { S.editCat = null; S.addOpen = null; return render(); }
+  if (el.hasAttribute('data-cancel-cat')) return closeLayer(() => { S.editCat = null; S.addOpen = null; });
   if (d.saveCat) {
     const c = S.categories.find(x => x.id === d.saveCat);
     const inp = document.getElementById('edit-cat-name');
@@ -9634,10 +9563,11 @@ document.addEventListener('input', e => {
 document.addEventListener('compositionend', e => { if (e.target && e.target.id === 'q') { S.query = e.target.value; qRender(); } });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && S.menuOpen) dismissMenu();
-  if (e.key === 'Escape' && (S.addOpen || S.editSongRow || S.editPerson || S.editCat) && document.querySelector('.modal')) { S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; render(); }
+  if (e.key === 'Escape' && (S.addOpen || S.editSongRow || S.editPerson || S.editCat) && document.querySelector('.modal')) closeLayer(() => { S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; });
 });
 window.addEventListener('hashchange', () => {
   requestAnimationFrame(() => {          // after the route handler paints the new page
+    if (document.startViewTransition) return;     // navTransition moves the page there
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const app = document.getElementById('app');
     if (!app) return;
@@ -9840,7 +9770,7 @@ window.addEventListener('hashchange', () => {
   S.route = normRoute(location.hash);
   if (S.route.startsWith('#/member') && prevFull && !prevFull.startsWith('#/member')) S.memberFrom = prevFull;
   if (S.route.split('?')[0] !== prevPage) S.mMissAll = false;   // where the report card was opened from
-  if (S.route.split('?')[0] !== prevPage) window.scrollTo(0, 0);
+  const toTop = S.route.split('?')[0] !== prevPage;
   prefetchSheets();
   trackRoute();
   S.menuOpen = false; S.msOpen = false; S.lbWho = null; S.lbSeen = null; S.lbTie = 0;
@@ -9851,21 +9781,8 @@ window.addEventListener('hashchange', () => {
   if (!S.route.startsWith('#/seating')) { S.seatEdit = null; S.seatSel = null; }
   if (!S.route.startsWith('#/rules')) { S.rulesEdit = null; S.rulesPreview = false; }
   S.error = ''; S.query = ''; S.editPerson = null; S.editSongRow = null; S.editCat = null; S.addOpen = null;
-  render();
-  if (S.route.split('?')[0] !== prevPage) enterPage();
+  navTransition(navKind(prevFull, S.route), () => { if (toTop) window.scrollTo(0, 0); render(); });
 });
-/* A new page settles in rather than snapping: a short fade of what changed.
-   Opacity only — a transform here would re-anchor the toast and dialogs inside
-   the page for the length of the fade. The header stays put. */
-function enterPage(){
-  const app = document.getElementById('app');
-  if (!app) return;
-  [...app.children].forEach(k => {
-    if (!k.animate || (k.classList && (k.classList.contains('mast') || k.classList.contains('topbar') || k.classList.contains('drawer')
-      || k.classList.contains('savebar') || k.classList.contains('scrim')))) return;
-    k.animate([{ opacity: 0 }, { opacity: 1 }], { duration: calm() ? 100 : 180, easing: EASE.fade });
-  });
-}
 
 /* ---------- boot ---------- */
 if ('serviceWorker' in navigator) {

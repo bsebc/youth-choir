@@ -10,7 +10,7 @@
 const SHELL = 'bsebc-youth-shell-v3';
 const DATA  = 'bsebc-youth-data-v3';
 const SHEETS = 'bsebc-youth-sheets-v1';   // sheet PDFs stored by the page for offline use
-const ICON_V = '?v=3200';
+const ICON_V = '?v=3137';   // the version index.html asks for
 const SHELL_FILES = ['./', './index.html', './vendor/supabase-js-2.118.0.esm.js', './site.webmanifest',
                      './favicon.svg' + ICON_V, './apple-touch-icon.png' + ICON_V, './icon-192.png' + ICON_V, './icon-512.png' + ICON_V];
 

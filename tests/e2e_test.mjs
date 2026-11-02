@@ -280,7 +280,10 @@ async function atHash(page, want, ms = 8000) {
 }
 const text = (page, sel = UI.main) => page.locator(sel).first().innerText();
 const vis = (page, sel) => page.locator(sel).locator('visible=true').first();
-async function tap(page, sel) { await vis(page, sel).click(); }
+/* A tap may start a view transition, and then the page redraws a frame later,
+   once the browser has its picture of the old page: wait for that frame. */
+const afterPaint = page => page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r()))));
+async function tap(page, sel) { await vis(page, sel).click(); await afterPaint(page); }
 /* the message bar: its close button is data-dismiss */
 async function toastText(page) {
   return page.evaluate(() => {
