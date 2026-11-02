@@ -1630,20 +1630,34 @@
   .lnt.danger,.lnt.danger svg{color:var(--red)}
   .lnempty{padding:48px 20px;border:1px dashed var(--line-strong-2);border-radius:18px;text-align:center;font-size:14px;color:var(--muted)}
   /* 5.51 folders: a section per folder, a switcher to show one, the add-from-repertoire list */
+  /* folder colours: the app's navy, green, gold and teal, and a soft plum */
+  :root{--ln-plum:#7b3f8f;--ln-plum-w:#f6eef8}
+  :root[data-theme="dark"]{--ln-plum:#d8a8ea;--ln-plum-w:#2a1d31}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){--ln-plum:#d8a8ea;--ln-plum-w:#2a1d31} }
+  .lnc0{--fc:var(--tool1-ic);--fw:var(--tool1-bg)} .lnc1{--fc:var(--tool2-ic);--fw:var(--tool2-bg)}
+  .lnc2{--fc:var(--tool3-ic);--fw:var(--tool3-bg)} .lnc3{--fc:var(--tool4-ic);--fw:var(--tool4-bg)}
+  .lnc4{--fc:var(--ln-plum);--fw:var(--ln-plum-w)} .lnc-n{--fc:var(--muted);--fw:var(--surface-2)}
+  /* the Learning page: one card per folder; open, its songs are numbered rows inside it */
   .lnfolds{display:flex;flex-direction:column;gap:12px}
-  .lnfold{background:var(--card);border:1px solid var(--card-line);border-radius:18px;box-shadow:var(--shadow-card);overflow:hidden}
-  .lnfold .lnfh{display:flex;align-items:center;padding:6px}
+  .lnfold{background:var(--card);border:1px solid var(--card-line);border-radius:20px;box-shadow:var(--shadow-card);overflow:hidden;transition:box-shadow .25s ease,border-color .25s ease}
+  .lnfold.open{border-color:color-mix(in srgb,var(--fc) 28%,var(--card-line));box-shadow:0 14px 34px -22px color-mix(in srgb,var(--fc) 60%,transparent),var(--shadow-card)}
+  .lnfold .lnfh{display:flex;align-items:center;padding:4px}
   .lnfhd{flex:1;min-width:0;margin:0;font:inherit}
   .lnftog{width:100%;border:0;background:transparent;font:inherit;text-align:left;cursor:pointer}
-  .lnftog > svg{transition:transform .3s var(--spring-smooth)}
-  .lnfold.open .lnftog > svg{transform:rotate(90deg)}
-  .lnfacts{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+  .lnftog > svg:last-child{transition:transform .3s var(--spring-smooth)}
+  .lnfold.open .lnftog > svg:last-child{transform:rotate(90deg)}
+  .lnfold .lnfic{transition:background .25s ease,color .25s ease}
+  .lnfold.open .lnfic{background:var(--fc);color:var(--card)}
+  .lnfbody{border-top:1px solid var(--rule);background:var(--card);padding:0 20px 6px}
+  .lnfacts{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;padding:14px 0 2px}
   .lnfacts .mini{display:inline-flex;align-items:center;gap:6px}
   .lnfacts .mini svg{width:15px;height:15px;flex:none}
-  .lnfbody{border-top:1px solid var(--rule);background:var(--surface-2);padding:14px}
-  .lnfbody .lngrid{gap:12px}
-  @media (prefers-reduced-motion:reduce){ .lnftog > svg{transition:none} }
-  @media (max-width:699px){ .lnfbody{padding:10px} }
+  .lnfbody .lngrid{gap:0}
+  .lnfbody .lncard{background:none;border:0;border-radius:0;box-shadow:none;padding:18px 0}
+  .lnfbody .lncard + .lncard{border-top:1px solid var(--rule)}
+  .lnno{display:grid;place-items:center;flex:none;min-width:30px;height:26px;margin-top:-1px;padding:0 6px;border-radius:9px;background:var(--fw);color:var(--fc);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+  @media (prefers-reduced-motion:reduce){ .lnftog > svg:last-child{transition:none} }
+  @media (max-width:699px){ .lnfbody{padding:0 14px 4px} .lnfbody .lncard{padding:16px 0} }
   .lnfnew[hidden]{display:none}
   .lnkeep{display:flex;align-items:flex-start;gap:10px;margin:16px 0 0;font-size:14px;line-height:1.4;color:var(--ink);cursor:pointer}
   .lnkeep input,.lnprow input{width:20px;height:20px;margin:0;flex:none;accent-color:var(--blue)}
@@ -1701,21 +1715,22 @@
   @media (max-width:699px){ .lntile .lrow:nth-child(n+3){display:none} .lnfeat .ft{font-size:17px} }
   .lntile .lnone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:150px}
   /* 5.51: a row per folder, with its numbers */
-  .lntile .lnfrs{flex:1;display:flex;flex-direction:column;gap:2px;margin:16px -22px 0;padding:10px 10px 0;border-top:1px solid var(--rule)}
-  .lnfr{display:flex;align-items:center;gap:14px;min-width:0;padding:12px;border-radius:12px;color:var(--ink);text-decoration:none;transition:background .15s ease}
-  .lnfr .lnfic{display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:12px;background:var(--tool3-bg);color:var(--tool3-ic)}
-  .lnfr .lnfic svg{width:20px;height:20px;color:inherit}
-  .lnfr .b{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
-  .lnfr strong{font-size:15px;font-weight:650;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s ease}
-  .lnfr small{font-size:12.5px;line-height:1.35;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .lnfr small em{font-style:normal;font-weight:600;color:var(--gold-text)}
-  .lnsts{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:2px}
-  .lnst{display:inline-flex;align-items:center;gap:5px;font-size:12px;line-height:1.2;color:var(--muted)}
-  .lnst svg{width:13px;height:13px;flex:none}
-  .lnst b{font-weight:600;font-variant-numeric:tabular-nums}
-  .lnst.all{color:var(--green)}
-  .lnfr > svg{width:16px;height:16px;flex:none;color:var(--faint)}
-  @media (hover:hover){ .lnfr:hover{background:var(--surface-2)} .lnfr:hover strong{color:var(--blue-text)} }
+  .lntile .lnfrs{flex:1;display:flex;flex-direction:column;margin:16px -22px 0;padding:6px 8px 0;border-top:1px solid var(--rule)}
+  /* a folder row: colour tile, name and countdown, the calendar badge, the arrow */
+  .lnfr{position:relative;display:flex;align-items:center;gap:14px;min-width:0;padding:12px 14px;border-radius:14px;color:var(--ink);text-decoration:none;transition:background .15s ease}
+  .lntile .lnfr + .lnfr::before{content:'';position:absolute;top:0;left:72px;right:14px;border-top:1px solid var(--rule)}
+  .lnfr .lnfic{display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:13px;background:var(--fw);color:var(--fc)}
+  .lnfr .lnfic svg{width:22px;height:22px;color:inherit}
+  .lnfr .b{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .lnfr strong{font-size:16px;font-weight:650;letter-spacing:-.2px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s ease}
+  .lnfr small{font-size:13px;line-height:1.35;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lnfr small em{font-style:normal;font-weight:600;color:var(--fc)}
+  /* the next service, as a little calendar page */
+  .lndt{display:flex;flex-direction:column;align-items:stretch;width:42px;flex:none;border-radius:10px;background:var(--card);border:1px solid var(--rule);box-shadow:0 2px 6px -3px rgba(var(--shadow-rgb),.25);overflow:hidden;text-align:center;line-height:1}
+  .lndt b{display:block;padding:4px 0 3px;background:var(--fw);color:var(--fc);font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .lndt i{display:block;padding:4px 0 5px;font-style:normal;font-size:17px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+  .lnfr > svg:last-child{width:16px;height:16px;flex:none;color:var(--faint)}
+  @media (hover:hover){ .lnfr:hover{background:var(--surface-2)} .lnftog:hover{background:color-mix(in srgb,var(--fw) 55%,transparent)} }
   .lntile .lnico{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:var(--tool3-bg);color:var(--tool3-ic)}
   .lntile .lnico svg{width:20px;height:20px}
   .dlib{margin-top:20px}
@@ -3581,9 +3596,7 @@ Object.assign(STR.en, {
   lnNoFolder:'No folder', lnNewFolder:'New folder…',
   lnAllSongs:'All songs', lnFoldersN: n => n + (n === 1 ? ' folder' : ' folders'),
   lnNextSvc:'The next service with one of these songs',
-  lnInDays: n => n <= 0 ? 'today' : n === 1 ? 'tomorrow' : 'in ' + n + ' days',
-  lnStSheet: (m, n) => m + ' of ' + n + ' with sheet music', lnStRec: (m, n) => m + ' of ' + n + ' with a recording',
-  lnStLyr: (m, n) => m + ' of ' + n + ' with lyrics'
+  lnInDays: n => n <= 0 ? 'today' : n === 1 ? 'tomorrow' : 'in ' + n + ' days'
 });
 // ruN() is the app's Russian plural helper (one / few / many), defined further down
 Object.assign(STR.ru, {
@@ -3614,9 +3627,7 @@ Object.assign(STR.ru, {
   lnNoFolder:'Без папки', lnNewFolder:'Новая папка…',
   lnAllSongs:'Все песни', lnFoldersN: n => n + ' ' + ruN(n, 'папка', 'папки', 'папок'),
   lnNextSvc:'Ближайшее служение с одной из этих песен',
-  lnInDays: n => n <= 0 ? 'сегодня' : n === 1 ? 'завтра' : 'через ' + n + ' ' + ruN(n, 'день', 'дня', 'дней'),
-  lnStSheet: (m, n) => 'ноты: ' + m + ' из ' + n, lnStRec: (m, n) => 'записи: ' + m + ' из ' + n,
-  lnStLyr: (m, n) => 'тексты: ' + m + ' из ' + n
+  lnInDays: n => n <= 0 ? 'сегодня' : n === 1 ? 'завтра' : 'через ' + n + ' ' + ruN(n, 'день', 'дня', 'дней')
 });
 const MON = { en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
               ru:['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'] };
@@ -3831,13 +3842,14 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.52.0';
+const VERSION = '5.53.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Learning: a cleaner look. Each folder has its own colour, a small calendar shows the next service that sings its songs, and an open folder lists them numbered',
     'Learning: folders open and close like folders, one at a time, and each has its own link and a Share button',
     'Learning: the folder box is a dropdown of the folders there are, with New folder… for a new one',
     'Home: a line between the Learning title and its folders',
@@ -3913,6 +3925,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    '«Разучиваем»: аккуратнее. У каждой папки свой цвет, маленький календарь показывает ближайшее служение с её песнями, а в открытой папке песни пронумерованы',
     '«Разучиваем»: папки открываются и закрываются по одной, у каждой своя ссылка и кнопка «Поделиться»',
     '«Разучиваем»: папка выбирается из списка, а «Новая папка…» создаёт новую',
     'Главная: линия между заголовком «Разучиваем» и папками',
@@ -4633,21 +4646,27 @@ function lnFolderPicked(id){
 }
 /* the one open folder, if exactly one is, for a new song to land in */
 const lnSelName = () => { const open = learnGroups(learnReal()).filter(g => g.name && lnOpenSet().has(g.key)); return open.length === 1 ? open[0].name : ''; };
-/* A folder at a glance, the same on the home tile and on the Learning page: its
-   songs, the next service that sings one of them, and what they have to practise with. */
+/* Each folder keeps a colour of its own, picked from its name, so moving or renaming
+   another folder never changes it. Songs without a folder stay neutral. */
+function lnTone(g){
+  if (!g.name) return 'lnc-n';
+  let h = 0; for (const ch of g.name.toLowerCase()) h = (h * 31 + ch.codePointAt(0)) >>> 0;
+  return 'lnc' + (h % 5);
+}
+/* A folder at a glance, the same on the home tile and on the Learning page: its name,
+   its songs, and, when a service already sings one of them, a calendar badge with the
+   date and a countdown. */
 function lnFolderInner(g, named, open){
   const n = g.songs.length, now = today(), ids = new Set(g.songs.map(x => x.id));
   let next = '';
   S.eventSongs.forEach(x => { if (!ids.has(x.song_id)) return; const e = eventById(x.event_id);
     if (e && !e.cancelled && e.date >= now && (!next || e.date < next)) next = e.date; });
   const days = next ? Math.round((Date.parse(next + 'T12:00:00') - Date.parse(now + 'T12:00:00')) / 86400000) : 0;
-  const st = (ic, k, has) => { const m = g.songs.filter(has).length, say = t(k)(m, n);
-    return `<span class="lnst${m === n ? ' all' : ''}" title="${esc(say)}">${ic}<b aria-hidden="true">${m}/${n}</b><span class="vh">${esc(say)}</span></span>`; };
+  const cal = next ? (([, m, d]) => `<span class="lndt" title="${esc(t('lnNextSvc') + ': ' + dayShort(next))}"><b aria-hidden="true">${esc(MON[S.lang][+m - 1])}</b><i aria-hidden="true">${+d}</i><span class="vh">${esc(t('lnNextSvc') + ': ' + dayShort(next))}</span></span>`)(next.split('-')) : '';
   return `<span class="lnfic">${g.name ? (open ? FOLDEROPENSVG : FOLDERSVG) : AIC.learn}</span>
     <span class="b"><strong>${esc(g.name || t(named ? 'lnOther' : 'lnAllSongs'))}</strong>
-      <small>${esc(t('songsCount')(n))}${next ? ` · <em title="${esc(t('lnNextSvc'))}">${esc(dayShort(next))}, ${esc(t('lnInDays')(days))}</em>` : ''}</small>
-      <span class="lnsts">${st(AIC.sheets, 'lnStSheet', x => !!x.pdf_path)}${st(AIC.play, 'lnStRec', x => !!(x.audio_url || hasParts(x)))}${st(AIC.lyrics, 'lnStLyr', hasLyrics)}</span></span>
-    ${AIC.chev}`;
+      <small>${esc(t('songsCount')(n))}${next ? ` · <em>${esc(t('lnInDays')(days))}</em>` : ''}</small></span>
+    ${cal}${AIC.chev}`;
 }
 /* sample mode for the Learning page: four real songs dressed up as learning songs, never saved.
    Switched with the "Show a sample" link on the Learning page; remembered on this device. */
@@ -5599,7 +5618,7 @@ function homePage(){
   const lnNew = today() <= LEARN_NEW_UNTIL;
   /* a row per folder (see lnFolderInner); a tap opens the Learning page on that folder */
   const lnGroups = learnGroups(learnReal()), lnNamed = lnGroups.filter(g => g.name).length;
-  const lnRow = g => `<a class="lnfr" href="${esc(lnHref(lnNamed ? g : null))}">${lnFolderInner(g, lnNamed, false)}</a>`;
+  const lnRow = g => `<a class="lnfr ${lnTone(g)}" href="${esc(lnHref(lnNamed ? g : null))}">${lnFolderInner(g, lnNamed, false)}</a>`;
   const learnCard = `<section class="dpanel lntile">
       <div class="lnhead"><span class="lnico">${AIC.learn}</span><div style="min-width:0"><h2>${esc(t('lnTitle'))}</h2>
         <p>${esc(learnList.length ? (lnNamed ? t('lnFoldersN')(lnNamed) + ' · ' : '') + t('songsCount')(learnList.length) : t('lnNone'))}</p></div>${lnNew ? `<span class="lnnew${S.ripple ? ' rip' : ''}">${esc(t('lnNew'))}</span>` : ''}</div>
@@ -8033,7 +8052,7 @@ function learningPage(){
   const total = groups.reduce((n, g) => n + g.songs.length, 0);
   const off = (ic, lab) => `<span class="lnb off" aria-disabled="true">${ic}<span>${esc(lab)}</span></span>`;
   /* i: place in its folder of n; rep: a repertoire song the choir is still learning */
-  const card = (s, i, n) => {
+  const card = (s, i, n, num) => {
     const demo = !!s._demo, rep = !demo && !s.learning;
     const sheet = (kind, cls, ic, lab) => { const K = SHEETKIND[kind];
       if (!s[K.col]) return off(ic, lab);
@@ -8066,7 +8085,7 @@ function learningPage(){
         <a class="lnt" href="#/lyrics/${shortId(s.id)}" data-lyr-edit="${s.id}">${LYRSVG}<span>${esc(t(hasLyrics(s) ? 'lnLyrEdit' : 'lnLyrAdd'))}</span></a></div>` : '';
     const meta = [s.subtitle, catName(s.category_id)].filter(Boolean).join(' · ');
     return `<article class="lncard${demo ? ' demo' : ''}">
-      <div class="lninfo"><div class="lnh"><div class="tt"><h3>${esc(s.title)}${pvTag(s)}${demo ? `<span class="lntag">${esc(t('lnDemoTag'))}</span>` : ''}${rep && S.session ? `<span class="lntag">${esc(t('lnInRep'))}</span>` : ''}</h3>${meta ? `<p class="mt">${esc(meta)}</p>` : ''}</div></div>
+      <div class="lninfo"><div class="lnh">${num ? `<span class="lnno" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>` : ''}<div class="tt"><h3>${esc(s.title)}${pvTag(s)}${demo ? `<span class="lntag">${esc(t('lnDemoTag'))}</span>` : ''}${rep && S.session ? `<span class="lntag">${esc(t('lnInRep'))}</span>` : ''}</h3>${meta ? `<p class="mt">${esc(meta)}</p>` : ''}</div></div>
       ${s.learn_note ? `<div class="lnnote"><b>${esc(t('lnFromDir'))}</b><p>${esc(s.learn_note)}</p></div>` : ''}</div>
       ${practice}${listenRow(s, 'learn')}${foot}${tools}</article>`;
   };
@@ -8075,11 +8094,11 @@ function learningPage(){
   const filed = groups.some(g => g.name);
   const folder = (g, i) => {
     const open = lnOpenSet().has(g.key), live = !g.songs.some(x => x._demo);
-    return `<section class="lnfold${open ? ' open' : ''}" data-k="${esc(g.key)}">
+    return `<section class="lnfold ${lnTone(g)}${open ? ' open' : ''}" data-k="${esc(g.key)}">
       <div class="lnfh"><h2 class="lnfhd"><button class="lnfr lnftog" data-ln-ftog="${esc(g.key)}" aria-expanded="${open}"${open ? ` aria-controls="lnfb-${i}"` : ''}>${lnFolderInner(g, filed, open)}</button></h2></div>
       ${open ? `<div class="lnfbody" id="lnfb-${i}">${live ? `<div class="lnfacts"><button class="mini shr" data-ln-share="${esc(g.key)}">${SHARESVG}${esc(t('shareBtn'))}</button>${S.session && g.name
           ? `<button class="mini" data-ln-fedit="${esc(g.name)}">${PENSVG}<span>${esc(t('lnFEdit'))}</span></button>` : ''}</div>` : ''}
-        <div class="lngrid">${g.songs.map((x, j) => card(x, j, g.songs.length)).join('')}</div></div>` : ''}
+        <div class="lngrid">${g.songs.map((x, j) => card(x, j, g.songs.length, true)).join('')}</div></div>` : ''}
     </section>`;
   };
   const add = S.session ? `<button class="lnadd" data-learn-edit="new">＋ ${esc(t('lnNewSong'))}</button><button class="lnadd" data-ln-pick="rep">＋ ${esc(t('lnFromRep'))}</button>` : '';
