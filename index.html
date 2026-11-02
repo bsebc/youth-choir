@@ -1630,18 +1630,21 @@
   .lnt.danger,.lnt.danger svg{color:var(--red)}
   .lnempty{padding:48px 20px;border:1px dashed var(--line-strong-2);border-radius:18px;text-align:center;font-size:14px;color:var(--muted)}
   /* 5.51 folders: a section per folder, a switcher to show one, the add-from-repertoire list */
-  .lnfbar{margin:-4px 0 20px}
-  .chips.lnchips{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;max-width:100%;width:max-content}
-  .chips.lnchips::-webkit-scrollbar{display:none}
-  .chips.lnchips a{position:relative;z-index:1;flex:none;padding:7px 14px;max-width:18em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-radius:var(--r-pill);font-size:var(--fs-13-5);font-weight:600;letter-spacing:-.1px;color:var(--text-2);text-decoration:none}
-  .chips.lnchips a.on{color:var(--ink);font-weight:600}
-  .lnfold{margin:0 0 28px}
-  .lnfold:last-child{margin-bottom:6px}
-  .lnfh{display:flex;align-items:center;gap:8px;min-height:46px;margin:0 2px 10px}
-  .lnfh .lnfi{width:20px;height:20px;flex:none;color:var(--gold-text)}
-  .lnfh h2{margin:0;min-width:0;font-size:19px;font-weight:700;letter-spacing:-.35px;line-height:1.25;color:var(--ink);overflow-wrap:anywhere}
-  .lnfh .lnfn{flex:none;font-size:13px;color:var(--muted);white-space:nowrap}
-  .lnfh .lnfacts{display:flex;gap:6px;margin-left:auto;flex:none}
+  .lnfolds{display:flex;flex-direction:column;gap:12px}
+  .lnfold{background:var(--card);border:1px solid var(--card-line);border-radius:18px;box-shadow:var(--shadow-card);overflow:hidden}
+  .lnfold .lnfh{display:flex;align-items:center;padding:6px}
+  .lnfhd{flex:1;min-width:0;margin:0;font:inherit}
+  .lnftog{width:100%;border:0;background:transparent;font:inherit;text-align:left;cursor:pointer}
+  .lnftog > svg{transition:transform .3s var(--spring-smooth)}
+  .lnfold.open .lnftog > svg{transform:rotate(90deg)}
+  .lnfacts{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+  .lnfacts .mini{display:inline-flex;align-items:center;gap:6px}
+  .lnfacts .mini svg{width:15px;height:15px;flex:none}
+  .lnfbody{border-top:1px solid var(--rule);background:var(--surface-2);padding:14px}
+  .lnfbody .lngrid{gap:12px}
+  @media (prefers-reduced-motion:reduce){ .lnftog > svg{transition:none} }
+  @media (max-width:699px){ .lnfbody{padding:10px} }
+  .lnfnew[hidden]{display:none}
   .lnkeep{display:flex;align-items:flex-start;gap:10px;margin:16px 0 0;font-size:14px;line-height:1.4;color:var(--ink);cursor:pointer}
   .lnkeep input,.lnprow input{width:20px;height:20px;margin:0;flex:none;accent-color:var(--blue)}
   .lnrt{font-size:16px;font-weight:600;line-height:1.35;color:var(--ink)}
@@ -1698,7 +1701,7 @@
   @media (max-width:699px){ .lntile .lrow:nth-child(n+3){display:none} .lnfeat .ft{font-size:17px} }
   .lntile .lnone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:150px}
   /* 5.51: a row per folder, with its numbers */
-  .lntile .lnfrs{flex:1;display:flex;flex-direction:column;gap:2px;margin:12px -12px 0}
+  .lntile .lnfrs{flex:1;display:flex;flex-direction:column;gap:2px;margin:16px -22px 0;padding:10px 10px 0;border-top:1px solid var(--rule)}
   .lnfr{display:flex;align-items:center;gap:14px;min-width:0;padding:12px;border-radius:12px;color:var(--ink);text-decoration:none;transition:background .15s ease}
   .lnfr .lnfic{display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:12px;background:var(--tool3-bg);color:var(--tool3-ic)}
   .lnfr .lnfic svg{width:20px;height:20px;color:inherit}
@@ -3244,9 +3247,9 @@
       box-shadow:0 14px 36px -14px rgba(var(--shadow-rgb),.38),0 2px 6px -2px rgba(var(--shadow-rgb),.1),0 0 0 1px var(--dk-line)}
   }
   /* a page's switchers stay where they are; only their thumb glides */
-  html.vt-on::view-transition-group(v-stay-tabs),html.vt-on::view-transition-group(v-stay-ctl),html.vt-on::view-transition-group(v-stay-top),html.vt-on::view-transition-group(v-stay-search),html.vt-on::view-transition-group(v-stay-obar),html.vt-on::view-transition-group(v-stay-lnf){animation-duration:.39s;animation-timing-function:var(--spring-nav)}
-  html.vt-on::view-transition-old(v-stay-tabs),html.vt-on::view-transition-old(v-stay-ctl),html.vt-on::view-transition-old(v-stay-top),html.vt-on::view-transition-old(v-stay-search),html.vt-on::view-transition-old(v-stay-obar),html.vt-on::view-transition-old(v-stay-lnf){display:none}
-  html.vt-on::view-transition-new(v-stay-tabs),html.vt-on::view-transition-new(v-stay-ctl),html.vt-on::view-transition-new(v-stay-top),html.vt-on::view-transition-new(v-stay-search),html.vt-on::view-transition-new(v-stay-obar),html.vt-on::view-transition-new(v-stay-lnf){animation:none}
+  html.vt-on::view-transition-group(v-stay-tabs),html.vt-on::view-transition-group(v-stay-ctl),html.vt-on::view-transition-group(v-stay-top),html.vt-on::view-transition-group(v-stay-search),html.vt-on::view-transition-group(v-stay-obar){animation-duration:.39s;animation-timing-function:var(--spring-nav)}
+  html.vt-on::view-transition-old(v-stay-tabs),html.vt-on::view-transition-old(v-stay-ctl),html.vt-on::view-transition-old(v-stay-top),html.vt-on::view-transition-old(v-stay-search),html.vt-on::view-transition-old(v-stay-obar){display:none}
+  html.vt-on::view-transition-new(v-stay-tabs),html.vt-on::view-transition-new(v-stay-ctl),html.vt-on::view-transition-new(v-stay-top),html.vt-on::view-transition-new(v-stay-search),html.vt-on::view-transition-new(v-stay-obar){animation:none}
 
   /* drilling in, on a phone: the new page slides in from the right edge over the old
      one, which eases a third of the way left; going back reverses it. A soft edge
@@ -3575,6 +3578,7 @@ Object.assign(STR.en, {
   lnAddN: n => n ? 'Add ' + (n === 1 ? '1 song' : n + ' songs') : 'Add',
   lnAddedN: (n, f) => (n === 1 ? '1 song' : n + ' songs') + ' added to Learning' + (f ? ' · ' + f : ''),
   lnToLearn:'Add to Learning',
+  lnNoFolder:'No folder', lnNewFolder:'New folder…',
   lnAllSongs:'All songs', lnFoldersN: n => n + (n === 1 ? ' folder' : ' folders'),
   lnNextSvc:'The next service with one of these songs',
   lnInDays: n => n <= 0 ? 'today' : n === 1 ? 'tomorrow' : 'in ' + n + ' days',
@@ -3607,6 +3611,7 @@ Object.assign(STR.ru, {
   lnAddN: n => n ? 'Добавить ' + n + ' ' + ruN(n, 'песню', 'песни', 'песен') : 'Добавить',
   lnAddedN: (n, f) => n + ' ' + ruN(n, 'песня добавлена', 'песни добавлены', 'песен добавлено') + ' в «Разучиваем»' + (f ? ' · ' + f : ''),
   lnToLearn:'В «Разучиваем»',
+  lnNoFolder:'Без папки', lnNewFolder:'Новая папка…',
   lnAllSongs:'Все песни', lnFoldersN: n => n + ' ' + ruN(n, 'папка', 'папки', 'папок'),
   lnNextSvc:'Ближайшее служение с одной из этих песен',
   lnInDays: n => n <= 0 ? 'сегодня' : n === 1 ? 'завтра' : 'через ' + n + ' ' + ruN(n, 'день', 'дня', 'дней'),
@@ -3826,13 +3831,16 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.51.0';
+const VERSION = '5.52.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Learning: folders open and close like folders, one at a time, and each has its own link and a Share button',
+    'Learning: the folder box is a dropdown of the folders there are, with New folder… for a new one',
+    'Home: a line between the Learning title and its folders',
     'Learning: folders, such as Congress or For Christmas. Songs with the same folder are grouped, and singers can show one folder at a time',
     'Learning: songs already in the repertoire can be added from the Learning page or from a service’s song list, without entering them again',
     'Moving a song into the repertoire can keep it on the Learning page until it’s learned; Done learning takes it off',
@@ -3905,6 +3913,9 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    '«Разучиваем»: папки открываются и закрываются по одной, у каждой своя ссылка и кнопка «Поделиться»',
+    '«Разучиваем»: папка выбирается из списка, а «Новая папка…» создаёт новую',
+    'Главная: линия между заголовком «Разучиваем» и папками',
     '«Разучиваем»: папки, например «Конгресс» или «На Рождество». Песни одной папки собраны вместе, и можно смотреть одну папку',
     '«Разучиваем»: песни, которые уже есть в репертуаре, можно добавить со страницы «Разучиваем» или из списка песен служения, не вводя их заново',
     'Песню можно перенести в репертуар и оставить в «Разучиваем», пока её не выучат; кнопка «Выучили» убирает её оттуда',
@@ -4600,8 +4611,44 @@ function lnRouteKey(){
   return n ? 'f:' + n : '';
 }
 const lnHref = g => '#/learning' + (g ? '?f=' + (g.name ? encodeURIComponent(g.name) : '~') : '');
-/* the folder being shown, for new songs to land in */
-const lnSelName = () => { const g = learnGroups(learnReal()).find(x => x.name && x.key === lnRouteKey()); return g ? g.name : ''; };
+/* Folders on the Learning page open and close like folders, one at a time, and the
+   address names the open one (#/learning?f=<folder>), so every folder has a link of
+   its own: opening one from the home tile or from a shared link lands on it, open. */
+const lnOpenSet = () => S.lnOpen || (S.lnOpen = new Set());
+/* open only this folder ('' for none) and put it in the address, without a new history step */
+function lnShow(key){
+  S.lnOpen = new Set(key ? [key] : []);
+  const g = key && learnGroups(learnReal()).find(x => x.key === key), h = g ? lnHref(g) : '#/learning';
+  if ((S.route || '').startsWith('#/learning') && S.route !== h) { try { history.replaceState(history.state, '', h); } catch (_) {} S.route = normRoute(h); }
+}
+/* what a folder dropdown says: a folder, '' for none, or the typed name of a new one;
+   null when New folder… is picked with no name (the box is focused for one) */
+function lnFolderPicked(id){
+  const sel = document.getElementById(id);
+  if (!sel) return '';
+  if (sel.value !== '__new') return sel.value;
+  const box = document.getElementById(id + '-new'), v = box ? box.value.trim() : '';
+  if (!v && box) box.focus();
+  return v || null;
+}
+/* the one open folder, if exactly one is, for a new song to land in */
+const lnSelName = () => { const open = learnGroups(learnReal()).filter(g => g.name && lnOpenSet().has(g.key)); return open.length === 1 ? open[0].name : ''; };
+/* A folder at a glance, the same on the home tile and on the Learning page: its
+   songs, the next service that sings one of them, and what they have to practise with. */
+function lnFolderInner(g, named, open){
+  const n = g.songs.length, now = today(), ids = new Set(g.songs.map(x => x.id));
+  let next = '';
+  S.eventSongs.forEach(x => { if (!ids.has(x.song_id)) return; const e = eventById(x.event_id);
+    if (e && !e.cancelled && e.date >= now && (!next || e.date < next)) next = e.date; });
+  const days = next ? Math.round((Date.parse(next + 'T12:00:00') - Date.parse(now + 'T12:00:00')) / 86400000) : 0;
+  const st = (ic, k, has) => { const m = g.songs.filter(has).length, say = t(k)(m, n);
+    return `<span class="lnst${m === n ? ' all' : ''}" title="${esc(say)}">${ic}<b aria-hidden="true">${m}/${n}</b><span class="vh">${esc(say)}</span></span>`; };
+  return `<span class="lnfic">${g.name ? (open ? FOLDEROPENSVG : FOLDERSVG) : AIC.learn}</span>
+    <span class="b"><strong>${esc(g.name || t(named ? 'lnOther' : 'lnAllSongs'))}</strong>
+      <small>${esc(t('songsCount')(n))}${next ? ` · <em title="${esc(t('lnNextSvc'))}">${esc(dayShort(next))}, ${esc(t('lnInDays')(days))}</em>` : ''}</small>
+      <span class="lnsts">${st(AIC.sheets, 'lnStSheet', x => !!x.pdf_path)}${st(AIC.play, 'lnStRec', x => !!(x.audio_url || hasParts(x)))}${st(AIC.lyrics, 'lnStLyr', hasLyrics)}</span></span>
+    ${AIC.chev}`;
+}
 /* sample mode for the Learning page: four real songs dressed up as learning songs, never saved.
    Switched with the "Show a sample" link on the Learning page; remembered on this device. */
 S.lnDemo = false; try { localStorage.removeItem('lnDemo'); } catch (_) {}
@@ -5550,24 +5597,9 @@ function homePage(){
     </section>`;
   const learnList = learnSongs();
   const lnNew = today() <= LEARN_NEW_UNTIL;
-  /* a row per folder: its songs, what they have to practise with, and the next service
-     that sings one of them. A tap opens the Learning page on that folder. */
+  /* a row per folder (see lnFolderInner); a tap opens the Learning page on that folder */
   const lnGroups = learnGroups(learnReal()), lnNamed = lnGroups.filter(g => g.name).length;
-  const lnUp = new Map(), lnToday = today();
-  S.eventSongs.forEach(x => { const e = eventById(x.event_id);
-    if (e && !e.cancelled && e.date >= lnToday) { const d = lnUp.get(x.song_id); if (!d || e.date < d) lnUp.set(x.song_id, e.date); } });
-  const lnDays = iso => Math.round((Date.parse(iso + 'T12:00:00') - Date.parse(lnToday + 'T12:00:00')) / 86400000);
-  const lnRow = g => {
-    const n = g.songs.length, next = g.songs.map(x => lnUp.get(x.id)).filter(Boolean).sort()[0];
-    const st = (ic, k, has) => { const m = g.songs.filter(has).length, say = t(k)(m, n);
-      return `<span class="lnst${m === n ? ' all' : ''}" title="${esc(say)}">${ic}<b aria-hidden="true">${m}/${n}</b><span class="vh">${esc(say)}</span></span>`; };
-    return `<a class="lnfr" href="${esc(lnHref(lnNamed ? g : null))}">
-      <span class="lnfic">${g.name ? FOLDERSVG : AIC.learn}</span>
-      <span class="b"><strong>${esc(g.name || t(lnNamed ? 'lnOther' : 'lnAllSongs'))}</strong>
-        <small>${esc(t('songsCount')(n))}${next ? ` · <em title="${esc(t('lnNextSvc'))}">${esc(dayShort(next))}, ${esc(t('lnInDays')(lnDays(next)))}</em>` : ''}</small>
-        <span class="lnsts">${st(AIC.sheets, 'lnStSheet', x => !!x.pdf_path)}${st(AIC.play, 'lnStRec', x => !!(x.audio_url || hasParts(x)))}${st(AIC.lyrics, 'lnStLyr', hasLyrics)}</span></span>
-      ${AIC.chev}</a>`;
-  };
+  const lnRow = g => `<a class="lnfr" href="${esc(lnHref(lnNamed ? g : null))}">${lnFolderInner(g, lnNamed, false)}</a>`;
   const learnCard = `<section class="dpanel lntile">
       <div class="lnhead"><span class="lnico">${AIC.learn}</span><div style="min-width:0"><h2>${esc(t('lnTitle'))}</h2>
         <p>${esc(learnList.length ? (lnNamed ? t('lnFoldersN')(lnNamed) + ' · ' : '') + t('songsCount')(learnList.length) : t('lnNone'))}</p></div>${lnNew ? `<span class="lnnew${S.ripple ? ' rip' : ''}">${esc(t('lnNew'))}</span>` : ''}</div>
@@ -7502,14 +7534,22 @@ function learnModal(){
       <div class="mhd"><h2>${esc(title)}</h2><button class="mx" data-modal-x aria-label="${esc(t('cancel'))}">×</button></div>
       <div class="mbody">${body}</div>
       <div class="mfoot">${left || ''}<button class="obtn2" data-modal-x>${esc(t('cancel'))}</button>${go}</div></div>`;
-  /* the folder box suggests the folders there are, so a typo doesn't start a new one */
-  const flist = `<datalist id="ln-flist">${lnFolders().map(f => `<option value="${esc(f)}"></option>`).join('')}</datalist>`;
-  const folderField = (id, val) => `<label class="fl full"><span>${esc(t('lnTarget'))}</span><input class="field" id="${id}" list="ln-flist" value="${esc(val)}" placeholder="${esc(t('lnTargetPh'))}" autocomplete="off" maxlength="80"></label>`;
+  /* the folder: a choice of the folders there are, or New folder… with a name box */
+  const flist = '';
+  const folderField = (id, val, asNew) => {
+    const fs = lnFolders(), cur = String(val || '').replace(/\s+/g, ' ').trim();
+    const known = asNew ? '' : fs.find(f => f.toLowerCase() === cur.toLowerCase()) || '', isNew = asNew || (!!cur && !known);
+    return `<label class="fl full"><span>${esc(t('lnTarget'))}</span><select class="field" id="${id}" data-ln-fsel>
+        <option value=""${!known && !isNew ? ' selected' : ''}>${esc(t('lnNoFolder'))}</option>
+        ${fs.map(f => `<option value="${esc(f)}"${known === f ? ' selected' : ''}>${esc(f)}</option>`).join('')}
+        <option value="__new"${isNew ? ' selected' : ''}>${esc(t('lnNewFolder'))}</option></select></label>
+      <label class="fl full lnfnew"${isNew ? '' : ' hidden'}><span>${esc(t('lnFName'))}</span><input class="field" id="${id}-new" value="${esc(isNew ? cur : '')}" placeholder="${esc(t('lnTargetPh'))}" autocomplete="off" maxlength="80"></label>`;
+  };
   if (S.lnPick) {
     const P = S.lnPick, ev = P.from !== 'rep' ? eventById(P.from) : null, n = lnPickN();
     const top = ev ? `<p class="lnpsub">${esc(String(ev.name || '').trim() || t(ev.kind))} · ${esc(fmtLong(ev.date))}. ${esc(t('lnPickHint'))}</p>`
       : `<input class="field" id="ln-pick-q" type="search" value="${esc(P.q)}" placeholder="${esc(t('searchPv'))}" aria-label="${esc(t('searchPv'))}" autocomplete="off">`;
-    return shell(t(ev ? 'lnPickSvcT' : 'lnPickT'), `${top}<div class="lnplist">${lnPickRows()}</div><div class="fgrid">${folderField('ln-pick-folder', P.folder)}</div>${flist}`,
+    return shell(t(ev ? 'lnPickSvcT' : 'lnPickT'), `${top}<div class="lnplist">${lnPickRows()}</div><div class="fgrid">${P.fsel === '__new' ? folderField('ln-pick-folder', P.fnew, true) : folderField('ln-pick-folder', P.fsel != null ? P.fsel : P.folder)}</div>${flist}`,
       `<button class="pbtn" data-ln-pick-add${n ? '' : ' disabled'}>${esc(t('lnAddN')(n))}</button>`);
   }
   if (S.lnFold != null) {
@@ -7986,6 +8026,7 @@ const lyrDirty = () => JSON.stringify([S.lyrDraft, S.lyrPv]) !== S.lyrWas;
 const UPSVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M7 9l5-5 5 5M5 20h14"></path></svg>';
 const UPAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg>';
 const DNAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"></path></svg>';
+const FOLDEROPENSVG = '<svg class="lnfi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7.5A2.5 2.5 0 0 1 5.5 5h3.6l2 2.2h7.4A2.5 2.5 0 0 1 21 9.7V10"></path><path d="M4.1 11h16.8a1 1 0 0 1 1 1.2l-1.3 5.8a2.5 2.5 0 0 1-2.4 2H6.1a2.5 2.5 0 0 1-2.4-2l-1.3-5.8a1 1 0 0 1 1-1.2z"></path></svg>';
 const FOLDERSVG = '<svg class="lnfi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.6l2 2.2h7.4A2.5 2.5 0 0 1 21 9.7v7.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"></path></svg>';
 function learningPage(){
   const groups = learnGroups(S.lnDemo ? learnReal().concat(learnDemo()) : learnReal());
@@ -8029,23 +8070,24 @@ function learningPage(){
       ${s.learn_note ? `<div class="lnnote"><b>${esc(t('lnFromDir'))}</b><p>${esc(s.learn_note)}</p></div>` : ''}</div>
       ${practice}${listenRow(s, 'learn')}${foot}${tools}</article>`;
   };
-  /* a section per folder (songs without one last, as Other songs), and a switcher to
-     show one folder at a time once there is more than one */
-  const rk = lnRouteKey(), sel = groups.length > 1 && groups.some(g => g.key === rk) ? rk : '';
+  /* Each folder is a card that opens and closes; songs without one gather in a last
+     card, Other songs. With no folders at all the songs are simply listed. */
   const filed = groups.some(g => g.name);
-  const chips = groups.length > 1 ? `<div class="lnfbar"><div class="chips lnchips" role="group" aria-label="${esc(t('lnFoldersL'))}">` +
-    [['', t('all'), lnHref(null)]].concat(groups.map(g => [g.key, g.name || t('lnOther'), lnHref(g)]))
-      .map(([k, l, h]) => `<a href="${esc(h)}" data-ln-folder="${esc(k)}" class="${sel === k ? 'on' : ''}"${sel === k ? ' aria-current="true"' : ''}>${esc(l)}</a>`).join('') + '</div></div>' : '';
-  const section = g => {
-    const live = !g.songs.some(x => x._demo);
-    const head = filed ? `<div class="lnfh">${g.name ? FOLDERSVG : ''}<h2>${esc(g.name || t('lnOther'))}</h2><span class="lnfn">${esc(t('songsCount')(g.songs.length))}</span>${S.session && g.name && live
-      ? `<span class="lnfacts"><button class="lnib" data-ln-fedit="${esc(g.name)}" aria-label="${esc(t('lnFEdit'))}" title="${esc(t('lnFEdit'))}">${PENSVG}</button></span>` : ''}</div>` : '';
-    return `<section class="lnfold">${head}<div class="lngrid">${g.songs.map((s, i) => card(s, i, g.songs.length)).join('')}</div></section>`;
+  const folder = (g, i) => {
+    const open = lnOpenSet().has(g.key), live = !g.songs.some(x => x._demo);
+    return `<section class="lnfold${open ? ' open' : ''}" data-k="${esc(g.key)}">
+      <div class="lnfh"><h2 class="lnfhd"><button class="lnfr lnftog" data-ln-ftog="${esc(g.key)}" aria-expanded="${open}"${open ? ` aria-controls="lnfb-${i}"` : ''}>${lnFolderInner(g, filed, open)}</button></h2></div>
+      ${open ? `<div class="lnfbody" id="lnfb-${i}">${live ? `<div class="lnfacts"><button class="mini shr" data-ln-share="${esc(g.key)}">${SHARESVG}${esc(t('shareBtn'))}</button>${S.session && g.name
+          ? `<button class="mini" data-ln-fedit="${esc(g.name)}">${PENSVG}<span>${esc(t('lnFEdit'))}</span></button>` : ''}</div>` : ''}
+        <div class="lngrid">${g.songs.map((x, j) => card(x, j, g.songs.length)).join('')}</div></div>` : ''}
+    </section>`;
   };
   const add = S.session ? `<button class="lnadd" data-learn-edit="new">＋ ${esc(t('lnNewSong'))}</button><button class="lnadd" data-ln-pick="rep">＋ ${esc(t('lnFromRep'))}</button>` : '';
-  return pageHead() + `<div class="lnhd"><div><h1>${esc(t('lnTitle'))}</h1>${total ? `<p>${esc(t('songsCount')(total))}</p>` : ''}</div>${add ? `<div class="acts">${add}</div>` : ''}</div>` +
-    (S.lnDemo ? `<p class="lndemo">${esc(t('lnDemoNote'))}</p>` : '') + chips +
-    (total ? groups.filter(g => !sel || g.key === sel).map(section).join('') : `<div class="lnempty">${esc(t('lnNone'))}</div>`);
+  return pageHead() + `<div class="lnhd"><div><h1>${esc(t('lnTitle'))}</h1>${total ? `<p>${esc(filed ? t('lnFoldersN')(groups.filter(g => g.name).length) + ' · ' + t('songsCount')(total) : t('songsCount')(total))}</p>` : ''}</div>${add ? `<div class="acts">${add}</div>` : ''}</div>` +
+    (S.lnDemo ? `<p class="lndemo">${esc(t('lnDemoNote'))}</p>` : '') +
+    (!total ? `<div class="lnempty">${esc(t('lnNone'))}</div>`
+      : filed ? `<div class="lnfolds">${groups.map(folder).join('')}</div>`
+      : `<div class="lngrid">${groups[0].songs.map((x, j) => card(x, j, groups[0].songs.length)).join('')}</div>`);
 }
 /* ---------- Learning: adding repertoire songs ----------
    From the Learning page (search the repertoire) or from one service's song list,
@@ -8386,10 +8428,10 @@ function navKind(from, to){
   if (dt > df) return 'push';
   if (dt < df) return 'pop';
   const base = to.split('?')[0];
-  return [...document.querySelectorAll('#app .tabs a[href], #app .seg a[href], #app .subtabs a[href], #app .lnchips a[href]')]
+  return [...document.querySelectorAll('#app .tabs a[href], #app .seg a[href], #app .subtabs a[href]')]
     .some(a => a.getAttribute('href').split('?')[0] === base) ? 'seg' : 'tab';
 }
-const NAV_STAY = [['tabs', 'v-stay-tabs'], ['ctlbar', 'v-stay-ctl'], ['topctl', 'v-stay-top'], ['searchrow', 'v-stay-search'], ['obar', 'v-stay-obar'], ['lnfbar', 'v-stay-lnf']];
+const NAV_STAY = [['tabs', 'v-stay-tabs'], ['ctlbar', 'v-stay-ctl'], ['topctl', 'v-stay-top'], ['searchrow', 'v-stay-search'], ['obar', 'v-stay-obar']];
 function nameStay(on){
   const app = document.getElementById('app');
   if (app) NAV_STAY.forEach(([c, n]) => { const el = app.querySelector('.' + c); if (el) el.style.viewTransitionName = on ? n : ''; });
@@ -8677,6 +8719,11 @@ function afterRender(){
   if (tn) { if (toastWasUp) tn.style.animation = 'none'; toastWasUp = true; }
   else toastWasUp = false;
   reveal(pendingReveal); pendingReveal = null;
+  if (S.lnJump) {                                 // a folder opened by its link: bring it into view
+    const f = document.querySelector(`.lnfold[data-k="${CSS.escape(S.lnJump)}"]`);
+    if (f) { S.lnJump = null; const y = f.getBoundingClientRect().top, off = matchMedia('(min-width:1000px)').matches ? 84 : 12;
+      if (y > innerHeight * 0.4) window.scrollTo(0, Math.max(0, window.scrollY + y - off)); }
+  }
   pop(pendingPop); pendingPop = null;
   /* Place the switcher thumbs before this frame paints: waiting a frame showed the
      plain CSS pill at the new spot first, which is the flash. */
@@ -8972,7 +9019,7 @@ document.addEventListener('keydown', e => {
   if (song) recLinkSave(song, el.id.slice(9));
 });
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-retry-load],[data-grid-more],[data-listen],[data-lp],[data-rec-link],[data-rec-link-x],[data-rec-link-go],[data-rec-del],[data-rec-del-x],[data-rec-del-go],[data-rec-cancel],[data-rec-add],[data-rec-add-x],[data-ln-mv],[data-ln-fmv],[data-ln-fedit],[data-ln-fsave],[data-ln-fremove],[data-ln-folder],[data-ln-pick],[data-ln-pick-add],[data-ln-done],[data-ln-tools],[data-ln-demo],[data-ln-demo-act],[data-learn-edit],[data-learn-save],[data-learn-move],[data-toggle-learn],[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
+  const el = e.target.closest('[data-retry-load],[data-grid-more],[data-listen],[data-lp],[data-rec-link],[data-rec-link-x],[data-rec-link-go],[data-rec-del],[data-rec-del-x],[data-rec-del-go],[data-rec-cancel],[data-rec-add],[data-rec-add-x],[data-ln-mv],[data-ln-fmv],[data-ln-fedit],[data-ln-fsave],[data-ln-fremove],[data-ln-ftog],[data-ln-share],[data-ln-pick],[data-ln-pick-add],[data-ln-done],[data-ln-tools],[data-ln-demo],[data-ln-demo-act],[data-learn-edit],[data-learn-save],[data-learn-move],[data-toggle-learn],[data-archive-song],[data-toggle-arch-songs],[data-plan-type],[data-pt-kind],[data-pt-save],[data-hist-more],[data-htl],[data-tl-more],[data-lbme],[data-lball],[data-lbshot],[data-photo-del],[data-lbtie],[data-lbwho],[data-lbclose],[data-lbpreset],[data-mmiss],[data-mpreset],[data-share-member],[data-up-demo-act],[data-up-demo],[data-song-sort],[data-menu],[data-menu-x],[data-lang],[data-theme-set],[data-theme-flip],[data-share-order],[data-uperiod],[data-preset],[data-type],[data-kind],[data-go],[data-backup],[data-export-toggle],[data-recent-toggle],[data-export-preset],[data-drop-role],[data-toggle-absent],[data-modal-x],[data-toggle-song],[data-save-marks],[data-cancel-marks],[data-add-song],[data-del-song],[data-edit-song],[data-add-singer],[data-del-singer],[data-edit-singer],[data-signout],[data-del-event],[data-export],[data-dismiss],[data-retry],[data-toggle-range],[data-del-pdf],[data-open],[data-lock],[data-move],[data-toggle-cancel],[data-ent-type],[data-ent-year],[data-ent-page],[data-song-dates],[data-add-role],[data-toggle-pick],[data-person],[data-people-role],[data-save-person],[data-cancel-person],[data-archive-singer],[data-copy-last],[data-clear-q],[data-goto-song],[data-save-song-row],[data-cancel-song-row],[data-toggle-cats],[data-add-cat],[data-edit-cat],[data-del-cat],[data-save-cat],[data-cancel-cat],[data-notes],[data-add-open],[data-seat],[data-tray],[data-seat-part],[data-seat-edit],[data-seat-cancel],[data-seat-save],[data-seat-unseat],[data-seat-list],[data-seat-view],[data-rules-edit],[data-rules-cancel],[data-rules-save],[data-md],[data-rules-tab],[data-audio-edit],[data-audio-save],[data-audio-clear],[data-audio-cancel],[data-adm-row],[data-lyr-edit],[data-lyr-copy],[data-lyr-print],[data-lyr-save],[data-lyr-cancel],[data-lyr-paste],[data-lyr-split],[data-lyr-missing],[data-blk-add],[data-blk-up],[data-blk-down],[data-blk-dup],[data-blk-del]');
   if (!el) return;
   const d = el.dataset;
 
@@ -9595,7 +9642,19 @@ document.addEventListener('click', async e => {
     S.lnFold = null;
     return lnRenumber(named.concat(groups.filter(x => !x.name)));
   }
-  if (el.hasAttribute('data-ln-folder')) { e.preventDefault(); location.replace(el.getAttribute('href')); return; }
+  if (d.lnFtog) {                                 // one folder open at a time; the other closes first
+    const k = d.lnFtog, body = key => `.lnfold[data-k="${CSS.escape(key)}"] > .lnfbody`;
+    const was = [...lnOpenSet()][0];
+    if (was === k) return collapse(body(k), () => { lnShow(''); render(); });
+    const open = () => { lnShow(k); render(); reveal(body(k)); };
+    return was ? collapse(body(was), open) : open();
+  }
+  if (d.lnShare) {                                // the folder's songs and its link, ready to paste into a chat
+    const g = learnGroups(learnReal()).find(x => x.key === d.lnShare);
+    if (!g) return;
+    const lines = g.songs.map((x, i) => (i + 1) + '. *' + x.title + '*');
+    return copyShare(t('lnTitle') + ' · ' + (g.name || t('lnOther')) + '\n\n' + (lines.length ? lines.join('\n') + '\n\n' : '') + pageURL(lnHref(g)));
+  }
   if (d.lnFedit) { S.lnFold = d.lnFedit; return render(); }
   if ((el.hasAttribute('data-ln-fsave') || el.hasAttribute('data-ln-fremove')) && S.lnFold != null) {
     const g = learnGroups(learnReal()).find(x => x.name && x.key === 'f:' + S.lnFold.toLowerCase());
@@ -9611,10 +9670,7 @@ document.addEventListener('click', async e => {
     const done = new Set((res.data || []).map(r => r.id));
     g.songs.forEach(x => { if (done.has(x.id)) x.learn_for = next || null; });
     if (done.size !== ids.length) { fail({ message: t('nothingChanged') }); return render(); }
-    if (lnRouteKey() === g.key) {                   // showing that folder: follow it to its new name
-      const nr = next ? lnHref({ name: next }) : '#/learning';
-      history.replaceState(null, '', nr); S.route = normRoute(nr);
-    }
+    if (lnOpenSet().has(g.key)) lnShow(next ? 'f:' + next.toLowerCase() : 'o');   // open stays open, under its new name
     return closeLayer(() => { S.lnFold = null; });
   }
   if (d.lnPick) {
@@ -9625,11 +9681,15 @@ document.addEventListener('click', async e => {
       const fresh = songsFor(ev.id).filter(x => !onLearning(x) && !songStats(x.id).n);   // never sung yet
       S.lnPick = { from: ev.id, sel: new Set(fresh.map(x => x.id)), q: '', folder: lnCanon(ev.name || '') };
     }
+    /* a folder that exists is picked in the dropdown; any other name (a service's) starts as a new one */
+    const P = S.lnPick, kn = lnFolders().find(f => f.toLowerCase() === P.folder.toLowerCase());
+    if (P.folder && !kn) { P.fsel = '__new'; P.fnew = P.folder; } else P.fsel = kn || '';
     return render();
   }
   if (el.hasAttribute('data-ln-pick-add') && S.lnPick) {
-    const fEl = document.getElementById('ln-pick-folder');
-    const folder = lnCanon(fEl ? fEl.value : S.lnPick.folder);
+    const picked = document.getElementById('ln-pick-folder') ? lnFolderPicked('ln-pick-folder') : S.lnPick.folder;
+    if (picked == null) return;                    // New folder… still needs its name
+    const folder = lnCanon(picked);
     const ids = [...S.lnPick.sel].filter(id => { const x = songById(id); return x && !x.learning && !onLearning(x); });
     if (!ids.length) return;
     if (!await ensureSession()) return;
@@ -9641,6 +9701,7 @@ document.addEventListener('click', async e => {
     done.forEach(id => { const x = songById(id); if (x) Object.assign(x, row); });
     if (done.length !== ids.length) { el.disabled = false; fail({ message: t('nothingChanged') }); return render(); }
     okToast(t('lnAddedN')(done.length, folder));
+    if (S.route.startsWith('#/learning')) lnShow(folder ? 'f:' + folder.toLowerCase() : 'o');
     return closeLayer(() => { S.lnPick = null; });
   }
   if (d.lnDone) {                                 // learned: off the Learning page, still in the repertoire
@@ -9662,8 +9723,10 @@ document.addEventListener('click', async e => {
     const rep = !!cur && !cur.learning;            // in the repertoire: only its folder and note change here
     const title = rep ? cur.title : v('ln-title');
     if (!title) { const x = document.getElementById('ln-title'); if (x) x.focus(); return; }
+    const picked = lnFolderPicked('ln-for');
+    if (picked == null) return;                    // New folder… still needs its name
     if (!await ensureSession()) return;
-    const folder = lnCanon(v('ln-for'));
+    const folder = lnCanon(picked);
     let row;
     if (rep) row = { learn_for: folder || null, learn_note: v('ln-note') || null };
     else { const pd = v('ln-pv').replace(/\D/g, '');
@@ -9680,6 +9743,7 @@ document.addEventListener('click', async e => {
       if (!wrote(res)) return render();
       Object.assign(cur, row);
     }
+    if (S.route.startsWith('#/learning')) lnShow(folder ? 'f:' + folder.toLowerCase() : 'o');   // its folder opens, so the song is in view
     S.songs.sort((a, b) => a.title.localeCompare(b.title)); S.learnEdit = null; return render();
   }
   if (d.learnMove) {
@@ -9852,7 +9916,14 @@ document.addEventListener('input', e => {
   const P = S.lnPick;
   if (!P || !e.target) return;
   if (e.target.id === 'ln-pick-q') { P.q = e.target.value; lnPickDraw(); }
-  else if (e.target.id === 'ln-pick-folder') P.folder = e.target.value;
+  else if (e.target.id === 'ln-pick-folder-new') P.fnew = e.target.value;
+});
+document.addEventListener('change', e => {
+  const f = e.target;
+  if (!f || !f.matches || !f.matches('select[data-ln-fsel]')) return;
+  const box = document.getElementById(f.id + '-new'), wrap = box && box.closest('.lnfnew');
+  if (wrap) { wrap.hidden = f.value !== '__new'; if (!wrap.hidden) box.focus(); }
+  if (S.lnPick && f.id === 'ln-pick-folder') S.lnPick.fsel = f.value;
 });
 document.addEventListener('change', e => {
   const P = S.lnPick, id = e.target && e.target.dataset ? e.target.dataset.lnPickId : null;
@@ -10084,6 +10155,7 @@ window.addEventListener('hashchange', () => {
   S.error = ''; S.query = ''; S.editPerson = null; S.editSongRow = null; S.editCat = null; S.addOpen = null;
   S.learnEdit = null; S.learnMove = null; S.lnPick = null; S.lnFold = null;
   const kind = navKind(prevFull, S.route);
+  if (kind !== 'pop' && S.route.startsWith('#/learning')) { const k = lnRouteKey(); S.lnOpen = new Set(k ? [k] : []); S.lnJump = k || null; }
   S.ripple = kind !== 'pop';                     // back shows the page as it was left
   const backTo = kind === 'pop' ? navScroll.get(S.route) : undefined;
   const show = () => {
@@ -10100,6 +10172,8 @@ if ('serviceWorker' in navigator) {
 }
 window.addEventListener('online', () => { if (S.toast) { S.toast = ''; render(); } load(true); });
 S.from = shift(6); S.to = today();
+/* a shared folder link opened fresh: that folder open, in view once the songs load */
+if (S.route.startsWith('#/learning')) { const k = lnRouteKey(); S.lnOpen = new Set(k ? [k] : []); S.lnJump = k || null; }
 let wasWide = isWide();
 window.addEventListener('resize', () => { if (isWide() !== wasWide) { wasWide = isWide(); render(); } });
 const { data: { session } } = await sb.auth.getSession();

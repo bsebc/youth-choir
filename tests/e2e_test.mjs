@@ -61,7 +61,7 @@ const UI = {
   kpi: 'a.kpi',                                         // home stat tiles; told apart by href
   card: 'article',                                      // one learning card
   cardTitle: 'article h3',                              // its song title
-  folderHead: 'main section h2',                        // a Learning folder's heading
+  folderHead: 'main section h2 strong',                 // a Learning folder's name, on its open/close button
   pageTitle: 'main h1',                                 // the song title on a lyrics page
   doc: 'main article',                                  // the rendered rules document
   docHead: 'h1,h2,h3,h4', docItem: 'li',                // its headings and list items
@@ -339,6 +339,14 @@ async function director(hash, opts = {}) {
   if (hash) await go(page, hash);
   return page;
 }
+
+/* the song titles on the page, and a Learning folder opened if it is closed */
+const cardTitles = page => page.$$eval(UI.cardTitle, (h, re) => h.map(x => x.innerText.replace(new RegExp(re), '').trim()), UI.pvTag.source);
+async function openFolder(page, key) {
+  const b = page.locator(`[data-ln-ftog="${key}"]`);
+  if (await b.getAttribute('aria-expanded') !== 'true') { await b.click(); await until(async () => await b.getAttribute('aria-expanded') === 'true', 'the folder to open'); }
+}
+const folderHash = g => '#/learning' + '?f=' + (g.name ? encodeURIComponent(g.name) : '~');
 
 /* ---------- the runner ---------- */
 const results = [];
@@ -693,24 +701,31 @@ async function guestChecks() {
     }
   });
 
-  await check('A11', 'learning page: the songs being learned, in the director\'s order', async () => {
+  await check('A11', 'learning page: folders open one at a time and each has its own link; songs in the director\'s order', async () => {
     const page = await open({ hash: '#/learning' });
-    const got = await page.$$eval(UI.cardTitle, (h, re) => h.map(x => x.innerText.replace(new RegExp(re), '').trim()), UI.pvTag.source);
-    eq(got, M.learn.map(s => s.title), 'learning songs in order');
     if (M.learn.length) ok((await text(page)).includes(t('songsCount', M.learn.length)), 'count missing');
-    const noted = M.learn.find(s => s.learn_note);
-    if (noted) ok((await text(page)).includes(noted.learn_note), 'director\'s note missing');
-    if (M.learnGroups.some(g => g.name)) eq(await page.$$eval(UI.folderHead, h => h.map(x => x.innerText.trim())),
-      M.learnGroups.map(g => g.name || t('lnOther')), 'folder headings in order');
-    // the home card opens one folder; its address says which, so it can be shared
-    const g = M.learnGroups.find(x => x.name);
-    if (g) {
-      await go(page, '#/home');
-      await tap(page, `${UI.main} a[href="#/learning?f=${encodeURIComponent(g.name)}"]`);
-      await atHash(page, '#/learning?f=' + encodeURIComponent(g.name));
-      await until(async () => JSON.stringify(await page.$$eval(UI.cardTitle, (h, re) => h.map(x => x.innerText.replace(new RegExp(re), '').trim()), UI.pvTag.source))
-        === JSON.stringify(g.songs.map(x => x.title)), 'only that folder\'s songs');
+    if (!M.learnGroups.some(g => g.name)) { eq(await cardTitles(page), M.learn.map(s => s.title), 'learning songs in order'); return; }
+    eq(await page.$$eval(UI.folderHead, h => h.map(x => x.innerText.trim())), M.learnGroups.map(g => g.name || t('lnOther')), 'folder headings in order');
+    eq((await cardTitles(page)).length, 0, 'folders start closed');
+    for (const g of M.learnGroups) {
+      await tap(page, `[data-ln-ftog="${g.key}"]`);
+      await until(async () => JSON.stringify(await cardTitles(page)) === JSON.stringify(g.songs.map(x => x.title)), `"${g.name}" open, the others closed`);
+      eq(await page.evaluate(() => location.hash), folderHash(g), 'the address names the open folder');
     }
+    const noted = M.learn.find(s => s.learn_note);
+    if (noted) { await openFolder(page, M.learnGroups.find(g => g.songs.includes(noted)).key);
+      ok((await text(page)).includes(noted.learn_note), 'director\'s note missing'); }
+    // a folder's link opened fresh (as when it is shared) lands on that folder, open
+    const g = M.learnGroups.find(x => x.name);
+    const shared = await open({ hash: folderHash(g) });
+    await until(async () => JSON.stringify(await cardTitles(shared)) === JSON.stringify(g.songs.map(x => x.title)), 'the shared folder open on arrival');
+    await tap(shared, `[data-ln-share="${g.key}"]`);
+    await until(async () => (await toastText(shared)).includes(t('copied')), 'word that the folder was copied to share');
+    // the home card opens a folder the same way
+    await go(page, '#/home');
+    await tap(page, `${UI.main} a[href="${folderHash(g)}"]`);
+    await atHash(page, folderHash(g));
+    await until(async () => JSON.stringify(await cardTitles(page)) === JSON.stringify(g.songs.map(x => x.title)), 'only that folder\'s songs');
   });
 
   await check('A12', 'lyrics: a song\'s lyrics display; print view opens; special characters stay text', async () => {
@@ -1287,7 +1302,7 @@ async function directorChecks() {
     const page = await director('#/learning');
     await tap(page, '[data-learn-edit="new"]');
     await page.fill('#ln-title', title);
-    await page.fill('#ln-for', folder.toLowerCase());          // another letter case: still that folder
+    await page.selectOption('#ln-for', folder);
     await page.fill('#ln-note', 'Альты учат второй куплет');
     await tap(page, '[data-learn-save]');
     const s = await until(() => one(`select * from songs where title = ${lit(title)}`), 'the learning song row');
@@ -1295,8 +1310,8 @@ async function directorChecks() {
     M = await loadModel();
     const g = M.learnGroups.find(x => x.name === folder), i = g.songs.findIndex(x => x.id === s.id);
     ok(i >= 0, 'new song not in its folder');
-    const titles = async () => JSON.stringify(await page.$$eval(UI.cardTitle, (h, re) => h.map(x => x.innerText.replace(new RegExp(re), '').trim()), UI.pvTag.source));
-    await until(async () => await titles() === JSON.stringify(M.learn.map(x => x.title)), 'the learning page to list it in order');
+    const titles = async () => JSON.stringify(await cardTitles(page));
+    await until(async () => await titles() === JSON.stringify(g.songs.map(x => x.title)), 'its folder open, listing it in order');
     ok(g.songs.length > 1, 'only one song in the folder');
     const dir = i > 0 ? -1 : 1, j = i + dir;
     await tap(page, `[data-ln-mv="${s.id}:${dir}"]`);
@@ -1310,7 +1325,7 @@ async function directorChecks() {
     await until(async () => await page.locator(`[data-ln-done="${s.id}"]`).count(), 'its Done learning button');
     await go(page, '#/sheets');
     ok(await page.locator(`[data-srow="${s.id}"]`).count(), 'moved song not in Choir music');
-    await go(page, '#/learning');
+    await go(page, '#/learning?f=' + encodeURIComponent(folder));
     await tap(page, `[data-ln-done="${s.id}"]`);
     await until(async () => (await one(`select learn_listed from songs where id = ${lit(s.id)}`)).learn_listed === false, 'marked learned');
     await until(async () => !(await page.locator(`[data-ln-done="${s.id}"]`).count()), 'it to leave the page');
@@ -1318,6 +1333,7 @@ async function directorChecks() {
     // moving without keeping takes it off the page, as before
     const other = M.learn.find(x => x.learning && x.id !== s.id);
     if (other) {
+      await openFolder(page, M.learnGroups.find(x => x.songs.some(y => y.id === other.id)).key);
       await tap(page, `[data-learn-move="${other.id}"]:not([data-confirm])`);
       await page.locator('#ln-keep').uncheck();
       await tap(page, `[data-learn-move="${other.id}"][data-confirm]`);
@@ -1332,13 +1348,12 @@ async function directorChecks() {
     const heads = () => page.$$eval(UI.folderHead, h => h.map(x => x.innerText.trim()));
     const titles = () => page.$$eval(UI.cardTitle, (h, re) => h.map(x => x.innerText.replace(new RegExp(re), '').trim()), UI.pvTag.source);
     eq(await heads(), M.learnGroups.map(g => g.name || t('lnOther')), 'folder headings');
-    if (M.learnGroups.length > 1) {
-      const g1 = M.learnGroups[1];
-      await tap(page, `[data-ln-folder="${g1.key}"]`);
-      await until(async () => JSON.stringify(await titles()) === JSON.stringify(g1.songs.map(x => x.title)), 'only that folder\'s songs');
-      await tap(page, '[data-ln-folder=""]');
-      await until(async () => (await titles()).length === M.learn.length, 'every folder again');
-    }
+    const g0 = M.learnGroups[0];
+    await tap(page, `[data-ln-ftog="${g0.key}"]`);
+    await until(async () => JSON.stringify(await titles()) === JSON.stringify(g0.songs.map(x => x.title)), 'the folder open');
+    await tap(page, `[data-ln-ftog="${g0.key}"]`);
+    await until(async () => (await titles()).length === 0, 'the folder closed again');
+    eq(await page.evaluate(() => location.hash), '#/learning', 'the address after closing it');
     // two repertoire songs, picked by searching, into a new folder
     const [A, B] = M.live.filter(x => !x.learn_listed).slice(0, 2), F1 = 'На Рождество Э2Э', F2 = 'Рождество Э2Э';
     await tap(page, '[data-ln-pick="rep"]');
@@ -1348,7 +1363,8 @@ async function directorChecks() {
       await page.locator(`[data-ln-pick-id="${x.id}"]`).check();
     }
     ok((await page.locator('[data-ln-pick-add]').innerText()).includes(t('lnAddN', 2)), 'the button does not count two songs');
-    await page.fill('#ln-pick-folder', F1);
+    await page.selectOption('#ln-pick-folder', '__new');
+    await page.fill('#ln-pick-folder-new', F1);
     await tap(page, '[data-ln-pick-add]');
     const rows = () => sql(`select id, learning, learn_listed, learn_for from songs where id in (${lit(A.id)}, ${lit(B.id)}) order by id`);
     await until(async () => (await rows()).every(r => r.learn_listed === true && r.learning === false && r.learn_for === F1), 'both songs on Learning, in the new folder');
@@ -1373,6 +1389,7 @@ async function directorChecks() {
     await tap(page, '[data-ln-fremove]');
     await until(async () => (await rows()).every(r => r.learn_for === null && r.learn_listed === true), 'the folder removed, its songs kept');
     await until(async () => (await heads()).includes(t('lnOther')), 'an Other songs section');
+    eq(await page.evaluate(() => location.hash), '#/learning?f=~', 'Other songs open, and in the address');
     await go(page, '#/sheets');
     ok(await page.locator(`[data-srow="${A.id}"]`).count(), 'a song on Learning left Choir music');
   });
@@ -1391,7 +1408,8 @@ async function directorChecks() {
     if (!fresh.length) await page.locator(`[data-ln-pick-id="${pick[0]}"]`).check();
     const folder = (M.learnGroups.find(g => g.name) || {}).name;
     ok(folder, 'no folder to join');
-    await page.fill('#ln-pick-folder', folder.toUpperCase());           // the existing folder, typed in capitals
+    await page.selectOption('#ln-pick-folder', '__new');
+    await page.fill('#ln-pick-folder-new', folder.toUpperCase());       // an existing folder's name, typed in capitals
     await tap(page, '[data-ln-pick-add]');
     await until(async () => (await sql(`select learn_listed, learn_for from songs where id in (${pick.map(lit).join(',')})`)).every(r => r.learn_listed === true && r.learn_for === folder), 'the songs on Learning, in that folder');
     await go(page, '#/learning');
