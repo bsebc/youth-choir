@@ -80,6 +80,31 @@ const UI = {
 };
 
 /* ---------- the app's own strings, read from index.html ---------- */
+/* The i18n table plus any later Object.assign(STR.en|ru, {…}) additions to it,
+   run together so a string added or corrected after the table counts too. */
+function loadStrings(file) {
+  const src = fs.readFileSync(file, 'utf8');
+  const a = src.search(/const\s+STR\s*=\s*\{/);
+  if (a < 0) return null;
+  const close = from => {                 // index just past the brace that closes the one at `from`
+    let depth = 0, q = null;
+    for (let i = from; i < src.length; i++) {
+      const c = src[i];
+      if (q) { if (c === '\\') { i++; continue; } if (c === q) q = null; continue; }
+      if (c === "'" || c === '"' || c === '`') { q = c; continue; }
+      if (c === '{') depth++;
+      else if (c === '}' && --depth === 0) return i + 1;
+    }
+    return -1;
+  };
+  let end = close(src.indexOf('{', a));
+  const re = /Object\.assign\(STR\.(en|ru),\s*\{/g;
+  re.lastIndex = end;
+  for (let m; (m = re.exec(src)) && m.index - end < 4000; ) { end = close(m.index + m[0].length - 1) + 2; re.lastIndex = end; }
+  // plural helpers the table's functions call, defined elsewhere in the app
+  const helpers = (src.match(/^function ruN\(.*$/m) || [''])[0];
+  try { return vm.runInNewContext(helpers + '\n' + src.slice(a, end) + '\n;STR'); } catch (e) { return null; }
+}
 function loadConst(file, names) {           // an object literal from the app's source, e.g. its i18n table
   const src = fs.readFileSync(file, 'utf8');
   const m = new RegExp('const\\s+(' + names + ')\\s*=\\s*\\{').exec(src);
@@ -95,7 +120,7 @@ function loadConst(file, names) {           // an object literal from the app's 
   }
   return vm.runInNewContext('(' + src.slice(start, i + 1) + ')');
 }
-const STR = loadConst(path.join(SITE, 'index.html'), 'STR|T');
+const STR = loadStrings(path.join(SITE, 'index.html')) || loadConst(path.join(SITE, 'index.html'), 'STR|T');
 if (!STR) throw new Error('i18n table (const STR = {…}) not found in ' + path.join(SITE, 'index.html'));
 const tr = (lang, key, ...a) => { const v = STR[lang][key]; if (v === undefined) throw new Error('no string ' + key); return typeof v === 'function' ? v(...a) : v; };
 const t = (key, ...a) => tr('en', key, ...a);

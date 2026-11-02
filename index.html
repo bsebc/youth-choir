@@ -3159,7 +3159,7 @@ if(!window.CSSLayerBlockRule){var l=document.getElementById('legacy-css');l.text
     --chrome:#17203a; --chrome-rgb:23,32,58; --chrome-line:#2c3757;
     --red:#b8392a; --red-wash:#fbecea; --red-line:#efcdc7; --green:#1a7a43; --green-text:#17643a; --green-wash:#eaf5ee; --green-line:#bfdcc9;
     --violet:#7d620a; --violet-wash:#fbf3da; --teal:#2f6e40; --teal-tint:#edf5ef; --rose:#24346c; --rose-wash:#f1f3f9; --amber:#5a6480; --amber-wash:#eef0f4;
-    --tool3-ic:#7d620a;
+    --tool2-ic:#2f6e40; --tool3-ic:#7d620a;
     --onnavy-btn-bg:#d9b44a; --onnavy-btn-ink:#17203a;
     --order-aurora:none; --order-bg:#1c2748; --order-line:transparent; --op-bg:#24346c;
     --admin-bg:#fff; --admin-line:#e4e2db; --admin-ic:#e9ecf5;
@@ -3179,7 +3179,7 @@ if(!window.CSSLayerBlockRule){var l=document.getElementById('legacy-css');l.text
     --card-line:#242c43; --rule:#222a40; --grid-line:#242c43; --line-strong:#2c3550; --line-strong-2:#3a4563;
     --blue:#3b4d94; --blue-text:#a9b9f4; --blue-hover:#4659a6; --blue-hi:#5466b3; --blue-rgb:169,185,244;
     --blue-wash:#18203a; --blue-tint:#1e2848; --blue-line:#34406a;
-    --tool1-bg:#1e2848; --tool1-ic:#a9b9f4; --tool3-ic:#e3c35c;
+    --tool1-bg:#1e2848; --tool1-ic:#a9b9f4; --tool2-ic:#7dd3a3; --tool3-ic:#e3c35c;
     --gold:#d9b44a; --gold-hover:#e2bf57; --gold-text:#e3c35c; --on-gold:#17203a;
     --gold-soft:#7a6427; --gold-soft-2:#4a3e1c; --gold-bright:#4e401a; --gold-wash:#2b2614; --gold-paper:#241f12; --mid:#e9b35a;
     --chrome:#0a0e1a; --chrome-rgb:10,14,26; --chrome-hi:#141a2a; --navy-deep:#141a2a; --chrome-line:#1c2338; --chrome-line-2:#2c3550;
@@ -3206,7 +3206,7 @@ if(!window.CSSLayerBlockRule){var l=document.getElementById('legacy-css');l.text
     --card-line:#242c43; --rule:#222a40; --grid-line:#242c43; --line-strong:#2c3550; --line-strong-2:#3a4563;
     --blue:#3b4d94; --blue-text:#a9b9f4; --blue-hover:#4659a6; --blue-hi:#5466b3; --blue-rgb:169,185,244;
     --blue-wash:#18203a; --blue-tint:#1e2848; --blue-line:#34406a;
-    --tool1-bg:#1e2848; --tool1-ic:#a9b9f4; --tool3-ic:#e3c35c;
+    --tool1-bg:#1e2848; --tool1-ic:#a9b9f4; --tool2-ic:#7dd3a3; --tool3-ic:#e3c35c;
     --gold:#d9b44a; --gold-hover:#e2bf57; --gold-text:#e3c35c; --on-gold:#17203a;
     --gold-soft:#7a6427; --gold-soft-2:#4a3e1c; --gold-bright:#4e401a; --gold-wash:#2b2614; --gold-paper:#241f12; --mid:#e9b35a;
     --chrome:#0a0e1a; --chrome-rgb:10,14,26; --chrome-hi:#141a2a; --navy-deep:#141a2a; --chrome-line:#1c2338; --chrome-line-2:#2c3550;
@@ -3381,8 +3381,8 @@ if(!window.CSSLayerBlockRule){var l=document.getElementById('legacy-css');l.text
     .qwrap .field,.searchrow .field{min-height:44px}
     [data-cat-filter],[data-song-sort-pick],[data-list-sort]{min-height:44px}
   }
-  [data-lbpreset],.lbshotbtn,.lball,.step.fold,button.back,button.fold,a.ft,.subtabs a{position:relative}
-  [data-lbpreset]::before,.lbshotbtn::before,.lball::before,.step.fold::before,button.back::before,button.fold::before,a.ft::before,.subtabs a::before{
+  [data-lbpreset],.lbshotbtn,.lball,.step.fold,button.back,button.fold,a.ft,.subtabs a,.lnq{position:relative}
+  [data-lbpreset]::before,.lbshotbtn::before,.lball::before,.step.fold::before,button.back::before,button.fold::before,a.ft::before,.subtabs a::before,.lnq::before{
     content:"";position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
   @media (max-width:699px){ select[data-credit]{font-size:16px;min-height:44px} }
 </style>
@@ -3660,6 +3660,7 @@ const STR = {
 };
 /* Strings added in 6.0, kept side by side so the two languages stay in step. */
 Object.assign(STR.en, {
+  searchPvS:'Title or №',
   menuL:'Menu', closeL:'Close', tabsL:'Sections', clearL:'Clear search', emptySeat:'Empty seat',
   dkAtt:'Attendance',
   saving:'Saving…', tryAgain:'Try again', uNone:'Nothing recorded yet.', uLoading:'Loading…',
@@ -3671,7 +3672,11 @@ Object.assign(STR.en, {
   gridLatest:(n, all) => 'Showing the latest ' + n + ' of ' + all + ' dates', gridShowAll:'Show all',
   uPerMonth:'by month'
 });
+// ruN() is the app's Russian plural helper (one / few / many), defined further down
 Object.assign(STR.ru, {
+  searchPvS:'Название или №',
+  unsavedN: n => n + ' ' + ruN(n, 'несохранённое изменение', 'несохранённых изменения', 'несохранённых изменений'),
+  songsN: n => n + ' ' + ruN(n, 'песня', 'песни', 'песен'),
   menuL:'Меню', closeL:'Закрыть', tabsL:'Разделы', clearL:'Очистить поиск', emptySeat:'Свободное место',
   dkAtt:'Посещения',
   saving:'Сохраняем…', tryAgain:'Повторить', uNone:'Пока нет данных.', uLoading:'Загрузка…',
@@ -3865,7 +3870,10 @@ const catSelect = () => S.categories.length ? `<select class="field" style="widt
   <option value="all">${esc(t('allCats'))}</option>${
   S.categories.map(c => `<option value="${c.id}"${S.catFilter===c.id?' selected':''}>${esc(c.name)}</option>`).join('')}</select>` : '';
 const catBar = () => S.categories.length ? `<div class="ctlbar" style="flex-direction:row">${catSelect()}</div>` : '';
-const qField = (ph) => `<span class="qwrap"><input class="field" id="q" enterkeyhint="search" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="${esc(t(ph || 'search'))}" value="${esc(S.query)}">${
+/* On a phone the long hint would be cut off beside the category picker: show
+   the short one there, and keep the full wording as the field's spoken name. */
+const qHint = ph => (ph === 'searchPv' && matchMedia('(max-width:699px)').matches) ? t('searchPvS') : t(ph || 'search');
+const qField = (ph) => `<span class="qwrap"><input class="field" id="q" enterkeyhint="search" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="${esc(qHint(ph))}" aria-label="${esc(t(ph || 'search'))}" value="${esc(S.query)}">${
   S.query ? `<button class="qx" data-clear-q aria-label="${esc(t('clearL'))}">×</button>` : ''}</span>`;
 /* Russian titles and names can be typed in English letters: both sides are spelled
    out in Latin and loosened (y/j/i, kh/h, sch/sh, doubled letters…) before comparing. */
@@ -7480,7 +7488,7 @@ function sheetsPage(kind){
          The full song list has no order to speak of and stays unnumbered. */
       const left = (ordEv ? `<span class="ord">${String(i + 1).padStart(2, '0')}${songDeco(s)}</span>` : `<span class="ftile">${kind === 'piano' ? AIC.piano : AIC.sheets}${songDeco(s)}</span>`) + `<div class="stxt" style="flex:1;min-width:0">
           <div class="stitle" style="font-size:var(--fs-16);line-height:1.2">${esc(s.title)}${pvTag(s)}</div>
-          <div class="smeta">${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}${catName(s.category_id) ? `<div class="scat">${esc(catName(s.category_id))}</div>` : ''}${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}${locked ? `<div class="sub" style="font-style:normal;color:var(--gold)">${esc(t('adminOnly'))}</div>` : ''}</div>
+          <div class="smeta">${s.subtitle ? `<div class="sub">${esc(s.subtitle)}</div>` : ''}${catName(s.category_id) ? `<div class="scat">${esc(catName(s.category_id))}</div>` : ''}${path ? '' : `<div class="sub" style="font-style:normal;color:var(--faint)">${esc(t('noPdf'))}</div>`}${locked ? `<div class="sub" style="font-style:normal;color:var(--gold-text)">${esc(t('adminOnly'))}</div>` : ''}</div>
         </div>`;
       if (busy) return `<div class="sec songc${songTheme(s)}${S.hiSong === s.id ? ' hi' : ''}${S.actOpen === s.id ? ' open' : ''}" data-srow="${s.id}"><div class="li">${left}<div style="color:var(--blue-text);font-weight:600;font-size:var(--fs-14)">${esc(t('uploading'))}</div></div></div>`;
       /* Files are served through short-lived signed URLs, so an admin-only PDF
