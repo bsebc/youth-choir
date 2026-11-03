@@ -1630,13 +1630,7 @@
   .lnt.danger,.lnt.danger svg{color:var(--red)}
   .lnempty{padding:48px 20px;border:1px dashed var(--line-strong-2);border-radius:18px;text-align:center;font-size:14px;color:var(--muted)}
   /* 5.51 folders: a section per folder, a switcher to show one, the add-from-repertoire list */
-  /* folder colours: the app's navy, green, gold and teal, and a soft plum */
-  :root{--ln-plum:#7b3f8f;--ln-plum-w:#f6eef8}
-  :root[data-theme="dark"]{--ln-plum:#d8a8ea;--ln-plum-w:#2a1d31}
-  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){--ln-plum:#d8a8ea;--ln-plum-w:#2a1d31} }
-  .lnc0{--fc:var(--tool1-ic);--fw:var(--tool1-bg)} .lnc1{--fc:var(--tool2-ic);--fw:var(--tool2-bg)}
-  .lnc2{--fc:var(--tool3-ic);--fw:var(--tool3-bg)} .lnc3{--fc:var(--tool4-ic);--fw:var(--tool4-bg)}
-  .lnc4{--fc:var(--ln-plum);--fw:var(--ln-plum-w)} .lnc-n{--fc:var(--muted);--fw:var(--surface-2)}
+  .lnc{--fc:var(--tool3-ic);--fw:var(--tool3-bg)} .lnc-n{--fc:var(--muted);--fw:var(--surface-2)}
   /* the Learning page: one card per folder; open, its songs are numbered rows inside it */
   .lnfolds{display:flex;flex-direction:column;gap:12px}
   .lnfold{background:var(--card);border:1px solid var(--card-line);border-radius:20px;box-shadow:var(--shadow-card);overflow:hidden;transition:box-shadow .25s ease,border-color .25s ease}
@@ -1649,15 +1643,19 @@
   .lnfold .lnfic{transition:background .25s ease,color .25s ease}
   .lnfold.open .lnfic{background:var(--fc);color:var(--card)}
   .lnfbody{border-top:1px solid var(--rule);background:var(--card);padding:0 20px 6px}
-  .lnfacts{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;padding:14px 0 2px}
-  .lnfacts .mini{display:inline-flex;align-items:center;gap:6px}
-  .lnfacts .mini svg{width:15px;height:15px;flex:none}
+  .lnfx{display:flex;align-items:center;gap:6px;flex:none;padding:0 8px 0 2px;animation:mfade .2s ease both}
+  .lnfx button{display:grid;place-items:center;width:34px;height:34px;padding:0;border:0;border-radius:10px;background:var(--surface-2);color:var(--muted);cursor:pointer;transition:background .15s ease,color .15s ease}
+  .lnfx button svg{width:15px;height:15px}
+  @media (hover:hover){ .lnfx button:hover{background:var(--fw);color:var(--fc)} }
+  .lnfold .lnftog strong{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .lnfbody{padding-top:2px}
   .lnfbody .lngrid{gap:0}
   .lnfbody .lncard{background:none;border:0;border-radius:0;box-shadow:none;padding:18px 0}
   .lnfbody .lncard + .lncard{border-top:1px solid var(--rule)}
   .lnno{display:grid;place-items:center;flex:none;min-width:30px;height:26px;margin-top:-1px;padding:0 6px;border-radius:9px;background:var(--fw);color:var(--fc);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
   @media (prefers-reduced-motion:reduce){ .lnftog > svg:last-child{transition:none} }
-  @media (max-width:699px){ .lnfbody{padding:0 14px 4px} .lnfbody .lncard{padding:16px 0} }
+  @media (max-width:699px){ .lnfbody{padding:0 14px 4px} .lnfbody .lncard{padding:16px 0}
+    .lnfold.open .lnftog .lndt{display:none} .lnfold .lnftog{gap:12px;padding-right:10px} }
   .lnfnew[hidden]{display:none}
   .lnkeep{display:flex;align-items:flex-start;gap:10px;margin:16px 0 0;font-size:14px;line-height:1.4;color:var(--ink);cursor:pointer}
   .lnkeep input,.lnprow input{width:20px;height:20px;margin:0;flex:none;accent-color:var(--blue)}
@@ -4646,13 +4644,8 @@ function lnFolderPicked(id){
 }
 /* the one open folder, if exactly one is, for a new song to land in */
 const lnSelName = () => { const open = learnGroups(learnReal()).filter(g => g.name && lnOpenSet().has(g.key)); return open.length === 1 ? open[0].name : ''; };
-/* Each folder keeps a colour of its own, picked from its name, so moving or renaming
-   another folder never changes it. Songs without a folder stay neutral. */
-function lnTone(g){
-  if (!g.name) return 'lnc-n';
-  let h = 0; for (const ch of g.name.toLowerCase()) h = (h * 31 + ch.codePointAt(0)) >>> 0;
-  return 'lnc' + (h % 5);
-}
+/* Folders wear the app's Learning gold; songs without a folder stay neutral. */
+const lnTone = g => g.name ? 'lnc' : 'lnc-n';
 /* A folder at a glance, the same on the home tile and on the Learning page: its name,
    its songs, and, when a service already sings one of them, a calendar badge with the
    date and a countdown. */
@@ -8095,9 +8088,10 @@ function learningPage(){
   const folder = (g, i) => {
     const open = lnOpenSet().has(g.key), live = !g.songs.some(x => x._demo);
     return `<section class="lnfold ${lnTone(g)}${open ? ' open' : ''}" data-k="${esc(g.key)}">
-      <div class="lnfh"><h2 class="lnfhd"><button class="lnfr lnftog" data-ln-ftog="${esc(g.key)}" aria-expanded="${open}"${open ? ` aria-controls="lnfb-${i}"` : ''}>${lnFolderInner(g, filed, open)}</button></h2></div>
-      ${open ? `<div class="lnfbody" id="lnfb-${i}">${live ? `<div class="lnfacts"><button class="mini shr" data-ln-share="${esc(g.key)}">${SHARESVG}${esc(t('shareBtn'))}</button>${S.session && g.name
-          ? `<button class="mini" data-ln-fedit="${esc(g.name)}">${PENSVG}<span>${esc(t('lnFEdit'))}</span></button>` : ''}</div>` : ''}
+      <div class="lnfh"><h2 class="lnfhd"><button class="lnfr lnftog" data-ln-ftog="${esc(g.key)}" aria-expanded="${open}"${open ? ` aria-controls="lnfb-${i}"` : ''}>${lnFolderInner(g, filed, open)}</button></h2>${open && live
+        ? `<span class="lnfx"><button data-ln-share="${esc(g.key)}" aria-label="${esc(t('shareBtn'))}" title="${esc(t('shareBtn'))}">${SHARESVG}</button>${S.session && g.name
+          ? `<button data-ln-fedit="${esc(g.name)}" aria-label="${esc(t('lnFEdit'))}" title="${esc(t('lnFEdit'))}">${PENSVG}</button>` : ''}</span>` : ''}</div>
+      ${open ? `<div class="lnfbody" id="lnfb-${i}">
         <div class="lngrid">${g.songs.map((x, j) => card(x, j, g.songs.length, true)).join('')}</div></div>` : ''}
     </section>`;
   };
@@ -8124,6 +8118,7 @@ function lnClose(k, then){
   sec.classList.remove('open');
   const tog = sec.querySelector('[data-ln-ftog]'); if (tog) tog.setAttribute('aria-expanded', 'false');
   const ic = sec.querySelector('.lnfic'); if (ic && ic.querySelector('.lnfi')) ic.innerHTML = FOLDERSVG;
+  const fx = sec.querySelector('.lnfx'); if (fx) fx.remove();
   const h = Math.max(0, Math.min(body.offsetHeight, innerHeight - body.getBoundingClientRect().top));
   if (calm() || !h || !body.animate) return done();
   body.style.height = h + 'px'; body.style.overflow = 'hidden';
