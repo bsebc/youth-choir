@@ -346,7 +346,10 @@ async function openFolder(page, key) {
   const b = page.locator(`[data-ln-ftog="${key}"]`);
   if (await b.getAttribute('aria-expanded') !== 'true') { await b.click(); await until(async () => await b.getAttribute('aria-expanded') === 'true', 'the folder to open'); }
 }
-const folderHash = g => '#/learning' + '?f=' + (g.name ? encodeURIComponent(g.name) : '~');
+// 5.55: a folder's short link, #/f/<code> (FNV-1a of its name in lower case, base 36)
+const lnCodeOf = name => { let h = 0x811c9dc5; for (const ch of name.replace(/\s+/g, ' ').trim().toLowerCase()) { h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return (h % 2176782336).toString(36); };
+const folderHash = g => '#/f/' + (g.name ? lnCodeOf(g.name) : '~');
+const oldFolderHash = g => '#/learning?f=' + (g.name ? encodeURIComponent(g.name) : '~');
 
 /* ---------- the runner ---------- */
 const results = [];
@@ -409,7 +412,7 @@ async function guestChecks() {
       ok(card, `next service card (${svc.date} ${svc.kind}) with ${songs.length} song links not found`);
       inOrder(card, [svc.name || t(svc.kind), fmtLong(svc.date), ...songs.map(s => s.title)], 'next service card');
     } else ok((await text(page)).includes(t('noOrderYet')), 'no service: "' + t('noOrderYet') + '" expected');
-    const lnLinks = await page.$$eval(UI.main + ' a[href^="#/learning"]', as => as.map(a => a.innerText));
+    const lnLinks = await page.$$eval(UI.main + ' a[href^="#/learning"], ' + UI.main + ' a[href^="#/f/"]', as => as.map(a => a.innerText));
     if (M.learn.length) {                       // the Learning card: a row per folder, in the page's order
       const named = M.learnGroups.some(g => g.name);
       inOrder(lnLinks.join('\n'), M.learnGroups.slice(0, 5).map(g => g.name || t(named ? 'lnOther' : 'lnAllSongs')), 'Learning card folders');
@@ -719,6 +722,10 @@ async function guestChecks() {
     const g = M.learnGroups.find(x => x.name);
     const shared = await open({ hash: folderHash(g) });
     await until(async () => JSON.stringify(await cardTitles(shared)) === JSON.stringify(g.songs.map(x => x.title)), 'the shared folder open on arrival');
+    ok(folderHash(g).length <= 11, 'the short link is not short: ' + folderHash(g));
+    // a link shared before 5.55, with the folder's name in it, still opens the folder
+    const old = await open({ hash: oldFolderHash(g) });
+    await until(async () => JSON.stringify(await cardTitles(old)) === JSON.stringify(g.songs.map(x => x.title)), 'an old folder link open on arrival');
     await tap(shared, `[data-ln-share="${g.key}"]`);
     await until(async () => (await toastText(shared)).includes(t('copied')), 'word that the folder was copied to share');
     // the home card opens a folder the same way
@@ -1402,7 +1409,7 @@ async function directorChecks() {
     await until(async () => (await rows()).every(r => r.learn_for === null && r.learn_listed === true), 'the folder removed, its songs kept');
     if (dated) await until(async () => await due(F2.toLowerCase()) === null, 'the date removed with the folder');
     await until(async () => (await heads()).includes(t('lnOther')), 'an Other songs section');
-    eq(await page.evaluate(() => location.hash), '#/learning?f=~', 'Other songs open, and in the address');
+    eq(await page.evaluate(() => location.hash), '#/f/~', 'Other songs open, and in the address');
     await go(page, '#/sheets');
     ok(await page.locator(`[data-srow="${A.id}"]`).count(), 'a song on Learning left Choir music');
   });

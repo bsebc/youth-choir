@@ -3783,7 +3783,10 @@ const evLabel = e => e.kind === 'other' ? e.label : KIND_LABEL[S.lang][e.kind];
 
 function normRouteBoot(h){
   const m = (h || '').match(/^#\/o\/([^/?&]+)$/);
-  return m ? '#/sheets/order-' + m[1] : (h || '#/home');
+  if (m) return '#/sheets/order-' + m[1];
+  const f = (h || '').match(/^#\/f\/([0-9a-z~]+)$/);      // a Learning folder's short link (5.55)
+  if (f) return f[1] === '~' ? '#/learning?f=~' : '#/learning?c=' + f[1];
+  return h || '#/home';
 }
 /* storage can be blocked (private modes, strict settings): read it defensively */
 const lsGet = k => { try { return localStorage.getItem(k); } catch (_) { return null; } };
@@ -3893,13 +3896,14 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.54.1';
+const VERSION = '5.55.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Learning: shorter folder links for sharing in a chat; links shared before still work',
     'Learning: the director sets each folder’s date in Edit folder, and the folder counts down to it. A folder made from a service’s songs starts with that service’s date',
     'Learning: no two folders share a colour',
     'Home: the Learning tile has a header like the Leaderboard’s, in its own colours, with All folders at the top',
@@ -3979,6 +3983,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    '«Разучиваем»: короткие ссылки на папки для чата; старые ссылки тоже работают',
     '«Разучиваем»: регент задаёт дату папки в «Изменить папку», и на папке идёт обратный отсчёт. Папка из песен служения сразу получает дату этого служения',
     '«Разучиваем»: у всех папок разные цвета',
     'Главная: у плитки «Разучиваем» заголовок как у «Лидеров», в своих цветах, и кнопка «Все папки» вверху',
@@ -4234,6 +4239,8 @@ async function load(silent){
   prefetchSheets();
   trackRoute();
   lnPrune();
+  if (S.lnCodeWait) { S.lnCodeWait = false;
+    if (S.route.startsWith('#/learning')) { const k = lnRouteKey(); if (k) { S.lnOpen = new Set([k]); S.lnJump = k; render(); } } }
 }
 
 /* Lookups by id, built at most once per render (and again whenever the data
@@ -4623,7 +4630,10 @@ function findEvent(token){
    real route on the way in, so routing and every page stay untouched. */
 function normRoute(h){
   const m = (h || '').match(/^#\/o\/([^/?&]+)$/);
-  return m ? '#/sheets/order-' + m[1] : (h || '#/home');
+  if (m) return '#/sheets/order-' + m[1];
+  const f = (h || '').match(/^#\/f\/([0-9a-z~]+)$/);      // a Learning folder's short link (5.55)
+  if (f) return f[1] === '~' ? '#/learning?f=~' : '#/learning?c=' + f[1];
+  return h || '#/home';
 }
 /* The order the public sees: today's service while it is today (on a day with both,
    the morning order until noon, then the evening one), otherwise the next planned
@@ -4678,14 +4688,26 @@ function lnCanon(v, keep){
 }
 /* The folder the Learning page shows is part of its address, #/learning?f=<folder>
    (~ for Other songs), so the home tile and a shared link can open one folder. */
+/* A folder's short link, #/f/<code>: six letters and digits made from its name, so the
+   link is short in a chat. Links shared before 5.55 (#/learning?f=<name>) still work. */
+function lnCode(name){
+  let h = 0x811c9dc5;
+  for (const ch of lnKey(name)) { h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; }
+  return (h % 2176782336).toString(36);
+}
 function lnRouteKey(){
-  const f = new URLSearchParams((S.route || '').split('?')[1] || '').get('f');
+  const P = new URLSearchParams((S.route || '').split('?')[1] || ''), c = P.get('c'), f = P.get('f');
+  if (c) {                                         // needs the folders, so it waits for the data
+    if (!S.loaded) { S.lnCodeWait = true; return ''; }
+    const g = learnGroups(learnReal()).find(x => x.name && lnCode(x.name) === c);
+    return g ? g.key : '';
+  }
   if (f == null) return '';
   if (f === '~') return 'o';
   const n = f.replace(/\s+/g, ' ').trim().toLowerCase();
   return n ? 'f:' + n : '';
 }
-const lnHref = g => '#/learning' + (g ? '?f=' + (g.name ? encodeURIComponent(g.name) : '~') : '');
+const lnHref = g => g ? '#/f/' + (g.name ? lnCode(g.name) : '~') : '#/learning';
 /* Folders on the Learning page open and close like folders, one at a time, and the
    address names the open one (#/learning?f=<folder>), so every folder has a link of
    its own: opening one from the home tile or from a shared link lands on it, open. */
@@ -4694,7 +4716,7 @@ const lnOpenSet = () => S.lnOpen || (S.lnOpen = new Set());
 function lnShow(key){
   S.lnOpen = new Set(key ? [key] : []);
   const g = key && learnGroups(learnReal()).find(x => x.key === key), h = g ? lnHref(g) : '#/learning';
-  if ((S.route || '').startsWith('#/learning') && S.route !== h) { try { history.replaceState(history.state, '', h); } catch (_) {} S.route = normRoute(h); }
+  if ((S.route || '').startsWith('#/learning') && S.route !== normRoute(h)) { try { history.replaceState(history.state, '', h); } catch (_) {} S.route = normRoute(h); }
 }
 /* what a folder dropdown says: a folder, '' for none, or the typed name of a new one;
    null when New folder… is picked with no name (the box is focused for one) */
