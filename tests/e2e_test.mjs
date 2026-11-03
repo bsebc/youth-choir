@@ -1380,14 +1380,27 @@ async function directorChecks() {
       await until(async () => JSON.stringify(await heads()) === JSON.stringify(moved), 'the folder one place up');
       await until(async () => { M = await loadModel(); return JSON.stringify(M.learnGroups.map(g => g.name || t('lnOther'))) === JSON.stringify(moved); }, 'the folder order to be saved');
     }
-    // rename it, then remove it: its songs stay, under Other songs
+    // 5.54: the director gives it a date; the folder counts down to it
+    const dated = (await one(`select to_regclass('public.learn_folders') is not null as ok`)).ok;
+    const due = async k => ((await sql(`select due::text from learn_folders where key = ${lit(k)}`))[0] || {}).due || null;
+    if (dated) {
+      await tap(page, `[data-ln-fedit="${F1}"]`);
+      await page.fill('#ln-fdate', '2026-12-24');
+      await tap(page, '[data-ln-fsave]');
+      await until(async () => await due(F1.toLowerCase()) === '2026-12-24', 'the folder date saved');
+      const days = Math.round((Date.parse('2026-12-24T12:00:00Z') - Date.parse(TODAY + 'T12:00:00Z')) / 86400000);
+      await until(async () => (await page.locator(`[data-ln-ftog="f:${F1.toLowerCase()}"]`).innerText()).includes(t('lnInDays', days)), 'the countdown on the folder');
+    }
+    // rename it (the date goes along), then remove it: its songs stay, under Other songs
     await tap(page, `[data-ln-fedit="${F1}"]`);
     await page.fill('#ln-fname', F2);
     await tap(page, '[data-ln-fsave]');
     await until(async () => (await rows()).every(r => r.learn_for === F2), 'the folder renamed');
+    if (dated) await until(async () => await due(F2.toLowerCase()) === '2026-12-24' && await due(F1.toLowerCase()) === null, 'the date moved to the new name');
     await tap(page, `[data-ln-fedit="${F2}"]`);
     await tap(page, '[data-ln-fremove]');
     await until(async () => (await rows()).every(r => r.learn_for === null && r.learn_listed === true), 'the folder removed, its songs kept');
+    if (dated) await until(async () => await due(F2.toLowerCase()) === null, 'the date removed with the folder');
     await until(async () => (await heads()).includes(t('lnOther')), 'an Other songs section');
     eq(await page.evaluate(() => location.hash), '#/learning?f=~', 'Other songs open, and in the address');
     await go(page, '#/sheets');
@@ -1415,6 +1428,9 @@ async function directorChecks() {
     await go(page, '#/learning');
     const g = (await loadModel()).learnGroups.find(x => x.name === folder);
     ok(pick.every(id => g.songs.some(x => x.id === id)), 'the songs are not in the folder');
+    // 5.54: a folder without a date takes the coming service's
+    if ((await one(`select to_regclass('public.learn_folders') is not null as ok`)).ok)
+      await until(async () => ((await sql(`select due::text from learn_folders where key = ${lit(folder.replace(/\s+/g, ' ').trim().toLowerCase())}`))[0] || {}).due === ev.date, 'the folder dated with the service');
   });
 
   await check('D15', 'usage page loads for the director only', async () => {

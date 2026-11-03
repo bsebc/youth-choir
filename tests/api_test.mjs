@@ -45,12 +45,23 @@ const ids = await one(`select
   (select name from storage.objects where bucket_id = 'sheets' and name not like 'locked/%' limit 1) as open,
   (select name from storage.objects where bucket_id = 'photos' limit 1) as photo,
   exists (select 1 from information_schema.columns where table_name = 'events' and column_name = 'demo') as senior,
-  exists (select 1 from information_schema.columns where table_name = 'songs' and column_name = 'learn_listed') as listed`);
+  exists (select 1 from information_schema.columns where table_name = 'songs' and column_name = 'learn_listed') as listed,
+  to_regclass('public.learn_folders') is not null as dates`);
+if (ids.dates) await one(`insert into learn_folders (key, due) values ('тест даты', '2026-12-25') on conflict (key) do update set due = excluded.due returning key`);
 
 // ---------------- guest ----------------
 for (const t of ['singers', 'songs', 'events', 'absences', 'event_songs', 'song_categories', 'documents']) {
   const r = await api('GET', `/rest/v1/${t}?select=*&limit=5`);
   check('G1', `guest can read ${t}`, r.status === 200 && Array.isArray(r.json) && r.json.length > 0, r.status + ' ' + r.text.slice(0, 80));
+}
+if (ids.dates) {                          // 5.54: folder dates
+  const r = await api('GET', '/rest/v1/learn_folders?select=key,due');
+  check('G11', 'guest can read folder dates', r.status === 200 && Array.isArray(r.json) && r.json.some(x => x.key === 'тест даты' && x.due === '2026-12-25'), r.status + ' ' + r.text.slice(0, 80));
+  const ins = await api('POST', '/rest/v1/learn_folders', { body: { key: 'чужая', due: '2026-12-01' }, headers: rep });
+  const upd = await api('PATCH', `/rest/v1/learn_folders?key=eq.${encodeURIComponent('тест даты')}`, { body: { due: '2027-01-01' }, headers: rep });
+  const del = await api('DELETE', '/rest/v1/learn_folders?key=not.is.null', { headers: rep });
+  const after = await one(`select (select count(*)::int from learn_folders where key = 'чужая') n, (select due::text from learn_folders where key = 'тест даты') due`);
+  check('G12', 'guest cannot add, change or delete folder dates', ins.status >= 400 && after.n === 0 && after.due === '2026-12-25', `insert ${ins.status}, update ${upd.status}, delete ${del.status}, now ${JSON.stringify(after)}`);
 }
 {
   const r = await api('GET', '/rest/v1/usage_log?select=*&limit=5');
@@ -123,6 +134,12 @@ if (intruder) {
     const now = await one(`select learn_listed from songs where id = '${ids.song}'`);
     check('I9', 'an outside account cannot put songs on the Learning page', now.learn_listed === false, `update ${ul.status}, learn_listed ${now.learn_listed}`);
   }
+  if (ids.dates) {
+    const ins = await api('POST', '/rest/v1/learn_folders?on_conflict=key', Object.assign({ body: { key: 'тест даты', due: '2027-02-02' }, headers: { Prefer: 'resolution=merge-duplicates,return=representation' } }, T));
+    const del = await api('DELETE', '/rest/v1/learn_folders?key=not.is.null', Object.assign({ headers: rep }, T));
+    const r = await one(`select (select due::text from learn_folders where key = 'тест даты') due, (select count(*)::int from learn_folders) n`);
+    check('I10', 'an outside account cannot set or delete folder dates', r.due === '2026-12-25' && r.n >= 1, `upsert ${ins.status}, delete ${del.status}, now ${JSON.stringify(r)}`);
+  }
   const log = await api('GET', '/rest/v1/usage_log?select=*&limit=5', T);
   check('I5', 'an outside account cannot read the usage log', log.status >= 400 || (Array.isArray(log.json) && log.json.length === 0), `${log.status}, ${Array.isArray(log.json) ? log.json.length + ' rows' : ''}`);
   const up = await api('POST', '/storage/v1/object/photos/intruder/x.jpg', Object.assign({ body: 'x', raw: true, headers: { 'Content-Type': 'image/jpeg', 'x-upsert': 'true' } }, T));
@@ -165,6 +182,15 @@ if (dir) {
     const r = await one(`select learn_listed, learning from songs where id = '${ids.song}'`);
     check('W13', 'director puts a repertoire song on the Learning page and takes it off', on.status === 200 && on.json && on.json[0] && on.json[0].learn_listed === true
       && off.status === 200 && r.learn_listed === false && r.learning === false, `${on.status}/${off.status}, now ${JSON.stringify(r)}`);
+  }
+  if (ids.dates) {
+    const up = await api('POST', '/rest/v1/learn_folders?on_conflict=key', Object.assign({ body: { key: 'новая папка', due: '2027-03-13' }, headers: { Prefer: 'resolution=merge-duplicates,return=representation' } }, T));
+    const re = await api('POST', '/rest/v1/learn_folders?on_conflict=key', Object.assign({ body: { key: 'новая папка', due: '2027-03-14' }, headers: { Prefer: 'resolution=merge-duplicates,return=representation' } }, T));
+    const mid = await one(`select due::text from learn_folders where key = 'новая папка'`);
+    const del = await api('DELETE', `/rest/v1/learn_folders?key=in.(${encodeURIComponent('"новая папка"')},${encodeURIComponent('"тест даты"')})`, Object.assign({ headers: rep }, T));
+    const r = await one(`select count(*)::int n from learn_folders where key in ('новая папка', 'тест даты')`);
+    check('W14', 'director sets, changes and clears folder dates', up.status === 201 && re.status === 201 && mid && mid.due === '2027-03-14' && del.status === 200 && r.n === 0,
+      `${up.status}/${re.status}/${del.status}, mid ${JSON.stringify(mid)}, left ${r.n}`);
   }
   const c = await api('POST', '/rest/v1/song_categories', Object.assign({ body: { name: 'Тестовая' }, headers: rep }, T));
   check('W6', 'director adds a category', c.status === 201, String(c.status));
