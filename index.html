@@ -1731,6 +1731,7 @@
   .lndt i{display:block;padding:4px 0 5px;font-style:normal;font-size:17px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
   .lnfr > svg:last-child{width:16px;height:16px;flex:none;color:var(--faint)}
   .lndt.gone{opacity:.5;filter:grayscale(1)}
+  .lntile .lnfr small em{color:var(--ink)}
   /* 5.54: the home tile's header, laid out like the Leaderboard's (a bare glowing icon, the
      title with its numbers, a chip to the page) on Learning's light yellow, with a faint
      music staff and a few drifting notes behind */
@@ -5722,7 +5723,8 @@ function homePage(){
   const lnNew = today() <= LEARN_NEW_UNTIL;
   /* a row per folder (see lnFolderInner); a tap opens the Learning page on that folder */
   const lnGroups = learnGroups(learnReal()), lnNamed = lnGroups.filter(g => g.name).length;
-  const lnRow = g => `<a class="lnfr ${lnTone(g)}" href="${esc(lnHref(lnNamed ? g : null))}">${lnFolderInner(g, lnNamed, false)}</a>`;
+  /* neutral on the home tile (the header carries the colour); the Learning page keeps each folder's */
+  const lnRow = g => `<a class="lnfr lnc-n" href="${esc(lnHref(lnNamed ? g : null))}">${lnFolderInner(g, lnNamed, false)}</a>`;
   /* the header is a band like the Leaderboard's, in Learning's own ember: a bare glowing
      icon, the title and its numbers, and the way to the page at the top right; behind it
      a faint music staff with a few notes drifting on it */
