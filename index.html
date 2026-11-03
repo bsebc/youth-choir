@@ -8245,9 +8245,12 @@ function lnClose(k, then){
   const fx = sec.querySelector('.lnfx'); if (fx) fx.remove();
   const h = Math.max(0, Math.min(body.offsetHeight, innerHeight - body.getBoundingClientRect().top));
   if (calm() || !h || !body.animate) return done();
-  body.style.height = h + 'px'; body.style.overflow = 'hidden';
-  const a = body.animate([{ height: h + 'px', opacity: 1 }, { height: '0px', opacity: 0 }],
-    { duration: Math.round(Math.min(340, 220 + h / 10)), easing: EASE.drawer, fill: 'forwards' });
+  body.style.boxSizing = 'border-box'; body.style.height = h + 'px'; body.style.overflow = 'hidden';
+  /* padding and the top rule go to nothing as well, or the last few pixels would wait for the redraw */
+  const cs = getComputedStyle(body);
+  const a = body.animate([{ height: h + 'px', opacity: 1, paddingTop: cs.paddingTop, paddingBottom: cs.paddingBottom, borderTopWidth: cs.borderTopWidth },
+    { height: '0px', opacity: 0, paddingTop: '0px', paddingBottom: '0px', borderTopWidth: '0px' }],
+    { duration: Math.round(Math.min(320, 220 + h / 12)), easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });   // even, no long tail
   let fired = false; const fin = () => { if (!fired) { fired = true; done(); } };
   a.onfinish = a.oncancel = fin; setTimeout(fin, 600);
 }
