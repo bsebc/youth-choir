@@ -1552,7 +1552,9 @@ async function directorChecks() {
     await notSaved(page, 'making the sheet admin-only', problems);
     const r = await one(`select pdf_path, pdf_locked from songs where id = ${lit(s.id)}`);
     if (r.pdf_locked) problems.push('the sheet was locked anyway');
-    if (!await one(`select 1 from storage.objects where bucket_id = 'sheets' and name = ${lit(r.pdf_path)}`)) problems.push(`the file was moved to locked/ while the song still points at ${r.pdf_path}, so nobody can open it`);
+    /* the app reports the refusal, then moves the file back: give the move a moment, as D17e does */
+    const back = await until(() => one(`select 1 from storage.objects where bucket_id = 'sheets' and name = ${lit(r.pdf_path)}`), 'the file back', 1500).catch(() => null);
+    if (!back) problems.push(`the file was moved to locked/ while the song still points at ${r.pdf_path}, so nobody can open it`);
     report(problems);
   });
   await refused('D17e', 'removing a sheet when the database refuses is reported, and the file is kept', async () => {
