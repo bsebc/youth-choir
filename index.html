@@ -1630,7 +1630,13 @@
   .lnt.danger,.lnt.danger svg{color:var(--red)}
   .lnempty{padding:48px 20px;border:1px dashed var(--line-strong-2);border-radius:18px;text-align:center;font-size:14px;color:var(--muted)}
   /* 5.51 folders: a section per folder, a switcher to show one, the add-from-repertoire list */
-  .lnc{--fc:var(--tool3-ic);--fw:var(--tool3-bg)} .lnc-n{--fc:var(--muted);--fw:var(--surface-2)}
+  /* folder colours: the app's navy, green, gold and teal, and a soft plum */
+  :root{--ln-plum:#7b3f8f;--ln-plum-w:#f6eef8}
+  :root[data-theme="dark"]{--ln-plum:#d8a8ea;--ln-plum-w:#2a1d31}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){--ln-plum:#d8a8ea;--ln-plum-w:#2a1d31} }
+  .lnc0{--fc:var(--tool1-ic);--fw:var(--tool1-bg)} .lnc1{--fc:var(--tool2-ic);--fw:var(--tool2-bg)}
+  .lnc2{--fc:var(--tool3-ic);--fw:var(--tool3-bg)} .lnc3{--fc:var(--tool4-ic);--fw:var(--tool4-bg)}
+  .lnc4{--fc:var(--ln-plum);--fw:var(--ln-plum-w)} .lnc-n{--fc:var(--muted);--fw:var(--surface-2)}
   /* the Learning page: one card per folder; open, its songs are numbered rows inside it */
   .lnfolds{display:flex;flex-direction:column;gap:12px}
   .lnfold{background:var(--card);border:1px solid var(--card-line);border-radius:20px;box-shadow:var(--shadow-card);overflow:hidden;transition:box-shadow .25s ease,border-color .25s ease}
@@ -4644,8 +4650,13 @@ function lnFolderPicked(id){
 }
 /* the one open folder, if exactly one is, for a new song to land in */
 const lnSelName = () => { const open = learnGroups(learnReal()).filter(g => g.name && lnOpenSet().has(g.key)); return open.length === 1 ? open[0].name : ''; };
-/* Folders wear the app's Learning gold; songs without a folder stay neutral. */
-const lnTone = g => g.name ? 'lnc' : 'lnc-n';
+/* Each folder keeps a colour of its own, picked from its name, so moving or renaming
+   another folder never changes it. Songs without a folder stay neutral. */
+function lnTone(g){
+  if (!g.name) return 'lnc-n';
+  let h = 0; for (const ch of g.name.toLowerCase()) h = (h * 31 + ch.codePointAt(0)) >>> 0;
+  return 'lnc' + (h % 5);
+}
 /* A folder at a glance, the same on the home tile and on the Learning page: its name,
    its songs, and, when a service already sings one of them, a calendar badge with the
    date and a countdown. */
