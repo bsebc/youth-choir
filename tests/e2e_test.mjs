@@ -713,7 +713,8 @@ async function guestChecks() {
       eq(await page.evaluate(() => location.hash), kind === 'piano' ? '#/sheets/piano' : '#/sheets', 'the page after closing the viewer');
       // the part player offers the sheet in place of +10 s
       if (kind === 'sheets') {
-        const both = await page.evaluate(() => [...document.querySelectorAll('[data-srow]')].map(r => r.dataset.srow).find(id => document.querySelector(`[data-srow="${id}"] [data-open^="sheets:"]`) && document.querySelector(`[data-srow="${id}"] [data-listen]`)));
+        const stored = M.live.filter(x => x.pdf_path && !x.pdf_locked && files.has('sheets:' + x.pdf_path)).map(x => x.id);
+        const both = await page.evaluate(ids => [...document.querySelectorAll('[data-srow]')].map(r => r.dataset.srow).find(id => ids.includes(id) && document.querySelector(`[data-srow="${id}"] [data-open^="sheets:"]`) && document.querySelector(`[data-srow="${id}"] [data-listen]`)), stored);
         if (both) {
           if (!await page.locator(`[data-srow="${both}"].open`).count()) await tap(page, `[data-srow="${both}"] [data-tray]`);
           await tap(page, `[data-listen="sheets:${both}"]`);
@@ -891,11 +892,11 @@ async function guestChecks() {
   });
 
   await check('A16', 'part player: plays a recording, pause, back / forward 10 s', async () => {
-    const recd = M.live.filter(x => Object.values(x.part_audio || {}).some(r => r && r.path));
+    const recd = M.live.filter(x => Object.values(x.part_audio || {}).some(r => r && r.path && /\.mp3$/.test(r.path)));
     const hasSheet = x => (x.pdf_path && !x.pdf_locked) || (x.piano_path && !x.piano_locked);
     const s = recd.find(x => !hasSheet(x)) || recd[0];        // 5.56: with a sheet, the player offers it in place of +10 s
     ok(s, 'no song with a part recording');
-    const part = ['soprano', 'alto', 'tenor', 'bass', 'full'].find(p => s.part_audio[p] && s.part_audio[p].path);
+    const part = ['soprano', 'alto', 'tenor', 'bass', 'full'].find(p => s.part_audio[p] && s.part_audio[p].path && /\.mp3$/.test(s.part_audio[p].path));
     const page = await open({ hash: '#/sheets' });
     const before = +(await sql(`select count(*) n from usage_log where kind = 'audio' and ref = ${lit(s.id)}`))[0].n;
     await tap(page, `[data-srow="${s.id}"] [data-tray]`);
@@ -932,6 +933,22 @@ async function guestChecks() {
     await until(async () => !await shown(page, '[data-pl="toggle"]'), 'the player to close', 3000);
     eq(await page.evaluate(() => window.__media.getAttribute('src')), null, 'recording still loaded after close');
     await until(async () => +(await sql(`select count(*) n from usage_log where kind = 'audio' and ref = ${lit(s.id)}`))[0].n > before, 'the listen to be counted');
+  });
+
+  await check('A16b', 'an Apple Lossless recording plays where the browser can\'t play that format itself (5.59)', async () => {
+    const s = M.live.find(x => Object.values(x.part_audio || {}).some(r => r && r.path && /\.m4a$/.test(r.path)));
+    ok(s, 'no song with an Apple Lossless part');
+    const part = Object.keys(s.part_audio).find(p => /\.m4a$/.test(s.part_audio[p].path));
+    const page = await open({ hash: '#/sheets' });
+    eq(await page.evaluate(() => document.createElement('audio').canPlayType('audio/mp4; codecs="alac"')), '', 'this browser plays Apple Lossless by itself (the check needs one that does not)');
+    await tap(page, `[data-srow="${s.id}"] [data-tray]`);
+    await tap(page, `[data-listen="sheets:${s.id}"]`);
+    await tap(page, `[data-lp="${s.id}:${part}"]`);
+    const m = await until(async () => { const a = await page.evaluate(() => { const a = window.__media; return a ? { paused: a.paused, t: a.currentTime, d: a.duration, src: a.currentSrc } : null; }); return a && !a.paused && a.t > .3 && a; }, 'the Apple Lossless part to play', 15000);
+    ok(m.src.startsWith('blob:'), 'not the decoded copy: ' + m.src);
+    ok(Math.abs(m.d - s.part_audio[part].dur) < 1, `decoded length ${m.d} s, expected ${s.part_audio[part].dur} s`);
+    ok(!await page.locator('.plbar.err').count(), 'the player shows an error');
+    await page.click('[data-pl="close"]');
   });
 
   await check('A17', 'search finds a song and a singer', async () => {

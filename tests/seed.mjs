@@ -173,6 +173,15 @@ const tone = (hz, secs) => {
   });
   s.part_audio = pa;
 });
+// one part saved in Apple Lossless (.m4a, 24-bit mono, as some recording apps export): iPhones play it,
+// Chrome and Android only through the page's own decoder (5.59)
+{
+  const f = '/tmp/harness-audio/alac-330-12.m4a';
+  if (!fs.existsSync(f)) execFileSync('ffmpeg', ['-loglevel', 'error', '-f', 'lavfi', '-i', 'sine=frequency=330:sample_rate=48000:duration=12', '-ac', '1', '-c:a', 'alac', '-sample_fmt', 's32p', '-bits_per_raw_sample', '24', '-y', f]);
+  const buf = fs.readFileSync(f), s = songs[3], name = `${s.id}/alto-alac.m4a`;
+  putFile('parts', name, buf, 'audio/mp4');
+  s.part_audio = { alto: { at: '2026-10-26T01:08:39.623Z', dur: 12, name: `${s.title} — alto.m4a`, path: name, size: buf.length } };
+}
 
 // the songs the choir is learning
 const LEARN_FOR = senior ? ['Рождество 2026'] : ['Congress March 2027', 'Рождество 2026'];
