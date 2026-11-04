@@ -3896,7 +3896,7 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.55.0';
+const VERSION = '5.55.1';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
@@ -9835,11 +9835,10 @@ document.addEventListener('click', async e => {
     const open = () => { lnShow(k); lnRedraw(k); reveal(`#app .lnfold[data-k="${CSS.escape(k)}"] > .lnfbody`); };
     return was ? lnClose(was, open) : open();
   }
-  if (d.lnShare) {                                // the folder's songs and its link, ready to paste into a chat
+  if (d.lnShare) {                                // the folder's link, ready to paste into a chat
     const g = learnGroups(learnReal()).find(x => x.key === d.lnShare);
     if (!g) return;
-    const lines = g.songs.map((x, i) => (i + 1) + '. *' + x.title + '*');
-    return copyShare(t('lnTitle') + ' · ' + (g.name || t('lnOther')) + '\n\n' + (lines.length ? lines.join('\n') + '\n\n' : '') + pageURL(lnHref(g)));
+    return copyShare(pageURL(lnHref(g)));          // just the link: Viber shows its own preview
   }
   if (d.lnFedit) { S.lnFold = d.lnFedit; return render(); }
   if (el.hasAttribute('data-ln-fdate-x')) {         // empty the date box; Save stores that
