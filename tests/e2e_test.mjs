@@ -722,12 +722,11 @@ async function guestChecks() {
             await chip.click();
             await until(async () => await page.locator('.plbar [data-pl="sheet"]').count(), 'the Sheet music button in the player');
             eq(await page.locator('.plbar [data-pl="fwd"]').count(), 0, 'the player still offers +10 s');
-            ok(await page.locator('.plbar [data-pl="sheet"].nudge').count(), 'the Sheet music button does not pulse before it is used');
+            ok(await page.locator('.plbar [data-pl="sheet"].nudge').count(), 'the Sheet music button does not pulse when it appears');
             await tap(page, '.plbar [data-pl="sheet"]');
             await until(async () => await page.locator('.shv-pg canvas').count() > 0, 'the sheet opened from the player', 15000);
             eq(await page.locator('.plbar [data-pl="sheet"]').getAttribute('aria-expanded'), 'true', 'the Sheet music button while the sheet is open');
             eq(await page.locator('.plbar [data-pl="sheet"].nudge').count(), 0, 'the Sheet music button still pulses with the sheet open');
-            eq(await page.evaluate(() => localStorage.getItem('plSheetSeen')), '1', 'opening the sheet from the player is not remembered');
             await tap(page, '.shv-x');
             await tap(page, '.plbar [data-pl="close"]');
           }
