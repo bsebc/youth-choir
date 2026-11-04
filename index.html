@@ -1564,6 +1564,28 @@
   .shv-msg p{margin:12px 0 16px;font-size:14px;line-height:1.5;color:var(--muted);max-width:340px;text-wrap:pretty}
   .shv-spin{display:inline-block;width:30px;height:30px;border:3px solid var(--rule);border-top-color:var(--blue-text);border-radius:50%;animation:lsspin .8s linear infinite}
   .plbar .pl-k button[data-pl="sheet"].on{background:rgba(255,255,255,.14);color:var(--gold)}
+  /* 5.57: the Sheet music button: a chevron above the icon (up: the sheet opens above; down: put it away),
+     and a soft pulse until it has been used once on this device */
+  .plbar .pl-k button[data-pl="sheet"]{position:relative}
+  .plbar .pl-k button[data-pl="sheet"] > svg:last-child{width:16px;height:16px;transform:translateY(5px)}
+  .plbar .pl-chev{position:absolute;top:3px;left:50%;width:10px;height:7px;margin-left:-5px;transition:transform .25s cubic-bezier(.2,.8,.25,1)}
+  .plbar .pl-k button[data-pl="sheet"].on .pl-chev{transform:rotate(180deg)}
+  .plbar .pl-k button[data-pl="sheet"].nudge{color:var(--gold)}
+  .plbar .pl-k button[data-pl="sheet"].nudge::after{content:"";position:absolute;inset:1px;border-radius:11px;pointer-events:none;animation:plnudge 2.4s ease-out infinite}
+  .plbar .pl-k button[data-pl="sheet"].nudge .pl-chev{animation:plbob 2.4s ease-in-out infinite}
+  @keyframes plnudge{0%{box-shadow:0 0 0 0 rgba(242,201,76,.6)}55%,100%{box-shadow:0 0 0 9px rgba(242,201,76,0)}}
+  @keyframes plbob{0%,55%,100%{transform:translateY(0)}25%{transform:translateY(-3px)}}
+  @media (prefers-reduced-motion:reduce){ .plbar .pl-k button[data-pl="sheet"].nudge::after,.plbar .pl-k button[data-pl="sheet"].nudge .pl-chev{animation:none} }
+  /* 5.57: a recording link in the same window, with its site's own player */
+  .shv.link .shv-z,.shv.link .shv-sw{display:none !important}
+  .shv-emb{position:relative;flex:1;min-height:0;display:grid;place-items:center;background:#0b0d12}
+  .shv-emb[hidden]{display:none}
+  .shv-body[hidden]{display:none}
+  .shv-emb.video iframe{width:var(--vw,100%);height:var(--vh,56vw);border:0;border-radius:10px;background:#000}
+  .shv-emb.audio,.shv-emb.doc{background:var(--surface-2)}
+  .shv-emb.audio iframe,.shv-emb.doc iframe{width:100%;height:100%;border:0}
+  .shv-emb.audio iframe{max-width:900px}
+  .shv-emb.file video{width:100%;height:100%;object-fit:contain;background:#000}
   @media (max-width:699px){
     .shv-hd{padding:8px 8px 8px 14px;gap:8px}
     .shv-z{display:none !important}
@@ -3779,7 +3801,9 @@ function partRec(s, p){
 }
 function hasParts(s){ return REC_KEYS.some(p => partRec(s, p)); }
 function recCount(s){ return REC_KEYS.filter(p => partRec(s, p)).length; }
-function partURL(r){ return r.path ? SUPABASE_URL + '/storage/v1/object/public/' + PARTS_BUCKET + '/' + r.path.split('/').map(encodeURIComponent).join('/') : r.url; }
+function partURL(r){ return r.path ? SUPABASE_URL + '/storage/v1/object/public/' + PARTS_BUCKET + '/' + r.path.split('/').map(encodeURIComponent).join('/') : rawLink(r.url); }
+/* a Dropbox share link gives a web page; raw=1 gives the file itself (5.57) */
+function rawLink(u){ try { const x = new URL(u); if (/(^|\.)dropbox\.com$/.test(x.hostname)) { x.searchParams.delete('dl'); x.searchParams.set('raw', '1'); return x.toString(); } } catch (_) {} return u; }
 function isAudioLink(u){ return /\.(mp3|m4a|aac|wav|ogg|oga)(\?|#|$)/i.test(u || ''); }
 function partInline(r){ return !!r.path || isAudioLink(r.url); }      // plays inside the app; other links open in a tab
 function fmtDur(sec){ sec = Math.max(0, Math.round(sec || 0)); return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0'); }
@@ -3951,13 +3975,15 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.56.1';
+const VERSION = '5.57.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Recording links from YouTube, Vimeo, SoundCloud and Google Drive play in the same window as the sheets, with Open in new tab; Dropbox recordings play in the player',
+    'The player’s Sheet music button has an arrow showing where the sheet opens, and pulses until you’ve tried it',
     'Sheets open over the page instead of in a new tab: zoom with your fingers, + and −, or a double-tap, and use Open in new tab for the file itself',
     'The player at the bottom has a Sheet music button in place of +10 seconds when the song has a sheet, so you can read along while you listen',
     'Choir music: folding a song’s buttons away also folds its Listen row',
@@ -4041,6 +4067,8 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Записи по ссылкам с YouTube, Vimeo, SoundCloud и Google Диска открываются в том же окне, что и ноты, с кнопкой «Открыть в новой вкладке»; записи из Dropbox играют в плеере',
+    'У кнопки «Ноты» в плеере есть стрелка — куда откроются ноты, и она мерцает, пока вы её не попробуете',
     'Ноты открываются поверх страницы, а не в новой вкладке: увеличивайте пальцами, кнопками + и − или двойным касанием; «Открыть в новой вкладке» — для самого файла',
     'В плеере внизу вместо «+10 секунд» кнопка «Ноты», если у песни есть ноты: можно слушать и смотреть одновременно',
     'Ноты хора: когда кнопки песни сворачиваются, сворачивается и «Слушать»',
@@ -7904,7 +7932,7 @@ function plFail(e){ if (e && e.name === 'AbortError') return; PL.err = true; if 
 function plStart(song, part){
   const r = partRec(song, part);
   if (!r) return;
-  if (!partInline(r)) { window.open(r.url, '_blank', 'noopener'); track('audio', song.id); return; }
+  if (!partInline(r)) { linkOpen(r.url, song.title); track('audio', song.id); return; }
   const a = plEl();
   if (PL.id === song.id && PL.part === part && a.getAttribute('src')) {
     if (a.paused || a.ended) a.play().catch(plFail); else a.pause();
@@ -7966,7 +7994,11 @@ function plSync(){
   const pp = bar.querySelector('.pl-pp');
   pp.setAttribute('aria-label', t(playing ? 'plPause' : 'plPlay'));
   const sk = bar.querySelector('[data-pl="sheet"]');
-  if (sk) sk.classList.toggle('on', !!SV.el && SV.id === PL.id);
+  if (sk) {
+    const open = !!SV.el && SV.id === PL.id;
+    sk.classList.toggle('on', open); sk.setAttribute('aria-expanded', String(open));
+    sk.classList.toggle('nudge', !open && !plSheetSeen());        // pulses until it has been used once on this device
+  }
   svFrame();
 }
 function plBarHTML(){
@@ -7974,7 +8006,7 @@ function plBarHTML(){
     <div class="pl-pm"><div class="pl-pt"><strong class="pl-ttl"></strong><span class="pl-part"><i></i><b></b></span><span class="pl-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
       <div class="pl-ps"><span class="pl-cur">0:00</span><span class="pl-trk"><i class="pl-fill"></i><b class="pl-knob"></b><input class="pl-rg" type="range" min="0" max="1000" step="1" value="0" aria-label="${esc(t('plSeek'))}"></span><span class="pl-dur">–:––</span></div></div>
     <div class="pl-k"><button data-pl="back" aria-label="${esc(t('plBack'))}" title="${esc(t('plBack'))}">${BACK10SVG}</button>${plSheetKind(songById(PL.id))
-      ? `<button data-pl="sheet" aria-label="${esc(t('plSheet'))}" title="${esc(t('plSheet'))}">${SHEETSVG}</button>`
+      ? `<button data-pl="sheet" aria-label="${esc(t('plSheet'))}" title="${esc(t('plSheet'))}" aria-expanded="false"><svg class="pl-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M2 6l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>${SHEETSVG}</button>`
       : `<button data-pl="fwd" aria-label="${esc(t('plFwd'))}" title="${esc(t('plFwd'))}">${FWD10SVG}</button>`}<button data-pl="close" aria-label="${esc(t('plClose'))}" title="${esc(t('plClose'))}">${XSVG}</button></div>`;
 }
 function plBarBuild(){
@@ -7989,7 +8021,7 @@ function plBarBuild(){
     if (v === 'toggle') { if (a.paused || a.ended) a.play().catch(plFail); else a.pause(); }
     else if (v === 'back') plSkip(-10);
     else if (v === 'fwd') plSkip(10);
-    else if (v === 'sheet') { if (SV.el && SV.id === PL.id) svClose(); else { const k = plSheetKind(songById(PL.id)); if (k) { SV.back = e.target.closest('button'); sheetOpen(k, PL.id); } } }
+    else if (v === 'sheet') { if (SV.el && SV.id === PL.id) svClose(); else { const k = plSheetKind(songById(PL.id)); if (k) { lsSet('plSheetSeen', '1'); SV.back = e.target.closest('button'); sheetOpen(k, PL.id); } } }
     else if (v === 'close') plStop();
   });
   b.addEventListener('input', e => {
@@ -8017,6 +8049,7 @@ const SV = { el: null, tok: 0, zoom: 1, minZ: 1, pages: null };
 const sheetOk = (song, k) => { const K = SHEETKIND[k]; return !!(song && song[K.col] && (!song[K.lock] || S.session)); };
 /* the sheet a song's player offers: the choir sheet, else the piano one */
 const plSheetKind = song => sheetOk(song, 'sheets') ? 'sheets' : sheetOk(song, 'piano') ? 'piano' : '';
+const plSheetSeen = () => !!lsGet('plSheetSeen');
 const ZINSVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
 const ZOUTSVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>';
 async function sheetOpen(kind, id){
@@ -8069,7 +8102,7 @@ function svBuild(){
           <button class="shv-z" data-sv="in" aria-label="${esc(t('shvZoomIn'))}" title="${esc(t('shvZoomIn'))}">${ZINSVG}</button>
           <a class="shv-tab" target="_blank" rel="noopener" aria-label="${esc(t('shvNewTab'))}" title="${esc(t('shvNewTab'))}">${EXTSVG}<span>${esc(t('shvNewTab'))}</span></a>
           <button class="shv-x" data-sv="close" aria-label="${esc(t('shvClose'))}" title="${esc(t('shvClose'))}">${XSVG}</button></div></div>
-      <div class="shv-body"><div class="shv-pages"></div><div class="shv-msg" hidden></div></div></div>`;
+      <div class="shv-body"><div class="shv-pages"></div><div class="shv-msg" hidden></div></div><div class="shv-emb" hidden></div></div>`;
   document.body.appendChild(el);
   document.body.classList.add('shvon');
   SV.body = el.querySelector('.shv-body');
@@ -8127,6 +8160,8 @@ function svPages(list){
   svMsg(''); svLayout(); SV.body.scrollTop = 0; SV.body.scrollLeft = 0; svZoomUI(); svVisible();
 }
 function svReset(){
+  const em = SV.el && SV.el.querySelector('.shv-emb');
+  if (em && !em.hidden) { em.innerHTML = ''; em.hidden = true; SV.body.hidden = false; SV.el.classList.remove('link'); }
   if (SV.pages) SV.pages.forEach(p => { if (p.task) p.task.cancel(); if (p.cv) p.cv.width = 0; });
   SV.pages = null;
   if (SV.ltask) { try { SV.ltask.destroy(); } catch (_) {} SV.ltask = null; }
@@ -8234,6 +8269,7 @@ function svTouchEnd(e){
   } else SV.lastTap = { x: tap.x, y: tap.y, at: Date.now() };
 }
 function svResize(){
+  svFit();
   if (!SV.pages) return;
   const b = SV.body, a = svAnchor(b.clientWidth / 2, b.clientHeight / 2);
   svFrame(); svLayout(); svPlace(a, b.clientWidth / 2, b.clientHeight / 2); svZoomUI(); svVisible();
@@ -8252,6 +8288,70 @@ function svKey(e){
   if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); svClose(); }
   else if ((e.key === '+' || e.key === '=') && !e.metaKey && !e.ctrlKey) svZoom(SV.zoom * 1.25);
   else if (e.key === '-' && !e.metaKey && !e.ctrlKey) svZoom(SV.zoom / 1.25);
+}
+/* Recording links open in the same window (5.57): YouTube, Vimeo, SoundCloud and Google Drive
+   with their own players, a video file in a plain player; Open in new tab is always there.
+   Other sites don't allow being shown inside another page, so their links still open a tab. */
+function ytSec(v){
+  if (!v) return 0;
+  if (/^\d+$/.test(v)) return +v;
+  const m = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/.exec(v);
+  return m ? (+m[1] || 0) * 3600 + (+m[2] || 0) * 60 + (+m[3] || 0) : 0;
+}
+function linkEmbed(u){
+  let x; try { x = new URL(u); } catch (_) { return null; }
+  if (!/^https?:$/.test(x.protocol)) return null;
+  const h = x.hostname.replace(/^(www|m|music)\./, ''), p = x.pathname;
+  if (h === 'youtube.com' || h === 'youtu.be' || h === 'youtube-nocookie.com') {
+    const id = h === 'youtu.be' ? p.slice(1).split('/')[0] : x.searchParams.get('v') || (p.match(/^\/(?:shorts|live|embed)\/([\w-]+)/) || [])[1];
+    const list = x.searchParams.get('list'), at = ytSec(x.searchParams.get('t') || x.searchParams.get('start'));
+    const q = new URLSearchParams({ autoplay: '1', rel: '0', playsinline: '1' });
+    if (at) q.set('start', String(at));
+    if (list) q.set('list', list);
+    if (id && /^[\w-]{6,}$/.test(id)) return { kind: 'video', name: 'YouTube', src: 'https://www.youtube-nocookie.com/embed/' + id + '?' + q };
+    if (list) return { kind: 'video', name: 'YouTube', src: 'https://www.youtube-nocookie.com/embed/videoseries?' + q };
+    return null;
+  }
+  if (h === 'vimeo.com' || h === 'player.vimeo.com') {
+    const m = p.match(/^\/(?:video\/)?(\d+)(?:\/([\da-f]+))?/), hash = m && (m[2] || x.searchParams.get('h'));
+    return m ? { kind: 'video', name: 'Vimeo', src: 'https://player.vimeo.com/video/' + m[1] + '?autoplay=1' + (hash ? '&h=' + hash : '') } : null;
+  }
+  if (h === 'soundcloud.com' || h === 'on.soundcloud.com')
+    return { kind: 'audio', name: 'SoundCloud', src: 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(u) + '&auto_play=true&visual=true&show_comments=false' };
+  if (h === 'drive.google.com') {
+    const id = (p.match(/\/file\/d\/([\w-]+)/) || [])[1] || (/^\/(open|uc)$/.test(p) && x.searchParams.get('id'));
+    return id ? { kind: 'doc', name: 'Google Drive', src: 'https://drive.google.com/file/d/' + id + '/preview' } : null;
+  }
+  if (/\.(mp4|m4v|webm|mov)$/i.test(p)) return { kind: 'file', name: hostOf(u), src: rawLink(u) };
+  return null;
+}
+function linkOpen(url, title){
+  const em = linkEmbed(url);
+  if (!em) { window.open(url, '_blank', 'noopener'); return; }
+  if (!SV.el) svBuild();
+  ++SV.tok; svReset();
+  SV.kind = 'link'; SV.id = null;
+  if (PL.a && !PL.a.paused) PL.a.pause();          // one sound at a time
+  const el = SV.el;
+  el.classList.add('link');
+  el.querySelector('.shv-box').setAttribute('aria-label', title || em.name);
+  el.querySelector('.shv-t strong').textContent = title || em.name;
+  el.querySelector('.shv-t small').textContent = em.name;
+  el.querySelector('.shv-sw').innerHTML = '';
+  svMsg(''); svTab(url);
+  const box = el.querySelector('.shv-emb');
+  SV.body.hidden = true; box.hidden = false; box.className = 'shv-emb ' + em.kind;
+  box.innerHTML = em.kind === 'file' ? `<video controls playsinline preload="metadata" src="${esc(em.src)}"></video>`
+    : `<iframe src="${esc(em.src)}" title="${esc(title || em.name)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  svFit();
+}
+/* a video player as large as the window allows, 16:9 */
+function svFit(){
+  const box = SV.el && SV.el.querySelector('.shv-emb.video');
+  if (!box) return;
+  const pad = innerWidth < 700 ? 8 : 24, w = box.clientWidth - 2 * pad, hh = box.clientHeight - 2 * pad;
+  const fw = Math.max(0, Math.min(w, hh * 16 / 9, 1280));
+  box.style.setProperty('--vw', Math.round(fw) + 'px'); box.style.setProperty('--vh', Math.round(fw * 9 / 16) + 'px');
 }
 /* Back (or the iPhone's swipe back) closes the sheet rather than leaving the page */
 function svPop(){ if (SV.el && !(history.state && history.state.shv)) { uaSwiped = false; SV.hist = false; svClose(); } }
@@ -8300,7 +8400,7 @@ function recModal(a){
       info = `<span class="rst">${esc(meta)}</span>`;
       const play = partInline(r)
         ? `<button class="rpl" data-lp="${a.id}:${p}" data-dur="" aria-label="${esc(t('recPlay'))}" title="${esc(t('recPlay'))}">${LS_PI}</button>`
-        : `<a class="rbtn ic" href="${esc(r.url)}" target="_blank" rel="noopener" aria-label="${esc(t('recOpen'))}" title="${esc(t('recOpen'))}">${EXTSVG}</a>`;
+        : `<a class="rbtn ic" href="${esc(r.url)}" data-song="${a.id}" target="_blank" rel="noopener" aria-label="${esc(t('recOpen'))}" title="${esc(t('recOpen'))}">${EXTSVG}</a>`;
       const change = r.path ? fileIn('recReplace', UPSVG) : `<button class="rbtn" data-rec-link="${p}">${LINKSVG}<span>${esc(t('recEditLink'))}</span></button>`;
       acts = play + change + `<button class="rbtn ic danger" data-rec-del="${p}" aria-label="${esc(t('recRemove'))}" title="${esc(t('recRemove'))}">${TRASHSVG}</button>`;
     } else {
@@ -9523,7 +9623,12 @@ document.addEventListener('touchmove', e => {
 document.addEventListener('touchend', () => { traySw = null; }, { passive: true });
 document.addEventListener('click', e => {
   const a = e.target.closest && e.target.closest('a[data-song]');
-  if (a && a.dataset.song) track('audio', a.dataset.song);
+  if (!a || !a.dataset.song) return;
+  track('audio', a.dataset.song);
+  if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !linkEmbed(a.href)) return;
+  e.preventDefault(); e.stopPropagation();
+  SV.back = a;
+  linkOpen(a.href, (songById(a.dataset.song) || {}).title);
 }, true);
 /* Recordings window: file pickers, drag and drop, Enter to save a link */
 document.addEventListener('change', e => {

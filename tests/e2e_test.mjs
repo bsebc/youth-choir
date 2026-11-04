@@ -722,10 +722,32 @@ async function guestChecks() {
             await chip.click();
             await until(async () => await page.locator('.plbar [data-pl="sheet"]').count(), 'the Sheet music button in the player');
             eq(await page.locator('.plbar [data-pl="fwd"]').count(), 0, 'the player still offers +10 s');
+            ok(await page.locator('.plbar [data-pl="sheet"].nudge').count(), 'the Sheet music button does not pulse before it is used');
             await tap(page, '.plbar [data-pl="sheet"]');
             await until(async () => await page.locator('.shv-pg canvas').count() > 0, 'the sheet opened from the player', 15000);
+            eq(await page.locator('.plbar [data-pl="sheet"]').getAttribute('aria-expanded'), 'true', 'the Sheet music button while the sheet is open');
+            eq(await page.locator('.plbar [data-pl="sheet"].nudge').count(), 0, 'the Sheet music button still pulses with the sheet open');
+            eq(await page.evaluate(() => localStorage.getItem('plSheetSeen')), '1', 'opening the sheet from the player is not remembered');
             await tap(page, '.shv-x');
             await tap(page, '.plbar [data-pl="close"]');
+          }
+          // 5.57: a YouTube recording link plays in the same window, with Open in new tab
+          await page.route(/youtube-nocookie\.com|youtube\.com|ytimg\.com/, r => r.fulfill({ status: 200, contentType: 'text/html', body: '<p>player</p>' }));
+          const yt = M.live.find(x => x.audio_url && /youtube\.com\/watch/.test(x.audio_url) && !Object.keys(x.part_audio || {}).some(p => x.part_audio[p] && x.part_audio[p].path && p === 'full'));
+          if (yt) {
+            if (!await page.locator(`[data-srow="${yt.id}"].open`).count()) await tap(page, `[data-srow="${yt.id}"] [data-tray]`);
+            if (!await page.locator(`[data-srow="${yt.id}"] .lsrow`).count()) await tap(page, `[data-listen="sheets:${yt.id}"]`);
+            const before = +(await sql(`select count(*) n from usage_log where kind = 'audio' and ref = ${lit(yt.id)}`))[0].n;
+            let pops = 0; const onPop2 = () => pops++; page.on('popup', onPop2);
+            await tap(page, `[data-srow="${yt.id}"] .lsc.ext`);
+            await until(async () => await page.locator('.shv-emb iframe').count(), 'the YouTube player in the window');
+            const src = await page.locator('.shv-emb iframe').getAttribute('src');
+            ok(src.startsWith('https://www.youtube-nocookie.com/embed/' + new URL(yt.audio_url).searchParams.get('v')), 'unexpected player: ' + src);
+            eq(await page.locator('.shv-tab').getAttribute('href'), yt.audio_url, 'Open in new tab is the original link');
+            eq(pops, 0, 'a new window opened for the link'); page.off('popup', onPop2);
+            await until(async () => +(await sql(`select count(*) n from usage_log where kind = 'audio' and ref = ${lit(yt.id)}`))[0].n > before, 'the listen to be counted');
+            await tap(page, '.shv-x');
+            await until(async () => !await page.locator('.shv').count(), 'the link window closed');
           }
           // folding the song's buttons away folds its Listen row too
           if (await page.locator(`[data-srow="${both}"].open`).count() && await page.locator(`[data-srow="${both}"] .lsrow`).count()) {
