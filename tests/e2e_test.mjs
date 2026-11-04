@@ -730,6 +730,23 @@ async function guestChecks() {
             await tap(page, '.shv-x');
             await tap(page, '.plbar [data-pl="close"]');
           }
+          // 5.58: the sheet window has Listen at the bottom; a part picked there plays under the window
+          if (!await page.locator(`[data-srow="${both}"].open`).count()) await tap(page, `[data-srow="${both}"] [data-tray]`);
+          await tap(page, `[data-open="sheets:${both}"]`);
+          await until(async () => await page.locator('.shv-pg canvas').count() > 0, 'the sheet for Listen', 15000);
+          ok(await shown(page, '.shv-lsh'), 'no Listen at the bottom of the sheet window');
+          await tap(page, '.shv-lsh');
+          await until(async () => await page.locator('.shv-ft.open').count(), 'the parts to slide up');
+          const pick = page.locator('.shv-ft .lsc[data-lp]').first();
+          const lp = await pick.getAttribute('data-lp');
+          await pick.click();
+          await until(async () => await page.evaluate(() => window.__media && !window.__media.paused), 'the part picked in the sheet window to play');
+          await until(async () => !await page.locator('.shv-ft.open').count() && await page.locator('.shv-ft.now').count(), 'the parts to fold away, showing what plays');
+          ok(await page.locator('.shv').count(), 'the sheet window closed when a part was picked');
+          eq(await page.evaluate(() => document.querySelector('.plbar.on') ? 1 : 0), 1, 'no player under the sheet window');
+          ok(lp.startsWith(both + ':'), 'the part chip belongs to another song');
+          await tap(page, '.shv-x');
+          await tap(page, '.plbar [data-pl="close"]');
           // 5.57: a YouTube recording link plays in the same window, with Open in new tab
           await page.route(/youtube-nocookie\.com|youtube\.com|ytimg\.com/, r => r.fulfill({ status: 200, contentType: 'text/html', body: '<p>player</p>' }));
           const yt = M.live.find(x => x.audio_url && /youtube\.com\/watch/.test(x.audio_url) && !Object.keys(x.part_audio || {}).some(p => x.part_audio[p] && x.part_audio[p].path && p === 'full'));

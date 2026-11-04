@@ -1575,6 +1575,25 @@
   @keyframes plnudge{0%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}70%,100%{box-shadow:0 0 0 8px rgba(255,255,255,0)}}
   @keyframes plbob{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-2px)}}
   @media (prefers-reduced-motion:reduce){ .plbar .pl-k button[data-pl="sheet"].nudge::after,.plbar .pl-k button[data-pl="sheet"].nudge .pl-chev{animation:none} }
+  /* 5.58: Listen at the bottom of the sheet window; the parts slide up from it */
+  .shv-ft{flex:none;border-top:1px solid var(--rule);background:var(--card)}
+  .shv-ft[hidden]{display:none}
+  .shv-lsw{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.2,.8,.25,1)}
+  .shv-ft.open .shv-lsw{grid-template-rows:1fr}
+  .shv-lsi{min-height:0;overflow:hidden}
+  .shv-lsi .lsrow{border-top:0;background:none;padding:12px 12px 2px}
+  .shv-lsh{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:8px 16px 8px 12px;border:0;background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+  .shv-lsic{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:10px;background:var(--tool4-bg);color:var(--tool4-ic)}
+  .shv-lsic svg{width:17px;height:17px}
+  .shv-lst{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+  .shv-lst b{font-size:14.5px;font-weight:650;line-height:1.25}
+  .shv-lst small{font-size:12.5px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .shv-ft.now .shv-lst small{color:var(--tool4-ic);font-weight:600}
+  .shv-lsch{flex:none;width:10px;height:6px;color:var(--muted);transition:transform .25s cubic-bezier(.2,.8,.25,1)}
+  .shv-ft.open .shv-lsch{transform:rotate(180deg)}
+  @media (hover:hover){ .shv-lsh:hover{background:var(--surface-2)} }
+  @media (max-width:699px){ .shv-lsh{min-height:50px;padding:7px 14px 7px 10px} .shv-lsi .lsrow{padding:10px 10px 2px} }
+  @media (prefers-reduced-motion:reduce){ .shv-lsw,.shv-lsch{transition:none} }
   /* 5.57: a recording link in the same window, with its site's own player */
   .shv.link .shv-z,.shv.link .shv-sw{display:none !important}
   .shv-emb{position:relative;flex:1;min-height:0;display:grid;place-items:center;background:#0b0d12}
@@ -3717,6 +3736,7 @@ Object.assign(STR.en, {
   lnAllFolders:'All folders',
   plSheet:'Sheet music', shvNewTab:'Open in new tab', shvClose:'Close', shvZoomIn:'Zoom in', shvZoomOut:'Zoom out',
   shvPages: n => n + (n === 1 ? ' page' : ' pages'), shvPage: (i, n) => 'Page ' + i + ' of ' + n,
+  shvLsPick:'Choose a part to hear', shvLsNow: p => 'Playing · ' + p,
   shvLoading:'Opening the sheet…', shvErr:'The sheet couldn’t be shown here. Open it in a new tab instead.',
   lnInDays: n => n <= 0 ? 'today' : n === 1 ? 'tomorrow' : 'in ' + n + ' days'
 });
@@ -3753,6 +3773,7 @@ Object.assign(STR.ru, {
   lnAllFolders:'Все папки',
   plSheet:'Ноты', shvNewTab:'Открыть в новой вкладке', shvClose:'Закрыть', shvZoomIn:'Крупнее', shvZoomOut:'Мельче',
   shvPages: n => n + ' ' + ruN(n, 'страница', 'страницы', 'страниц'), shvPage: (i, n) => 'Страница ' + i + ' из ' + n,
+  shvLsPick:'Выберите партию', shvLsNow: p => 'Играет · ' + p,
   shvLoading:'Открываем ноты…', shvErr:'Не удалось показать ноты здесь. Откройте их в новой вкладке.',
   lnInDays: n => n <= 0 ? 'сегодня' : n === 1 ? 'завтра' : 'через ' + n + ' ' + ruN(n, 'день', 'дня', 'дней')
 });
@@ -3974,13 +3995,14 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.57.0';
+const VERSION = '5.58.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Sheets: Listen at the bottom of the sheet window brings up the parts, so you can hear one while you read',
     'Recording links from YouTube, Vimeo, SoundCloud and Google Drive play in the same window as the sheets, with Open in new tab; Dropbox recordings play in the player',
     'The player’s Sheet music button has a small arrow showing where the sheet opens, and pulses twice when it appears',
     'Sheets open over the page instead of in a new tab: zoom with your fingers, + and −, or a double-tap, and use Open in new tab for the file itself',
@@ -4066,6 +4088,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Ноты: кнопка «Слушать» внизу окна с нотами открывает партии — можно слушать и смотреть одновременно',
     'Записи по ссылкам с YouTube, Vimeo, SoundCloud и Google Диска открываются в том же окне, что и ноты, с кнопкой «Открыть в новой вкладке»; записи из Dropbox играют в плеере',
     'У кнопки «Ноты» в плеере маленькая стрелка — куда откроются ноты; появляясь, кнопка дважды мерцает',
     'Ноты открываются поверх страницы, а не в новой вкладке: увеличивайте пальцами, кнопками + и − или двойным касанием; «Открыть в новой вкладке» — для самого файла',
@@ -7972,7 +7995,7 @@ function plSync(){
     const tm = b.querySelector('.tm');
     if (tm) tm.textContent = me && (cur > 0 || playing) ? fmtDur(cur) : (b.dataset.dur || '');
   });
-  if (!on) { if (plBarEl) plBarEl.classList.remove('on'); document.body.classList.remove('plon'); svFrame(); return; }
+  if (!on) { if (plBarEl) plBarEl.classList.remove('on'); document.body.classList.remove('plon'); svFrame(); svLs(); return; }
   const bar = plBarEl || plBarBuild();
   const song = songById(PL.id), sig = key + ':' + S.lang + ':' + plSheetKind(song);
   if (bar.dataset.sig !== sig) {
@@ -7998,7 +8021,7 @@ function plSync(){
     sk.classList.toggle('on', open); sk.setAttribute('aria-expanded', String(open));
     if (open) sk.classList.remove('nudge');
   }
-  svFrame();
+  svFrame(); svLs();
 }
 function plBarHTML(){
   return `<button class="pl-pp" data-pl="toggle" aria-label="${esc(t('plPlay'))}">${LS_PI}</button>
@@ -8056,7 +8079,7 @@ async function sheetOpen(kind, id){
   if (!SV.el) svBuild();
   const tok = ++SV.tok;
   svReset(); SV.kind = kind; SV.id = id; SV.zoom = 1;
-  svHead(song); svMsg('load'); svTab('');
+  svHead(song); svMsg('load'); svTab(''); svLs();
   track('sheet', id);
   let buf = null, href = '';
   try {                                            // a fresh signed link; the stored copy when offline or refused
@@ -8100,7 +8123,10 @@ function svBuild(){
           <button class="shv-z" data-sv="in" aria-label="${esc(t('shvZoomIn'))}" title="${esc(t('shvZoomIn'))}">${ZINSVG}</button>
           <a class="shv-tab" target="_blank" rel="noopener" aria-label="${esc(t('shvNewTab'))}" title="${esc(t('shvNewTab'))}">${EXTSVG}<span>${esc(t('shvNewTab'))}</span></a>
           <button class="shv-x" data-sv="close" aria-label="${esc(t('shvClose'))}" title="${esc(t('shvClose'))}">${XSVG}</button></div></div>
-      <div class="shv-body"><div class="shv-pages"></div><div class="shv-msg" hidden></div></div><div class="shv-emb" hidden></div></div>`;
+      <div class="shv-body"><div class="shv-pages"></div><div class="shv-msg" hidden></div></div><div class="shv-emb" hidden></div>
+      <div class="shv-ft" hidden><div class="shv-lsw"><div class="shv-lsi"></div></div>
+        <button class="shv-lsh" data-sv="ls" aria-expanded="false"><span class="shv-lsic">${HEADSVG}</span><span class="shv-lst"><b>${esc(t('listen'))}</b><small></small></span>
+          <svg class="shv-lsch" viewBox="0 0 8 5" aria-hidden="true"><path d="M1 4l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div>`;
   document.body.appendChild(el);
   document.body.classList.add('shvon');
   SV.body = el.querySelector('.shv-body');
@@ -8273,10 +8299,12 @@ function svResize(){
   svFrame(); svLayout(); svPlace(a, b.clientWidth / 2, b.clientHeight / 2); svZoomUI(); svVisible();
 }
 function svClick(e){
+  if (e.target.closest('.shv-ft [data-lp]')) { setTimeout(() => svLsOpen(false), 380); return; }
   const k = e.target.closest('[data-sv],[data-sv-kind]');
   if (!k) return;
   if (k.dataset.svKind) { if (k.dataset.svKind !== SV.kind) sheetOpen(k.dataset.svKind, SV.id); return; }
   const v = k.dataset.sv;
+  if (v === 'ls') { const ft = SV.el.querySelector('.shv-ft'); svLsOpen(!ft.classList.contains('open')); return; }
   if (v === 'close') svClose();
   else if (v === 'in') svZoom(SV.zoom * 1.25);
   else if (v === 'out') svZoom(SV.zoom / 1.25);
@@ -8286,6 +8314,33 @@ function svKey(e){
   if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); svClose(); }
   else if ((e.key === '+' || e.key === '=') && !e.metaKey && !e.ctrlKey) svZoom(SV.zoom * 1.25);
   else if (e.key === '-' && !e.metaKey && !e.ctrlKey) svZoom(SV.zoom / 1.25);
+}
+/* 5.58: the sheet's recordings, at the bottom of the sheet window: tap Listen and pick a part;
+   the player comes up under the window, so the song can be read and heard at once */
+function svLs(){
+  const ft = SV.el && SV.el.querySelector('.shv-ft');
+  if (!ft) return;
+  const song = SV.kind !== 'link' && SV.id ? songById(SV.id) : null, on = !!(song && hasParts(song));
+  ft.hidden = !on;
+  if (!on) { ft.dataset.id = ''; return; }
+  if (ft.dataset.id !== song.id) {
+    ft.dataset.id = song.id;
+    ft.querySelector('.shv-lsi').innerHTML = `<div class="lsrow" role="group" aria-label="${esc(t('listen') + ' · ' + song.title)}"><div class="lsg">${lsLayout(song).map((it, k) => lsChip(song, it, k)).join('')}</div></div>`;
+    svLsOpen(false);
+    plSync();
+  }
+  const now = PL.id === song.id && PL.part;
+  const cap = now ? t('shvLsNow')(prtName(PL.part, song)) : t('shvLsPick');
+  const sm = ft.querySelector('.shv-lst small');
+  if (sm.textContent !== cap) sm.textContent = cap;
+  ft.classList.toggle('now', !!now);
+}
+function svLsOpen(on){
+  const ft = SV.el && SV.el.querySelector('.shv-ft');
+  if (!ft) return;
+  ft.classList.toggle('open', on);
+  ft.querySelector('.shv-lsh').setAttribute('aria-expanded', String(on));
+  ft.querySelector('.shv-lsi').inert = !on;
 }
 /* Recording links open in the same window (5.57): YouTube, Vimeo, SoundCloud and Google Drive
    with their own players, a video file in a plain player; Open in new tab is always there.
@@ -8336,7 +8391,7 @@ function linkOpen(url, title){
   el.querySelector('.shv-t strong').textContent = title || em.name;
   el.querySelector('.shv-t small').textContent = em.name;
   el.querySelector('.shv-sw').innerHTML = '';
-  svMsg(''); svTab(url);
+  svMsg(''); svTab(url); svLs();
   const box = el.querySelector('.shv-emb');
   SV.body.hidden = true; box.hidden = false; box.className = 'shv-emb ' + em.kind;
   box.innerHTML = em.kind === 'file' ? `<video controls playsinline preload="metadata" src="${esc(em.src)}"></video>`
@@ -9623,7 +9678,7 @@ document.addEventListener('click', e => {
   const a = e.target.closest && e.target.closest('a[data-song]');
   if (!a || !a.dataset.song) return;
   track('audio', a.dataset.song);
-  if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !linkEmbed(a.href)) return;
+  if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.closest('.shv') || !linkEmbed(a.href)) return;
   e.preventDefault(); e.stopPropagation();
   SV.back = a;
   linkOpen(a.href, (songById(a.dataset.song) || {}).title);
