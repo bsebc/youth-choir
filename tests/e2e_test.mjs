@@ -692,14 +692,47 @@ async function guestChecks() {
       page.context().on('request', onReq);
       const before = +(await sql(`select count(*) n from usage_log where kind = 'sheet' and ref = ${lit(s.id)}`))[0].n;
       await tap(page, `[data-srow="${s.id}"] [data-tray]`);
-      const [popup] = await Promise.all([page.waitForEvent('popup'), tap(page, `[data-open="${kind}:${s.id}"]`)]);
-      const url = await until(() => got[0], 'the signed link to load in the new window');
+      // 5.56: the sheet opens over the page (no new window), drawn page by page, with a link to the file
+      let popups = 0; const onPop = () => popups++; page.on('popup', onPop);
+      await tap(page, `[data-open="${kind}:${s.id}"]`);
+      const url = await until(() => got[0], 'the signed link to be fetched');
       page.context().off('request', onReq);
+      await until(async () => await page.locator('.shv-pg canvas').count() > 0, 'the sheet drawn in the viewer', 15000);
+      const ink = await page.evaluate(() => { const c = document.querySelector('.shv-pg canvas'), d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+        let n = 0; for (let i = 0; i < d.length; i += 16) if (d[i] < 128) n++; return n; });
+      ok(ink > 50, 'the sheet viewer shows a blank page');
+      eq(await page.locator('.shv-tab').getAttribute('href'), url, 'Open in new tab is the signed link');
+      eq(popups, 0, 'a new window opened'); page.off('popup', onPop);
       const res = await fetch(url);
       eq(res.status, 200, `signed ${kind} link`);
       ok((await res.text()).startsWith('%PDF'), `signed ${kind} link is not the PDF`);
       ok(/[?&]token=/.test(url), 'link is not signed');
-      await popup.close().catch(() => {});
+      await tap(page, '.shv-x');
+      await until(async () => !await page.locator('.shv').count(), 'the viewer closed');
+      eq(await page.evaluate(() => location.hash), kind === 'piano' ? '#/sheets/piano' : '#/sheets', 'the page after closing the viewer');
+      // the part player offers the sheet in place of +10 s
+      if (kind === 'sheets') {
+        const both = await page.evaluate(() => [...document.querySelectorAll('[data-srow]')].map(r => r.dataset.srow).find(id => document.querySelector(`[data-srow="${id}"] [data-open^="sheets:"]`) && document.querySelector(`[data-srow="${id}"] [data-listen]`)));
+        if (both) {
+          if (!await page.locator(`[data-srow="${both}"].open`).count()) await tap(page, `[data-srow="${both}"] [data-tray]`);
+          await tap(page, `[data-listen="sheets:${both}"]`);
+          const chip = page.locator(`.lsc[data-lp^="${both}:"]`).first();
+          if (await chip.count()) {
+            await chip.click();
+            await until(async () => await page.locator('.plbar [data-pl="sheet"]').count(), 'the Sheet music button in the player');
+            eq(await page.locator('.plbar [data-pl="fwd"]').count(), 0, 'the player still offers +10 s');
+            await tap(page, '.plbar [data-pl="sheet"]');
+            await until(async () => await page.locator('.shv-pg canvas').count() > 0, 'the sheet opened from the player', 15000);
+            await tap(page, '.shv-x');
+            await tap(page, '.plbar [data-pl="close"]');
+          }
+          // folding the song's buttons away folds its Listen row too
+          if (await page.locator(`[data-srow="${both}"].open`).count() && await page.locator(`[data-srow="${both}"] .lsrow`).count()) {
+            await tap(page, `[data-srow="${both}"] [data-tray]`);
+            await until(async () => !await page.locator(`[data-srow="${both}"] .lsrow`).count(), 'the Listen row folded with the song');
+          }
+        }
+      }
       if (kind === 'sheets') await until(async () => +(await sql(`select count(*) n from usage_log where kind = 'sheet' and ref = ${lit(s.id)}`))[0].n > before, 'the sheet open to be counted');
     }
   });
@@ -819,7 +852,9 @@ async function guestChecks() {
   });
 
   await check('A16', 'part player: plays a recording, pause, back / forward 10 s', async () => {
-    const s = M.live.find(x => Object.values(x.part_audio || {}).some(r => r && r.path));
+    const recd = M.live.filter(x => Object.values(x.part_audio || {}).some(r => r && r.path));
+    const hasSheet = x => (x.pdf_path && !x.pdf_locked) || (x.piano_path && !x.piano_locked);
+    const s = recd.find(x => !hasSheet(x)) || recd[0];        // 5.56: with a sheet, the player offers it in place of +10 s
     ok(s, 'no song with a part recording');
     const part = ['soprano', 'alto', 'tenor', 'bass', 'full'].find(p => s.part_audio[p] && s.part_audio[p].path);
     const page = await open({ hash: '#/sheets' });
@@ -836,8 +871,16 @@ async function guestChecks() {
     ok((await barText()).includes(s.title), 'player does not name the song');
     eq(await page.getAttribute('[data-pl="toggle"]', 'aria-label'), t('plPause'), 'play/pause button while playing');
     eq(await page.getAttribute(`[data-lp="${s.id}:${part}"]`, 'aria-pressed'), 'true', 'part button pressed');
-    let a = (await media()).t; await page.click('[data-pl="fwd"]'); let b = (await media()).t;
-    ok(b - a > 9 && b - a < 11.5, `forward 10 s moved ${(b - a).toFixed(1)} s`);
+    let a = (await media()).t, b;
+    if (hasSheet(s)) {
+      eq(await page.locator('[data-pl="fwd"]').count(), 0, 'forward 10 s offered for a song with a sheet');
+      ok(await page.locator('[data-pl="sheet"]').count(), 'no Sheet music button for a song with a sheet');
+      await page.evaluate(() => { window.__media.currentTime += 10; }); b = (await media()).t;
+    } else {
+      eq(await page.locator('[data-pl="sheet"]').count(), 0, 'a Sheet music button for a song without a sheet');
+      await page.click('[data-pl="fwd"]'); b = (await media()).t;
+      ok(b - a > 9 && b - a < 11.5, `forward 10 s moved ${(b - a).toFixed(1)} s`);
+    }
     a = b; await page.click('[data-pl="back"]'); b = (await media()).t;
     ok(a - b > 8.5 && a - b < 10.5, `back 10 s moved ${(a - b).toFixed(1)} s`);
     await page.click('[data-pl="toggle"]');
@@ -916,7 +959,7 @@ async function guestChecks() {
     for (const h of ['#/home', '#/sheets', '#/leaders', '#/learning', '#/attendance/summary']) await go(p, h, 120);
     await p.reload(); await settle(p, 300);
     const withPdf = M.live.find(x => x.pdf_path && !x.pdf_locked);
-    if (withPdf) { await go(p, '#/sheets'); await tap(p, `[data-srow="${withPdf.id}"] [data-tray]`); const [w] = await Promise.all([p.waitForEvent('popup'), tap(p, `[data-open="sheets:${withPdf.id}"]`)]); await sleep(500); await w.close().catch(() => {}); }
+    if (withPdf) { await go(p, '#/sheets'); await tap(p, `[data-srow="${withPdf.id}"] [data-tray]`); await tap(p, `[data-open="sheets:${withPdf.id}"]`); await until(async () => await p.locator('.shv-pg canvas').count() > 0, 'the sheet viewer', 15000); await tap(p, '.shv-x'); }
     await sleep(500);
     eq(await count(), n0, 'usage rows written while the director was signed in');
   });

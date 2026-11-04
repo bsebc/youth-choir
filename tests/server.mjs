@@ -298,7 +298,7 @@ const objPath = (bucket, name) => {
 };
 const sErr = (status, error, message) => ({ status, body: { statusCode: String(status), error, message } });
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css', '.svg': 'image/svg+xml',
-  '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webmanifest': 'application/manifest+json', '.json': 'application/json', '.pdf': 'application/pdf', '.mp3': 'audio/mpeg', '.woff2': 'font/woff2', '.txt': 'text/plain' };
+  '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webmanifest': 'application/manifest+json', '.json': 'application/json', '.pdf': 'application/pdf', '.mp3': 'audio/mpeg', '.woff2': 'font/woff2', '.txt': 'text/plain', '.wasm': 'application/wasm' };
 function sendFile(req, res, file, extraHeaders = {}) {
   const st = fs.statSync(file), type = MIME[path.extname(file).toLowerCase()] || 'application/octet-stream';
   const range = /bytes=(\d*)-(\d*)/.exec(req.headers.range || '');

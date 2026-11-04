@@ -113,7 +113,34 @@ const songs = [...titles].map((title, i) => {
 songs[0].title = 'Песнь «Хвала» & гимн <Тест>';   // characters that must stay text, never markup
 
 // a handful of real files in storage: sheet PDFs (some locked), piano scores, part recordings
-const PDF = Buffer.from('%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n3 0 obj<</Type/Page/MediaBox[0 0 300 420]/Parent 2 0 R>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF\n');
+// a two-page made-up score (staves, bar lines, note heads) so the sheet viewer has something to draw
+const PDF = (() => {
+  const page = n => {
+    const ops = ['BT /F1 18 Tf 60 790 Td (Sample score - page ' + n + ') Tj ET', '0.6 w'];
+    for (let sys = 0; sys < 7; sys++) {
+      const top = 740 - sys * 100;
+      for (let l = 0; l < 5; l++) ops.push(`50 ${top - l * 8} m 545 ${top - l * 8} l S`);
+      for (let x = 50; x <= 545; x += 123.75) ops.push(`${x.toFixed(1)} ${top} m ${x.toFixed(1)} ${top - 32} l S`);
+      for (let k = 0; k < 14; k++) {
+        const x = 70 + k * 34, y = top - 32 + ((k * 7 + sys * 3 + n) % 9) * 4;
+        ops.push(`${x} ${y} m ${x + 4} ${y + 3} ${x + 9} ${y + 3} ${x + 9} ${y} c ${x + 9} ${y - 3} ${x + 4} ${y - 3} ${x} ${y} c f`);
+        ops.push(`${x + 8.5} ${y} m ${x + 8.5} ${y + 24} l S`);
+      }
+    }
+    return ops.join('\n');
+  };
+  const objs = ['<</Type/Catalog/Pages 2 0 R>>', '<</Type/Pages/Kids[3 0 R 5 0 R]/Count 2>>',
+    '<</Type/Page/MediaBox[0 0 595 842]/Parent 2 0 R/Contents 4 0 R/Resources<</Font<</F1 7 0 R>>>>>>', null,
+    '<</Type/Page/MediaBox[0 0 595 842]/Parent 2 0 R/Contents 6 0 R/Resources<</Font<</F1 7 0 R>>>>>>', null,
+    '<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>'];
+  [1, 2].forEach((n, i) => { const c = page(n); objs[3 + i * 2] = `<</Length ${Buffer.byteLength(c)}>>stream\n${c}\nendstream`; });
+  let out = '%PDF-1.4\n'; const at = [];
+  objs.forEach((o, i) => { at.push(Buffer.byteLength(out)); out += `${i + 1} 0 obj${o}endobj\n`; });
+  const x = Buffer.byteLength(out);
+  out += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n` + at.map(a => String(a).padStart(10, '0') + ' 00000 n \n').join('')
+    + `trailer<</Size ${objs.length + 1}/Root 1 0 R>>\nstartxref\n${x}\n%%EOF\n`;
+  return Buffer.from(out);
+})();
 const objects = photoObjects;
 const putFile = (bucket, name, buf, mime) => {
   const f = path.join(STORE, bucket, name);

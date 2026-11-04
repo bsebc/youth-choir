@@ -1524,6 +1524,55 @@
   .lsc.loading .i-load,.rpl.loading .i-load{display:block;animation:lsspin .8s linear infinite}
   @keyframes lsspin{to{transform:rotate(360deg)}}
   .lsrow.enter{animation:lsopen .34s cubic-bezier(.2,.8,.2,1) both}
+  .lsrow.out{animation:lsclose .26s cubic-bezier(.4,0,.2,1) both;pointer-events:none}
+  @keyframes lsclose{from{opacity:1;clip-path:inset(0 0 0 0)}to{opacity:0;clip-path:inset(0 0 100% 0)}}
+  /* 5.56: the sheet viewer, over everything but the player */
+  .shv{position:fixed;inset:0;z-index:70;pointer-events:none}
+  body.shvon{overflow:hidden}
+  body.shvon .plbar{z-index:71}
+  .shv-scrim{position:absolute;inset:0;background:rgba(10,14,30,.5);opacity:0;transition:opacity .22s ease;pointer-events:auto}
+  .shv-box{position:absolute;top:calc(10px + env(safe-area-inset-top));left:10px;right:10px;bottom:var(--shv-b,calc(10px + env(safe-area-inset-bottom)));
+    display:flex;flex-direction:column;min-width:0;overflow:hidden;border-radius:18px;background:var(--card);border:1px solid var(--card-line);
+    box-shadow:0 30px 70px -24px rgba(0,0,0,.55);pointer-events:auto;opacity:0;transform:translateY(10px) scale(.98);
+    transition:opacity .2s ease,transform .26s cubic-bezier(.2,.8,.25,1),bottom .25s ease}
+  .shv.on .shv-scrim{opacity:1} .shv.on .shv-box{opacity:1;transform:none}
+  @media (min-width:900px){ .shv-box{top:24px;left:24px;right:24px;bottom:var(--shv-b,24px)} }
+  .shv-hd{flex:none;display:flex;align-items:center;gap:12px;min-width:0;padding:10px 10px 10px 18px;border-bottom:1px solid var(--rule)}
+  .shv-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+  .shv-t strong{font-size:15.5px;font-weight:650;line-height:1.3;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .shv-t small{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .shv-k{flex:none;display:flex;align-items:center;gap:6px}
+  .shv-k > button,.shv-tab{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:38px;min-width:38px;padding:0 10px;border:1px solid var(--card-line);border-radius:11px;
+    background:var(--card);color:var(--ink);font:inherit;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer}
+  .shv-k > button svg,.shv-tab svg{width:17px;height:17px;flex:none}
+  .shv-k > button:disabled{opacity:.4;cursor:default}
+  .shv-tab{color:var(--blue-text)}
+  .shv-tab[aria-disabled]{opacity:.45;pointer-events:none}
+  .shv-x{padding:0}
+  .shv-sw:empty{display:none}
+  .shv-sw{display:inline-flex;padding:3px;border-radius:12px;background:var(--surface-2);border:1px solid var(--card-line)}
+  .shv-sw button{height:30px;padding:0 10px;border:0;border-radius:9px;background:none;color:var(--muted);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .shv-sw button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(var(--shadow-rgb),.18)}
+  @media (hover:hover){ .shv-k > button:not(:disabled):hover,.shv-tab:hover{background:var(--surface-2)} }
+  .shv-body{position:relative;flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;touch-action:pan-x pan-y;background:var(--surface-2);-webkit-tap-highlight-color:transparent}
+  .shv-pages{width:max-content;min-width:100%;padding:16px;box-sizing:border-box}
+  .shv-pg{position:relative;margin:0 auto 14px;background:#fff;border-radius:3px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.12),0 10px 26px -14px rgba(0,0,0,.3)}
+  .shv-pg:last-child{margin-bottom:0}
+  .shv-pg canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
+  .shv-msg{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center}
+  .shv-msg[hidden]{display:none}
+  .shv-msg p{margin:12px 0 16px;font-size:14px;line-height:1.5;color:var(--muted);max-width:340px;text-wrap:pretty}
+  .shv-spin{display:inline-block;width:30px;height:30px;border:3px solid var(--rule);border-top-color:var(--blue-text);border-radius:50%;animation:lsspin .8s linear infinite}
+  .plbar .pl-k button[data-pl="sheet"].on{background:rgba(255,255,255,.14);color:var(--gold)}
+  @media (max-width:699px){
+    .shv-hd{padding:8px 8px 8px 14px;gap:8px}
+    .shv-z{display:none !important}
+    .shv-tab{padding:0} .shv-tab span{display:none}
+    .shv-pages{padding:8px}
+    .shv-pg{margin-bottom:8px}
+    .shv-sw button{padding:0 8px}
+  }
+  @media (prefers-reduced-motion:reduce){ .shv-box,.shv-scrim{transition:none} }
   .lsrow.enter .lsc{animation:lspop .42s cubic-bezier(.3,1.35,.5,1) both;animation-delay:calc(var(--k,0) * 45ms + 70ms)}
   @keyframes lsopen{from{opacity:0;clip-path:inset(0 0 100% 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
   @keyframes lspop{from{opacity:0;transform:translateY(-8px) scale(.9)}to{opacity:1;transform:none}}
@@ -3645,6 +3694,9 @@ Object.assign(STR.en, {
   lnDateOf: d => 'Folder date: ' + d,
   lnFDate:'Date', lnFDateHint:'Shown on the folder, with a countdown. Leave it empty for no date.', lnFDateX:'Remove the date',
   lnAllFolders:'All folders',
+  plSheet:'Sheet music', shvNewTab:'Open in new tab', shvClose:'Close', shvZoomIn:'Zoom in', shvZoomOut:'Zoom out',
+  shvPages: n => n + (n === 1 ? ' page' : ' pages'), shvPage: (i, n) => 'Page ' + i + ' of ' + n,
+  shvLoading:'Opening the sheet…', shvErr:'The sheet couldn’t be shown here. Open it in a new tab instead.',
   lnInDays: n => n <= 0 ? 'today' : n === 1 ? 'tomorrow' : 'in ' + n + ' days'
 });
 // ruN() is the app's Russian plural helper (one / few / many), defined further down
@@ -3678,6 +3730,9 @@ Object.assign(STR.ru, {
   lnDateOf: d => 'Дата папки: ' + d,
   lnFDate:'Дата', lnFDateHint:'Видна на папке, с обратным отсчётом. Оставьте пустой, если даты нет.', lnFDateX:'Убрать дату',
   lnAllFolders:'Все папки',
+  plSheet:'Ноты', shvNewTab:'Открыть в новой вкладке', shvClose:'Закрыть', shvZoomIn:'Крупнее', shvZoomOut:'Мельче',
+  shvPages: n => n + ' ' + ruN(n, 'страница', 'страницы', 'страниц'), shvPage: (i, n) => 'Страница ' + i + ' из ' + n,
+  shvLoading:'Открываем ноты…', shvErr:'Не удалось показать ноты здесь. Откройте их в новой вкладке.',
   lnInDays: n => n <= 0 ? 'сегодня' : n === 1 ? 'завтра' : 'через ' + n + ' ' + ruN(n, 'день', 'дня', 'дней')
 });
 const MON = { en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
@@ -3896,13 +3951,16 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.55.1';
+const VERSION = '5.56.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Sheets open over the page instead of in a new tab: zoom with your fingers, + and −, or a double-tap, and use Open in new tab for the file itself',
+    'The player at the bottom has a Sheet music button in place of +10 seconds when the song has a sheet, so you can read along while you listen',
+    'Choir music: folding a song’s buttons away also folds its Listen row',
     'Learning: shorter folder links for sharing in a chat; links shared before still work',
     'Learning: the director sets each folder’s date in Edit folder, and the folder counts down to it. A folder made from a service’s songs starts with that service’s date',
     'Learning: no two folders share a colour',
@@ -3983,6 +4041,9 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Ноты открываются поверх страницы, а не в новой вкладке: увеличивайте пальцами, кнопками + и − или двойным касанием; «Открыть в новой вкладке» — для самого файла',
+    'В плеере внизу вместо «+10 секунд» кнопка «Ноты», если у песни есть ноты: можно слушать и смотреть одновременно',
+    'Ноты хора: когда кнопки песни сворачиваются, сворачивается и «Слушать»',
     '«Разучиваем»: короткие ссылки на папки для чата; старые ссылки тоже работают',
     '«Разучиваем»: регент задаёт дату папки в «Изменить папку», и на папке идёт обратный отсчёт. Папка из песен служения сразу получает дату этого служения',
     '«Разучиваем»: у всех папок разные цвета',
@@ -7884,9 +7945,9 @@ function plSync(){
     const tm = b.querySelector('.tm');
     if (tm) tm.textContent = me && (cur > 0 || playing) ? fmtDur(cur) : (b.dataset.dur || '');
   });
-  if (!on) { if (plBarEl) plBarEl.classList.remove('on'); document.body.classList.remove('plon'); return; }
+  if (!on) { if (plBarEl) plBarEl.classList.remove('on'); document.body.classList.remove('plon'); svFrame(); return; }
   const bar = plBarEl || plBarBuild();
-  const song = songById(PL.id), sig = key + ':' + S.lang;
+  const song = songById(PL.id), sig = key + ':' + S.lang + ':' + plSheetKind(song);
   if (bar.dataset.sig !== sig) {
     bar.innerHTML = plBarHTML(); bar.dataset.sig = sig;
     bar.querySelector('.pl-ttl').textContent = song ? song.title : '';
@@ -7904,12 +7965,17 @@ function plSync(){
   bar.querySelector('.pl-dur').textContent = dur ? fmtDur(dur) : '–:––';
   const pp = bar.querySelector('.pl-pp');
   pp.setAttribute('aria-label', t(playing ? 'plPause' : 'plPlay'));
+  const sk = bar.querySelector('[data-pl="sheet"]');
+  if (sk) sk.classList.toggle('on', !!SV.el && SV.id === PL.id);
+  svFrame();
 }
 function plBarHTML(){
   return `<button class="pl-pp" data-pl="toggle" aria-label="${esc(t('plPlay'))}">${LS_PI}</button>
     <div class="pl-pm"><div class="pl-pt"><strong class="pl-ttl"></strong><span class="pl-part"><i></i><b></b></span><span class="pl-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
       <div class="pl-ps"><span class="pl-cur">0:00</span><span class="pl-trk"><i class="pl-fill"></i><b class="pl-knob"></b><input class="pl-rg" type="range" min="0" max="1000" step="1" value="0" aria-label="${esc(t('plSeek'))}"></span><span class="pl-dur">–:––</span></div></div>
-    <div class="pl-k"><button data-pl="back" aria-label="${esc(t('plBack'))}" title="${esc(t('plBack'))}">${BACK10SVG}</button><button data-pl="fwd" aria-label="${esc(t('plFwd'))}" title="${esc(t('plFwd'))}">${FWD10SVG}</button><button data-pl="close" aria-label="${esc(t('plClose'))}" title="${esc(t('plClose'))}">${XSVG}</button></div>`;
+    <div class="pl-k"><button data-pl="back" aria-label="${esc(t('plBack'))}" title="${esc(t('plBack'))}">${BACK10SVG}</button>${plSheetKind(songById(PL.id))
+      ? `<button data-pl="sheet" aria-label="${esc(t('plSheet'))}" title="${esc(t('plSheet'))}">${SHEETSVG}</button>`
+      : `<button data-pl="fwd" aria-label="${esc(t('plFwd'))}" title="${esc(t('plFwd'))}">${FWD10SVG}</button>`}<button data-pl="close" aria-label="${esc(t('plClose'))}" title="${esc(t('plClose'))}">${XSVG}</button></div>`;
 }
 function plBarBuild(){
   const b = plBarEl = document.createElement('div');
@@ -7923,6 +7989,7 @@ function plBarBuild(){
     if (v === 'toggle') { if (a.paused || a.ended) a.play().catch(plFail); else a.pause(); }
     else if (v === 'back') plSkip(-10);
     else if (v === 'fwd') plSkip(10);
+    else if (v === 'sheet') { if (SV.el && SV.id === PL.id) svClose(); else { const k = plSheetKind(songById(PL.id)); if (k) { SV.back = e.target.closest('button'); sheetOpen(k, PL.id); } } }
     else if (v === 'close') plStop();
   });
   b.addEventListener('input', e => {
@@ -7934,6 +8001,281 @@ function plBarBuild(){
   b.addEventListener('pointerdown', e => { if (e.target.matches('.pl-rg')) PL.drag = true; });
   document.addEventListener('pointerup', () => { if (PL.drag) { PL.drag = false; plSync(); } });
   return b;
+}
+/* ---------- the sheet viewer (5.56) ----------
+   A sheet opens over the page instead of in a new tab, so nobody leaves the site; "Open in
+   new tab" is there for whoever wants the file itself. Phones don't show a PDF inside a page
+   (Android not at all, iPhone only its first page), so the pages are drawn with pdf.js, which
+   is fetched the first time a sheet opens. Pinch, double-tap, + and −, or Ctrl+scroll zoom.
+   Only the pages near the screen are drawn, at the sharpness the zoom needs. The part player
+   stays on top, so a song can be heard and read at once. */
+const PDFJS = './vendor/pdfjs-6.5.438/';
+let pdfjsP = null;
+const pdfjs = () => pdfjsP || (pdfjsP = import(PDFJS + 'pdf.min.mjs')
+  .then(m => { m.GlobalWorkerOptions.workerSrc = PDFJS + 'pdf.worker.min.mjs'; return m; }, e => { pdfjsP = null; throw e; }));
+const SV = { el: null, tok: 0, zoom: 1, minZ: 1, pages: null };
+const sheetOk = (song, k) => { const K = SHEETKIND[k]; return !!(song && song[K.col] && (!song[K.lock] || S.session)); };
+/* the sheet a song's player offers: the choir sheet, else the piano one */
+const plSheetKind = song => sheetOk(song, 'sheets') ? 'sheets' : sheetOk(song, 'piano') ? 'piano' : '';
+const ZINSVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+const ZOUTSVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>';
+async function sheetOpen(kind, id){
+  const song = songById(id), K = SHEETKIND[kind];
+  if (!song || !K || !song[K.col]) return;
+  if (!SV.el) svBuild();
+  const tok = ++SV.tok;
+  svReset(); SV.kind = kind; SV.id = id; SV.zoom = 1;
+  svHead(song); svMsg('load'); svTab('');
+  track('sheet', id);
+  let buf = null, href = '';
+  try {                                            // a fresh signed link; the stored copy when offline or refused
+    if (navigator.onLine !== false) {
+      const { data, error } = await sb.storage.from(K.bucket).createSignedUrl(song[K.col], 3600);
+      if (!error && data) {
+        href = data.signedUrl;
+        const res = await fetch(data.signedUrl);
+        if (res.ok) {
+          buf = await res.clone().arrayBuffer();
+          try { if (window.caches) (await caches.open(SHEETCACHE)).put(sheetKey(kind, id), res); } catch (_) {}
+        }
+      }
+    }
+  } catch (_) {}
+  if (!buf) { const hit = await cachedSheet(kind, id); if (hit) { const b = await hit.blob(); buf = await b.arrayBuffer(); href = href || URL.createObjectURL(b); } }
+  if (tok !== SV.tok) return;
+  svTab(href);
+  if (!buf) return svMsg('err');
+  try {
+    const lib = await pdfjs();
+    const doc = await lib.getDocument({ data: new Uint8Array(buf), wasmUrl: PDFJS + 'wasm/', iccUrl: PDFJS + 'iccs/', isEvalSupported: false }).promise;
+    if (tok !== SV.tok) { doc.destroy(); return; }
+    SV.doc = doc;
+    const list = [];
+    for (let i = 1; i <= doc.numPages; i++) { const pg = await doc.getPage(i), v = pg.getViewport({ scale: 1 }); list.push({ page: pg, w: v.width, h: v.height }); }
+    if (tok !== SV.tok) return;
+    svPages(list);
+  } catch (e) { if (tok === SV.tok) svMsg('err'); }
+}
+function svBuild(){
+  const el = SV.el = document.createElement('div');
+  el.className = 'shv';
+  el.innerHTML = `<div class="shv-scrim" data-sv="close"></div>
+    <div class="shv-box" role="dialog" aria-modal="true">
+      <div class="shv-hd"><div class="shv-t"><strong></strong><small></small></div>
+        <div class="shv-k"><span class="shv-sw"></span>
+          <button class="shv-z" data-sv="out" aria-label="${esc(t('shvZoomOut'))}" title="${esc(t('shvZoomOut'))}">${ZOUTSVG}</button>
+          <button class="shv-z" data-sv="in" aria-label="${esc(t('shvZoomIn'))}" title="${esc(t('shvZoomIn'))}">${ZINSVG}</button>
+          <a class="shv-tab" target="_blank" rel="noopener" aria-label="${esc(t('shvNewTab'))}" title="${esc(t('shvNewTab'))}">${EXTSVG}<span>${esc(t('shvNewTab'))}</span></a>
+          <button class="shv-x" data-sv="close" aria-label="${esc(t('shvClose'))}" title="${esc(t('shvClose'))}">${XSVG}</button></div></div>
+      <div class="shv-body"><div class="shv-pages"></div><div class="shv-msg" hidden></div></div></div>`;
+  document.body.appendChild(el);
+  document.body.classList.add('shvon');
+  SV.body = el.querySelector('.shv-body');
+  el.addEventListener('click', svClick);
+  el.querySelector('.shv-scrim').addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+  el.addEventListener('gesturestart', e => e.preventDefault());     // Safari: never zoom the page behind
+  const b = SV.body;
+  b.addEventListener('scroll', () => { if (!SV.raf) SV.raf = requestAnimationFrame(() => { SV.raf = 0; if (!SV.pinch) svVisible(); }); }, { passive: true });
+  b.addEventListener('touchstart', svTouchStart, { passive: false });
+  b.addEventListener('touchmove', svTouchMove, { passive: false });
+  b.addEventListener('touchend', svTouchEnd);
+  b.addEventListener('touchcancel', svTouchEnd);
+  b.addEventListener('wheel', e => {                                 // Ctrl+scroll, and a trackpad pinch
+    if (!e.ctrlKey || !SV.pages) return;
+    e.preventDefault();
+    const r = b.getBoundingClientRect();
+    svZoom(SV.zoom * Math.exp(-e.deltaY * .01), e.clientX - r.left, e.clientY - r.top);
+  }, { passive: false });
+  b.addEventListener('dblclick', e => { if (!SV.pages || SV.touchAt && Date.now() - SV.touchAt < 800) return; const r = b.getBoundingClientRect(); svZoom(SV.zoom > 1.2 ? 1 : 2.2, e.clientX - r.left, e.clientY - r.top); });
+  window.addEventListener('resize', svResize);
+  document.addEventListener('keydown', svKey, true);
+  try { history.pushState(Object.assign({}, history.state, { shv: 1 }), ''); SV.hist = true; } catch (_) { SV.hist = false; }
+  window.addEventListener('popstate', svPop);
+  svFrame();
+  requestAnimationFrame(() => requestAnimationFrame(() => { el.classList.add('on'); const x = el.querySelector('.shv-x'); if (x) x.focus({ preventScroll: true }); }));
+}
+function svHead(song){
+  const el = SV.el, K = SV.kind;
+  el.querySelector('.shv-box').setAttribute('aria-label', song.title);
+  el.querySelector('.shv-t strong').textContent = song.title;
+  el.querySelector('.shv-t small').textContent = t(K === 'piano' ? 'lnPiano' : 'lnChoir');
+  const both = sheetOk(song, 'sheets') && sheetOk(song, 'piano');
+  el.querySelector('.shv-sw').innerHTML = both ? ['sheets', 'piano'].map(k => `<button data-sv-kind="${k}" class="${k === K ? 'on' : ''}" aria-pressed="${k === K}">${esc(t(k === 'piano' ? 'lnPiano' : 'lnChoir'))}</button>`).join('') : '';
+}
+function svTab(href){
+  const a = SV.el && SV.el.querySelector('.shv-tab');
+  if (!a) return;
+  if (href) { a.href = href; a.removeAttribute('aria-disabled'); a.tabIndex = 0; }
+  else { a.removeAttribute('href'); a.setAttribute('aria-disabled', 'true'); a.tabIndex = -1; }
+}
+function svMsg(kind){
+  const m = SV.el && SV.el.querySelector('.shv-msg');
+  if (!m) return;
+  m.hidden = !kind;
+  m.innerHTML = kind === 'load' ? `<div><span class="shv-spin"></span><p>${esc(t('shvLoading'))}</p></div>`
+    : kind === 'err' ? `<div><p>${esc(t('shvErr'))}</p>${SV.el.querySelector('.shv-tab[href]') ? `<a class="pbtn" href="${esc(SV.el.querySelector('.shv-tab').href)}" target="_blank" rel="noopener">${esc(t('shvNewTab'))}</a>` : ''}</div>` : '';
+}
+function svPages(list){
+  SV.pages = list;
+  const box = SV.el.querySelector('.shv-pages');
+  box.innerHTML = '';
+  list.forEach((p, i) => { p.el = document.createElement('div'); p.el.className = 'shv-pg'; p.el.setAttribute('role', 'img');
+    p.el.setAttribute('aria-label', t('shvPage')(i + 1, list.length)); box.appendChild(p.el); });
+  SV.el.querySelector('.shv-t small').textContent = t(SV.kind === 'piano' ? 'lnPiano' : 'lnChoir') + ' · ' + t('shvPages')(list.length);
+  svMsg(''); svLayout(); SV.body.scrollTop = 0; SV.body.scrollLeft = 0; svZoomUI(); svVisible();
+}
+function svReset(){
+  if (SV.pages) SV.pages.forEach(p => { if (p.task) p.task.cancel(); if (p.cv) p.cv.width = 0; });
+  SV.pages = null;
+  if (SV.doc) { try { SV.doc.destroy(); } catch (_) {} SV.doc = null; }
+  const box = SV.el && SV.el.querySelector('.shv-pages'); if (box) box.innerHTML = '';
+}
+/* pages as wide as the window allows (at most 920 px), times the zoom */
+const svPad = () => innerWidth < 700 ? 8 : 16;
+function svLayout(){
+  if (!SV.pages) return;
+  const b = SV.body, base = Math.max(120, Math.min(b.clientWidth - 2 * svPad(), 920)), p0 = SV.pages[0];
+  SV.minZ = Math.max(.3, Math.min(1, (b.clientHeight - 2 * svPad()) / (base * p0.h / p0.w)));   // down to a whole page
+  SV.zoom = Math.max(SV.minZ, Math.min(5, SV.zoom));
+  SV.pages.forEach(p => { p.cssW = Math.round(base * SV.zoom); p.cssH = Math.round(p.cssW * p.h / p.w); p.el.style.width = p.cssW + 'px'; p.el.style.height = p.cssH + 'px'; });
+}
+/* the point of a page under (cx, cy), and putting it back under a point after a zoom */
+function svAnchor(cx, cy){
+  const b = SV.body, px = b.scrollLeft + cx, py = b.scrollTop + cy;
+  const p = SV.pages.find(q => py < q.el.offsetTop + q.el.offsetHeight + 7) || SV.pages[SV.pages.length - 1];
+  return { p, fx: (px - p.el.offsetLeft) / p.el.offsetWidth, fy: (py - p.el.offsetTop) / p.el.offsetHeight };
+}
+function svPlace(a, cx, cy){
+  const b = SV.body;
+  b.scrollLeft = a.p.el.offsetLeft + a.fx * a.p.el.offsetWidth - cx;
+  b.scrollTop = a.p.el.offsetTop + a.fy * a.p.el.offsetHeight - cy;
+}
+let svT = 0;
+function svZoom(z, cx, cy, an){
+  if (!SV.pages) return;
+  const b = SV.body;
+  if (cx == null) { cx = b.clientWidth / 2; cy = b.clientHeight / 2; }
+  z = Math.max(SV.minZ, Math.min(5, z));
+  if (Math.abs(z - SV.zoom) < .001 && !an) return;
+  const a = an || svAnchor(cx, cy);
+  SV.zoom = z; svLayout(); svPlace(a, cx, cy); svZoomUI();
+  clearTimeout(svT); svT = setTimeout(() => { if (!SV.pinch) svVisible(); }, 160);   // sharpen once the zoom settles
+}
+function svZoomUI(){
+  if (!SV.el) return;
+  const o = SV.el.querySelector('[data-sv="out"]'), i = SV.el.querySelector('[data-sv="in"]');
+  if (o) o.disabled = !SV.pages || SV.zoom <= SV.minZ + .001;
+  if (i) i.disabled = !SV.pages || SV.zoom >= 4.999;
+}
+/* draw the pages near the screen; let go of the rest */
+function svVisible(){
+  if (!SV.pages) return;
+  const b = SV.body, top = b.scrollTop - b.clientHeight * .75, bot = b.scrollTop + b.clientHeight * 1.75;
+  SV.pages.forEach(p => {
+    const y = p.el.offsetTop;
+    if (y + p.el.offsetHeight > top && y < bot) svDraw(p);
+    else { if (p.task) { p.task.cancel(); p.task = null; } if (p.cv) { p.cv.width = 0; p.cv.remove(); p.cv = null; p.sc = 0; } }
+  });
+}
+function svDraw(p){
+  const dpr = Math.min(window.devicePixelRatio || 1, 3);
+  let sc = p.cssW / p.w * dpr;
+  const max = 8e6;                                 // phones refuse very large canvases
+  if (p.w * sc * p.h * sc > max) sc = Math.sqrt(max / (p.w * p.h));
+  sc = Math.round(sc * 100) / 100;
+  if (p.cv && p.sc === sc || p.task && p.want === sc) return;
+  if (p.task) p.task.cancel();
+  const vp = p.page.getViewport({ scale: sc }), cv = document.createElement('canvas');
+  cv.width = Math.floor(vp.width); cv.height = Math.floor(vp.height);
+  const task = p.task = p.page.render({ canvasContext: cv.getContext('2d'), viewport: vp });
+  p.want = sc;
+  task.promise.then(() => {
+    if (p.task !== task) { cv.width = 0; return; }
+    p.task = null;
+    if (p.cv) { p.cv.width = 0; p.cv.remove(); }
+    p.cv = cv; p.sc = sc; p.el.appendChild(cv);
+  }, () => { cv.width = 0; if (p.task === task) p.task = null; });
+}
+/* touch: pinch to zoom (the point between the fingers stays under them), double-tap to zoom in or back */
+const svDist = (a, c) => Math.hypot(a.clientX - c.clientX, a.clientY - c.clientY);
+function svMid(e){ const r = SV.body.getBoundingClientRect(), [a, c] = e.touches; return [(a.clientX + c.clientX) / 2 - r.left, (a.clientY + c.clientY) / 2 - r.top]; }
+function svTouchStart(e){
+  SV.touchAt = Date.now();
+  if (!SV.pages) return;
+  if (e.touches.length === 2) {
+    e.preventDefault();
+    const [cx, cy] = svMid(e);
+    SV.pinch = { d: svDist(e.touches[0], e.touches[1]), z: SV.zoom, a: svAnchor(cx, cy) };
+    SV.tap = null;
+  } else if (e.touches.length === 1) {
+    const t0 = e.touches[0];
+    SV.tap = { x: t0.clientX, y: t0.clientY, at: Date.now() };
+  }
+}
+function svTouchMove(e){
+  if (SV.pinch && e.touches.length === 2) {
+    e.preventDefault();
+    const [cx, cy] = svMid(e);
+    svZoom(SV.pinch.z * svDist(e.touches[0], e.touches[1]) / SV.pinch.d, cx, cy, SV.pinch.a);
+  } else if (SV.tap && e.touches.length === 1 && Math.hypot(e.touches[0].clientX - SV.tap.x, e.touches[0].clientY - SV.tap.y) > 10) SV.tap = null;
+}
+function svTouchEnd(e){
+  if (SV.pinch) { if (e.touches.length < 2) { SV.pinch = null; svVisible(); } return; }
+  const tap = SV.tap; SV.tap = null;
+  if (!tap || e.touches.length || Date.now() - tap.at > 300) return;
+  const last = SV.lastTap;
+  if (last && Date.now() - last.at < 320 && Math.hypot(tap.x - last.x, tap.y - last.y) < 30) {
+    e.preventDefault(); SV.lastTap = null;
+    const r = SV.body.getBoundingClientRect();
+    svZoom(SV.zoom > 1.2 ? 1 : 2.2, tap.x - r.left, tap.y - r.top);
+  } else SV.lastTap = { x: tap.x, y: tap.y, at: Date.now() };
+}
+function svResize(){
+  if (!SV.pages) return;
+  const b = SV.body, a = svAnchor(b.clientWidth / 2, b.clientHeight / 2);
+  svFrame(); svLayout(); svPlace(a, b.clientWidth / 2, b.clientHeight / 2); svZoomUI(); svVisible();
+}
+function svClick(e){
+  const k = e.target.closest('[data-sv],[data-sv-kind]');
+  if (!k) return;
+  if (k.dataset.svKind) { if (k.dataset.svKind !== SV.kind) sheetOpen(k.dataset.svKind, SV.id); return; }
+  const v = k.dataset.sv;
+  if (v === 'close') svClose();
+  else if (v === 'in') svZoom(SV.zoom * 1.25);
+  else if (v === 'out') svZoom(SV.zoom / 1.25);
+}
+function svKey(e){
+  if (!SV.el) return;
+  if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); svClose(); }
+  else if ((e.key === '+' || e.key === '=') && !e.metaKey && !e.ctrlKey) svZoom(SV.zoom * 1.25);
+  else if (e.key === '-' && !e.metaKey && !e.ctrlKey) svZoom(SV.zoom / 1.25);
+}
+/* Back (or the iPhone's swipe back) closes the sheet rather than leaving the page */
+function svPop(){ if (SV.el && !(history.state && history.state.shv)) { uaSwiped = false; SV.hist = false; svClose(); } }
+function svClose(){
+  if (!SV.el) return;
+  if (SV.hist && history.state && history.state.shv) {     // step back over our own history entry; svPop finishes
+    SV.hist = false; history.back();
+    setTimeout(() => { if (SV.el) svClose(); }, 400);
+    return;
+  }
+  const el = SV.el; SV.el = null; SV.tok++; SV.pinch = null;
+  svReset();
+  window.removeEventListener('resize', svResize);
+  window.removeEventListener('popstate', svPop);
+  document.removeEventListener('keydown', svKey, true);
+  document.body.classList.remove('shvon');
+  el.classList.remove('on');
+  setTimeout(() => el.remove(), calm() ? 0 : 240);
+  const back = SV.back; SV.back = null;
+  if (back && back.isConnected) try { back.focus({ preventScroll: true }); } catch (_) {}
+  plSync();
+}
+/* with the player showing, the viewer ends just above it */
+function svFrame(){
+  if (!SV.el) return;
+  const on = document.body.classList.contains('plon') && plBarEl;
+  SV.el.style.setProperty('--shv-b', on ? Math.max(0, Math.round(innerHeight - plBarEl.offsetTop + 10)) + 'px' : '');   // offsetTop ignores the bar's entrance slide
 }
 /* ---------- director: the Recordings window (full link + one file or link per part) ---------- */
 function recModal(a){
@@ -9131,7 +9473,16 @@ function toggleTray(card, force){
   const closing = [...document.querySelectorAll('.songc.open')].filter(c => c !== card || !on);
   setTray(card, on);
   S.actOpen = on ? card.dataset.srow : null;
-  /* putting the buttons away also folds that song's admin tools */
+  /* putting the buttons away also folds that song's Listen row (5.56) */
+  const lsShut = closing.find(c => S.listenOpen && S.listenOpen.endsWith(':' + c.dataset.srow));
+  if (lsShut) {
+    const k = S.listenOpen; S.listenOpen = null; S.listenEnter = null;
+    const row = lsShut.querySelector('.lsrow'), b = lsShut.querySelector('[data-listen]');
+    if (b) { b.classList.remove('on'); b.setAttribute('aria-expanded', 'false'); }
+    if (row && !calm()) { row.classList.remove('enter'); row.classList.add('out'); setTimeout(() => { if (S.listenOpen !== k) render(); }, 270); }
+    else render();
+  }
+  /* and that song's admin tools */
   const shut = closing.filter(c => c.dataset.srow === S.admRow || c.dataset.srow === S.audioEdit);
   if (shut.length) {
     shut.forEach(c => c.querySelectorAll('.admstrip,.audiorow').forEach(x => x.classList.add('out')));
@@ -9361,29 +9712,10 @@ document.addEventListener('click', async e => {
     S.eventSongs = S.eventSongs.filter(x => x.event_id !== d.delEvent);
     return render();
   }
-  if (d.open) {
-    const [kind, id] = d.open.split(':'), K = SHEETKIND[kind];
-    const song = songById(id);
-    if (!song || !song[K.col]) return;
-    const w = window.open('', '_blank');          // opened before the await, or the popup blocker eats it
-    /* offline, or the signing call failed: fall back to the stored copy */
-    const fromCache = async () => {
-      const hit = await cachedSheet(kind, id);
-      if (!hit) return false;
-      const url = URL.createObjectURL(await hit.blob());
-      if (w) w.location = url; else location.href = url;
-      return true;
-    };
-    track('sheet', id);
-    if (!navigator.onLine && await fromCache()) return;
-    const { data, error } = await sb.storage.from(K.bucket).createSignedUrl(song[K.col], 3600);
-    if (error || !data) {
-      if (await fromCache()) return;
-      if (w) w.close(); return fail(error || new Error('signing failed'));
-    }
-    if (w) w.location = data.signedUrl; else location.href = data.signedUrl;
-    cacheSheet(kind, song);                        // keep it for the next time there is no signal
-    return;
+  if (d.open) {                                    // the sheet viewer (5.56); it keeps an offline copy as well
+    const [kind, id] = d.open.split(':');
+    SV.back = el;
+    return sheetOpen(kind, id);
   }
   if (d.lock) {
     const [kind, id] = d.lock.split(':'), K = SHEETKIND[kind];
