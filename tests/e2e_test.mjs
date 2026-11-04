@@ -709,6 +709,7 @@ async function guestChecks() {
       ok(/[?&]token=/.test(url), 'link is not signed');
       await tap(page, '.shv-x');
       await until(async () => !await page.locator('.shv').count(), 'the viewer closed');
+      ok(!(await page.evaluate(() => (window.__pdfErrs || []).length)), 'errors while closing the viewer');
       eq(await page.evaluate(() => location.hash), kind === 'piano' ? '#/sheets/piano' : '#/sheets', 'the page after closing the viewer');
       // the part player offers the sheet in place of +10 s
       if (kind === 'sheets') {
