@@ -1320,8 +1320,13 @@ async function directorChecks() {
     await tap(page, `[data-save-person="${s.id}"]`);
     const e = await until(async () => { const r = await one(`select * from singers where id = ${lit(s.id)}`); return r.name === name2 && r; }, 'the edit to be saved');
     eq([e.part, e.joined_on, e.service_start, e.is_conductor], ['soprano', '2026-03-01', '2026-04-05', true], 'edited singer (part, joined, services from, conductor)');
+    /* 5.60: a singer who leaves frees their chair (the chart doesn't show them, so it looks empty) */
+    const held = new Set((await sql("select seat_row, seat_col from singers where seat_block = 'soprano'")).map(r => r.seat_row + ':' + r.seat_col));
+    let col = 1; while (held.has('2:' + col)) col++;
+    await sql(`update singers set seat_block = 'soprano', seat_row = 2, seat_col = ${col} where id = ${lit(s.id)}`);
     await tap(page, `[data-archive-singer="${s.id}"]`);
     await until(async () => (await one(`select active from singers where id = ${lit(s.id)}`)).active === false, 'deactivated');
+    eq(Object.values(await one(`select seat_block, seat_row, seat_col from singers where id = ${lit(s.id)}`)), [null, null, null], 'chair freed when deactivated');
     await tap(page, `[data-archive-singer="${s.id}"]`);
     await until(async () => (await one(`select active from singers where id = ${lit(s.id)}`)).active === true, 'reactivated');
     await go(page, '#/admin/members/pianists');
@@ -1385,6 +1390,50 @@ async function directorChecks() {
     eq([await at(Y), await at(Z)], [key(Z), key(Y)], 'swapped singers');
     const p2 = await open({ hash: '#/seating' });
     eq(await p2.$eval(`[data-seat="${X.seat_block}:${X.seat_row}:${c2}"]`, x => x.getAttribute('aria-label') || x.getAttribute('title')), X.name, 'new chair as everyone sees it');
+  });
+
+  /* 5.60: two singers who had left the youth choir still held chairs. The chart doesn't show them,
+     so their chairs looked empty, and moving anyone there was refused: nothing could be saved. */
+  await check('D12b', 'seating chart: a chair still held by someone who left the choir can be given to a singer', async () => {
+    const all = await sql('select * from singers'), key = s => `${s.seat_block}:${s.seat_row}:${s.seat_col}`;
+    const gone = all.find(s => s.active === false && PARTS.includes(s.part));
+    ok(gone, 'nobody who left the choir in the test data');
+    const X = all.find(s => s.active !== false && PARTS.includes(s.part) && s.seat_block);
+    const taken = new Set(all.filter(s => s.seat_block).map(key));
+    let c = 1; while (taken.has(`${X.seat_block}:${X.seat_row}:${c}`)) c++;
+    const F = `${X.seat_block}:${X.seat_row}:${c}`;
+    await sql(`update singers set seat_block = ${lit(X.seat_block)}, seat_row = ${X.seat_row}, seat_col = ${c} where id = ${lit(gone.id)}`);
+    const page = await director('#/seating');
+    await tap(page, '[data-seat-edit]');
+    ok(await page.$eval(`[data-seat="${F}"]`, x => x.classList.contains('empty')), 'the chair of someone who left should look empty');
+    await tap(page, `[data-seat="${key(X)}"]`);
+    await tap(page, `[data-seat="${F}"]`);
+    await tap(page, '[data-seat-save]');
+    eq(await saved(page, 'saving seats'), t('seatsSaved'), 'message');
+    const at = async id => { const r = await one(`select seat_block, seat_row, seat_col from singers where id = ${lit(id)}`); return r.seat_block ? key(r) : null; };
+    eq([await at(X.id), await at(gone.id)], [F, null], 'singer in the chair, the one who left without it');
+  });
+
+  await check('D12c', 'seating chart: a chair taken from another device meanwhile: clear message, the singer keeps their chair', async () => {
+    const all = await sql('select * from singers'), key = s => `${s.seat_block}:${s.seat_row}:${s.seat_col}`;
+    const seated = all.filter(s => s.active !== false && PARTS.includes(s.part) && s.seat_block);
+    const [X, W] = seated;
+    const taken = new Set(all.filter(s => s.seat_block).map(key));
+    let c = 1; while (taken.has(`${X.seat_block}:${X.seat_row}:${c}`)) c++;
+    const F = `${X.seat_block}:${X.seat_row}:${c}`;
+    const page = await director('#/seating');
+    await tap(page, '[data-seat-edit]');
+    await tap(page, `[data-seat="${key(X)}"]`);
+    await tap(page, `[data-seat="${F}"]`);
+    await sql(`update singers set seat_block = ${lit(X.seat_block)}, seat_row = ${X.seat_row}, seat_col = ${c} where id = ${lit(W.id)}`);   // the other device
+    await tap(page, '[data-seat-save]');
+    await until(async () => (await toastText(page)).includes(t('seatTaken')), 'the chair-was-taken message');
+    eq(await page.$eval(`[data-seat="${F}"]`, x => x.getAttribute('aria-label')), W.name, 'chart shows who took the chair');
+    eq(await page.$eval(`[data-seat="${key(X)}"]`, x => x.getAttribute('aria-label')), X.name, 'the singer back in their own chair');
+    await tap(page, '[data-seat-save]');
+    await until(async () => (await toastText(page)) === t('seatsSaved'), 'saved the second time');
+    const at = async id => { const r = await one(`select seat_block, seat_row, seat_col from singers where id = ${lit(id)}`); return r.seat_block ? key(r) : null; };
+    eq([await at(X.id), await at(W.id)], [key(X), F], 'nothing lost: the singer kept their chair');
   });
 
   await check('D13', 'choir rules: edit and save', async () => {

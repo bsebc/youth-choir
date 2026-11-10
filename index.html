@@ -3502,6 +3502,7 @@ const STR = {
     audienceView:'Audience view',choirView:'Choir view',emptyBlock:'No one seated',
     editSeats:'Edit seating',seatHint:'Tap a singer, then tap a seat. Tapping two singers swaps them.',
     unseat:'Remove from seat',selected2:'Selected',notSeated:'Not seated',
+    seatTaken:'Someone took one of those seats from another device just now. The chart is up to date again: check it and save once more.',
     seatsMovedN:n=>n+(n===1?' seat change':' seat changes'),seatsSaved:'Seating saved',
     trayNote:'Still without a seat — tap a name, then tap a chair.',showNames:'Show names',hide:'Hide',
     viewSheets:'View & Listen',orderOnly:'Songs for this service',showAllSheets:'Show all songs',shareBtn:'Share',
@@ -3629,6 +3630,7 @@ const STR = {
     audienceView:'Вид из зала',choirView:'Вид с хора',emptyBlock:'Никого нет',
     editSeats:'Изменить схему',seatHint:'Нажмите на хориста, затем на место. Нажатие на двух хористов меняет их местами.',
     unseat:'Убрать с места',selected2:'Выбран',notSeated:'Без места',
+    seatTaken:'Одно из этих мест только что заняли с другого устройства. Схема обновлена: проверьте и сохраните ещё раз.',
     seatsMovedN:n=>'изменений: '+n,seatsSaved:'Схема сохранена',
     trayNote:'Ещё без места — нажмите имя, затем место.',showNames:'Показать имена',hide:'Скрыть',
     viewSheets:'Смотреть и слушать',orderOnly:'Песни для этого служения',showAllSheets:'Показать все песни',shareBtn:'Поделиться',
@@ -3995,13 +3997,14 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.59.0';
+const VERSION = '5.60.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Seating chart: saving works again when a chair was last held by someone who has left the choir; archiving a singer now frees their chair',
     'Recordings saved in Apple Lossless now play in Chrome, Edge, Firefox and on Android phones, not only on iPhones and Macs',
     'Sheets: Listen at the bottom of the sheet window brings up the parts, so you can hear one while you read',
     'Recording links from YouTube, Vimeo, SoundCloud and Google Drive play in the same window as the sheets, with Open in new tab; Dropbox recordings play in the player',
@@ -4089,6 +4092,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Схема рассадки: сохранение снова работает, если место раньше занимал тот, кто уже не в хоре; при переносе певца в архив его место освобождается',
     'Записи в формате Apple Lossless теперь играют в Chrome, Edge, Firefox и на Android, а не только на iPhone и Mac',
     'Ноты: кнопка «Слушать» внизу окна с нотами открывает партии — можно слушать и смотреть одновременно',
     'Записи по ссылкам с YouTube, Vimeo, SoundCloud и Google Диска открываются в том же окне, что и ноты, с кнопкой «Открыть в новой вкладке»; записи из Dropbox играют в плеере',
@@ -5073,18 +5077,42 @@ async function saveSeats(){
      filling any of them — otherwise a simple swap collides with the singer who
      is still sitting there. If a later write fails the pending moves stay on
      screen and Save can be pressed again: the chairs are already empty. */
-  const clear = await sb.from('singers').update(EMPTY).in('id', rows.map(r => r.s.id)).select();
+  /* 5.60: someone no longer on the chart (they left the choir) can still hold a chair in the
+     database. Their chair looks empty here, so a move into it was refused as a second person
+     in one chair. Whoever off the chart holds a chair being filled gives it up first. */
+  const onChart = new Set(seatRoster().map(x => x.id));
+  const filling = new Set(rows.filter(r => r.v).map(r => seatKey(r.v)));
+  const ghosts = S.singers.filter(x => !onChart.has(x.id) && seatOf(x) && filling.has(seatKey(seatOf(x))));
+  const was = new Map(rows.map(({ s }) => [s.id, seatOf(s)]));      // where everyone moving sat before
+  const clear = await sb.from('singers').update(EMPTY).in('id', rows.map(r => r.s.id).concat(ghosts.map(g => g.id))).select();
   if (!wrote(clear)) return render();
   rows.forEach(({ s }) => Object.assign(s, EMPTY));
+  ghosts.forEach(g => Object.assign(g, EMPTY));
   for (const { s, v } of rows) {
     if (!v) continue;
     const patch = { seat_block: v.b, seat_row: v.r, seat_col: v.c };
     const res = await sb.from('singers').update(patch).eq('id', s.id).select();
+    if (res.error && res.error.code === '23505') return seatTaken(was);
     if (!wrote(res)) return render();
     Object.assign(s, patch);
   }
   S.seatEdit = null; S.seatSel = null;
   okToast(t('seatsSaved')); render();
+}
+/* One of the chairs was taken meanwhile, from another device. Read the chart as it is now;
+   a move into a chair someone on the chart sits in is dropped, and that singer goes back to
+   the chair they had if it is still free. Every other move stays pending for one more Save. */
+async function seatTaken(was){
+  await load(true);
+  if (S.seatEdit) {
+    const held = new Set(seatRoster().filter(x => !S.seatEdit.has(x.id) && seatOf(x)).map(x => seatKey(seatOf(x))));
+    const dropped = [];
+    S.seatEdit.forEach((to, id) => { if (to && held.has(seatKey(to))) dropped.push(id); });
+    dropped.forEach(id => S.seatEdit.delete(id));
+    dropped.forEach(id => { const back = was.get(id); if (back && !seatMap().has(seatKey(back))) S.seatEdit.set(id, back); });
+  }
+  S.seatSel = null;
+  fail({ message: t('seatTaken') });
 }
 
 /* ---------- choir rules ---------- */
@@ -10272,9 +10300,11 @@ document.addEventListener('click', async e => {
     if (!s) return;
     if (!await ensureSession()) return;
     const next = s.active === false;               // true = restore
-    const res = await sb.from('singers').update({ active: next }).eq('id', s.id).select();
+    /* leaving the choir frees their chair (5.60): the chart doesn't show them, so it would look empty */
+    const patch = next ? { active: true } : { active: false, seat_block: null, seat_row: null, seat_col: null };
+    const res = await sb.from('singers').update(patch).eq('id', s.id).select();
     if (!wrote(res)) return render();
-    s.active = next; S.editPerson = null; return render();
+    Object.assign(s, patch); S.editPerson = null; return render();
   }
   if (d.saveSongRow) {
     const s = songById(d.saveSongRow);
