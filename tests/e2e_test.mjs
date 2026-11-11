@@ -681,7 +681,9 @@ async function guestChecks() {
     }
     const locked = M.live.filter(s => s.pdf_path && s.pdf_locked);
     ok(locked.length, 'no locked sheet to check');
-    ok((await page.locator(`[data-srow="${locked[0].id}"]`).innerText()).includes(t('adminOnly')), 'locked sheet not labelled "' + t('adminOnly') + '"');
+    const lockedRow = page.locator(`[data-srow="${locked[0].id}"]`);
+    await lockedRow.scrollIntoViewIfNeeded();        // 5.61: on a phone the cards far off screen are drawn only as they come near
+    await until(async () => (await lockedRow.innerText()).includes(t('adminOnly')), 'the locked sheet to be labelled "' + t('adminOnly') + '"', 3000);
     const files = new Set((await sql("select bucket_id || ':' || name k from storage.objects")).map(r => r.k));
     for (const [kind, col] of [['sheets', 'pdf_path'], ['piano', 'piano_path']]) {
       if (kind === 'piano') await go(page, '#/sheets/piano');
@@ -1628,7 +1630,7 @@ async function directorChecks() {
     eq(csv(songs.body), [UI.csvSongs, ...sev.flatMap(e => M.songsFor(e.id).map((s, i) => [e.date, e.name || e.kind, String(i + 1), s.title, s.subtitle || '']))], 'song history CSV');
     const bk = await grab('[data-backup]');
     const dump = JSON.parse(bk.body);
-    for (const tb of ['singers', 'events', 'songs', 'song_categories', 'absences', 'event_songs']) eq((dump.tables[tb] || []).length, +(await one(`select count(*) n from ${tb}`)).n, `backup rows in ${tb}`);
+    for (const tb of ['singers', 'events', 'songs', 'song_categories', 'absences', 'event_songs', 'learn_folders']) eq((dump.tables[tb] || []).length, +(await one(`select count(*) n from ${tb}`)).n, `backup rows in ${tb}`);
   });
 
   /* D17: the token can expire between sign-in and a save, and the database can refuse a
@@ -1762,6 +1764,193 @@ async function directorChecks() {
 /* =====================================================================
    main
    ===================================================================== */
+/* =====================================================================
+   Starting up (5.61): the saved copy, a network that does not answer, the
+   service worker's time limit, the page's own fallback
+   ===================================================================== */
+const SAVED = 'bsebc-saved-data';
+/* requests for the choir's tables that are held back until release() */
+async function holdReads(page) {
+  const held = []; let on = true;
+  await page.route('**/rest/v1/**', route => { if (on && route.request().method() === 'GET') held.push(route); else route.continue().catch(() => {}); });
+  return { count: () => held.length, release: async () => { on = false; for (const r of held.splice(0)) await r.continue().catch(() => {}); } };
+}
+const liveReads = page => page.evaluate(() => window.__live || 0);
+const savedCopy = page => until(() => page.evaluate(k => !!localStorage.getItem(k), SAVED), 'the saved copy to be written', 10000);
+async function startChecks() {
+  const song = () => M.songs.find(s => s.active && !s.learning && s.title.length > 6);
+
+  await check('A21', 'the period: Attendance goes back to six months after a visit to History; a period the reader picks is kept on both', async () => {
+    const fresh = await open({ hash: '#/attendance/grid' });
+    const cols = p => p.locator('.hday .d').count(), period = p => p.locator('.rpill .rv').first().innerText();
+    const want = await cols(fresh);
+    eq(await period(fresh), t('rng6'), 'Attendance on a fresh open');
+    const page = await open({ hash: '#/songs/summary' });
+    eq(await period(page), t('rng36'), 'History (songs) period');
+    await go(page, '#/attendance/grid');
+    eq([await period(page), await cols(page)], [t('rng6'), want], 'Attendance after History: period, dates across the grid');
+    await go(page, '#/songs/services');
+    eq(await period(page), t('rng12'), 'History (services) period');
+    await go(page, '#/attendance/summary');
+    eq(await period(page), t('rng6'), 'Attendance summary after History');
+    // a period the reader picks themselves is theirs: it stays on both pages
+    await tap(page, '[data-toggle-range]');
+    await tap(page, '[data-preset="12"]');
+    await until(async () => await period(page) === t('rng12'), 'the picked period');
+    await go(page, '#/songs/summary');
+    eq(await period(page), t('rng12'), 'History after picking a year');
+    await go(page, '#/attendance/grid');
+    eq(await period(page), t('rng12'), 'Attendance after picking a year');
+  });
+
+  await check('B1', 'start: a visitor’s second visit opens from the copy saved on the device, then the live data replaces it', async () => {
+    M = await loadModel();
+    const s = song(), was = s.title, now = was + ' (изм.)';
+    const page = await open({ hash: '#/sheets' });
+    ok((await text(page)).includes(was), 'song not on the page');
+    await savedCopy(page);
+    await sql(`update songs set title = ${lit(now)} where id = ${lit(s.id)}`);
+    try {
+      const reads = await holdReads(page);
+      await page.reload();
+      await until(async () => (await text(page).catch(() => '')).includes(was), 'the page drawn from the saved copy while the network is silent');
+      ok(reads.count() > 0, 'the live data was not asked for');
+      eq([await liveReads(page), await page.locator('.skel').count()], [0, 0], 'live reads so far, loading placeholders');
+      await reads.release();
+      await until(async () => (await text(page)).includes(now), 'the live title once the network answers');
+      ok(await liveReads(page) >= 1, 'live read not counted');
+      // the same data again (coming back to the app): nothing is redrawn
+      const mark = await page.evaluate(() => { const m = document.querySelector('main'); m.dataset.kept = '1'; return true; });
+      await savedCopy(page);
+      await until(() => page.evaluate(k => localStorage.getItem(k).includes('(изм.)'), SAVED), 'the saved copy to follow the live data', 10000);
+      const n = await liveReads(page);
+      await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+      await until(async () => await liveReads(page) > n, 'a refresh on coming back');
+      eq(await page.evaluate(() => document.querySelector('main').dataset.kept || ''), '1', 'page left alone when nothing changed');
+    } finally { await sql(`update songs set title = ${lit(was)} where id = ${lit(s.id)}`); }
+  });
+
+  await check('B1b', 'start: a saved copy the page cannot draw is thrown away, and the app starts the ordinary way', async () => {
+    const page = await open({ hash: '#/home' });
+    await savedCopy(page);
+    await page.evaluate(k => { const raw = localStorage.getItem(k), i = raw.indexOf('\n', raw.indexOf('\n') + 1);
+      const d = JSON.parse(raw.slice(i + 1)); d.singers = [null, 7, 'x']; d.events = [null]; localStorage.setItem(k, raw.slice(0, i + 1) + JSON.stringify(d)); }, SAVED);
+    await page.reload();
+    await settle(page, 300);
+    await until(async () => await liveReads(page) >= 1 && await page.locator('.skel').count() === 0, 'the page from live data');
+    ok((await text(page)).length > 200, 'home is empty');
+    await until(() => page.evaluate(k => { const raw = localStorage.getItem(k); return !!raw && !raw.includes('[null,7,"x"]'); }, SAVED), 'a good copy saved in its place', 10000);
+    page.__errors = [];
+  });
+
+  await check('B2', 'start: a signed-in device never opens from the saved copy; a link to one song order waits for live data too', async () => {
+    M = await loadModel();
+    const s = song(), was = s.title, now = was + ' (изм.)';
+    const page = await director('#/sheets');
+    await savedCopy(page);
+    await sql(`update songs set title = ${lit(now)} where id = ${lit(s.id)}`);
+    try {
+      const reads = await holdReads(page);
+      await page.reload();
+      await until(async () => reads.count() > 0 && await page.locator('.skel').count() > 0, 'the loading screen while the network is silent');
+      ok(!(await text(page).catch(() => '')).includes(was), 'a signed-in device showed the saved copy');
+      await reads.release();
+      await until(async () => (await text(page)).includes(now), 'the live title');
+    } finally { await sql(`update songs set title = ${lit(was)} where id = ${lit(s.id)}`); }
+    // a visitor, on a link to one particular thing
+    const ev = M.events.filter(e => M.eventSongs.some(x => x.event_id === e.id)).pop();
+    const p2 = await open({ hash: '#/home' });
+    await savedCopy(p2);
+    const reads = await holdReads(p2);
+    await p2.goto(BASE + '/#/sheets/order-' + ev.id);
+    await p2.reload();
+    await until(async () => reads.count() > 0 && await p2.locator('.skel').count() > 0, 'the loading screen on a song-order link');
+    await reads.release();
+    await until(async () => await p2.locator('.skel').count() === 0 && await liveReads(p2) >= 1, 'the song order from live data');
+  });
+
+  await check('B3', 'start: a network that never answers ends in “Try again” instead of an endless loading screen, and trying again works', async () => {
+    const page = await open({ hash: '#/sheets' });
+    await page.evaluate(k => localStorage.removeItem(k), SAVED);
+    const reads = await holdReads(page);
+    await page.reload();
+    await until(async () => reads.count() > 0 && await page.locator('.skel').count() > 0, 'the loading screen');
+    await page.clock.runFor(8500);                    // the first read gives up and a second one starts
+    await until(async () => await page.locator('.skel').count() > 0 && reads.count() > 8, 'a second read on fresh connections', 6000);
+    await page.clock.runFor(32000);                   // the second gives up too
+    await until(() => page.locator('[data-retry-load]').count(), 'the Try again button');
+    const body = await text(page);
+    ok(body.includes(t('loadFailedTitle')) && body.includes(t('loadSlow')), 'the failure is not explained: ' + body.slice(0, 120));
+    await reads.release();
+    await tap(page, '[data-retry-load]');
+    await until(async () => await page.locator('.skel').count() === 0 && await page.locator('[data-retry-load]').count() === 0 && await liveReads(page) >= 1, 'the page after trying again');
+    page.__errors = [];                               // the dropped requests are reported in the console: expected here
+  });
+
+  await check('B4', 'start: signing in from a screen drawn from the saved copy shows the director’s pages only once live data is in', async () => {
+    const page = await open({ hash: '#/home' });
+    await savedCopy(page);
+    const reads = await holdReads(page);
+    await page.reload();
+    await until(async () => await page.locator('.skel').count() === 0 && (await text(page).catch(() => '')).length > 40, 'the saved copy on screen');
+    eq(await liveReads(page), 0, 'live reads before signing in');
+    await signIn(page);
+    await atHash(page, /^#\/admin/, 10000);
+    await until(() => page.locator('.skel').count(), 'the loading screen on the director’s page');
+    eq(await liveReads(page), 0, 'live reads while the network is silent');
+    await reads.release();
+    await until(async () => await page.locator('.skel').count() === 0 && await liveReads(page) >= 1, 'the director’s page from live data');
+    ok((await text(page)).length > 40, 'director page empty');
+  });
+
+  await check('B5', 'start: if the app’s script cannot load, the page itself says so and offers Reload (no blank screen)', async () => {
+    const page = await open({ hash: '#/home' });
+    const faded = () => page.evaluate(() => { const b = document.querySelector('.bootwait'); if (!b) return null; const c = getComputedStyle(b); return c.visibility === 'visible' && +c.opacity > 0.9; });
+    // the library fails outright: the message is there at once
+    await page.route('**/vendor/supabase-js-*', r => r.abort());
+    await page.reload();
+    await until(faded, 'the built-in message when the script fails', 4000);
+    ok(/Reload/.test(await page.locator('.bootwait').innerText()), 'no Reload button');
+    // the library never arrives: the message appears by itself after eight seconds
+    await page.unroute('**/vendor/supabase-js-*');
+    const stuck = [];
+    await page.route('**/vendor/supabase-js-*', r => { stuck.push(r); });
+    await page.reload({ waitUntil: 'commit' });       // the page never finishes loading while the library is outstanding
+    await sleep(2500);
+    eq(await faded(), false, 'message during a normal-length start');
+    await until(faded, 'the built-in message after eight seconds of nothing', 9000);
+    await page.unroute('**/vendor/supabase-js-*');
+    for (const r of stuck) await r.abort().catch(() => {});
+    await page.locator('.bootwait button').click();
+    await settle(page, 300);
+    eq(await page.locator('.bootwait').count(), 0, 'the message once the app has started');
+    ok((await text(page)).length > 40, 'app did not start after Reload');
+    page.__errors = [];                               // the failed loads are reported in the console: expected here
+  });
+
+  await check('B6', 'start: with the service worker, a server that does not answer for the page opens the saved copy within seconds', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'allow' });
+    const page = await ctx.newPage();
+    try {
+      await page.goto(BASE + '/#/home');
+      await settle(page, 300);
+      await until(() => page.evaluate(() => navigator.serviceWorker.ready.then(() => !!navigator.serviceWorker.controller)), 'the service worker in control', 15000);
+      const isApp = () => page.evaluate(async () => { const hit = await caches.match('./index.html'); return !!hit && (await hit.text()).includes('id="app"'); });
+      await until(isApp, 'the page in the cache', 10000);
+      // opening a file directly must not replace the saved page
+      await page.goto(BASE + '/site.webmanifest');
+      await page.goto(BASE + '/#/home');
+      await settle(page, 300);
+      ok(await isApp(), 'a file opened directly was stored as the page');
+      await post('/__test/stall', { ms: 20000 });
+      const t0 = Date.now();
+      await page.reload({ waitUntil: 'domcontentloaded', timeout: 15000 });
+      await until(() => page.evaluate(() => !!document.querySelector('.mast')), 'the app from the saved copy', 8000);
+      ok(Date.now() - t0 < 9000, `the saved copy took ${Date.now() - t0} ms to open`);
+    } finally { await post('/__test/stall', { ms: 0 }).catch(() => {}); await ctx.close().catch(() => {}); }
+  });
+}
+
 async function main() {
   if (!process.env.NO_RESET) {
     const run = (f, args) => { try { execFileSync(path.join(HERE, f), args, { stdio: 'pipe' }); }
@@ -1779,6 +1968,7 @@ async function main() {
   try {
     await guestChecks();
     await directorChecks();
+    await startChecks();
   } finally { await browser.close(); }
   const bad = results.filter(r => !r.ok).length;
   console.log(`${results.length - bad} passed, ${bad} failed` + (VERBOSE ? ` (${Math.round((Date.now() - t0) / 1000)} s)` : ''));

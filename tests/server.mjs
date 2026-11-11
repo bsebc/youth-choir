@@ -394,6 +394,7 @@ async function storageRoute(req, res, url, raw) {
 // ---------- HTTP ----------
 const cors = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD', 'Access-Control-Expose-Headers': 'Content-Range, Content-Length, Accept-Ranges' };
 const LIVE_URLS = /https:\/\/(qynprpimmjansluhuoez|cetjvfzgituzeiooxaex)\.supabase\.co/g;
+let stallPage = 0;    // ms to sit on a request for the page (set through /__test/stall)
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, BASE);
   const chunks = []; for await (const c of req) chunks.push(c);
@@ -413,11 +414,13 @@ const server = http.createServer(async (req, res) => {
       if (what === 'sql') { const r = await pool.query(raw); return send(200, Array.isArray(r) ? r.map(x => x.rows) : r.rows); }
       if (what === 'auth') { Object.assign(auth, JSON.parse(raw || '{}')); return send(200, auth); }
       if (what === 'token') { const b = JSON.parse(raw || '{}'); const u = await userById(b.sub); return send(200, session(u)); }
+      if (what === 'stall') { stallPage = +(JSON.parse(raw || '{}').ms) || 0; return send(200, { ms: stallPage }); }   // the page itself answers this late (a server that hangs)
       return send(404, null);
     }
     if (url.pathname.startsWith('/realtime/')) return send(404, null);
     // the site
     let p = path.normalize(decodeURIComponent(url.pathname)).replace(/^\/+/, '') || 'index.html';
+    if (stallPage && p === 'index.html') await new Promise(r => setTimeout(r, stallPage));
     const file = path.join(SITE, p);
     if (!file.startsWith(SITE) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) return send(404, 'not found', { 'Content-Type': 'text/plain' });
     if (/\.(html|js|mjs)$/.test(file)) {

@@ -1,5 +1,7 @@
 /* BSEBC Youth Choir · offline support
-   - app shell (the page, the Supabase library, icons): served from the cache,
+   - the page: from the network (so a new version shows at once) if the server
+     answers within 2.5 seconds, otherwise the saved copy
+   - the rest of the app shell (the Supabase library, icons): served from the cache,
      refreshed in the background
    - Supabase reads: network first, the last good copy when offline
    - never stored: writes, sign-in, signed sheet links (a new token every time;
@@ -11,6 +13,8 @@ const SHELL = 'bsebc-youth-shell-v3';
 const DATA  = 'bsebc-youth-data-v3';
 const SHEETS = 'bsebc-youth-sheets-v1';   // sheet PDFs stored by the page for offline use
 const ICON_V = '?v=3137';   // the version index.html asks for
+const PAGE_WAIT = 2500;    // ms the server gets to answer for the page before the saved copy opens
+const APP_PATHS = [new URL('./', location).pathname, new URL('./index.html', location).pathname];
 const SHELL_FILES = ['./', './index.html', './vendor/supabase-js-2.118.0.esm.js', './site.webmanifest',
                      './favicon.svg' + ICON_V, './apple-touch-icon.png' + ICON_V, './icon-192.png' + ICON_V, './icon-512.png' + ICON_V];
 
@@ -35,11 +39,27 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;                       // never touch writes
   const url = new URL(req.url);
 
-  // the page itself: always try the network first so a new deploy shows up at once
+  // The page itself: the network first, so a new version shows up at once — but only for so long.
+  // On a phone that has just woken up, or with a weak signal, that request can sit with no answer
+  // at all: a home-screen app then showed a blank screen until it was closed and opened again.
+  // If the server has not answered within PAGE_WAIT, the saved copy opens instead; the request
+  // carries on behind it and its answer is stored for next time. A server error (5xx) also opens
+  // the saved copy. Only the app's own page is handled: anything else opened directly (a file,
+  // say) is left to the browser, and is never stored as the page.
   if (req.mode === 'navigate') {
-    e.respondWith(fetch(req)
-      .then(res => { if (res.ok && url.origin === location.origin) keep(SHELL, './index.html', res); return res; })
-      .catch(() => caches.match('./index.html')));
+    if (url.origin !== location.origin || !APP_PATHS.includes(url.pathname)) return;
+    const saved = () => caches.match('./index.html');
+    const net = fetch(req).then(res => {
+      if (res.ok) {
+        const copy = res.clone();
+        e.waitUntil(caches.open(SHELL).then(c => c.put('./index.html', copy)).catch(() => {}));
+        return res;
+      }
+      return res.status >= 500 ? saved().then(hit => hit || res) : res;
+    });
+    e.waitUntil(net.then(() => {}, () => {}));
+    e.respondWith(Promise.race([net.catch(() => null), new Promise(ok => setTimeout(ok, PAGE_WAIT, null))])
+      .then(res => res || saved().then(hit => hit || net)));
     return;
   }
 

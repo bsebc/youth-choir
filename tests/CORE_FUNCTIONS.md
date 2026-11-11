@@ -28,6 +28,7 @@ change (`A1`… are the ids the test output uses).
 | A18 | "That's me": picking yourself is remembered |
 | A19 | Anonymous usage counting records page views (and never for the signed-in director) |
 | A20 | Every main screen fits a 390 px phone with no sideways page scroll |
+| A21 | The period: Attendance goes back to six months after a visit to History; a period the reader picks is kept on both |
 
 ## Director (signed in)
 
@@ -50,6 +51,18 @@ change (`A1`… are the ids the test output uses).
 | D15 | Usage page loads for the director only |
 | D16 | CSV export downloads |
 | D17 | An expired session is refreshed before a write; a write that changes nothing is reported, never shown as saved |
+
+## Starting up (5.61)
+
+| # | What must work |
+|---|---|
+| B1 | A visitor's second visit opens at once from the copy saved on the device; live data then replaces it; identical data redraws nothing |
+| B1b | A saved copy the page cannot draw is thrown away, and the app starts the ordinary way |
+| B2 | A signed-in device never opens from the saved copy, and neither does a link to one song order |
+| B3 | A network that never answers ends in "Try again" (after one automatic second try), not an endless loading screen |
+| B4 | Signing in from a screen drawn from the saved copy shows the director's pages only once live data is in |
+| B5 | If the app's script cannot load, the page itself says so and offers Reload: never a blank screen |
+| B6 | With the service worker, a server that does not answer for the page opens the saved copy within seconds; a file opened directly is never stored as the page |
 
 ## Security (checked by `api_test.mjs` against the database rules)
 

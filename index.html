@@ -19,12 +19,17 @@
 <link rel="icon" href="favicon.svg?v=3137" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3137">
 <link rel="manifest" href="site.webmanifest">
+<!-- 5.61: the connection to the database opens, and the library loads, while this page is still being read -->
+<link rel="preconnect" href="https://cetjvfzgituzeiooxaex.supabase.co" crossorigin>
+<link rel="modulepreload" href="./vendor/supabase-js-2.118.0.esm.js">
 <meta name="theme-color" content="#17203a">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Youth Choir">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<script>try{var t=localStorage.getItem('bsebc-youth-theme')||'light';if(t!=='auto')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{var t=localStorage.getItem('bsebc-youth-theme')||'light';if(t!=='auto')document.documentElement.setAttribute('data-theme',t)}catch(e){}
+/* 5.61: if the app's own script fails before it has drawn anything, say so without the long wait (see .bootwait) */
+addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===window||(t&&(t.tagName==='SCRIPT'||t.rel==='modulepreload'))))document.documentElement.classList.add('bootfail')},true);</script>
 <style>
   :root{
     color-scheme:light dark;
@@ -1909,7 +1914,7 @@
   .htdate .tlwd,.htdate .tlmo{font-size:12px}
   .htdate .tlrel{margin:0 0 0 4px;align-self:baseline}
   .htday .tlnode{grid-row:2;grid-column:1;align-self:center;justify-self:start;margin:0}
-  .htday.next .tlnode{width:20px;height:20px;background:var(--blue);border:4px solid var(--card);box-shadow:0 0 0 2px var(--blue);animation:tlpulse 2.6s ease-out infinite}
+  .htday.next .tlnode{width:20px;height:20px;background:none;border:4px solid transparent}   /* drawn by its ::after, see .tlday.next below */
   .htday.next .htdate strong{color:var(--blue-text)}
   .htday.next .tlrel{background:var(--blue);color:#fff}
   .htday.now .tlnode{width:16px;height:16px;background:var(--gold);border:3px solid var(--card);box-shadow:0 0 0 2px var(--gold)}
@@ -1940,7 +1945,7 @@
   .htday.now{scroll-snap-align:start}
   .htday.htend{scroll-snap-align:end}
   @media (pointer:coarse),(max-width:699px){ .htl{scroll-snap-type:x mandatory;touch-action:pan-x pan-y} }
-  @media (prefers-reduced-motion:reduce){ .htday.next .tlnode{animation:none} }
+  @media (prefers-reduced-motion:reduce){ .htday.next .tlnode::before{display:none} }
   /* home: the way into the services timeline, bottom right of the song-order banner */
   .sfut{display:inline-flex;align-items:center;gap:3px;padding-right:6px;text-decoration:none;transition:background .15s ease,border-color .15s ease,color .15s ease}
   .sfut .ai{width:12px;height:12px}
@@ -1971,8 +1976,17 @@
   .tlrel{margin-top:10px;font-style:normal;font-size:11.5px;font-weight:650;line-height:1.25;padding:4px 9px;border-radius:999px;background:var(--blue-wash);color:var(--blue-text);text-wrap:balance}
   .tlcards{grid-column:3;grid-row:1;display:flex;flex-wrap:wrap;gap:14px;min-width:0;padding-left:8px}
   .tline .tlc{width:380px;max-width:100%}
-  .tlday.next .tlnode{width:20px;height:20px;margin-top:7px;background:var(--blue);border:4px solid var(--card);box-shadow:0 0 0 2px var(--blue);animation:tlpulse 2.6s ease-out infinite}
-  @keyframes tlpulse{0%{box-shadow:0 0 0 2px var(--blue),0 0 0 2px rgba(var(--blue-rgb),.4)}75%,100%{box-shadow:0 0 0 2px var(--blue),0 0 0 14px rgba(var(--blue-rgb),0)}}
+  .tlday.next .tlnode{width:20px;height:20px;margin-top:7px;background:none;border:4px solid transparent}
+  /* 5.61: the pulse round the "next" dot was an animated shadow, which the browser repaints on its
+     main thread sixty times a second for as long as the page is open — the same thread that scrolls
+     the page. Now ::before is a disc behind the dot that only grows and fades (transform and
+     opacity, which the graphics thread animates on its own), and ::after draws the dot and its
+     ring on top of it. Same sizes, colours and timing: 2px to 14px beyond the dot, 40% to nothing. */
+  .htday.next .tlnode::before,.tlday.next .tlnode::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:rgba(var(--blue-rgb),.4);
+    pointer-events:none;animation:tlpulse 2.6s ease-out infinite}
+  .htday.next .tlnode::after,.tlday.next .tlnode::after{content:"";position:absolute;inset:-4px;box-sizing:border-box;border-radius:50%;background:var(--blue);
+    border:4px solid var(--card);box-shadow:0 0 0 2px var(--blue);pointer-events:none}
+  @keyframes tlpulse{0%{transform:scale(1);opacity:1}75%,100%{transform:scale(2);opacity:0}}
   .tlday.next .tldate strong{color:var(--blue-text)}
   .tlday.next .tlrel{background:var(--blue);color:#fff}
   .pastl .tlnode{width:12px;height:12px;margin-top:11px;border:2px solid var(--line-strong-2)}
@@ -2033,7 +2047,7 @@
   @keyframes tlrail{from{transform:scaleY(0)}}
   .tline.rip > *{animation:tlin .55s var(--ease-out) both;animation-delay:calc(var(--i,0) * 70ms + 60ms)}
   @keyframes tlin{from{opacity:0;transform:translateY(12px)}}
-  @media (prefers-reduced-motion:reduce){ .tline.rip::before,.tline.rip > *,.tlday.next .tlnode{animation:none} }
+  @media (prefers-reduced-motion:reduce){ .tline.rip::before,.tline.rip > *{animation:none} .tlday.next .tlnode::before{display:none} }
   @media (max-width:699px){
     .tabs.tltabs{max-width:none;margin:14px 0 22px}
     .tline{--rx:11px;gap:22px}
@@ -2211,6 +2225,13 @@
   }
   @media (max-width:699px){
     .sec.songc > .li.srow{position:relative;height:78px;min-height:0;padding:0 10px 0 16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+    /* 5.61: on a phone every song card is the same 80px box, so the browser can leave the cards
+       that are off screen undrawn (some 5,000 elements on the songs page) and only fill them in as
+       they come near: the page redraws in under half the time. Chrome and its relatives only, where
+       this has been tested: Safari (every browser on an iPhone) and Firefox keep drawing them all. */
+    @supports (content-visibility:auto) and (not (font:-apple-system-body)) and (not (-moz-appearance:none)){
+      .sec.songc{content-visibility:auto;contain-intrinsic-size:auto 78px}    /* 78px row + the card's 1px borders */
+    }
     .srow .stitle{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .srow .smeta{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px;font-size:12px;color:var(--faint)}
     .srow .smeta > *{display:inline;margin:0;font-size:12px;letter-spacing:0}
@@ -3353,6 +3374,8 @@
   .state-t{font-size:var(--fs-17);font-weight:700;color:var(--ink)}
   .state-b{font-size:var(--fs-15);line-height:1.45;color:var(--muted);max-width:32ch}
   .state-a{margin-top:6px}
+  /* 5.61: Try again is the one thing to tap on these screens: a full-size button, like Reload on the start-up fallback */
+  .state-a .sb.go{min-height:44px;padding:0 22px;border:0;border-radius:var(--r-pill);background:var(--blue);color:var(--white);font:inherit;font-size:var(--fs-15);font-weight:600;cursor:pointer}
   .state-x{font-size:var(--fs-12);color:var(--faint);max-width:40ch;word-break:break-word}
   .banner{display:flex;align-items:center;gap:12px;margin:12px 12px 0;padding:10px 10px 10px 16px;border-radius:var(--r-xl);
     background:var(--gold-wash);color:var(--gold-text);font-size:var(--fs-14);font-weight:600}
@@ -3361,6 +3384,20 @@
   .banner span,.gmore span{flex:1;min-width:0}
   .banner .mini,.gmore .mini{flex:none}
   .vh{display:inline-block;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0;vertical-align:top}
+  /* 5.61: --dockpad (the room the grid leaves for the phone dock) is read by the grid's own box
+     and nothing inside it; not inherited, so changing it restyles one element, not every cell.
+     Browsers without @property simply keep the old, slower behaviour. */
+  @property --dockpad{syntax:'<length>';inherits:false;initial-value:0px}
+  /* 5.61: a home-screen app has no reload button, so a start that stalls used to mean a blank
+     screen until the app was closed and opened again. This sits in the page itself, needs no
+     script, and shows only if the app has drawn nothing after eight seconds (or its script
+     failed). The app's first draw replaces it. */
+  .bootwait{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center;
+    color:var(--muted);font-size:var(--fs-15);line-height:1.45;opacity:0;visibility:hidden;animation:bootwait .4s ease 8s forwards}
+  .bootfail .bootwait{animation-delay:1.5s}
+  @keyframes bootwait{to{opacity:1;visibility:visible}}
+  .bootwait b{color:var(--ink);font-size:var(--fs-17);font-weight:700}
+  .bootwait button{margin-top:8px;min-height:44px;padding:0 22px;border-radius:var(--r-pill);border:0;background:var(--blue);color:var(--white);font:inherit;font-weight:600;cursor:pointer}
 </style>
 <style>
   /* 5.50 motion, modelled on iOS. Springs: "nav" (no overshoot, 0.39 s) for pages that
@@ -3435,7 +3472,11 @@
 </style>
 </head>
 <body>
-<div class="wrap" id="app"></div>
+<div class="wrap" id="app"><div class="bootwait" role="status">
+  <b>Still loading… · Всё ещё загружается…</b>
+  <span>The app is taking longer than usual to start.<br>Приложение запускается дольше обычного.</span>
+  <button type="button" onclick="location.reload()">Reload · Обновить</button>
+</div></div>
 
 <script type="module">
 /* supabase-js, pinned and served from this site (vendor/), so the app starts offline
@@ -3446,6 +3487,13 @@ const SUPABASE_URL = 'https://cetjvfzgituzeiooxaex.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNldGp2ZnpnaXR1emVpb294YWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxODY0ODAsImV4cCI6MjEwMDc2MjQ4MH0.cMannk6niEUPPLBzJRo7Fs2VPWVp7LeNrvWD-DkBJl8';
 
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+/* 5.61: the choir's tables are public to read, so the pages are read through a second client with
+   no sign-in attached. The first one checks the director's sign-in before every request, and
+   renews it over the network when it has lapsed; on a phone that has just woken up that renewal
+   can hang, and it used to hold up the whole first screen behind it. Writes, files and the usage
+   log still go through sb. */
+const pub = createClient(SUPABASE_URL, SUPABASE_ANON_KEY,
+  { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, storageKey: 'bsebc-public-read' } });
 
 /* ---------- i18n ---------- */
 const STR = {
@@ -3715,7 +3763,7 @@ Object.assign(STR.en, {
   nothingChanged:'Nothing was changed. The item may have been removed, or your sign-in expired — reload and try again.',
   offlineNotSaved:'You’re offline, so nothing was saved. Try again when you’re back online.',
   loadFailedTitle:'Couldn’t load the choir’s data', loadFailedBody:'Check your connection and try again.',
-  loadStale:'Couldn’t refresh — showing what was loaded earlier.',
+  loadStale:'Couldn’t refresh — showing what was loaded earlier.', loadSlow:'No answer from the server.',
   discardLeave:'You have unsaved changes. Leave without saving?',
   gridLatest:(n, all) => 'Showing the latest ' + n + ' of ' + all + ' dates', gridShowAll:'Show all',
   uPerMonth:'by month',
@@ -3752,7 +3800,7 @@ Object.assign(STR.ru, {
   nothingChanged:'Ничего не изменилось. Возможно, запись удалили или сеанс истёк — обновите страницу и попробуйте снова.',
   offlineNotSaved:'Нет сети, поэтому ничего не сохранено. Попробуйте снова, когда появится связь.',
   loadFailedTitle:'Не удалось загрузить данные хора', loadFailedBody:'Проверьте подключение и попробуйте ещё раз.',
-  loadStale:'Не удалось обновить — показаны данные, загруженные ранее.',
+  loadStale:'Не удалось обновить — показаны данные, загруженные ранее.', loadSlow:'Сервер не отвечает.',
   discardLeave:'Есть несохранённые изменения. Уйти без сохранения?',
   gridLatest:(n, all) => 'Показаны последние ' + n + ' из ' + all + ' дат', gridShowAll:'Показать все',
   uPerMonth:'по месяцам',
@@ -3997,13 +4045,17 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.60.0';
+const VERSION = '5.61.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Opens faster: the first screen no longer waits for the network. On a return visit the pages appear at once from the copy saved on your device, and fresh data replaces it a moment later',
+    'Fixed: the home-screen app could sit on a blank screen until it was closed and opened again. A start that gets no answer now opens the saved copy, or offers Reload / Try again',
+    'Faster after every tap: pages redraw with a quarter to a half less work (most on the songs list, the attendance pages and the leaderboard), and scrolling the services page is smoother',
+    'Attendance opens on the past six months again after a visit to History, unless you picked a period yourself; the full backup now includes the Learning folders’ dates',
     'Seating chart: saving works again when a chair was last held by someone who has left the choir; archiving a singer now frees their chair',
     'Recordings saved in Apple Lossless now play in Chrome, Edge, Firefox and on Android phones, not only on iPhones and Macs',
     'Sheets: Listen at the bottom of the sheet window brings up the parts, so you can hear one while you read',
@@ -4092,6 +4144,10 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Открывается быстрее: первый экран больше не ждёт сеть. При повторном входе страницы показываются сразу из копии, сохранённой на устройстве, а свежие данные подставляются через мгновение',
+    'Исправлено: приложение с домашнего экрана могло оставаться пустым, пока его не закроешь и не откроешь снова. Если сеть не отвечает, теперь открывается сохранённая копия либо предлагается «Обновить» / «Повторить»',
+    'Быстрее после каждого нажатия: страницы перерисовываются на четверть–половину быстрее (заметнее всего список нот, посещаемость и рейтинг), а страница служений прокручивается плавнее',
+    'Посещаемость снова открывается за последние полгода после раздела «История», если вы сами не выбирали период; в полную копию теперь входят даты папок раздела «Разучиваем»',
     'Схема рассадки: сохранение снова работает, если место раньше занимал тот, кто уже не в хоре; при переносе певца в архив его место освобождается',
     'Записи в формате Apple Lossless теперь играют в Chrome, Edge, Firefox и на Android, а не только на iPhone и Mac',
     'Ноты: кнопка «Слушать» внизу окна с нотами открывает партии — можно слушать и смотреть одновременно',
@@ -4300,17 +4356,35 @@ function monthKey(iso){ const [y,m] = iso.split('-').map(Number); return MON[S.l
 /* Supabase caps one response at 1000 rows, and years of absences run well past
    that — read every table in pages so nothing silently goes missing. Ordering
    is fully deterministic, otherwise page boundaries could skip or repeat rows. */
-async function selectAll(table, order){
+/* 5.61: a table that ran to several pages last time is asked for all of them at once instead of
+   one after another — each wait in a row is one more round trip to the database. The count is
+   remembered on this device; a guess that is too low falls back to asking for the next page. */
+const PAGES_KEY = 'bsebc-pages';
+const pageHint = (() => { try { return JSON.parse(lsGet(PAGES_KEY) || '{}') || {}; } catch (_) { return {}; } })();
+async function selectAll(table, order, signal){
   const STEP = 1000;
-  let rows = [], from = 0;
-  for (;;) {
-    let q = sb.from(table).select('*');
+  const page = from => {
+    let q = pub.from(table).select('*');
     order.forEach(c => { q = q.order(c); });
-    const r = await q.range(from, from + STEP - 1);
+    q = q.range(from, from + STEP - 1);
+    return signal ? q.abortSignal(signal) : q;
+  };
+  let rows = [], from = 0;
+  const take = r => { rows = rows.concat(r.data || []); from += STEP; return (r.data || []).length < STEP; };
+  const done = () => {
+    const n = Math.floor(rows.length / STEP) + 1;
+    if (pageHint[table] !== n) { pageHint[table] = n; lsSet(PAGES_KEY, JSON.stringify(pageHint)); }
+    return { data: rows, error: null };
+  };
+  const ahead = await Promise.all(Array.from({ length: Math.min(12, Math.max(1, pageHint[table] | 0)) }, (_, i) => page(i * STEP)));
+  for (const r of ahead) {
     if (r.error) return { data: rows, error: r.error };
-    rows = rows.concat(r.data || []);
-    if ((r.data || []).length < STEP) return { data: rows, error: null };
-    from += STEP;
+    if (take(r)) return done();
+  }
+  for (;;) {
+    const r = await page(from);
+    if (r.error) return { data: rows, error: r.error };
+    if (take(r)) return done();
   }
 }
 /* All or nothing: a read that fails part-way must never replace good data with
@@ -4321,43 +4395,138 @@ async function selectAll(table, order){
    slower answer can't overwrite a newer one. */
 let loadSeq = 0;
 const missingTable = e => e && (e.code === '42P01' || e.code === 'PGRST205' || /does not exist|schema cache/i.test(e.message || ''));
-async function load(silent){
-  const seq = ++loadSeq;
-  if (!silent) { S.loading = true; render(); }
-  const [si, so, ev, ab, es, sc, doc, lf] = await Promise.all([
-    selectAll('singers', ['part','sort_order','name']),
-    selectAll('songs', ['title','id']),
-    selectAll('events', ['date','id']),
-    selectAll('absences', ['event_id','singer_id']),
-    selectAll('event_songs', ['event_id','position','song_id']),
-    selectAll('song_categories', ['name']),
-    sb.from('documents').select('*').eq('key','rules').maybeSingle(),
-    selectAll('learn_folders', ['key'])
+/* 5.61: one read of everything, with a time limit. A request on a phone that has just woken up can
+   hang for good — no answer and no error — and the page then sat on its loading screen until the
+   app was closed. Past the limit the requests are dropped and the read counts as failed. */
+async function readAll(ms){
+  const ac = typeof AbortController === 'function' ? new AbortController() : null, sg = ac ? ac.signal : undefined;
+  let timer = 0, late = false;
+  const limit = new Promise(ok => { timer = setTimeout(() => { late = true; if (ac) ac.abort(); setTimeout(() => ok(null), 1500); }, ms); });
+  let doc = pub.from('documents').select('*').eq('key','rules');
+  if (sg) doc = doc.abortSignal(sg);
+  const all = Promise.all([
+    selectAll('singers', ['part','sort_order','name'], sg),
+    selectAll('songs', ['title','id'], sg),
+    selectAll('events', ['date','id'], sg),
+    selectAll('absences', ['event_id','singer_id'], sg),
+    selectAll('event_songs', ['event_id','position','song_id'], sg),
+    selectAll('song_categories', ['name'], sg),
+    doc.maybeSingle(),
+    selectAll('learn_folders', ['key'], sg)
   ]);
-  if (seq !== loadSeq) return;
-  const err = [si, so, ev, ab, es].find(r => r.error) || (sc.error && !missingTable(sc.error) ? sc : null)
-    || (doc.error && !missingTable(doc.error) ? doc : null) || (lf.error && !missingTable(lf.error) ? lf : null);
-  S.loading = false;
-  if (err) {
-    S.loadError = (err.error && err.error.message) || 'error';
-    render();
-    return;
-  }
-  S.loadError = ''; S.loaded = true;
-  S.singers = si.data || []; S.songs = so.data || []; S.events = ev.data || [];
-  S.absences = ab.data || []; S.eventSongs = es.data || [];
-  S.categories = sc.error ? [] : (sc.data || []);
-  S.rules = doc.error ? null : doc.data;
+  const r = await Promise.race([all, limit]);
+  clearTimeout(timer);
+  return { r, late };
+}
+const packData = ([si, so, ev, ab, es, sc, doc, lf]) => ({
+  singers: si.data || [], songs: so.data || [], events: ev.data || [], absences: ab.data || [], eventSongs: es.data || [],
+  categories: sc.error ? [] : (sc.data || []),
+  rules: doc.error ? null : doc.data,
   /* folder dates (5.54): before that table exists the folders simply show no date */
-  S.lnDatesOk = !lf.error;
-  S.lnDates = new Map((lf.error ? [] : lf.data || []).map(r => [r.key, r.due || '']));
-  refreshRange();
-  render();
+  lnOk: !lf.error, lnDates: (lf.error ? [] : lf.data || []).map(r => [r.key, r.due || ''])
+});
+function applyData(d){
+  S.singers = d.singers; S.songs = d.songs; S.events = d.events; S.absences = d.absences; S.eventSongs = d.eventSongs;
+  S.categories = d.categories; S.rules = d.rules;
+  S.lnDatesOk = d.lnOk; S.lnDates = new Map(d.lnDates);
+}
+function afterData(){
   prefetchSheets();
   trackRoute();
   lnPrune();
   if (S.lnCodeWait) { S.lnCodeWait = false;
     if (S.route.startsWith('#/learning')) { const k = lnRouteKey(); if (k) { S.lnOpen = new Set([k]); S.lnJump = k; render(); } } }
+}
+/* 5.61: the saved copy. After every complete read the data is also kept on this device, and the
+   next time the app opens it draws from that copy at once and reads the live data behind it —
+   instead of a loading screen for as long as the network takes (which, in a building with a weak
+   signal, could be a long time). Only for visitors: anyone signed in waits for the live data, as
+   before, so the director never works from a copy. If the live read brings exactly what is already
+   on screen, nothing is redrawn. */
+const SNAP_KEY = 'bsebc-saved-data', SNAP_DAYS = 60;
+let liveJson = '', liveDay = '', lastDrawn = 0, dataGen = 0;   // liveJson: the data on screen, as text ('' until worked out)
+let savedJson = null, savedAt = 0;                              // what the copy on this device holds, and since when
+function readSnap(){
+  try {
+    const raw = localStorage.getItem(SNAP_KEY);
+    if (!raw) return null;
+    const a = raw.indexOf('\n'), b = raw.indexOf('\n', a + 1);
+    if (a < 0 || b < 0 || raw.slice(0, a) !== VERSION) return null;        // a copy made by another version: not trusted
+    if (Date.now() - Number(raw.slice(a + 1, b)) > SNAP_DAYS * 864e5) return null;
+    const json = raw.slice(b + 1), d = JSON.parse(json);
+    if (!d || !['singers','songs','events','absences','eventSongs','categories','lnDates'].every(k => Array.isArray(d[k]))) return null;
+    return { d, json, at: Number(raw.slice(a + 1, b)) };
+  } catch (_) { return null; }
+}
+function keepSnap(d, json, gen){
+  const run = () => {
+    try {
+      const j = json || JSON.stringify(d);
+      if (gen === dataGen) { liveJson = j; liveDay = today(); }           // still what is on screen
+      /* written when the data changed, and once a day otherwise so a copy in regular use never looks old */
+      if (j !== savedJson || Date.now() - savedAt > 864e5) { localStorage.setItem(SNAP_KEY, VERSION + '\n' + Date.now() + '\n' + j); savedJson = j; savedAt = Date.now(); }
+    } catch (_) { lsSet(SNAP_KEY, null); savedJson = null; }          // no room, or storage is off: the app simply opens the old way
+  };
+  if (window.requestIdleCallback) requestIdleCallback(run, { timeout: 4000 }); else setTimeout(run, 1200);
+}
+/* is someone signed in on this device? (the library keeps its token under sb-…-auth-token) */
+function signedInHere(){
+  try { for (let i = 0; i < localStorage.length; i++) if (/^sb-.+-auth-token/.test(localStorage.key(i) || '')) return true; } catch (_) {}
+  return false;
+}
+/* the saved copy opens the everyday pages; a link to one particular thing (a song order, a folder,
+   a singer) may be newer than the copy, so it waits for the live data */
+const plainRoute = r => /^#\/?$|^#\/(home|sheets(\/piano)?|songs(\/(services|summary|people))?|attendance(\/(grid|summary))?|leaders|learning|seating|rules|services(\/past)?|lyrics)$/.test(r || '');
+function openSaved(){
+  if (signedInHere() || !plainRoute(S.route)) return false;
+  const snap = readSnap();
+  if (!snap) return false;
+  try {
+    applyData(snap.d); dataGen++;
+    liveJson = savedJson = snap.json; liveDay = today(); savedAt = snap.at;
+    S.loaded = true; S.loading = false; S.saved = true;
+    refreshRange();
+    render();
+    afterData();
+    return true;
+  } catch (e) {
+    /* a copy the page cannot draw must never be met again: drop it and start the ordinary way */
+    lsSet(SNAP_KEY, null); savedJson = null; liveJson = '';
+    applyData({ singers: [], songs: [], events: [], absences: [], eventSongs: [], categories: [], rules: null, lnOk: false, lnDates: [] });
+    S.loaded = false; S.loading = true; S.saved = false;
+    return false;
+  }
+}
+async function load(silent){
+  const seq = ++loadSeq;
+  if (!silent) { S.loading = true; render(); }
+  const bad = R => !R ? { error: { message: t('loadSlow') } }
+    : [R[0], R[1], R[2], R[3], R[4]].find(r => r.error) || (R[5].error && !missingTable(R[5].error) ? R[5] : null)
+      || (R[6].error && !missingTable(R[6].error) ? R[6] : null) || (R[7].error && !missingTable(R[7].error) ? R[7] : null);
+  let got = await readAll(silent ? 12000 : 8000);
+  if (seq !== loadSeq) return;
+  let err = bad(got.r);
+  /* no answer in time: once more, on fresh connections, before saying it failed — what hangs after
+     a phone wakes up is usually the old connection, not the network */
+  if (err && got.late) { got = await readAll(30000); if (seq !== loadSeq) return; err = bad(got.r); }
+  const R = got.r;
+  S.loading = false;
+  if (err) {
+    S.loadError = got.late ? t('loadSlow') : (err.error && err.error.message) || 'error';
+    render();
+    return;
+  }
+  const d = packData(R), hadError = !!S.loadError;
+  /* a visitor's quiet refresh that brought exactly what is on screen (same data, same day, drawn
+     a moment ago): leave the page alone — no redraw, nothing closes under the reader's finger */
+  let json = '';
+  const same = silent && !S.session && !hadError && S.loaded && liveJson && liveDay === today()
+    && Date.now() - lastDrawn < 300000 && (json = JSON.stringify(d)) === liveJson;
+  S.loadError = ''; S.loaded = true; S.saved = false;
+  if (!same) { applyData(d); dataGen++; liveJson = json; refreshRange(); render(); }
+  window.__live = (window.__live || 0) + 1;      // for the checks: live data has been read this many times
+  afterData();
+  keepSnap(d, json, dataGen);
 }
 
 /* Lookups by id, built at most once per render (and again whenever the data
@@ -4477,8 +4646,11 @@ function deviceKind(){
 }
 const isHomeApp = () => { try { return !!(navigator.standalone || matchMedia('(display-mode: standalone)').matches); } catch (_) { return false; } };
 let usageLite = false;   // the table predates the device columns: log without them
+/* 5.61: the first screen no longer waits for the sign-in check, so a visit is logged only once that
+   check has answered — the director's own visits must not be counted as a singer's */
+let authKnown = false, authGaveUp = false, trackWait = false;
 function track(kind, ref){
-  if (S.session) return;
+  if (S.session || !authKnown) return;
   const row = { kind, ref: ref || null, lang: S.lang, vid: visitorId() };
   const send = full => sb.from('usage_log').insert(full ? Object.assign({ device: deviceKind(), app: isHomeApp() }, row) : row);
   try {
@@ -4495,6 +4667,7 @@ function pageKey(route){
 }
 const pageName = k => { const p = PAGES.find(x => x[0] === k); return p ? t(p[1]) : (k || '—'); };
 function trackRoute(){
+  if (!authKnown) { trackWait = true; return; }
   const pk = pageKey(S.route);
   if (pk && !seenViews.has('p:' + pk)) { seenViews.add('p:' + pk); track('page', pk); }
   const m = S.route.match(/order-([^/?&]+)/);
@@ -6091,14 +6264,21 @@ const BI = {
 const TIERW = { gold: 3, silver: 2, bronze: 1 };
 let _bx = null, renderTick = 0;
 function bIndex(){
-  const key = renderTick + ':' + today();          // one build per render: cheap, and never stale after an edit
-  if (_bx && _bx.key === key) return _bx;
+  /* The director edits the data in place, so hers is built once per redraw and can never be stale
+     after an edit. 5.61: a visitor's data only changes when a new copy arrives (then the lists
+     themselves are new), so their index — and every table, streak and badge worked out from it —
+     is kept between redraws instead of being recalculated on every tap. */
+  const key = (S.session ? renderTick : 'visitor') + ':' + today() + ':' + S.lang;
+  if (_bx && _bx.key === key && _bx.si === S.singers && _bx.ev === S.events && _bx.ab === S.absences) {
+    if (_bx.memo.size > 400) _bx.memo.clear();
+    return _bx;
+  }
   const abs = new Map(); S.absences.forEach(a => abs.set(a.event_id + '|' + a.singer_id, a.status === 'not_listed' ? 'na' : 'absent'));
   const taken = new Set(S.absences.map(a => a.event_id));
   const now = today();
   const all = S.events.filter(e => !e.cancelled && e.date <= now && (e.attendance_taken || taken.has(e.id)))
     .sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : kindRank(a.kind) - kindRank(b.kind));
-  _bx = { key, abs, all, memo: new Map(), streak: new Map() };
+  _bx = { key, si: S.singers, ev: S.events, ab: S.absences, abs, all, memo: new Map(), streak: new Map() };
   return _bx;
 }
 const bSt = (X, e, s) => (f => f && e.date < f)(countsFrom(s, e.kind)) ? 'na' : (X.abs.get(e.id + '|' + s.id) || 'present');
@@ -6465,7 +6645,13 @@ function lbCountUp(){
   const pg = document.querySelector('.lbpage.rip');
   if (!pg || pg.dataset.cu || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   pg.dataset.cu = '1';
-  const L = [...pg.querySelectorAll('.lbpct, .lbrank strong')].map(el => { const n = el.firstChild, v = n && n.nodeType === 3 ? parseInt(n.nodeValue, 10) : NaN; return isNaN(v) ? null : { n, v }; }).filter(Boolean);
+  /* 5.61: only the numbers on screen count up. Every row on the page used to be rewritten sixty
+     times a second for a second — some hundred numbers, nearly all of them far below the fold —
+     and each rewrite made the browser lay the page out and paint it again. The rest simply show
+     their figure. */
+  const vh = window.innerHeight;
+  const L = [...pg.querySelectorAll('.lbpct, .lbrank strong')].map(el => { const n = el.firstChild, v = n && n.nodeType === 3 ? parseInt(n.nodeValue, 10) : NaN;
+    if (isNaN(v)) return null; const b = el.getBoundingClientRect(); return b.bottom > -60 && b.top < vh + 60 ? { n, v } : null; }).filter(Boolean);
   L.forEach(x => { x.n.nodeValue = '0%'; });
   const t0 = performance.now() + 250, dur = 900;
   const step = now => { const k = Math.min(1, Math.max(0, (now - t0) / dur)), e = 1 - Math.pow(1 - k, 3);
@@ -9024,10 +9210,11 @@ async function fullBackup(){
   try {
     const dump = { exported_at: new Date().toISOString(), app: document.title, tables: {} };
     const TABLES = { singers: ['id'], events: ['id'], songs: ['id'], song_categories: ['id'],
-                     absences: ['event_id', 'singer_id'], event_songs: ['event_id', 'song_id'], documents: ['key'] };
+                     absences: ['event_id', 'singer_id'], event_songs: ['event_id', 'song_id'], documents: ['key'],
+                     learn_folders: ['key'] };       // 5.61: the Learning folders' dates (added in 5.54) were not in the backup
     for (const [tbl, order] of Object.entries(TABLES)) {
       const r = await selectAll(tbl, order);
-      if (r.error) throw r.error;
+      if (r.error) { if (tbl === 'learn_folders' && missingTable(r.error)) continue; throw r.error; }
       dump.tables[tbl] = r.data;
     }
     const stamp = today();
@@ -9258,9 +9445,14 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 /* ---------- render ---------- */
 function render(){
   renderTick++;
+  lastDrawn = Date.now(); window.__up = 1;
   captureThumbs();
-  document.documentElement.lang = S.lang;
-  if (S.theme === 'dark' || S.theme === 'light') document.documentElement.dataset.theme = S.theme; else delete document.documentElement.dataset.theme;
+  /* 5.61: written only when they change. Setting <html lang> again, even to the same value, makes
+     the browser work out every style on the page afresh — on every redraw, and for the old page,
+     just before it was replaced. On the songs page that was a quarter of each redraw. */
+  const de = document.documentElement, th = S.theme === 'dark' || S.theme === 'light' ? S.theme : '';
+  if (de.lang !== S.lang) de.lang = S.lang;
+  if ((de.dataset.theme || '') !== th) { if (th) de.dataset.theme = th; else delete de.dataset.theme; }
   const r = S.route;
   const onLogin = r.startsWith('#/login');
   /* iOS AutoFill gives up silently if the password field it is filling is
@@ -9274,7 +9466,10 @@ function render(){
   let html = mast();
   syncDock();
 
-  if (S.loading && !onLogin) { document.getElementById('app').innerHTML = html
+  /* 5.61: the sign-in check no longer holds up the start, so a director's page may be reached
+     before it has answered: wait for it here rather than sending her to the sign-in page */
+  const authWait = r.startsWith('#/admin') && !S.session && !authKnown && !authGaveUp;
+  if ((S.loading || authWait) && !onLogin) { document.getElementById('app').innerHTML = html
     + `<main class="pg">` + (!r || r === '#' || r === '#/' || r.startsWith('#/home') ? homeSkel() : `<div class="skel" aria-label="${esc(t('loading'))}">` + '<div class="sk"></div>'.repeat(7) + `</div>`) + `</main>`;
     wasLoading = true; return; }
   html += '<main class="pg">';
@@ -9340,6 +9535,11 @@ function render(){
   }
   else {
     const tab = r.split('/')[2] || 'summary';
+    /* 5.61: History opens on a long period (three years, or one) and the period is shared, so a
+       visit to History used to leave Attendance on three years too — 160 dates across the grid,
+       the heaviest page in the app. Unless the reader has picked a period themselves, Attendance
+       goes back to the six months it opens with. */
+    if (!S.rangeSet && S.preset !== '6') { S.preset = '6'; S.from = shift(6); S.to = today(); }
     const attTabs = `<div class="tabs">
       <a href="#/attendance/grid" class="${tab==='grid'?'on':''}">${esc(t('grid'))}</a>
       <a href="#/attendance/summary" class="${tab==='summary'?'on':''}">${esc(t('summary'))}</a></div>`;
@@ -9446,7 +9646,7 @@ function fitGrid(){
     below += n.getBoundingClientRect().height;
   }
   below += parseFloat(getComputedStyle(sc).marginBottom) || 0;   // the card's own gap to the bottom edge
-  sc.style.setProperty('--vw', sc.clientWidth + 'px');
+  const vw = sc.clientWidth + 'px';
   /* Measure from the top of the PAGE, not the top of the screen: using the on-screen
      position meant a page that had already scrolled produced a taller grid, which made
      the page scroll further — on an iOS home-screen app that ran away until the header
@@ -9456,10 +9656,17 @@ function fitGrid(){
      loop above never sees it — take its height off the top explicitly. */
   const dk = document.querySelector('.dock');
   const dockH = dk && getComputedStyle(dk).display !== 'none' ? dk.offsetHeight + 22 : 0;
+  /* 5.61: everything above is measured first; the writes come after, and each goes where it is
+     used. --vw sat on the grid itself, so every write made the browser restyle every cell under
+     it (custom properties are inherited) — twice per redraw, with a full layout in between. It
+     now goes on the two bars that read it, and --dockpad is declared not to be inherited
+     (@property, below the grid's styles), so setting it touches the grid's own box only. */
+  sc.querySelectorAll(':scope > .topctl, :scope > .endbar').forEach(b => { if (b.style.getPropertyValue('--vw') !== vw) b.style.setProperty('--vw', vw); });
   /* the glass dock floats over the grid, as on every other page — so the grid runs
      to the bottom edge and carries the dock's height as inner padding instead, which
      still lets the last row scroll clear of it. */
-  sc.style.setProperty('--dockpad', dockH ? dockH + 'px' : '0px');
+  const pad = dockH ? dockH + 'px' : '0px';
+  if (sc.style.getPropertyValue('--dockpad') !== pad) sc.style.setProperty('--dockpad', pad);
   const off = Math.round(docTop + below);
   const sig = off + '|' + dockH;
   if (sc.dataset.fit === sig) return;                  // already right: don't touch it
@@ -9487,7 +9694,9 @@ async function signIn(){
   if (!email || !password) return;
   const { data, error } = await sb.auth.signInWithPassword({ email, password });
   if (error) { S.error = error.message; return render(); }
-  S.session = data.session; S.error = ''; location.hash = '#/admin/attendance';
+  S.session = data.session; S.error = '';
+  needLive();
+  location.hash = '#/admin/attendance';
 }
 /* the sideways timeline keeps its place when the page redraws (a date moved, a song order deleted) */
 document.addEventListener('scroll', e => { const x = e.target; if (x && x.classList && x.classList.contains('htl')) S.htlX = x.scrollLeft; }, { capture: true, passive: true });
@@ -10985,17 +11194,37 @@ S.from = shift(6); S.to = today();
 if (S.route.startsWith('#/learning')) { const k = lnRouteKey(); S.lnOpen = new Set(k ? [k] : []); S.lnJump = k || null; }
 let wasWide = isWide();
 window.addEventListener('resize', () => { if (isWide() !== wasWide) { wasWide = isWide(); render(); } });
-const { data: { session } } = await sb.auth.getSession();
-S.session = session;
-sb.auth.onAuthStateChange((_e, s) => { S.session = s; render(); });
+/* 5.61: the start no longer waits for the network before it draws anything. It used to wait for
+   the sign-in check (which goes to the network when the director's sign-in has lapsed) and only then
+   ask for the data, with the screen blank until the first answer. Now the first screen is drawn at
+   once — from the copy saved on this device when there is one — while the sign-in check and the
+   live data are fetched side by side behind it. */
+/* a session arriving while the screen shows the saved copy: nothing to act on until live data is in */
+function needLive(){
+  if (!S.saved) return;
+  S.saved = false; S.loaded = false; S.loading = true;
+  load();
+}
+function gotAuth(s){
+  const was = !!S.session, first = !authKnown;
+  authKnown = true; S.session = s;
+  if (s) needLive();
+  if (first && trackWait) { trackWait = false; trackRoute(); }
+  if (was !== !!s || (first && /^#\/(admin|login)/.test(S.route))) render();
+}
+sb.auth.onAuthStateChange((_e, s) => gotAuth(s));
+sb.auth.getSession().then(r => gotAuth(r && r.data ? r.data.session : null), () => gotAuth(null));
+/* a sign-in check that never answers must not leave a director's page on its loading screen for good */
+setTimeout(() => { if (!authKnown) { authGaveUp = true; if (S.route.startsWith('#/admin')) render(); } }, 12000);
 // iOS suspends a home-screen app rather than closing it: the token can be hours
-// stale when it comes back. Refresh it, and re-read the data, on return.
-document.addEventListener('visibilitychange', async () => {
+// stale when it comes back. Refresh it, and re-read the data, on return. (5.61: side by
+// side — the pages are public to read, so a sign-in check that hangs no longer holds them up.)
+document.addEventListener('visibilitychange', () => {
   if (document.visibilityState !== 'visible') return;
-  if (S.session) await ensureSession();
+  if (S.session) ensureSession();
   load(true);
 });
-await load();
+if (openSaved()) load(true); else load();
 </script>
 </body>
 </html>

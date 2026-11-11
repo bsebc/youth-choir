@@ -29,6 +29,7 @@ compare('index.html', t => sub(t, [
   [/'bsebc-youth-me'/g, "'bsebc-me'"],
   [/const SUPABASE_URL = '[^']+';/, 'const SUPABASE_URL = <project>;'],
   [/const SUPABASE_ANON_KEY = '[^']+';/, 'const SUPABASE_ANON_KEY = <key>;'],
+  [/<link rel="preconnect" href="[^"]+" crossorigin>/, '<link rel="preconnect" href=<project> crossorigin>'],
   [/appName:'Youth Choir'/, "appName:'BSEBC Choir'"],
   [/appName:'Молодёжный хор'/, "appName:'BSEBC Choir'"],
   [/homeSub:'Youth choir attendance and song ledger'/, "homeSub:'Choir attendance and song ledger'"],
@@ -38,6 +39,7 @@ compare('index.html', t => sub(t, [
 ]), t => sub(t, [
   [/const SUPABASE_URL = '[^']+';/, 'const SUPABASE_URL = <project>;'],
   [/const SUPABASE_ANON_KEY = '[^']+';/, 'const SUPABASE_ANON_KEY = <key>;'],
+  [/<link rel="preconnect" href="[^"]+" crossorigin>/, '<link rel="preconnect" href=<project> crossorigin>'],
   // two old release-note lines only the senior choir has
   [/',\n {4}'The site is now called BSEBC Choir in both languages'/, "'"],
   [/',\n {4}'Сайт теперь называется BSEBC Choir на обоих языках'/, "'"],
