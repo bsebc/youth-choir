@@ -75,6 +75,7 @@ for (const lang of (process.env.LANGS || 'en,ru').split(',')) for (const theme o
   p = await openApp(browser, { port: PORT, choir: CHOIR, lang, theme, hash: '#/login' });
   await serverDown(p); await fill(p);
   await p.click('[data-login]'); await p.waitForSelector('#loginmsg .lmsg', { timeout: 8000 }).catch(() => {});
+  await p.waitForTimeout(450);                         // the message has finished sliding in
   m = await msg(p);
   ok(m && m.text === L.srv && !m.off, 'server down: ' + JSON.stringify(m && m.text));
   await shot(p, `login-serverdown-${tag}`);
@@ -82,6 +83,7 @@ for (const lang of (process.env.LANGS || 'en,ru').split(',')) for (const theme o
   // 4. a wrong password, in the reader's language; then the right one at once (as D1 does)
   await p.fill('#pw', 'not-the-password'); await p.press('#pw', 'Enter');
   await p.waitForFunction(t => { const e = document.querySelector('#loginmsg .lmsg'); return e && e.textContent === t; }, L.bad, { timeout: 5000 }).catch(() => {});
+  await p.waitForTimeout(450);
   m = await msg(p);
   ok(m && m.text === L.bad && !m.off, 'wrong password: ' + JSON.stringify(m && m.text));
   await shot(p, `login-wrongpass-${tag}`);
