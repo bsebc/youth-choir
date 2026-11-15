@@ -27,6 +27,8 @@ Supabase or GitHub.
   on a 390 px phone screen, English and Russian.
 - **`shots.mjs`** — screenshots of every main screen, light and dark, EN and RU.
 - **`a11y.mjs`** — axe-core accessibility scan (WCAG 2.1 A/AA) of every main screen.
+- **`offline_test.mjs`** — the offline messages (5.62): sign-in, saving, sheets, recordings, the usage page
+  and the first load, tried with the device offline, on Wi-Fi with no internet, and with the server down.
 - **`motion_frames.mjs`** — triggers each kind of transition (page push and back, tab,
   segment, filter, dialog, sheet, language) and saves a frozen mid-motion frame of each.
 - **`seq_frames.mjs`** — one transition frame by frame: start on `HASH`, tap `CLICK` (or run
@@ -47,6 +49,7 @@ npm install                               # pg, esbuild, supabase-js (for the br
 ./start.sh 8790 choir                     # site + API on http://127.0.0.1:8790
 PORT=8790 node api_test.mjs
 PORT=8790 CHOIR=senior SITE=.. node e2e_test.mjs
+PORT=8790 CHOIR=senior node offline_test.mjs
 
 ./reset.sh choir senior                   # the same, but the rules as they were live
 PORT=8790 node api_test.mjs               # before 2026-11-01: shows the holes

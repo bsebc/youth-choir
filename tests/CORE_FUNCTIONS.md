@@ -64,6 +64,16 @@ change (`A1`… are the ids the test output uses).
 | B5 | If the app's script cannot load, the page itself says so and offers Reload: never a blank screen |
 | B6 | With the service worker, a server that does not answer for the page opens the saved copy within seconds; a file opened directly is never stored as the page |
 
+## Offline (5.62, checked by `offline_test.mjs`)
+
+| # | What must work |
+|---|---|
+| O1 | Sign-in page with the device offline says so before anything is typed; a try says it again (with a shake) and keeps what was typed; back online, the notice goes and signing in works |
+| O2 | A sign-in on Wi-Fi with no internet ends in "You're offline", with the server down in "The server isn't answering", with a wrong password in "That email and password don't match" — in English and Russian |
+| O3 | A sign-in that gets no answer shows "Signing in…" after a moment and gives up at 12 seconds with one of the messages above |
+| O4 | Director pages offline show the offline banner; a save says nothing was saved because the device is offline (or the server isn't answering); unsaved marks are kept; back online, both messages go |
+| O5 | A sheet that isn't on the device, a recording, the usage page and a first load with nothing saved each say "You're offline" instead of a generic failure |
+
 ## Security (checked by `api_test.mjs` against the database rules)
 
 - Guests can read what the public pages show and nothing else (not the usage log, not locked sheets).

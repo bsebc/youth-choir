@@ -3383,6 +3383,28 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
     background:var(--surface-2);color:var(--muted);font-size:var(--fs-13)}
   .banner span,.gmore span{flex:1;min-width:0}
   .banner .mini,.gmore .mini{flex:none}
+  /* 5.62: offline, said plainly. The gold notices get a slightly deeper gold so the words pass
+     AA contrast on their wash (4.3:1 before, 5.2:1 now; dark mode was already well clear). */
+  .banner{color:color-mix(in srgb,var(--gold-text) 85%,var(--ink))}
+  .banner > svg{flex:none}
+  .banner.off{padding:12px 16px}
+  /* the sign-in card's message line: why signing in didn't work (red), or that the device is offline
+     (gold, like the other offline notices). It slides in, and shakes once when a try ends the same way. */
+  #loginmsg:empty{display:none}
+  .lmsg{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:12px;border:1px solid var(--red-line);
+    background:var(--red-wash);color:var(--red);font-size:14px;line-height:1.45;font-weight:550;text-wrap:pretty;
+    animation:lmsgin .32s var(--ease-out)}
+  .lmsg.off{border-color:color-mix(in srgb,var(--gold-text) 24%,transparent);background:var(--gold-wash);
+    color:color-mix(in srgb,var(--gold-text) 85%,var(--ink))}
+  .lmsg svg{flex:none;width:18px;height:18px;margin-top:1px}
+  .lmsg.nudge{animation:lnudge .45s cubic-bezier(.36,.07,.19,.97)}
+  @keyframes lmsgin{from{opacity:0;transform:translateY(-6px)}}
+  @keyframes lnudge{18%{transform:translateX(-6px)}38%{transform:translateX(5px)}58%{transform:translateX(-3px)}78%{transform:translateX(2px)}}
+  .bspin{display:inline-block;width:15px;height:15px;margin:0 10px -2px 0;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;
+    border-radius:50%;animation:lsspin .8s linear infinite}
+  .login .btn[aria-busy="true"]{cursor:progress;opacity:.92}
+  .shv-msg .state-ic{margin:0 auto}
+  @media (prefers-reduced-motion:reduce){ .lmsg,.lmsg.nudge{animation:fadein .2s ease} .bspin{animation-duration:1.6s} }
   .vh{display:inline-block;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0;vertical-align:top}
   /* 5.61: --dockpad (the room the grid leaves for the phone dock) is read by the grid's own box
      and nothing inside it; not inherited, so changing it restyles one element, not every cell.
@@ -3486,7 +3508,16 @@ import { createClient } from './vendor/supabase-js-2.118.0.esm.js';
 const SUPABASE_URL = 'https://cetjvfzgituzeiooxaex.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNldGp2ZnpnaXR1emVpb294YWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxODY0ODAsImV4cCI6MjEwMDc2MjQ4MH0.cMannk6niEUPPLBzJRo7Fs2VPWVp7LeNrvWD-DkBJl8';
 
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+/* 5.62: a sign-in that gets no answer is given up after 12 seconds. On Wi-Fi with no internet the
+   request can hang for a minute before the browser gives up, with nothing on screen to say why.
+   Only the password sign-in has a limit: renewals, reads, writes and uploads go through as before. */
+const SIGNIN_WAIT = 12000;
+const sbFetch = (url, init) => {
+  if (typeof AbortController !== 'function' || !/\/auth\/v1\/token\?grant_type=password\b/.test(String(url))) return fetch(url, init);
+  const ac = new AbortController(), tm = setTimeout(() => ac.abort(), SIGNIN_WAIT);
+  return fetch(url, Object.assign({}, init, { signal: ac.signal })).finally(() => clearTimeout(tm));
+};
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { global: { fetch: sbFetch } });
 /* 5.61: the choir's tables are public to read, so the pages are read through a second client with
    no sign-in attached. The first one checks the director's sign-in before every request, and
    renews it over the network when it has lapsed; on a phone that has just woken up that renewal
@@ -3614,7 +3645,7 @@ const STR = {
     tSongSum:'Song summary',tSongSumSub:'How often each song is sung',
     tAdmin:'Admin',tAdminSub:'Manage attendance, songs, members, sheets and more',
     tSignIn:'Sign in',tSignInSub:'For the choir director',
-    deleteEvent:'Delete this event and everything recorded for it?',notSaved:'Not saved',retry:'Retry',offline:'Offline — showing the last loaded data.',
+    deleteEvent:'Delete this event and everything recorded for it?',notSaved:'Not saved',retry:'Retry',
     deleteSinger:'Delete this singer for good? All of their attendance marks are deleted with them. To keep their history, use Archive instead.',deleteSong:'Delete this song for good? It also disappears from every past song order. To keep the history, use Archive instead.',
     renameSinger:'Name',renameSong:'Title',soprano:'SOPRANO',alto:'ALTO',tenor:'TENOR',bass:'BASS',
     singersN:n=>n+' singers',songsN:n=>n+' songs',sungN:(n,d)=>'sung '+n+'× · last '+(d||'—'),wasPresent:'Present',wasAbsent:'Absent',wasNA:'Not listed',
@@ -3744,7 +3775,7 @@ const STR = {
     tSongSum:'Сводка песен',tSongSumSub:'Как часто поют каждую песню',
     tAdmin:'Админка',tAdminSub:'Управление: посещаемость, песни, хористы, ноты и другое',
     tSignIn:'Вход',tSignInSub:'Для регента',
-    deleteEvent:'Удалить это событие и все его записи?',notSaved:'Не сохранено',retry:'Повторить',offline:'Нет сети — показаны последние загруженные данные.',
+    deleteEvent:'Удалить это событие и все его записи?',notSaved:'Не сохранено',retry:'Повторить',
     deleteSinger:'Удалить хориста навсегда? Все его отметки посещаемости удалятся вместе с ним. Чтобы сохранить историю, нажмите «В архив».',deleteSong:'Удалить песню навсегда? Она исчезнет и из всех прошлых порядков служений. Чтобы сохранить историю, нажмите «В архив».',
     renameSinger:'Имя',renameSong:'Название',soprano:'СОПРАНО',alto:'АЛЬТ',tenor:'ТЕНОР',bass:'БАС',
     singersN:n=>n+' чел.',songsN:n=>n+' песен',sungN:(n,d)=>'спето '+n+' · посл. '+(d||'—'),wasPresent:'Был',wasAbsent:'Не был',wasNA:'Не в составе',
@@ -3764,6 +3795,19 @@ Object.assign(STR.en, {
   offlineNotSaved:'You’re offline, so nothing was saved. Try again when you’re back online.',
   loadFailedTitle:'Couldn’t load the choir’s data', loadFailedBody:'Check your connection and try again.',
   loadStale:'Couldn’t refresh — showing what was loaded earlier.', loadSlow:'No answer from the server.',
+  /* 5.62: a request that can't get through says why, instead of the browser's "Load failed" */
+  offTitle:'You’re offline', srvTitle:'The server isn’t answering', srvBody:'Try again in a few minutes.',
+  offSignin:'You’re offline. Signing in needs an internet connection — check the Wi-Fi or mobile data.',
+  srvSignin:'The choir’s server isn’t answering. Try again in a few minutes.',
+  badLogin:'That email and password don’t match. Check them and try again.', signingIn:'Signing in…',
+  srvNotSaved:'The server isn’t answering, so nothing was saved. Try again in a few minutes.',
+  offAdmin:'You’re offline. Changes can’t be saved until you’re back online.',
+  offStale:'You’re offline — showing what was loaded earlier.',
+  offLoadBody:'The choir’s data isn’t saved on this device yet. Connect to the internet and try again.',
+  offNeedNet:'This page needs an internet connection. Check the Wi-Fi or mobile data and try again.',
+  shvOff:'You’re offline, and this sheet isn’t saved on this device yet. Connect to the internet to open it.',
+  shvSrv:'The server isn’t answering, so this sheet can’t be opened right now. Try again in a few minutes.',
+  plOff:'You’re offline — can’t play',
   discardLeave:'You have unsaved changes. Leave without saving?',
   gridLatest:(n, all) => 'Showing the latest ' + n + ' of ' + all + ' dates', gridShowAll:'Show all',
   uPerMonth:'by month',
@@ -3801,6 +3845,18 @@ Object.assign(STR.ru, {
   offlineNotSaved:'Нет сети, поэтому ничего не сохранено. Попробуйте снова, когда появится связь.',
   loadFailedTitle:'Не удалось загрузить данные хора', loadFailedBody:'Проверьте подключение и попробуйте ещё раз.',
   loadStale:'Не удалось обновить — показаны данные, загруженные ранее.', loadSlow:'Сервер не отвечает.',
+  offTitle:'Нет сети', srvTitle:'Сервер не отвечает', srvBody:'Попробуйте ещё раз через несколько минут.',
+  offSignin:'Нет сети. Для входа нужен интернет — проверьте Wi-Fi или мобильную связь.',
+  srvSignin:'Сервер хора не отвечает. Попробуйте ещё раз через несколько минут.',
+  badLogin:'Эл. почта или пароль не подходят. Проверьте их и попробуйте снова.', signingIn:'Входим…',
+  srvNotSaved:'Сервер не отвечает, поэтому ничего не сохранено. Попробуйте ещё раз через несколько минут.',
+  offAdmin:'Нет сети. Изменения нельзя сохранить, пока не появится связь.',
+  offStale:'Нет сети — показаны данные, загруженные ранее.',
+  offLoadBody:'Данные хора ещё не сохранены на этом устройстве. Подключитесь к интернету и попробуйте снова.',
+  offNeedNet:'Для этой страницы нужен интернет. Проверьте Wi-Fi или мобильную связь и попробуйте снова.',
+  shvOff:'Нет сети, а эти ноты ещё не сохранены на устройстве. Подключитесь к интернету, чтобы открыть их.',
+  shvSrv:'Сервер не отвечает, поэтому ноты сейчас не открыть. Попробуйте ещё раз через несколько минут.',
+  plOff:'Нет сети — запись недоступна',
   discardLeave:'Есть несохранённые изменения. Уйти без сохранения?',
   gridLatest:(n, all) => 'Показаны последние ' + n + ' из ' + all + ' дат', gridShowAll:'Показать все',
   uPerMonth:'по месяцам',
@@ -4045,13 +4101,14 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.61.0';
+const VERSION = '5.62.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'No internet? The app now says so. Signing in, saving, opening a sheet that isn’t on your device or playing a recording tells you you’re offline (or that the server isn’t answering) instead of “Load failed”, and the sign-in and director pages show it before you start',
     'Opens faster: the first screen no longer waits for the network. On a return visit the pages appear at once from the copy saved on your device, and fresh data replaces it a moment later',
     'Fixed: the home-screen app could sit on a blank screen until it was closed and opened again. A start that gets no answer now opens the saved copy, or offers Reload / Try again',
     'Faster after every tap: pages redraw with a quarter to a half less work (most on the songs list, the attendance pages and the leaderboard), and scrolling the services page is smoother',
@@ -4144,6 +4201,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Нет интернета? Теперь приложение так и говорит. При входе, сохранении, открытии нот, которых нет на устройстве, или записи вы увидите, что нет сети (или что сервер не отвечает), а не «Load failed»; страницы входа и регента предупреждают об этом заранее',
     'Открывается быстрее: первый экран больше не ждёт сеть. При повторном входе страницы показываются сразу из копии, сохранённой на устройстве, а свежие данные подставляются через мгновение',
     'Исправлено: приложение с домашнего экрана могло оставаться пустым, пока его не закроешь и не откроешь снова. Если сеть не отвечает, теперь открывается сохранённая копия либо предлагается «Обновить» / «Повторить»',
     'Быстрее после каждого нажатия: страницы перерисовываются на четверть–половину быстрее (заметнее всего список нот, посещаемость и рейтинг), а страница служений прокручивается плавнее',
@@ -4367,6 +4425,7 @@ async function selectAll(table, order, signal){
     let q = pub.from(table).select('*');
     order.forEach(c => { q = q.order(c); });
     q = q.range(from, from + STEP - 1);
+    if (navigator.onLine === false) q = q.retry(false);   // 5.62: with no network at all, three retries only delay saying so
     return signal ? q.abortSignal(signal) : q;
   };
   let rows = [], from = 0;
@@ -4403,6 +4462,7 @@ async function readAll(ms){
   let timer = 0, late = false;
   const limit = new Promise(ok => { timer = setTimeout(() => { late = true; if (ac) ac.abort(); setTimeout(() => ok(null), 1500); }, ms); });
   let doc = pub.from('documents').select('*').eq('key','rules');
+  if (navigator.onLine === false) doc = doc.retry(false);
   if (sg) doc = doc.abortSignal(sg);
   const all = Promise.all([
     selectAll('singers', ['part','sort_order','name'], sg),
@@ -4510,12 +4570,18 @@ async function load(silent){
      a phone wakes up is usually the old connection, not the network */
   if (err && got.late) { got = await readAll(30000); if (seq !== loadSeq) return; err = bad(got.r); }
   const R = got.r;
-  S.loading = false;
   if (err) {
+    /* 5.62: why it failed — no connection, or the server — so the screen can say it plainly.
+       The loading screen stays up for the moment that takes. */
+    const why = await whyFailed(got.late ? { net: true } : err.error);
+    if (seq !== loadSeq) return;
+    S.loading = false;
     S.loadError = got.late ? t('loadSlow') : (err.error && err.error.message) || 'error';
+    S.loadWhy = why;
     render();
     return;
   }
+  S.loading = false; S.loadWhy = '';
   const d = packData(R), hadError = !!S.loadError;
   /* a visitor's quiet refresh that brought exactly what is on screen (same data, same day, drawn
      a moment ago): leave the page alone — no redraw, nothing closes under the reader's finger */
@@ -4693,7 +4759,9 @@ async function loadUsage(){
     for (let from = 0; from < 20000; from += 1000) {
       let q = sb.from('usage_log').select(cols).order('at', { ascending: false }).order('id', { ascending: false });
       if (want !== 'all') q = q.gte('at', new Date(Date.now() - want * 86400000).toISOString());
-      const r = await q.range(from, from + 999);
+      q = q.range(from, from + 999);
+      if (navigator.onLine === false) q = q.retry(false);   // 5.62: no network: say so now, not after three retries
+      const r = await q;
       if (r.error) return r;
       rows = rows.concat(r.data || []);
       if ((r.data || []).length < 1000) break;
@@ -4702,7 +4770,10 @@ async function loadUsage(){
   };
   let r = await ask('id,kind,ref,vid,lang,at,device,app');
   S.usageNoDevice = false;
-  if (r.error) { const r2 = await ask('id,kind,ref,vid,lang,at'); if (!r2.error) { r = r2; S.usageNoDevice = true; } }
+  /* the shorter column list is for a log made before the device column existed; a request that
+     never reached the server (5.62) gains nothing from asking again */
+  if (r.error && !netError(r.error)) { const r2 = await ask('id,kind,ref,vid,lang,at'); if (!r2.error) { r = r2; S.usageNoDevice = true; } }
+  S.usageWhy = r.error ? await whyFailed(r.error) : '';      // 5.62: offline or the server, said plainly
   S.usageLoading = false;
   S.usageErr = r.error ? r.error.message : '';
   S.usageMissing = !!(r.error && missingTable(r.error));
@@ -4741,8 +4812,10 @@ function usagePage(){
       `<button data-uperiod="${v}" class="${String(S.usagePeriod)===String(v)?'on':''}">${esc(t(l))}</button>`).join('')}</div>`;
   const wrap = body => head + `<div class="ctlbar">${periodPill('usage', t('uRng' + S.usagePeriod), chips)}</div>` + body;
   if (S.usageErr && S.usageMissing) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uSetup'))}</div></div></div>`);
-  if (S.usageErr) return wrap(stateBlock({ icon: 'offline', title: t('loadFailedTitle'), body: t('loadFailedBody'), detail: S.usageErr, alert: true,
-    action: `<button class="sb go" data-uperiod="${esc(String(S.usagePeriod))}">${esc(t('tryAgain'))}</button>` }));
+  if (S.usageErr) { const w = S.usageWhy;
+    return wrap(stateBlock({ icon: 'offline', title: w === 'offline' ? t('offTitle') : w === 'server' ? t('srvTitle') : t('loadFailedTitle'),
+      body: w === 'offline' ? t('offNeedNet') : w === 'server' ? t('srvBody') : t('loadFailedBody'), detail: w ? '' : S.usageErr, alert: true,
+      action: `<button class="sb go" data-uperiod="${esc(String(S.usagePeriod))}">${esc(t('tryAgain'))}</button>` })); }
   if (!S.usage) return wrap(`<div class="sec"><div class="pad"><div class="note">${esc(t('uLoading'))}</div></div></div>`);
   const u = S.usage;
   const rip = S.usageRip; S.usageRip = false; if (rip) setTimeout(usageCount, 0);
@@ -7721,7 +7794,7 @@ function loginPage(){
     <div class="lhead"><div class="lmark">${AIC.user}</div>
       <div class="lt">${esc(t('dirSignin'))}</div>
       <p class="lnote">${esc(t('loginNote'))}</p></div>
-    ${S.error ? `<div class="err">${esc(S.error)}</div>` : ''}
+    <div id="loginmsg">${loginMsgHTML(loginMsg())}</div>
     <form id="loginform" method="post" action="#/login" autocomplete="on" style="display:grid;gap:14px">
       <div><label for="em">${esc(t('email'))}</label>
         <input id="em" name="email" type="email" autocomplete="username" inputmode="email"
@@ -8164,7 +8237,7 @@ function plEl(){
   a.preload = 'metadata';
   ['play', 'pause', 'ended', 'timeupdate', 'loadedmetadata', 'durationchange', 'waiting', 'playing', 'canplay', 'seeked', 'error'].forEach(ev =>
     a.addEventListener(ev, () => {
-      if (ev === 'error' && a.getAttribute('src')) { if (plRescue()) return; PL.err = true; a.pause(); }
+      if (ev === 'error' && a.getAttribute('src')) { if (plRescue()) return; plErrOn(); a.pause(); }
       if (ev === 'playing') PL.err = false;
       plSync();
     }));
@@ -8173,7 +8246,15 @@ function plEl(){
 function plFail(e){
   if (e && e.name === 'AbortError') return;
   if (e && e.name === 'NotSupportedError' && plRescue()) return;
-  PL.err = true; if (PL.a) PL.a.pause(); plSync();
+  plErrOn(); if (PL.a) PL.a.pause(); plSync();
+}
+/* 5.62: recordings stream from the server, so with no connection they can't play: the player says
+   that instead of "Couldn't play this recording" */
+function plErrOn(){
+  PL.err = navigator.onLine === false ? 'off' : true;
+  if (PL.err !== true) return;
+  const k = PL.id + ':' + PL.part;
+  canReachSite().then(up => { if (!up && PL.err === true && PL.id + ':' + PL.part === k) { PL.err = 'off'; plSync(); } });
 }
 /* Apple Lossless (5.59): iPhones, iPads and Safari play these .m4a files; Chrome, Edge, Firefox and
    Android phones can't. When a recording won't play here, the page decodes it in a worker
@@ -8221,7 +8302,7 @@ function plRescue(){
     PL.decSrc = null; a.src = u; a.loop = PL.loop; a.play().catch(plFail);
   }, () => {
     if (PL.decSrc !== src) return;
-    PL.decSrc = null; PL.decFail = src; PL.err = true; a.pause(); plSync();
+    PL.decSrc = null; PL.decFail = src; plErrOn(); a.pause(); plSync();
   });
   return true;
 }
@@ -8279,11 +8360,11 @@ function plSync(){
     bar.querySelector('.pl-ttl').textContent = song ? song.title : '';
     bar.querySelector('.pl-part').className = 'pl-part ' + voiceOf(PL.part);
   }
-  bar.querySelector('.pl-part b').textContent = PL.err ? t('plErr') : prtName(PL.part, song);
+  bar.querySelector('.pl-part b').textContent = PL.err === 'off' ? t('plOff') : PL.err ? t('plErr') : prtName(PL.part, song);
   bar.classList.add('on'); document.body.classList.add('plon');
   bar.classList.toggle('playing', playing && !loading);
   bar.classList.toggle('loading', loading);
-  bar.classList.toggle('err', PL.err);
+  bar.classList.toggle('err', !!PL.err);
   const rg = bar.querySelector('.pl-rg');
   if (!PL.drag) rg.value = Math.round(pct * 10);
   bar.querySelector('.pl-trk').style.setProperty('--lp', (PL.drag ? rg.value / 10 : pct).toFixed(2));
@@ -8357,11 +8438,12 @@ async function sheetOpen(kind, id){
   svReset(); SV.kind = kind; SV.id = id; SV.zoom = 1;
   svHead(song); svMsg('load'); svTab(''); svLs();
   track('sheet', id);
-  let buf = null, href = '';
+  let buf = null, href = '', lost = null;           // lost: why the server couldn't be asked (5.62)
   try {                                            // a fresh signed link; the stored copy when offline or refused
     if (navigator.onLine !== false) {
       const { data, error } = await sb.storage.from(K.bucket).createSignedUrl(song[K.col], 3600);
-      if (!error && data) {
+      if (error) lost = error;
+      else if (data) {
         href = data.signedUrl;
         const res = await fetch(data.signedUrl);
         if (res.ok) {
@@ -8370,11 +8452,16 @@ async function sheetOpen(kind, id){
         }
       }
     }
-  } catch (_) {}
+    else lost = { net: true };
+  } catch (e) { lost = e; }
   if (!buf) { const hit = await cachedSheet(kind, id); if (hit) { const b = await hit.blob(); buf = await b.arrayBuffer(); href = href || URL.createObjectURL(b); } }
   if (tok !== SV.tok) return;
   svTab(href);
-  if (!buf) return svMsg('err');
+  if (!buf) {                                      // 5.62: not on this device and no connection: say that, not "couldn't be shown"
+    const why = await whyFailed(lost);
+    if (tok !== SV.tok) return;
+    return svMsg(why === 'offline' ? 'off' : why === 'server' ? 'srv' : 'err');
+  }
   try {
     const lib = await pdfjs();
     /* pdf.js 6 frees a document through its loading task (the document itself has no destroy) */
@@ -8448,6 +8535,7 @@ function svMsg(kind){
   if (!m) return;
   m.hidden = !kind;
   m.innerHTML = kind === 'load' ? `<div><span class="shv-spin"></span><p>${esc(t('shvLoading'))}</p></div>`
+    : kind === 'off' || kind === 'srv' ? `<div role="alert"><div class="state-ic" aria-hidden="true">${OFFSVG}</div><p>${esc(t(kind === 'off' ? 'shvOff' : 'shvSrv'))}</p></div>`
     : kind === 'err' ? `<div><p>${esc(t('shvErr'))}</p>${SV.el.querySelector('.shv-tab[href]') ? `<a class="pbtn" href="${esc(SV.el.querySelector('.shv-tab').href)}" target="_blank" rel="noopener">${esc(t('shvNewTab'))}</a>` : ''}</div>` : '';
 }
 function svPages(list){
@@ -8831,7 +8919,7 @@ async function recUpload(song, part, file){
       x.setRequestHeader('x-upsert', 'false');
       x.upload.onprogress = e => { if (e.lengthComputable) { job.pct = Math.min(99, Math.round(e.loaded / e.total * 100)); recProg(key, job.pct); } };
       x.onload = () => x.status >= 200 && x.status < 300 ? ok() : no(new Error(recMsg(x, file.size)));
-      x.onerror = () => no(new Error(t('offline')));
+      x.onerror = () => no(Object.assign(new Error('network'), { net: true }));   // no connection: fail() says which kind
       x.onabort = () => no(Object.assign(new Error('aborted'), { aborted: true }));
       x.send(file);
     });
@@ -9459,7 +9547,7 @@ function render(){
      replaced, and this app re-renders whole screens. So once the sign-in form is
      on screen, leave those exact nodes alone unless something visible changed. */
   if (onLogin && document.getElementById('loginform')) {
-    const sig = S.lang + '|' + (S.error || '') + '|' + (S.session ? '1' : '0') + '|' + (S.menuOpen ? '1' : '0');
+    const sig = S.lang + '|' + (S.session ? '1' : '0') + '|' + (S.menuOpen ? '1' : '0');
     if (sig === S.loginSig) return;
     S.loginSig = sig;
   }
@@ -9474,11 +9562,19 @@ function render(){
     wasLoading = true; return; }
   html += '<main class="pg">';
   const loadFatal = S.loadError && !S.loaded && !onLogin;
-  if (S.loadError && S.loaded && !onLogin) html += `<div class="banner" role="status"><span>${esc(t('loadStale'))}</span><button class="mini" data-retry-load>${esc(t('tryAgain'))}</button></div>`;
+  /* 5.62: being offline is said as such: on the director's pages before anything is marked in vain,
+     and when a refresh or the first load couldn't get through */
+  const why = navigator.onLine === false ? 'offline' : S.loadWhy || '';
+  if (navigator.onLine === false && S.session && r.startsWith('#/admin'))
+    html += `<div class="banner off" role="status">${OFFSVG}<span>${esc(t('offAdmin'))}</span></div>`;
+  else if (S.loadError && S.loaded && !onLogin) html += `<div class="banner${why === 'offline' ? ' off' : ''}" role="status">${why === 'offline' ? OFFSVG : ''}`
+    + `<span>${esc(t(why === 'offline' ? 'offStale' : 'loadStale'))}</span><button class="mini" data-retry-load>${esc(t('tryAgain'))}</button></div>`;
 
   if (loadFatal) {
-    html += publicNav('') + stateBlock({ icon: 'offline', title: t('loadFailedTitle'), body: t('loadFailedBody'),
-      action: `<button class="sb go" data-retry-load>${esc(t('tryAgain'))}</button>`, detail: S.loadError, alert: true });
+    html += publicNav('') + stateBlock({ icon: 'offline',
+      title: why === 'offline' ? t('offTitle') : why === 'server' ? t('srvTitle') : t('loadFailedTitle'),
+      body: why === 'offline' ? t('offLoadBody') : why === 'server' ? t('srvBody') : t('loadFailedBody'),
+      action: `<button class="sb go" data-retry-load>${esc(t('tryAgain'))}</button>`, detail: why ? '' : S.loadError, alert: true });
   }
   else if (r.startsWith('#/admin')) {
     if (!S.session) { location.hash = '#/login'; return; }
@@ -9501,7 +9597,7 @@ function render(){
     html += `</div>`;
   }
   else if (onLogin) {
-    S.loginSig = S.lang + '|' + (S.error || '') + '|' + (S.session ? '1' : '0') + '|' + (S.menuOpen ? '1' : '0');
+    S.loginSig = S.lang + '|' + (S.session ? '1' : '0') + '|' + (S.menuOpen ? '1' : '0');
     html += publicNav('') + loginPage();
   }
   else if (r.startsWith('#/sheets/piano') || r.startsWith('#/piano')) { html += publicNav('piano') + sheetsPage('piano'); }
@@ -9590,6 +9686,8 @@ const STATE_IC = {
   calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"></rect><path d="M3.5 9.5h17M8 3v4M16 3v4"></path>',
   search: '<circle cx="11" cy="11" r="6.5"></circle><path d="m20 20-4.2-4.2"></path>'
 };
+/* 5.62: the same no-signal mark, small, for the offline banners */
+const OFFSVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + STATE_IC.offline + '</svg>';
 function stateBlock({ icon = 'empty', title, body, action = '', detail = '', alert = false }){
   return `<div class="state"${alert ? ' role="alert"' : ''}>
     <div class="state-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${STATE_IC[icon] || STATE_IC.empty}</svg></div>
@@ -9688,15 +9786,59 @@ window.addEventListener('resize', queueFit, { passive: true });
 if (window.visualViewport) window.visualViewport.addEventListener('resize', queueFit, { passive: true });
 
 // keep the newest dates in view: jump the grid to its right edge when the page changes
+/* 5.62: the sign-in page's message line says why signing in didn't work — the wrong password, no
+   internet, or a server that isn't answering — in the reader's language, and while the device is
+   offline it says so before anything is typed. It is updated in place: redrawing the form would
+   stop iOS AutoFill and replay the card's entrance. The same message after another try gives a
+   small shake, so a tap never looks as if it did nothing. */
+let signingIn = false;
+function loginMsg(){
+  const k = S.loginWhy;
+  if (k) return { text: t(k === 'bad' ? 'badLogin' : k === 'server' ? 'srvSignin' : 'offSignin'), off: k === 'offline' };
+  if (S.error) return { text: S.error, off: false };
+  if (navigator.onLine === false) return { text: t('offSignin'), off: true, note: true };
+  return null;
+}
+const loginMsgHTML = m => !m ? '' : `<div class="lmsg${m.off ? ' off' : ''}" role="${m.note ? 'status' : 'alert'}">`
+  + `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">`
+  + (m.off ? STATE_IC.offline : '<circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5M12 16.5h.01"></path>') + `</svg><span>${esc(m.text)}</span></div>`;
+function loginMsgPaint(again){
+  const box = document.getElementById('loginmsg');
+  if (!box) return;
+  const m = loginMsg(), prev = box.textContent;
+  if (!again && prev === (m ? m.text : '')) return;
+  box.innerHTML = loginMsgHTML(m);
+  if (m && again && prev === m.text && box.firstElementChild) box.firstElementChild.classList.add('nudge');
+}
+/* a sign-in that takes a moment says it is working; a quick one never flickers */
+function loginBusy(on){
+  const b = document.querySelector('[data-login]');
+  if (!b) return;
+  b.disabled = on;
+  if (on) b.setAttribute('aria-busy', 'true'); else b.removeAttribute('aria-busy');
+  b.innerHTML = on ? `<span class="bspin" aria-hidden="true"></span>${esc(t('signingIn'))}` : esc(t('signin'));
+}
 async function signIn(){
   const email = document.getElementById('em').value.trim();
   const password = document.getElementById('pw').value;
-  if (!email || !password) return;
+  if (!email || !password || signingIn) return;
+  signingIn = true;
+  const slow = setTimeout(() => loginBusy(true), 400);
   const { data, error } = await sb.auth.signInWithPassword({ email, password });
-  if (error) { S.error = error.message; return render(); }
-  S.session = data.session; S.error = '';
+  const why = !error ? '' : (await whyFailed(error))
+    || (error.code === 'invalid_credentials' || /invalid login credentials/i.test(error.message || '') ? 'bad' : '');
+  clearTimeout(slow); signingIn = false; loginBusy(false);
+  if (error) { S.loginWhy = why; S.error = why ? '' : error.message; return loginMsgPaint(true); }
+  S.session = data.session; S.error = ''; S.loginWhy = '';
   needLive();
   location.hash = '#/admin/attendance';
+}
+/* 5.62: the connection coming and going. What an earlier sign-in attempt said is no longer the news;
+   the sign-in page is updated in place, and the director's pages and any failed load redraw. */
+function netChanged(redraw){
+  S.loginWhy = ''; S.error = '';
+  if (document.getElementById('loginform')) return loginMsgPaint();
+  if (redraw === true || /^#\/(admin|usage)/.test(S.route) || S.loadError) render();
 }
 /* the sideways timeline keeps its place when the page redraws (a date moved, a song order deleted) */
 document.addEventListener('scroll', e => { const x = e.target; if (x && x.classList && x.classList.contains('htl')) S.htlX = x.scrollLeft; }, { capture: true, passive: true });
@@ -9846,18 +9988,41 @@ async function saveMarksStepwise(E, event, del, insRows){
 /* A refresh that fails only because there is no connection is not a dead
    session: signing out then would throw away the refresh token and whatever the
    director had marked but not yet saved. Keep both, say nothing was saved. */
-const netError = e => !navigator.onLine || !!(e && (e.name === 'AuthRetryableFetchError' || e.status === 0
+const netError = e => !navigator.onLine || !!(e && (e.net || e.name === 'AuthRetryableFetchError' || e.status === 0
   || /fetch|network|load failed/i.test(e.message || '')));
+/* 5.62: what a failed request means, in plain words. A request that can't reach the server fails
+   with the browser's own words — "Load failed" on an iPad, "Failed to fetch" in Chrome — and those
+   used to reach the screen as they were: on church Wi-Fi with no internet, the director was told
+   her sign-in had failed. whyFailed() answers
+     'offline' — this device has no working connection: no network at all, or Wi-Fi that isn't
+                 connected to the internet;
+     'server'  — the device is online, but the choir's server didn't answer;
+     ''        — not a connection problem: the server answered and said no.
+   One quick look at this site tells the first two apart. It is a HEAD request, which the service
+   worker passes to the network untouched, and it is made only after a request has failed. */
+async function canReachSite(){
+  const ac = typeof AbortController === 'function' ? new AbortController() : null;
+  const tm = setTimeout(() => { if (ac) ac.abort(); }, 3000);
+  try { await fetch('./?online=' + Date.now().toString(36), { method: 'HEAD', cache: 'no-store', signal: ac ? ac.signal : undefined }); return true; }
+  catch (_) { return false; }
+  finally { clearTimeout(tm); }
+}
+async function whyFailed(e){
+  if (!netError(e)) return '';
+  if (navigator.onLine === false) return 'offline';
+  if (e && [502, 503, 504].includes(e.status)) return 'server';
+  return await canReachSite() ? 'server' : 'offline';
+}
 async function ensureSession(){
   const { data: { session }, error: getErr } = await sb.auth.getSession();
   if (!session) {
-    if (S.session && netError(getErr)) { fail({ message: t('offlineNotSaved') }); return false; }
+    if (S.session && netError(getErr)) { fail(getErr || { net: true }); return false; }
     S.session = null; render(); return false;
   }
   if ((session.expires_at || 0) * 1000 - Date.now() < 60000) {
     const { data, error } = await sb.auth.refreshSession();
     if (error || !data.session) {
-      if (netError(error)) { fail({ message: t('offlineNotSaved') }); return false; }
+      if (netError(error)) { fail(error || { net: true }); return false; }
       // The stored token is dead. Clear it locally, or every later call retries
       // it and Supabase logs another "Invalid Refresh Token".
       await sb.auth.signOut({ scope: 'local' }).catch(() => {});
@@ -9888,10 +10053,21 @@ function okToast(msg){
   clearTimeout(toastTimer);
   toastTimer = setTimeout(hideToast, 2500);
 }
+/* 5.62: a save that couldn't reach the server says so, instead of "Not saved — Load failed". The
+   offline message shows at once; if the device turns out to be online after all, it becomes the
+   server message a moment later. */
+let failSeq = 0;
 function fail(error, retry){
   clearTimeout(toastTimer); S.toastOk = false;
-  S.toast = t('notSaved') + ' — ' + (navigator.onLine ? error.message : t('offline'));
   S.retry = retry || null;
+  const seq = ++failSeq;
+  if (netError(error)) {
+    S.toast = t('offlineNotSaved');
+    whyFailed(error).then(why => {
+      if (why === 'server' && seq === failSeq && S.toast === t('offlineNotSaved')) { S.toast = t('srvNotSaved'); render(); }
+    });
+  }
+  else S.toast = t('notSaved') + ' — ' + ((error && error.message) || String(error || ''));
   render();
 }
 
@@ -11170,7 +11346,7 @@ window.addEventListener('hashchange', () => {
   if (!/^#\/admin\/(attendance|songs)\/.+/.test(S.route)) { S.edit = null; S.pending = null; }
   if (!S.route.startsWith('#/seating')) { S.seatEdit = null; S.seatSel = null; }
   if (!S.route.startsWith('#/rules')) { S.rulesEdit = null; S.rulesPreview = false; }
-  S.error = ''; S.query = ''; S.editPerson = null; S.editSongRow = null; S.editCat = null; S.addOpen = null;
+  S.error = ''; S.loginWhy = ''; S.query = ''; S.editPerson = null; S.editSongRow = null; S.editCat = null; S.addOpen = null;
   S.learnEdit = null; S.learnMove = null; S.lnPick = null; S.lnFold = null;
   const kind = navKind(prevFull, S.route);
   if (kind !== 'pop' && S.route.startsWith('#/learning')) { const k = lnRouteKey(); S.lnOpen = new Set(k ? [k] : []); S.lnJump = k || null; }
@@ -11188,7 +11364,10 @@ window.addEventListener('hashchange', () => {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
-window.addEventListener('online', () => { if (S.toast) { S.toast = ''; render(); } load(true); });
+/* back online: the "nothing was saved" message goes, fresh data is fetched, and (5.62) the screens
+   that depend on the connection update as it goes and comes */
+window.addEventListener('online', () => { const had = !!S.toast; S.toast = ''; netChanged(had); load(true); });
+window.addEventListener('offline', netChanged);
 S.from = shift(6); S.to = today();
 /* a shared folder link opened fresh: that folder open, in view once the songs load */
 if (S.route.startsWith('#/learning')) { const k = lnRouteKey(); S.lnOpen = new Set(k ? [k] : []); S.lnJump = k || null; }

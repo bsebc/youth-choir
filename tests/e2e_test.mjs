@@ -1880,7 +1880,9 @@ async function startChecks() {
     await page.clock.runFor(32000);                   // the second gives up too
     await until(() => page.locator('[data-retry-load]').count(), 'the Try again button');
     const body = await text(page);
-    ok(body.includes(t('loadFailedTitle')) && body.includes(t('loadSlow')), 'the failure is not explained: ' + body.slice(0, 120));
+    /* 5.62: the site itself still answers here, so the page says the server isn't answering
+       (with no connection at all it says "You're offline" — offline_test.mjs) */
+    ok(body.includes(t('srvTitle')) && body.includes(t('srvBody')), 'the failure is not explained: ' + body.slice(0, 120));
     await reads.release();
     await tap(page, '[data-retry-load]');
     await until(async () => await page.locator('.skel').count() === 0 && await page.locator('[data-retry-load]').count() === 0 && await liveReads(page) >= 1, 'the page after trying again');
