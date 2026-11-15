@@ -3426,13 +3426,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
       }
       :root:not([data-theme="light"]) .reslist .r7 .rico{--t7:oklch(.8 .11 48)}
     }
-    /* the section race: soprano yellow, alto pink, tenor green, bass blue, all at one lightness; dark words on each */
-    .lbsr.soprano .lbtrack b,.lbsr.soprano .lbrider{background:oklch(.74 .14 89)}
-    .lbsr.alto .lbtrack b,.lbsr.alto .lbrider{background:oklch(.74 .14 352)}
-    .lbsr.tenor .lbtrack b,.lbsr.tenor .lbrider{background:oklch(.74 .14 150)}
-    .lbsr.bass .lbtrack b,.lbsr.bass .lbrider{background:oklch(.74 .12 267)}
-    .lbsr.soprano .lbrider{color:oklch(.27 .05 89)} .lbsr.alto .lbrider{color:oklch(.27 .05 352)}
-    .lbsr.tenor .lbrider{color:oklch(.27 .05 150)} .lbsr.bass .lbrider{color:oklch(.27 .05 267)}
+    /* the section race and the player's part dots: see 'one colour per voice part' below */
     /* usage counters (light; the dark set was already even) */
     /* only the icon colours move to one lightness; the tile washes keep their original tints (a wash taken from the darker icon colour turned cream to beige) */
     .ukpis .k1,.uk-dev{--k:oklch(.58 .16 267)}
@@ -3450,9 +3444,6 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
       :root:not([data-theme="light"]) .ukpis .k4,:root:not([data-theme="light"]) .uk-lang{--k:oklch(.76 .13 357)}
       :root:not([data-theme="light"]) .uk-when{--k:oklch(.76 .14 155)} :root:not([data-theme="light"]) .uk-rec{--k:oklch(.76 .035 270)}
     }
-    /* the player's part dot */
-    .plbar .pl-part.soprano{--dc:oklch(.82 .1 90)} .plbar .pl-part.alto{--dc:oklch(.82 .1 150)}
-    .plbar .pl-part.tenor{--dc:oklch(.82 .07 268)} .plbar .pl-part.bass{--dc:oklch(.82 .025 268)}
   }
 
   /* 4 - gradients between two hues are mixed in OKLCH, so the middle keeps its colour instead of
@@ -3537,6 +3528,36 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
     :root:not([data-theme="light"]) .savebar{background:rgb(38 40 51 / .88);box-shadow:inset 0 1px 0 rgb(255 255 255 / .06)}
     :root:not([data-theme="light"]){--dk-bg:rgb(38 40 51 / .86); --dk-pill:#3a3d4b; --dk-pill-drag:#444756}
   }
+  /* ======================= 5.63: one colour per voice part =======================
+     Every place a voice part is coloured reads these tokens. Before, attendance, the seating chart, the members list,
+     recordings and the player used one set, the member page and leaderboard avatars another, and the section race a third.
+     Each role shares one OKLCH lightness: base L .52 (light) / .80 (dark), wash .968 / .275, race bars .74, player dots .82. */
+  :root{--part-s:#836412;--part-s-w:#fcf4e3;--part-s-hi:#cea529;--part-s-dot:#dec176;--part-s-on:#302504;--part-a:#357a47;--part-a-w:#ebf9ed;--part-a-hi:#62c37a;--part-a-dot:#95d7a2;--part-a-on:#122d19;--part-t:#3f66b0;--part-t-w:#eff5fe;--part-t-hi:#89a8f7;--part-t-dot:#b0c4f3;--part-t-on:#1b253f;--part-b:#5e697e;--part-b-w:#f2f4f9;--part-b-hi:#a1abc2;--part-b-dot:#bdc4d5;--part-b-on:#222630}
+  :root[data-theme="dark"]{--part-s:#dbb970;--part-s-w:#302613;--part-a:#89d298;--part-a-w:#1b2d1e;--part-t:#a0bef5;--part-t-w:#1e2839;--part-b:#b6becc;--part-b-w:#25282d}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){--part-s:#dbb970;--part-s-w:#302613;--part-a:#89d298;--part-a-w:#1b2d1e;--part-t:#a0bef5;--part-t-w:#1e2839;--part-b:#b6becc;--part-b-w:#25282d} }
+  .sect.soprano .lbl{border-left-color:var(--part-s)} .sectbar.soprano{background:var(--part-s-w);color:var(--part-s);border-bottom-color:var(--rule)} .sectbar.soprano::before{background:var(--part-s)}
+  .blk.soprano{border-color:color-mix(in srgb,var(--part-s) 32%,transparent);background:var(--part-s-w)} .blk.soprano .blkh{color:var(--part-s)} .prow.soprano{--pc:var(--part-s)}
+  .lsc.soprano,.recr.soprano,.rsb.soprano{--pc:var(--part-s);--pw:var(--part-s-w)} .plbar .pl-part.soprano{--dc:var(--part-s-dot)}
+  .mrow .av.soprano,.mpart.soprano,.lbav.soprano{background:var(--part-s-w);color:var(--part-s)}
+  .lbsr.soprano .lbtrack b,.lbsr.soprano .lbrider{background:var(--part-s-hi)} .lbsr.soprano .lbrider{color:var(--part-s-on)}
+  .sect.alto .lbl{border-left-color:var(--part-a)} .sectbar.alto{background:var(--part-a-w);color:var(--part-a);border-bottom-color:var(--rule)} .sectbar.alto::before{background:var(--part-a)}
+  .blk.alto{border-color:color-mix(in srgb,var(--part-a) 32%,transparent);background:var(--part-a-w)} .blk.alto .blkh{color:var(--part-a)} .prow.alto{--pc:var(--part-a)}
+  .lsc.alto,.recr.alto,.rsb.alto{--pc:var(--part-a);--pw:var(--part-a-w)} .plbar .pl-part.alto{--dc:var(--part-a-dot)}
+  .mrow .av.alto,.mpart.alto,.lbav.alto{background:var(--part-a-w);color:var(--part-a)}
+  .lbsr.alto .lbtrack b,.lbsr.alto .lbrider{background:var(--part-a-hi)} .lbsr.alto .lbrider{color:var(--part-a-on)}
+  .sect.tenor .lbl{border-left-color:var(--part-t)} .sectbar.tenor{background:var(--part-t-w);color:var(--part-t);border-bottom-color:var(--rule)} .sectbar.tenor::before{background:var(--part-t)}
+  .blk.tenor{border-color:color-mix(in srgb,var(--part-t) 32%,transparent);background:var(--part-t-w)} .blk.tenor .blkh{color:var(--part-t)} .prow.tenor{--pc:var(--part-t)}
+  .lsc.tenor,.recr.tenor,.rsb.tenor{--pc:var(--part-t);--pw:var(--part-t-w)} .plbar .pl-part.tenor{--dc:var(--part-t-dot)}
+  .mrow .av.tenor,.mpart.tenor,.lbav.tenor{background:var(--part-t-w);color:var(--part-t)}
+  .lbsr.tenor .lbtrack b,.lbsr.tenor .lbrider{background:var(--part-t-hi)} .lbsr.tenor .lbrider{color:var(--part-t-on)}
+  .sect.bass .lbl{border-left-color:var(--part-b)} .sectbar.bass{background:var(--part-b-w);color:var(--part-b);border-bottom-color:var(--rule)} .sectbar.bass::before{background:var(--part-b)}
+  .blk.bass{border-color:color-mix(in srgb,var(--part-b) 32%,transparent);background:var(--part-b-w)} .blk.bass .blkh{color:var(--part-b)} .prow.bass{--pc:var(--part-b)}
+  .lsc.bass,.recr.bass,.rsb.bass{--pc:var(--part-b);--pw:var(--part-b-w)} .plbar .pl-part.bass{--dc:var(--part-b-dot)}
+  .mrow .av.bass,.mpart.bass,.lbav.bass{background:var(--part-b-w);color:var(--part-b)}
+  .lbsr.bass .lbtrack b,.lbsr.bass .lbrider{background:var(--part-b-hi)} .lbsr.bass .lbrider{color:var(--part-b-on)}
+  /* an older dark-mode rule painted these bass labels grey on its own; they follow the token now */
+  :root[data-theme="dark"] :is(.sectbar.bass,.blk.bass .blkh,.mrow .av.bass,.mpart.bass,.lbav.bass){color:var(--part-b)}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) :is(.sectbar.bass,.blk.bass .blkh,.mrow .av.bass,.mpart.bass,.lbav.bass){color:var(--part-b)} }
 </style>
 <style>
   /* 5.50: the states the fixes added (data that could not load, an out-of-date
@@ -4282,6 +4303,7 @@ if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Each voice part has one colour on every screen: sopranos gold, altos green, tenors blue, basses slate',
     'Design polish: borders take on the colour of tinted surfaces, colour sets have even brightness, icons match the weight of the text beside them, sideways lists fade at the edge that has more to see, icons that swap blur smoothly, and in dark mode what floats sits on a lighter surface',
     'No internet? The app now says so. Signing in, saving, opening a sheet that isn’t on your device or playing a recording tells you you’re offline (or that the server isn’t answering) instead of “Load failed”, and the sign-in and director pages show it before you start',
     'Opens faster: the first screen no longer waits for the network. On a return visit the pages appear at once from the copy saved on your device, and fresh data replaces it a moment later',
@@ -4376,6 +4398,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'У каждой партии теперь один цвет на всех экранах: сопрано — золотой, альты — зелёный, тенора — синий, басы — серо-синий',
     'Шлифовка дизайна: рамки принимают цвет подкрашенного фона, цвета в наборах одинаково яркие, значки по толщине совпадают с текстом рядом, списки с прокруткой вбок плавно гаснут у края, где есть ещё, сменяющиеся значки мягко размываются, а в тёмной теме всплывающие панели светлее фона под ними',
     'Нет интернета? Теперь приложение так и говорит. При входе, сохранении, открытии нот, которых нет на устройстве, или записи вы увидите, что нет сети (или что сервер не отвечает), а не «Load failed»; страницы входа и регента предупреждают об этом заранее',
     'Открывается быстрее: первый экран больше не ждёт сеть. При повторном входе страницы показываются сразу из копии, сохранённой на устройстве, а свежие данные подставляются через мгновение',
