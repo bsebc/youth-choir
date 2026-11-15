@@ -3434,11 +3434,12 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
     .lbsr.soprano .lbrider{color:oklch(.27 .05 89)} .lbsr.alto .lbrider{color:oklch(.27 .05 352)}
     .lbsr.tenor .lbrider{color:oklch(.27 .05 150)} .lbsr.bass .lbrider{color:oklch(.27 .05 267)}
     /* usage counters (light; the dark set was already even) */
-    .ukpis .k1,.uk-dev{--k:oklch(.58 .16 267);--kw:oklch(.58 .16 267 / .1)}
-    .ukpis .k2{--k:oklch(.6 .125 68);--kw:oklch(.6 .125 68 / .13)}
-    .ukpis .k3{--k:oklch(.58 .099 182);--kw:oklch(.58 .099 182 / .11)}
-    .ukpis .k4,.uk-lang{--k:oklch(.58 .17 2);--kw:oklch(.58 .17 2 / .09)}
-    .uk-when{--k:oklch(.58 .14 152);--kw:oklch(.58 .14 152 / .09)} .uk-rec{--k:oklch(.58 .04 269)}
+    /* only the icon colours move to one lightness; the tile washes keep their original tints (a wash taken from the darker icon colour turned cream to beige) */
+    .ukpis .k1,.uk-dev{--k:oklch(.58 .16 267)}
+    .ukpis .k2{--k:oklch(.6 .125 68)}
+    .ukpis .k3{--k:oklch(.58 .099 182)}
+    .ukpis .k4,.uk-lang{--k:oklch(.58 .17 2)}
+    .uk-when{--k:oklch(.58 .14 152)} .uk-rec{--k:oklch(.58 .04 269)}
     :root[data-theme="dark"] .ukpis .k1,:root[data-theme="dark"] .uk-dev{--k:oklch(.76 .13 267)}
     :root[data-theme="dark"] .ukpis .k2{--k:oklch(.78 .12 75)} :root[data-theme="dark"] .ukpis .k3{--k:oklch(.76 .11 182)}
     :root[data-theme="dark"] .ukpis .k4,:root[data-theme="dark"] .uk-lang{--k:oklch(.76 .13 357)}
@@ -3458,8 +3459,9 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
      going grey: the timeline line runs from today's gold to the navy of the dates ahead. The two
      one-hue gradients (the sign-in button, the leaderboard bars) keep their saturation the same way. */
   @supports (background: linear-gradient(in oklch, red, blue)){
-    .htrack::before{background:linear-gradient(to right in oklch,var(--gold) 0,var(--blue) 90px,var(--blue-line) 320px,var(--blue-line) calc(100% - 140px),transparent)}
-    .tline::before{background:linear-gradient(to bottom in oklch,var(--gold) 0,var(--blue) 70px,var(--blue-line) 260px,var(--blue-line) calc(100% - 80px),transparent)}
+    /* gold and navy sit on opposite sides of the colour wheel: in oklch the mix would detour through green, so these two lines mix in oklab */
+    .htrack::before{background:linear-gradient(to right in oklab,var(--gold) 0,var(--blue) 90px,var(--blue-line) 320px,var(--blue-line) calc(100% - 140px),transparent)}
+    .tline::before{background:linear-gradient(to bottom in oklab,var(--gold) 0,var(--blue) 70px,var(--blue-line) 260px,var(--blue-line) calc(100% - 80px),transparent)}
     .login .btn{background:linear-gradient(165deg in oklch,var(--blue-hi),var(--blue))}
     .lbbar b{background:linear-gradient(90deg in oklch,var(--blue-hover),var(--blue))}
     :root[data-theme="dark"]{--bar:linear-gradient(90deg in oklch,#5458c8,#8584eb)}
@@ -10019,17 +10021,33 @@ document.addEventListener('scroll', e => { const x = e.target; if (x && x.classL
 /* 5.63: a sideways scroller fades out at the edge that has more to show (design rule 6). The fade
    is 15% of the scroller's width, at most 48px, and only on a side with something hidden behind it. */
 const FADE_SEL = '.htl,.chips,.stagewrap,.mchart';
+// Fade an edge only where an item is cut off by it, and only as far as the cut-off part reaches,
+// so the card a carousel has snapped to (flush with the edge) never fades.
 function edgeFade(el){
   const max = el.scrollWidth - el.clientWidth;
   if (max <= 1) { el.classList.remove('fx'); return; }
-  const f = Math.min(48, Math.round(el.clientWidth * .15)) + 'px';
+  const r = el.getBoundingClientRect(), cap = Math.min(48, r.width * .15);
+  let box = el;   // look through a wide inner track (the services timeline has one) to the items it holds
+  while (box.children.length === 1 && box.firstElementChild.children.length > 1 && box.firstElementChild.getBoundingClientRect().width > r.width + 1) box = box.firstElementChild;
+  const items = [], take = n => { for (const c of n.children) getComputedStyle(c).display === 'contents' ? take(c) : items.push(c); };
+  take(box);      // the seating chart's rows are display:contents, so its blocks are the items
+  let fl = 0, fr = 0;
+  for (const c of items) {
+    const b = c.getBoundingClientRect();
+    if (b.width < 1) continue;
+    if (b.left < r.left - 1 && b.right > r.left + 1) fl = Math.max(fl, Math.min(cap, b.right - r.left));
+    if (b.left < r.right - 1 && b.right > r.right + 1) fr = Math.max(fr, Math.min(cap, r.right - b.left));
+  }
   el.classList.add('fx');
-  el.style.setProperty('--fl', el.scrollLeft > 2 ? f : '0px');
-  el.style.setProperty('--fr', el.scrollLeft < max - 2 ? f : '0px');
+  el.style.setProperty('--fl', Math.round(fl) + 'px');
+  el.style.setProperty('--fr', Math.round(fr) + 'px');
 }
 function wireFades(){
   document.querySelectorAll(FADE_SEL).forEach(el => {
-    if (!el.__fx) { el.__fx = 1; el.addEventListener('scroll', () => edgeFade(el), { passive: true }); }
+    if (!el.__fx) {
+      el.__fx = 1;
+      el.addEventListener('scroll', () => { if (!el.__fxq) el.__fxq = requestAnimationFrame(() => { el.__fxq = 0; edgeFade(el); }); }, { passive: true });
+    }
     edgeFade(el);
   });
 }
