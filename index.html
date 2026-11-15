@@ -427,7 +427,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .mdbar{display:flex;flex-wrap:wrap;gap:6px;padding:0 0 10px}
   .mdbar .mini{font-size:var(--fs-13)}
   .mdbar .mini.mk{background:var(--gold-bright);border-color:var(--gold-soft)}
-  .doc .docedit{width:100%;min-height:62vh;color:var(--ink);background:var(--surface);font:var(--fs-14)/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap}
+  .doc .docedit{width:100%;min-height:62vh;min-height:62dvh;color:var(--ink);background:var(--surface);font:var(--fs-14)/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap}
   @media (min-width:700px){ .doc{font-size:var(--fs-17);padding:22px 26px 52px} }
   /* the platform itself: rounded back corners, the front tapering in to the
      two centre steps. Curved ends are SVG; the straight middle stretches. */
@@ -553,7 +553,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .svc-card .date{font-family:inherit;font-weight:700;letter-spacing:var(--track-title);font-size:var(--fs-17)}
   .svc-card .kind{font-size:var(--fs-12);color:var(--blue-text);border:1px solid var(--blue-line);background:var(--blue-wash);border-radius:var(--r-pill);padding:3px 9px}
   .svc-card .s{font-size:var(--fs-15);color:var(--text-2);padding-left:14px;border-left:2px solid var(--rule)}
-  .loginwrap{display:flex;justify-content:center;padding:6vh 16px 40px}
+  .loginwrap{display:flex;justify-content:center;padding:6vh 16px 40px;padding:6dvh 16px 40px}
   .login{position:relative;padding:30px 26px 28px;display:flex;flex-direction:column;gap:18px;
     width:min(410px,100%);border-radius:var(--r-2xl);
     background:var(--glass-3);backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);
@@ -1767,7 +1767,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lnfmv[disabled]{opacity:.4;cursor:default}
   .mfoot .lnfrm{margin-right:auto;color:var(--red)}
   .lnpsub{margin:0;font-size:13.5px;line-height:1.45;color:var(--muted)}
-  .lnplist{max-height:min(44vh,360px);overflow-y:auto;overscroll-behavior:contain;margin:12px 0 14px;border:1px solid var(--rule);border-radius:12px;background:var(--card)}
+  .lnplist{max-height:min(44vh,360px);max-height:min(44dvh,360px);overflow-y:auto;overscroll-behavior:contain;margin:12px 0 14px;border:1px solid var(--rule);border-radius:12px;background:var(--card)}
   .lnprow{display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 14px;border-bottom:1px solid var(--rule);cursor:pointer}
   .lnprow:last-child{border-bottom:0}
   .lnprow .b{display:flex;flex-direction:column;gap:2px;min-width:0}
@@ -2162,7 +2162,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .doc mark{background:color-mix(in srgb,var(--blue) 15%,transparent);color:inherit}
   @media (max-width:699px){ .doc.paper{padding:26px 22px 30px} }
   /* ---- sign in ---- */
-  .loginwrap{padding:7vh 0 40px}
+  .loginwrap{padding:7vh 0 40px;padding:7dvh 0 40px}
   .login{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid var(--card-line);border-top:4px solid var(--gold);
     border-radius:18px;box-shadow:0 22px 60px -34px rgba(var(--shadow-rgb),.55);padding:28px 28px 26px;width:min(440px,100%);gap:18px}
   .login .lhead{align-items:flex-start;text-align:left;gap:10px}
@@ -2181,7 +2181,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .findsong input::-webkit-search-cancel-button{-webkit-appearance:none}
   .findsong:focus-within{border-color:var(--blue-text);background:var(--card);box-shadow:0 0 0 3px rgba(var(--blue-rgb),.12);color:var(--ink)}
   .tsugg{position:absolute;top:calc(100% + 8px);left:0;width:min(400px,calc(100vw - 300px));background:var(--card);border:1px solid var(--card-line);
-    border-radius:14px;box-shadow:0 22px 50px -22px rgba(var(--shadow-rgb),.5);padding:6px;z-index:45;max-height:min(420px,70vh);overflow:auto}
+    border-radius:14px;box-shadow:0 22px 50px -22px rgba(var(--shadow-rgb),.5);padding:6px;z-index:45;max-height:min(420px,70vh);max-height:min(420px,70dvh);overflow:auto}
   .tsugg[hidden]{display:none}
   .tsugg a{display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:10px;color:var(--ink);min-height:48px}
   .tsugg a.on{background:var(--blue-wash)}
@@ -2753,7 +2753,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
     .lbrank li{grid-template-columns:26px minmax(0,1fr) 28px 40px} .lbrank .lbbar{display:none}
   }
   .lbscrim{position:fixed;inset:0;z-index:300;background:rgba(10,14,30,.45);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);animation:mfade .2s ease both}
-  .lbsheet{position:fixed;z-index:301;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 32px));max-height:min(82vh,720px);overflow:auto;
+  .lbsheet{position:fixed;z-index:301;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 32px));max-height:min(82vh,720px);max-height:min(82dvh,720px);overflow:auto;
     background:var(--card);border:1px solid var(--card-line);border-radius:22px;box-shadow:0 28px 70px -24px rgba(0,0,0,.55);padding:22px;animation:lbin .28s cubic-bezier(.3,.7,.2,1) both}
   @keyframes lbin{from{opacity:0;transform:translate(-50%,-46%) scale(.97)}}
   .lbx{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;border:0;background:var(--paper-2);color:var(--text-2);font-size:20px;line-height:1;cursor:pointer}
@@ -2763,7 +2763,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lbsheet .bgh{margin-top:16px} .lbsheet .bgrid{padding-top:14px}
   .lbrep{display:flex;justify-content:center;margin-top:20px}
   @media (max-width:699px){
-    .lbsheet{left:0;right:0;top:auto;bottom:0;transform:none;width:auto;max-height:86vh;border-radius:22px 22px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom));animation:lbsl .3s cubic-bezier(.3,.7,.2,1) both}
+    .lbsheet{left:0;right:0;top:auto;bottom:0;transform:none;width:auto;max-height:86vh;max-height:86dvh;border-radius:22px 22px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom));animation:lbsl .3s cubic-bezier(.3,.7,.2,1) both}
     @keyframes lbsl{from{transform:translateY(100%)}}
   }
   /* accent: a sky of small pale dots, a few of them twinkling, thinner toward the middle */
@@ -2888,7 +2888,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .mast.msopen .mscancel{opacity:1;transform:none}
   .mast > :not(.msrch){transition:opacity .18s ease}
   .mast.msopen > :not(.msrch){opacity:0;pointer-events:none}
-  .msrch .tsugg{top:calc(100% + 8px);left:calc(var(--gut) + env(safe-area-inset-left));right:calc(var(--gut) + env(safe-area-inset-right));width:auto;max-height:min(420px,60vh)}
+  .msrch .tsugg{top:calc(100% + 8px);left:calc(var(--gut) + env(safe-area-inset-left));right:calc(var(--gut) + env(safe-area-inset-right));width:auto;max-height:min(420px,60vh);max-height:min(420px,60dvh)}
   @media (prefers-reduced-motion:reduce){ .msrch,.msf,.mscancel,.mast > :not(.msrch){transition:none} }
 
   /* ---- director pages ---- */
@@ -3362,6 +3362,178 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
     html,body{background:#fff !important;margin:0 !important}
     body > *:not(#lyrprint){display:none !important}
     #lyrprint{position:static;visibility:visible;width:auto;padding:.5in;box-sizing:border-box}
+  }
+  /* ======================= 5.63: design rules =======================
+     One layer, one section per rule, so any of them can be taken out on its own.
+       1 nested corners       2 translucent borders     3 palettes built in OKLCH
+       4 gradients in oklch   5 icon strokes that match their text
+       6 carousels fade at the edge with more to show   7 icon swaps blur the outgoing icon
+       8 dark mode: depth from lighter surfaces         9 dynamic viewport units (edited in place above)
+       10 multiply for product shots on white: nothing here is a product shot, so it is not used */
+
+  /* 1 - nested corners: an inner shape's radius is the outer radius minus the gap between them.
+     The person badge (a pianist or conductor mark inside a name chip) was the one place that broke it:
+     4 px inside, 6 px outside, 4 px apart. The chip now rounds by 8 = 4 + 4, so the curves run parallel. */
+  .who{border-radius:8px}
+  .who i{border-radius:calc(8px - 4px)}
+
+  /* 2 - borders are a dark (or, in dark mode, light) ink at an opacity instead of a fixed grey.
+     On the white card they sit on they look exactly as before; on a tinted surface (a gold notice,
+     a blue selection, a section header) they take on its colour instead of laying grey over it.
+     The values are fitted so each one matches its old colour on a card to within one shade. */
+  :root{
+    --rule:rgb(26 34 6 / .14); --card-line:rgb(26 34 6 / .14); --grid-line:rgb(26 34 6 / .14); --ic-line:rgb(26 34 6 / .14);
+    --line-strong:rgb(26 34 6 / .25); --line-strong-2:rgb(26 34 6 / .32);
+    --blue-line:rgb(18 47 151 / .24); --red-line:rgb(139 55 35 / .25); --green-line:rgb(46 99 33 / .32);
+  }
+  :root[data-theme="dark"]{
+    --rule:rgb(210 214 245 / .054); --card-line:rgb(210 214 245 / .076); --grid-line:rgb(210 214 245 / .089); --ic-line:rgb(210 214 245 / .14);
+    --line-strong:rgb(210 214 245 / .16); --line-strong-2:rgb(210 214 245 / .265);
+    --blue-line:rgb(113 123 250 / .38); --red-line:rgb(233 94 78 / .41); --green-line:rgb(76 203 118 / .32);
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --rule:rgb(210 214 245 / .054); --card-line:rgb(210 214 245 / .076); --grid-line:rgb(210 214 245 / .089); --ic-line:rgb(210 214 245 / .14);
+    --line-strong:rgb(210 214 245 / .16); --line-strong-2:rgb(210 214 245 / .265);
+    --blue-line:rgb(113 123 250 / .38); --red-line:rgb(233 94 78 / .41); --green-line:rgb(76 203 118 / .32);
+  } }
+
+  /* 3 - colour sets built in OKLCH: one lightness for every colour in a set, so none of them looks
+     heavier than the others. The home page's resource tiles ran from a near-black navy (L .34) to a
+     light gold (L .59); the section race on the leaderboard from a pale yellow (L .81) to a deep blue
+     (L .47); the usage page's four counters and the player's part dots were uneven the same way.
+     Each set keeps its hues and now shares one lightness. Older browsers keep the colours they had. */
+  @supports (color: oklch(0 0 0)){
+    :root{
+      --tool1-ic:oklch(.55 .15 268); --tool2-ic:oklch(.55 .14 150); --tool3-ic:oklch(.55 .105 86);
+      --tool4-ic:oklch(.55 .09 211); --tool5-ic:oklch(.55 .15 292); --tool6-ic:oklch(.55 .15 28);
+      --tool1-bg:oklch(.955 .02 268); --tool2-bg:oklch(.955 .02 150); --tool3-bg:oklch(.955 .02 86);
+      --tool4-bg:oklch(.955 .02 211); --tool5-bg:oklch(.955 .02 292); --tool6-bg:oklch(.955 .02 28);
+    }
+    .reslist .r7 .rico{--t7:oklch(.55 .14 48)}
+    :root[data-theme="dark"]{
+      --tool1-ic:oklch(.8 .1 268); --tool2-ic:oklch(.8 .1 150); --tool3-ic:oklch(.8 .1 86);
+      --tool4-ic:oklch(.8 .09 211); --tool5-ic:oklch(.8 .1 292); --tool6-ic:oklch(.8 .1 28);
+      --tool1-bg:oklch(.28 .045 268); --tool2-bg:oklch(.28 .04 150); --tool3-bg:oklch(.28 .04 86);
+      --tool4-bg:oklch(.28 .04 211); --tool5-bg:oklch(.28 .04 292); --tool6-bg:oklch(.28 .04 28);
+    }
+    :root[data-theme="dark"] .reslist .r7 .rico{--t7:oklch(.8 .11 48)}
+    @media (prefers-color-scheme:dark){
+      :root:not([data-theme="light"]){
+        --tool1-ic:oklch(.8 .1 268); --tool2-ic:oklch(.8 .1 150); --tool3-ic:oklch(.8 .1 86);
+        --tool4-ic:oklch(.8 .09 211); --tool5-ic:oklch(.8 .1 292); --tool6-ic:oklch(.8 .1 28);
+        --tool1-bg:oklch(.28 .045 268); --tool2-bg:oklch(.28 .04 150); --tool3-bg:oklch(.28 .04 86);
+        --tool4-bg:oklch(.28 .04 211); --tool5-bg:oklch(.28 .04 292); --tool6-bg:oklch(.28 .04 28);
+      }
+      :root:not([data-theme="light"]) .reslist .r7 .rico{--t7:oklch(.8 .11 48)}
+    }
+    /* the section race: soprano yellow, alto pink, tenor green, bass blue, all at one lightness; dark words on each */
+    .lbsr.soprano .lbtrack b,.lbsr.soprano .lbrider{background:oklch(.74 .14 89)}
+    .lbsr.alto .lbtrack b,.lbsr.alto .lbrider{background:oklch(.74 .14 352)}
+    .lbsr.tenor .lbtrack b,.lbsr.tenor .lbrider{background:oklch(.74 .14 150)}
+    .lbsr.bass .lbtrack b,.lbsr.bass .lbrider{background:oklch(.74 .12 267)}
+    .lbsr.soprano .lbrider{color:oklch(.27 .05 89)} .lbsr.alto .lbrider{color:oklch(.27 .05 352)}
+    .lbsr.tenor .lbrider{color:oklch(.27 .05 150)} .lbsr.bass .lbrider{color:oklch(.27 .05 267)}
+    /* usage counters (light; the dark set was already even) */
+    .ukpis .k1,.uk-dev{--k:oklch(.58 .16 267);--kw:oklch(.58 .16 267 / .1)}
+    .ukpis .k2{--k:oklch(.6 .125 68);--kw:oklch(.6 .125 68 / .13)}
+    .ukpis .k3{--k:oklch(.58 .099 182);--kw:oklch(.58 .099 182 / .11)}
+    .ukpis .k4,.uk-lang{--k:oklch(.58 .17 2);--kw:oklch(.58 .17 2 / .09)}
+    .uk-when{--k:oklch(.58 .14 152);--kw:oklch(.58 .14 152 / .09)} .uk-rec{--k:oklch(.58 .04 269)}
+    :root[data-theme="dark"] .ukpis .k1,:root[data-theme="dark"] .uk-dev{--k:oklch(.76 .13 267)}
+    :root[data-theme="dark"] .ukpis .k2{--k:oklch(.78 .12 75)} :root[data-theme="dark"] .ukpis .k3{--k:oklch(.76 .11 182)}
+    :root[data-theme="dark"] .ukpis .k4,:root[data-theme="dark"] .uk-lang{--k:oklch(.76 .13 357)}
+    :root[data-theme="dark"] .uk-when{--k:oklch(.76 .14 155)} :root[data-theme="dark"] .uk-rec{--k:oklch(.76 .035 270)}
+    @media (prefers-color-scheme:dark){
+      :root:not([data-theme="light"]) .ukpis .k1,:root:not([data-theme="light"]) .uk-dev{--k:oklch(.76 .13 267)}
+      :root:not([data-theme="light"]) .ukpis .k2{--k:oklch(.78 .12 75)} :root:not([data-theme="light"]) .ukpis .k3{--k:oklch(.76 .11 182)}
+      :root:not([data-theme="light"]) .ukpis .k4,:root:not([data-theme="light"]) .uk-lang{--k:oklch(.76 .13 357)}
+      :root:not([data-theme="light"]) .uk-when{--k:oklch(.76 .14 155)} :root:not([data-theme="light"]) .uk-rec{--k:oklch(.76 .035 270)}
+    }
+    /* the player's part dot */
+    .plbar .pl-part.soprano{--dc:oklch(.82 .1 90)} .plbar .pl-part.alto{--dc:oklch(.82 .1 150)}
+    .plbar .pl-part.tenor{--dc:oklch(.82 .07 268)} .plbar .pl-part.bass{--dc:oklch(.82 .025 268)}
+  }
+
+  /* 4 - gradients between two hues are mixed in OKLCH, so the middle keeps its colour instead of
+     going grey: the timeline line runs from today's gold to the navy of the dates ahead. The two
+     one-hue gradients (the sign-in button, the leaderboard bars) keep their saturation the same way. */
+  @supports (background: linear-gradient(in oklch, red, blue)){
+    .htrack::before{background:linear-gradient(to right in oklch,var(--gold) 0,var(--blue) 90px,var(--blue-line) 320px,var(--blue-line) calc(100% - 140px),transparent)}
+    .tline::before{background:linear-gradient(to bottom in oklch,var(--gold) 0,var(--blue) 70px,var(--blue-line) 260px,var(--blue-line) calc(100% - 80px),transparent)}
+    .login .btn{background:linear-gradient(165deg in oklch,var(--blue-hi),var(--blue))}
+    .lbbar b{background:linear-gradient(90deg in oklch,var(--blue-hover),var(--blue))}
+    :root[data-theme="dark"]{--bar:linear-gradient(90deg in oklch,#5458c8,#8584eb)}
+    @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){--bar:linear-gradient(90deg in oklch,#5458c8,#8584eb)} }
+  }
+
+  /* 5 - a line icon's stroke matches the weight of the text beside it. The stroke is set in screen
+     pixels (non-scaling), sized from the text: about .085em of stem at regular weight, .115em at
+     semibold, .13em at bold. Measured before: icons beside bold titles and links drew at 70-85% of
+     the text's weight; the chevrons in the sheet list drew heavier than their regular-weight titles. */
+  :is(.res .rico,.dadm .rico,.urec .rico,.lbic,.lbtro,.lnbic,.pfoot a,.tlink,.mback,.sbact .sshare,label.msf,.srow2,.ibtn,
+      .lbshotbtn,.pcrown,.lbcrown,.lbfire,.lbok,.lbup,.lmark,.schev,.rrow .ftile) svg :is(g,path,circle,rect,line,polyline,polygon,ellipse),
+  .phd > svg :is(g,path,circle,rect,line,polyline,polygon,ellipse){
+    vector-effect:non-scaling-stroke;stroke-width:inherit}            /* every shape takes the icon's width below, whatever its own attribute says */
+  .phd > svg,.phd > .ai,.lbic svg,.lbic .ai{stroke-width:1.9px}                                   /* card titles, 16.5px semibold */
+  .lbtro svg,.lbtro .ai,.lnbic svg,.lnbic .ai,.lmark svg,.lmark .ai{stroke-width:2.15px}                      /* page and hero titles, 17-23px bold */
+  .res .rico svg,.res .rico .ai,.dadm .rico svg,.dadm .rico .ai,.sbact .sshare svg,.sbact .sshare .ai,.urec .rico svg,.urec .rico .ai{stroke-width:1.6px}   /* 13.5-14px semibold labels */
+  .pfoot a svg,.pfoot a .ai,.tlink svg,.tlink .ai,.mback svg,.mback .ai,label.msf svg,label.msf .ai{stroke-width:1.5px}        /* 13px semibold links, 15px search text */
+  .ibtn svg,.ibtn .ai,.rrow .ftile svg,.rrow .ftile .ai{stroke-width:1.6px}                             /* beside 15px semibold titles */
+  .lbshotbtn svg,.lbshotbtn .ai,.pcrown svg,.pcrown .ai,.lbcrown svg,.lbcrown .ai,.lbfire svg,.lbfire .ai{stroke-width:1.55px}
+  .lbfire.lead svg,.lbfire.lead .ai{stroke-width:2px}                          /* the leading streak: 16px black-weight number */
+  .lbok svg,.lbok .ai,.lbup svg,.lbup .ai{stroke-width:1.7px}                                    /* beside 13-15px bold numbers */
+  .srow2 svg,.srow2 .ai{stroke-width:1.3px}                                             /* 11.5px semibold rows */
+  .lnband .tlink svg,.lnband .tlink .ai,.lbt .tlink svg,.lbt .tlink .ai{stroke-width:1.35px}                    /* 11.5px semibold links */
+  .schev svg,.schev .ai{stroke-width:1.4px}                                             /* 16px regular titles */
+
+  /* 6 - a sideways scroller fades out at the edge that has more to show (15% of its width, at most
+     48px), and only there: at the start the first item is not faded, at the end the last one is not.
+     The fade follows the scroll. Used on the services timeline, the seating stage, chip rows and the
+     member's month chart. */
+  @property --fl{syntax:'<length>';inherits:false;initial-value:0px}
+  @property --fr{syntax:'<length>';inherits:false;initial-value:0px}
+  .fx{-webkit-mask-image:linear-gradient(90deg,transparent,#000 var(--fl),#000 calc(100% - var(--fr)),transparent);
+      mask-image:linear-gradient(90deg,transparent,#000 var(--fl),#000 calc(100% - var(--fr)),transparent);
+      transition:--fl .22s var(--ease-fade),--fr .22s var(--ease-fade)}
+
+  /* 7 - when one icon replaces another, the outgoing one blurs as it fades: the dock's outline and
+     filled tab icons, the player's play / pause / loading, and the light / dark switch (inside the
+     page's own cross-fade, where the browser supports it). */
+  @media (max-width:999px){
+    .dock .dki svg{transition:opacity .22s ease,filter .22s ease}
+    .dock .dki .f{filter:blur(4px)} .dock .on .dki .f{filter:none} .dock .on .dki .o{filter:blur(4px)}
+  }
+  .plbar .pl-pp svg{grid-area:1/1;display:block;transition:opacity .2s var(--ease-fade),filter .2s var(--ease-fade),transform .28s var(--ease-out)}
+  .plbar .pl-pp .i-pause,.plbar .pl-pp .i-load,.plbar.playing .pl-pp .i-play,.plbar.loading .pl-pp .i-play,.plbar.loading .pl-pp .i-pause{
+    display:block;opacity:0;filter:blur(4px);transform:scale(.55)}
+  .plbar.playing:not(.loading) .pl-pp .i-pause,.plbar.loading .pl-pp .i-load{opacity:1;filter:none;transform:none}
+  .plbar.loading .pl-pp .i-load{animation:lsspin .8s linear infinite}
+  @media (max-width:999px){ .mast .themebtn[data-theme-flip] svg{view-transition-name:themeic} }
+  @media (min-width:1000px){ .topbar .themebtn[data-theme-flip] svg{view-transition-name:themeic} }
+  ::view-transition-old(themeic){animation:icout .24s var(--ease-fade) both}
+  ::view-transition-new(themeic){animation:icin .34s var(--ease-out) both}
+  @keyframes icout{to{opacity:0;filter:blur(4px);transform:scale(.6) rotate(-40deg)}}
+  @keyframes icin{from{opacity:0;filter:blur(4px);transform:scale(.6) rotate(40deg)}}
+  @media (prefers-reduced-motion:reduce){
+    .dock .dki svg,.plbar .pl-pp svg{transition:opacity .15s ease;filter:none !important;transform:none !important}
+    ::view-transition-old(themeic),::view-transition-new(themeic){animation:none}
+  }
+
+  /* 8 - dark mode shows depth with lighter surfaces, because shadows barely show on a dark page.
+     What floats now sits a step lighter than what it floats over: dialogs, bottom sheets, the sheet
+     viewer and search suggestions (with everything inside them stepped up too), the save bar and
+     the dock. Light mode is unchanged. */
+  :root[data-theme="dark"] :is(.modal,.lbsheet,.shv-box,.tsugg){background:#23252f;
+    --card:#23252f; --surface:#23252f; --surface-2:#2b2d38; --paper:#2b2d38; --paper-2:#282a35; --glass-seat:#2b2d38; --glass-in:#282a35;
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / .06),0 28px 70px -24px rgb(0 0 0 / .6)}
+  :root[data-theme="dark"] .savebar{background:rgb(38 40 51 / .88);box-shadow:inset 0 1px 0 rgb(255 255 255 / .06)}
+  :root[data-theme="dark"]{--dk-bg:rgb(38 40 51 / .86); --dk-pill:#3a3d4b; --dk-pill-drag:#444756}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) :is(.modal,.lbsheet,.shv-box,.tsugg){background:#23252f;
+      --card:#23252f; --surface:#23252f; --surface-2:#2b2d38; --paper:#2b2d38; --paper-2:#282a35; --glass-seat:#2b2d38; --glass-in:#282a35;
+      box-shadow:inset 0 1px 0 rgb(255 255 255 / .06),0 28px 70px -24px rgb(0 0 0 / .6)}
+    :root:not([data-theme="light"]) .savebar{background:rgb(38 40 51 / .88);box-shadow:inset 0 1px 0 rgb(255 255 255 / .06)}
+    :root:not([data-theme="light"]){--dk-bg:rgb(38 40 51 / .86); --dk-pill:#3a3d4b; --dk-pill-drag:#444756}
   }
 </style>
 <style>
@@ -4101,13 +4273,14 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.62.0';
+const VERSION = '5.63.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Design polish: borders take on the colour of tinted surfaces, colour sets have even brightness, icons match the weight of the text beside them, sideways lists fade at the edge that has more to see, icons that swap blur smoothly, and in dark mode what floats sits on a lighter surface',
     'No internet? The app now says so. Signing in, saving, opening a sheet that isn’t on your device or playing a recording tells you you’re offline (or that the server isn’t answering) instead of “Load failed”, and the sign-in and director pages show it before you start',
     'Opens faster: the first screen no longer waits for the network. On a return visit the pages appear at once from the copy saved on your device, and fresh data replaces it a moment later',
     'Fixed: the home-screen app could sit on a blank screen until it was closed and opened again. A start that gets no answer now opens the saved copy, or offers Reload / Try again',
@@ -4201,6 +4374,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Шлифовка дизайна: рамки принимают цвет подкрашенного фона, цвета в наборах одинаково яркие, значки по толщине совпадают с текстом рядом, списки с прокруткой вбок плавно гаснут у края, где есть ещё, сменяющиеся значки мягко размываются, а в тёмной теме всплывающие панели светлее фона под ними',
     'Нет интернета? Теперь приложение так и говорит. При входе, сохранении, открытии нот, которых нет на устройстве, или записи вы увидите, что нет сети (или что сервер не отвечает), а не «Load failed»; страницы входа и регента предупреждают об этом заранее',
     'Открывается быстрее: первый экран больше не ждёт сеть. При повторном входе страницы показываются сразу из копии, сохранённой на устройстве, а свежие данные подставляются через мгновение',
     'Исправлено: приложение с домашнего экрана могло оставаться пустым, пока его не закроешь и не откроешь снова. Если сеть не отвечает, теперь открывается сохранённая копия либо предлагается «Обновить» / «Повторить»',
@@ -9842,9 +10016,28 @@ function netChanged(redraw){
 }
 /* the sideways timeline keeps its place when the page redraws (a date moved, a song order deleted) */
 document.addEventListener('scroll', e => { const x = e.target; if (x && x.classList && x.classList.contains('htl')) S.htlX = x.scrollLeft; }, { capture: true, passive: true });
+/* 5.63: a sideways scroller fades out at the edge that has more to show (design rule 6). The fade
+   is 15% of the scroller's width, at most 48px, and only on a side with something hidden behind it. */
+const FADE_SEL = '.htl,.chips,.stagewrap,.mchart';
+function edgeFade(el){
+  const max = el.scrollWidth - el.clientWidth;
+  if (max <= 1) { el.classList.remove('fx'); return; }
+  const f = Math.min(48, Math.round(el.clientWidth * .15)) + 'px';
+  el.classList.add('fx');
+  el.style.setProperty('--fl', el.scrollLeft > 2 ? f : '0px');
+  el.style.setProperty('--fr', el.scrollLeft < max - 2 ? f : '0px');
+}
+function wireFades(){
+  document.querySelectorAll(FADE_SEL).forEach(el => {
+    if (!el.__fx) { el.__fx = 1; el.addEventListener('scroll', () => edgeFade(el), { passive: true }); }
+    edgeFade(el);
+  });
+}
+addEventListener('resize', wireFades, { passive: true });
 function afterRender(){
   plSync();
   { const hx = document.querySelector('.htl'); if (hx && S.htlX) hx.scrollLeft = S.htlX; }
+  wireFades();
   lbCountUp();
   document.querySelectorAll('textarea.lyrta').forEach(autoGrow);
   if (wasLoading) { wasLoading = false; fadeInBody(); }
