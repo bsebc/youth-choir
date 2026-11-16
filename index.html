@@ -3749,6 +3749,9 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   :is(.lbwho,.lbchip,.srow2,.rsvc,.lnband,.btn,.rhead){transition:filter var(--dur-press) ease}
   .lnfr,.dacct{transition:background var(--dur-press) ease, filter var(--dur-press) ease}
   .lbtile{transition:transform var(--dur-quick) var(--ease-enter), border-color var(--dur-quick) ease, filter var(--dur-press) ease}
+  .themebtn{transition:background var(--dur-press) ease,color var(--dur-press) ease,border-color var(--dur-press) ease,scale var(--dur-press) var(--ease-enter)}
+  @media (prefers-reduced-motion:no-preference){   /* in the phone header, whose own rule fades its buttons while search opens */
+    .mast > .themebtn{transition:opacity var(--dur-quick) ease,scale var(--dur-press) var(--ease-enter)} }
 
   /* 8. a tap area of at least 44px where the visible control is smaller; neighbours split the gap */
   .mast .lang button,.mast .themebtn{position:relative}
@@ -4424,7 +4427,7 @@ const NOTES = { '5': {
     'Top attendance and the attendance report play their opening once a visit; changing the period slides the bars to their new lengths. Only badges earned this week shine',
     'On a phone, pull a singer’s card down to close it',
     'Deleting asks inside the app and says what will happen; a problem with a field is shown right beside it',
-    'With Reduce Motion turned on, nothing slides or fades. On phones the light/dark icon no longer spins on every page change',
+    'The light/dark switch responds sooner and its icon turns smoothly; on phones the icon no longer spins on every page change. With Reduce Motion turned on, nothing slides or fades',
     'Each voice part has one colour on every screen: sopranos gold, altos green, tenors blue, basses slate',
     'Design polish: borders take on the colour of tinted surfaces, colour sets have even brightness, icons match the weight of the text beside them, sideways lists fade at the edge that has more to see, icons that swap blur smoothly, and in dark mode what floats sits on a lighter surface',
     'No internet? The app now says so. Signing in, saving, opening a sheet that isn’t on your device or playing a recording tells you you’re offline (or that the server isn’t answering) instead of “Load failed”, and the sign-in and director pages show it before you start',
@@ -4524,7 +4527,7 @@ const NOTES = { '5': {
     '«Лучшая посещаемость» и отчёт о посещаемости показывают вступление один раз за посещение; при смене периода полосы плавно меняют длину. Блестят только значки, полученные на этой неделе',
     'На телефоне карточку хориста можно закрыть, потянув её вниз',
     'Удаление спрашивает внутри приложения и называет действие; ошибка в поле показывается прямо рядом с ним',
-    'При включённом «Уменьшении движения» ничего не скользит и не проявляется. На телефоне значок светлой/тёмной темы больше не крутится при каждом переходе',
+    'Переключатель светлой/тёмной темы срабатывает быстрее, а его значок поворачивается плавно; на телефоне значок больше не крутится при каждом переходе. При включённом «Уменьшении движения» ничего не скользит и не проявляется',
     'У каждой партии теперь один цвет на всех экранах: сопрано — золотой, альты — зелёный, тенора — синий, басы — серо-синий',
     'Шлифовка дизайна: рамки принимают цвет подкрашенного фона, цвета в наборах одинаково яркие, значки по толщине совпадают с текстом рядом, списки с прокруткой вбок плавно гаснут у края, где есть ещё, сменяющиеся значки мягко размываются, а в тёмной теме всплывающие панели светлее фона под ними',
     'Нет интернета? Теперь приложение так и говорит. При входе, сохранении, открытии нот, которых нет на устройстве, или записи вы увидите, что нет сети (или что сервер не отвечает), а не «Load failed»; страницы входа и регента предупреждают об этом заранее',
@@ -6222,6 +6225,14 @@ window.addEventListener('resize', () => { moveDockPill(); syncThumbs(); });
 window.addEventListener('load', () => { moveDockPill(); syncThumbs(); });
 window.addEventListener('orientationchange', () => setTimeout(() => { moveDockPill(); syncThumbs(); }, 120));
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { moveDockPill(); syncThumbs(); });
+/* 5.64: the light/dark button changes the theme and its own icon and redraws nothing else, because
+   nothing else on the page is drawn from the theme. Redrawing the whole page held the icon's turn
+   back (on Top attendance, half a second on a slow phone) while the screen stood still. */
+function flipTheme(){
+  document.documentElement.dataset.theme = S.theme;
+  const ic = effTheme() === 'dark' ? AIC.sun : AIC.moon;
+  document.querySelectorAll('.themebtn[data-theme-flip]').forEach(b => { b.innerHTML = ic; });
+}
 function effTheme(){
   if (S.theme === 'dark' || S.theme === 'light') return S.theme;
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -9742,12 +9753,18 @@ function fadeInBody(){
    the whole document, let it. */
 function paint(fn){
   /* 5.64: no transition starts while the colours change, so nothing (the bottom bar was the one)
-     keeps fading on its own clock after the page has cross-faded */
+     keeps fading on its own clock after the page has cross-faded. Transitions come back once the
+     cross-fade has finished: switching them back on restyles every element on the page, and doing
+     that two frames in (as the first 5.64 preview did) made the light/dark icon stutter mid-turn. */
   const root = document.documentElement;
-  const run = () => { root.classList.add('theme-switching');
-    try { fn(); } finally { requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('theme-switching'))); } };
-  if (calm() || !document.startViewTransition) return run();
+  const off = () => root.classList.remove('theme-switching');
+  const run = () => { root.classList.add('theme-switching'); fn(); };
+  if (calm() || !document.startViewTransition) {
+    try { run(); } finally { requestAnimationFrame(() => requestAnimationFrame(off)); }
+    return;
+  }
   const vt = document.startViewTransition(run);
+  vt.finished.then(off, off);
   if (vt.ready) vt.ready.catch(() => {});        // a newer transition may cut this one short
 }
 /* The menu arrives over 300ms and used to leave in a single frame, while the
@@ -10717,7 +10734,7 @@ document.addEventListener('click', async e => {
   if (d.lang) { const L = d.lang === 'ru' ? 'ru' : 'en'; if (L === S.lang) return;     // the language already shown
     S.lang = L; lsSet('bsebc-youth-lang', S.lang); return paint(render); }
 
-  if (el.hasAttribute('data-theme-flip')) { const next = effTheme() === 'dark' ? 'light' : 'dark'; S.theme = next; lsSet('bsebc-youth-theme', next); return paint(render); }
+  if (el.hasAttribute('data-theme-flip')) { const next = effTheme() === 'dark' ? 'light' : 'dark'; S.theme = next; lsSet('bsebc-youth-theme', next); return paint(flipTheme); }
 
   if (d.themeSet) { S.theme = d.themeSet; lsSet('bsebc-youth-theme', d.themeSet); return paint(render); }
 
