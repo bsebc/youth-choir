@@ -289,7 +289,7 @@ async function open(opts = {}) {
       w.dataset.seen = '1';
       window.__asks.push(w.querySelector('#ask-t').textContent);
       setTimeout(() => { const b = w.querySelector('[data-ask="1"]'); if (b) b.click(); }, 30);
-    }).observe(document.documentElement, { childList: true, subtree: true });
+    }).observe(document, { childList: true, subtree: true });   // the document: on a reload the script runs before <html> exists
   };
   await page.addInitScript(autoAsk);                 // documents loaded later
   await page.evaluate(autoAsk).catch(() => {});      // and the one openApp has just loaded
