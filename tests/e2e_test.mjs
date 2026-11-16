@@ -278,6 +278,21 @@ async function open(opts = {}) {
   opened.push(page);
   page.__dialogs = [];
   page.on('dialog', d => { page.__dialogs.push(d.type() + ': ' + d.message()); d.accept().catch(() => {}); });
+  /* 5.64: deletes and unsaved changes ask in the app's own dialog (askFirst). The tests answer it
+     the way they used to answer the browser's: they confirm, and note that a question was asked. */
+  const autoAsk = () => {
+    if (window.__askObs) return;
+    window.__askObs = 1; window.__asks = window.__asks || [];
+    new MutationObserver(() => {
+      const w = document.querySelector('.askwrap:not([data-seen])');
+      if (!w) return;
+      w.dataset.seen = '1';
+      window.__asks.push(w.querySelector('#ask-t').textContent);
+      setTimeout(() => { const b = w.querySelector('[data-ask="1"]'); if (b) b.click(); }, 30);
+    }).observe(document.documentElement, { childList: true, subtree: true });
+  };
+  await page.addInitScript(autoAsk);                 // documents loaded later
+  await page.evaluate(autoAsk).catch(() => {});      // and the one openApp has just loaded
   if (opts.wait !== false) await settle(page, 250);
   return page;
 }
@@ -1164,7 +1179,7 @@ async function directorChecks() {
     await tap(page, `[data-del-event="${ev.id}"]`);
     await until(async () => !await one(`select id from events where id = ${lit(ev.id)}`), 'the event row to be deleted');
     eq(+(await one(`select count(*) n from absences where event_id = ${lit(ev.id)}`)).n, 0, 'marks left behind');
-    ok(page.__dialogs.some(d => d.startsWith('confirm')), 'deleting did not ask first');
+    ok((await page.evaluate(() => window.__asks || [])).some(x => x === t('deleteEvent')), 'deleting did not ask first');
   });
 
   await check('D5', 'song order for a service: add songs, reorder, conductor and pianist, saved', async () => {

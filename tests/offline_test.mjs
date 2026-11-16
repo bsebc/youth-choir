@@ -113,8 +113,10 @@ for (const lang of (process.env.LANGS || 'en,ru').split(',')) for (const theme o
   await p.unroute(/\/(auth|rest|storage)\/v1\//);
   // the usage page offline
   await p.context().setOffline(true);
-  p.once('dialog', d => d.accept());           // the unsaved marks: leave them (they survived both failed saves)
-  await p.evaluate(() => { location.hash = '#/usage'; }); await p.waitForTimeout(900);
+  // the unsaved marks: leave them (they survived both failed saves). 5.64: the app asks in its own dialog
+  await p.evaluate(() => { location.hash = '#/usage'; }); await p.waitForTimeout(400);
+  { const leave = await p.$('.askwrap [data-ask="1"]'); ok(!!leave, 'leaving with unsaved marks asks first'); if (leave) await leave.click(); }
+  await p.waitForTimeout(900);
   const st = await p.evaluate(() => { const s = document.querySelector('.state'); return s ? s.querySelector('.state-t').textContent : null; });
   ok(st === L.offTitle, 'usage page offline: ' + JSON.stringify(st));
   await shot(p, `usage-offline-${tag}`);

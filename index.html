@@ -119,14 +119,14 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .logo{width:32px;height:32px;flex:none;display:block}
   .brand{font-family:inherit;font-weight:700;color:var(--white);font-size:var(--fs-20);line-height:1.1;letter-spacing:.01em}
   .lang{margin-left:auto;display:flex;border:1px solid var(--chrome-line);border-radius:var(--r-pill);overflow:hidden}
-  .lang button{padding:5px 11px;font-size:var(--fs-12);font-weight:600;border:0;background:transparent;color:var(--chrome-text);letter-spacing:.04em;transition:background .16s ease,color .16s ease}
+  .lang button{padding:5px 11px;font-size:var(--fs-12);font-weight:600;border:0;background:transparent;color:var(--chrome-text);letter-spacing:.04em;transition:background var(--dur-press) ease, color var(--dur-press) ease}
   .lang button.on{background:var(--gold);color:var(--ink)}
   .nav{display:flex;align-items:center;gap:2px;background:var(--chrome);padding:5px 8px;
     overflow-x:auto;overflow-y:visible;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .nav::-webkit-scrollbar{display:none}
   .nav a,.nav .navbtn{flex:none;display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 12px;
     border:0;background:transparent;border-radius:var(--r-md);font-family:inherit;font-size:var(--fs-14);font-weight:500;
-    line-height:1;color:var(--chrome-text);white-space:nowrap;transition:background .16s ease,color .16s ease}
+    line-height:1;color:var(--chrome-text);white-space:nowrap;transition:background var(--dur-press) ease, color var(--dur-press) ease}
   .nav a.on,.nav .navbtn.on{color:var(--on-gold);background:var(--gold);font-weight:600}
   .nav .right{margin-left:auto}
   .nav .right.out{display:flex;align-items:center;gap:6px;opacity:.85}
@@ -135,7 +135,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--rule)}
   /* a two-line label (Russian) must not push its neighbours to the top */
   .tabs a{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;padding:10px 4px;text-align:center;
-    font-size:var(--fs-15);line-height:1.2;color:var(--muted);border-bottom:3px solid transparent;transition:color .16s ease,border-color .16s ease}
+    font-size:var(--fs-15);line-height:1.2;color:var(--muted);border-bottom:3px solid transparent;transition:color var(--dur-press) ease, border-color var(--dur-press) ease}
   .tabs a.on{color:var(--ink);font-weight:700;border-bottom-color:var(--ink)}
   .ctrl{background:var(--surface);padding:12px 14px 14px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:10px}
   .ctlbar{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--rule)}
@@ -162,11 +162,11 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .savebar .st{flex:1;min-width:0;font-size:var(--fs-13);color:var(--muted)}
   .savebar .st.live{color:var(--ink);font-weight:600}
   .savebar .sb{min-height:44px;padding:0 20px;border-radius:var(--r-pill);font-size:var(--fs-15);font-weight:600;border:1px solid var(--rule);
-    background:var(--surface);color:var(--text-2);transition:background .15s ease,border-color .15s ease,opacity .15s ease}
+    background:var(--surface);color:var(--text-2);transition:background var(--dur-press) ease, border-color var(--dur-press) ease, opacity var(--dur-press) ease}
   .savebar .sb.go{background:var(--blue);border-color:var(--blue-text);color:var(--white)}
   .savebar .sb[disabled]{opacity:.45;cursor:default}
   .caret{width:20px;flex:none;display:flex;align-items:center;justify-content:flex-end;color:var(--faint)}
-  .caret svg{transition:transform .16s var(--ease-in-out)}
+  .caret svg{transition:transform var(--dur-press) var(--ease-in-out)}
   .caret.up svg{transform:rotate(180deg)}
   .li.on .caret{color:var(--blue-text)}
   .subrow{background:var(--surface-2);border-bottom:1px solid var(--rule);padding:4px 16px 12px}
@@ -190,7 +190,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .sec:empty{display:none}
   .sec > :last-child{border-bottom:0}
   @media (min-width:900px){ .sec{margin:16px 20px 0} }
-  .addbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border:0;background:var(--surface);color:var(--blue-text);font-weight:600;font-size:var(--fs-15);font-family:inherit;transition:background .15s ease}
+  .addbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border:0;background:var(--surface);color:var(--blue-text);font-weight:600;font-size:var(--fs-15);font-family:inherit;transition:background var(--dur-press) ease}
   .addbtn i{font-style:normal;width:22px;height:22px;flex:none;border-radius:50%;background:var(--blue-wash);border:1px solid var(--blue-line);display:flex;align-items:center;justify-content:center;font-size:var(--fs-15);line-height:1}
   .addbtn.open{color:var(--muted)}
   .addbtn.open i{background:var(--paper);border-color:var(--rule);color:var(--muted)}
@@ -228,7 +228,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .dpick{position:relative;flex:1;min-width:0;display:block}
   .dpick span{display:block;border:1px solid var(--rule);border-radius:var(--r-md);background:var(--surface-2);
     padding:10px 11px;font-size:var(--fs-15);line-height:1.2;color:var(--ink);text-align:center;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:border-color .15s ease,background .15s ease}
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:border-color var(--dur-press) ease, background var(--dur-press) ease}
   .dpick.hdr{position:relative;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
     width:30px;height:30px;border-radius:50%;color:var(--blue-text);background:rgba(var(--blue-rgb),.08);
     align-self:center;flex:none}
@@ -247,7 +247,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .hero::after{content:'';display:block;width:38px;height:2px;background:var(--gold);margin-top:12px}
   .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 16px 28px;background:var(--surface)}
   @media (min-width:700px){ .tiles{grid-template-columns:repeat(3,1fr);gap:16px;padding:18px 20px 34px} }
-  .tile{display:flex;flex-direction:column;gap:12px;border:1px solid var(--card-line);border-radius:var(--r-2xl);padding:16px;background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(var(--shadow-rgb),.05);transition:box-shadow .18s ease,border-color .18s ease,transform .18s ease}
+  .tile{display:flex;flex-direction:column;gap:12px;border:1px solid var(--card-line);border-radius:var(--r-2xl);padding:16px;background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(var(--shadow-rgb),.05);transition:box-shadow var(--dur-quick) ease, border-color var(--dur-quick) ease, transform var(--dur-quick) var(--ease-enter)}
   /* a touchscreen fires a false hover on tap and keeps it — the lift is for mice */
   @media (hover: hover) and (pointer: fine){
     .tile:hover{border-color:var(--line-strong);box-shadow:0 10px 26px -12px rgba(var(--shadow-rgb),.28);transform:translateY(-2px)}
@@ -267,13 +267,13 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .dates input{flex:1;min-width:0;border:1px solid var(--rule);border-radius:var(--r-sm);padding:8px 10px;font-size:var(--fs-16);background:var(--surface-2);font-variant-numeric:tabular-nums}
   .chips{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
   .chips::-webkit-scrollbar{display:none}
-  .chips button{flex:1;padding:7px 10px;border-radius:var(--r-pill);font-size:var(--fs-13);border:1px solid var(--rule);background:var(--paper);color:var(--text-2);white-space:nowrap;transition:background .15s ease,border-color .15s ease,color .15s ease}
+  .chips button{flex:1;padding:7px 10px;border-radius:var(--r-pill);font-size:var(--fs-13);border:1px solid var(--rule);background:var(--paper);color:var(--text-2);white-space:nowrap;transition:background var(--dur-press) ease, border-color var(--dur-press) ease, color var(--dur-press) ease}
   .chips button.on{background:var(--chrome);color:var(--white);border-color:var(--ink);font-weight:600}
   .seg{display:flex;border:1px solid var(--rule);border-radius:var(--r-pill);overflow:hidden}
-  .seg button{flex:1;padding:8px 6px;font-size:var(--fs-14);border:0;background:var(--surface);color:var(--text-2);border-left:1px solid var(--rule);transition:background .15s ease,color .15s ease}
+  .seg button{flex:1;padding:8px 6px;font-size:var(--fs-14);border:0;background:var(--surface);color:var(--text-2);border-left:1px solid var(--rule);transition:background var(--dur-press) ease, color var(--dur-press) ease}
   .seg button:first-child{border-left:0}
   .seg button.on{background:var(--chrome);color:var(--white);font-weight:600}
-  .field{width:100%;max-width:100%;min-width:0;border:1px solid var(--rule);border-radius:var(--r-md);padding:10px 11px;font-size:var(--fs-16);background:var(--surface-2);transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
+  .field{width:100%;max-width:100%;min-width:0;border:1px solid var(--rule);border-radius:var(--r-md);padding:10px 11px;font-size:var(--fs-16);background:var(--surface-2);transition:border-color var(--dur-press) ease, box-shadow var(--dur-press) ease, background var(--dur-press) ease}
   .field:focus,.dates input:focus{outline:0;border-color:var(--blue-text);background:var(--surface);box-shadow:0 0 0 3px rgba(var(--blue-rgb),.12)}
   input[type=date].field{-webkit-appearance:none;appearance:none;display:block;text-align:left}
   .card{min-width:0}
@@ -344,7 +344,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .sectbar.bass{background:var(--paper-2);color:var(--chrome-line-2);border-bottom-color:var(--rule)}
   .sectbar.bass::before{background:var(--blue-line)}
   .li{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rule);background:var(--surface)}
-  .li.tap{min-height:58px;cursor:pointer;user-select:none;transition:background .14s ease}
+  .li.tap{min-height:58px;cursor:pointer;user-select:none;transition:background var(--dur-press) ease}
   .mini.locked{background:var(--gold-wash);border-color:var(--gold-soft-2);color:var(--gold-text);cursor:default}
   .mini.on{background:var(--gold-wash);border-color:var(--gold-soft-2);color:var(--gold-text)}
   .mini.icon{padding:0;width:40px;flex:none}
@@ -364,7 +364,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .tile.order .ofill{display:flex;flex-direction:column;gap:12px;color:inherit}
   .ofoot{display:flex;margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.16)}
   .obtn{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:var(--r-pill);font-size:var(--fs-14);font-weight:600;
-    color:var(--onnavy-btn-ink);background:var(--onnavy-btn-bg);transition:filter .15s ease}
+    color:var(--onnavy-btn-ink);background:var(--onnavy-btn-bg);transition:filter var(--dur-press) ease}
   .obtn svg{width:17px;height:17px}
   .obar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px 14px}
   .obar .op{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:7px 13px;border-radius:var(--r-pill);background:var(--op-bg);
@@ -410,7 +410,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .rlab{padding-right:5px;font-size:var(--fs-9);letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center}
   .seat{overflow-wrap:break-word;hyphens:auto;height:52px;border-radius:var(--r-md);border:1px solid var(--rule);background:var(--surface);color:var(--ink);font-size:var(--fs-11);
     line-height:1.2;padding:4px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;
-    transition:box-shadow .12s ease,border-color .12s ease}
+    transition:box-shadow var(--dur-press) ease, border-color var(--dur-press) ease}
   .seat[disabled]{opacity:1;cursor:default}
   .seat.empty{background:var(--paper-2);border-style:dashed;border-color:var(--rule)}
   .seat.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);background:var(--gold-paper)}
@@ -529,7 +529,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .acts{display:flex;gap:8px;flex:none;align-items:center}
   .step.fold{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;padding:0;cursor:pointer;text-align:left}
   .step.fold .chev{margin-left:auto;width:9px;height:9px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);
-    transform:rotate(45deg);transition:transform .15s var(--ease-in-out);flex:none}
+    transform:rotate(45deg);transition:transform var(--dur-press) var(--ease-in-out);flex:none}
   .step.fold .chev.up{transform:rotate(225deg)}
   label.mini{cursor:pointer}
   .btn{display:block;width:100%;background:var(--blue);color:var(--white);text-align:center;font-size:var(--fs-17);font-weight:600;padding:15px 0;border-radius:var(--r-md);border:0}
@@ -568,7 +568,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .login label{display:block;margin-bottom:7px;font-size:var(--fs-12-5);font-weight:600;letter-spacing:.07em;
     text-transform:uppercase;color:var(--muted)}
   .login input{width:100%;background:var(--glass-in);border:1px solid var(--rule);border-radius:var(--r-lg);
-    padding:14px 14px;font-size:var(--fs-16);transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
+    padding:14px 14px;font-size:var(--fs-16);transition:border-color var(--dur-press) ease, box-shadow var(--dur-press) ease, background var(--dur-press) ease}
   .login input:focus{outline:0;background:var(--surface);border-color:var(--blue-text);box-shadow:0 0 0 4px rgba(var(--blue-rgb),.13)}
   .login .btn{background:linear-gradient(165deg,var(--blue-hi),var(--blue));border-radius:var(--r-xl);font-size:var(--fs-16);
     box-shadow:0 12px 26px -12px rgba(var(--blue-rgb),.75)}
@@ -624,13 +624,13 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   body.mlock{overflow:hidden}
   .themebtn{width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;
     border:1px solid var(--chrome-line);border-radius:var(--r-pill);background:transparent;color:var(--chrome-text-2);
-    transition:background .15s ease,color .15s ease,border-color .15s ease}
+    transition:background var(--dur-press) ease, color var(--dur-press) ease, border-color var(--dur-press) ease}
   .themebtn svg{width:16px;height:16px}
   .themebtn:active{transform:scale(.94)}
   .menubtn{width:36px;height:36px;flex:none;display:flex;align-items:center;justify-content:center;
     border:1px solid var(--chrome-line);border-radius:var(--r-lg);background:transparent;color:var(--chrome-icon);
-    transition:background .15s ease,color .15s ease}
-  .scrim{position:fixed;inset:0;z-index:var(--z-scrim);background:var(--scrim);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .2s ease}
+    transition:background var(--dur-press) ease, color var(--dur-press) ease}
+  .scrim{position:fixed;inset:0;z-index:var(--z-scrim);background:var(--scrim);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity var(--dur-quick) ease}
   .scrim.on{opacity:1;pointer-events:auto;animation:scrimin .22s var(--ease-out)}
   @keyframes scrimin{from{opacity:0}}
   .drawer{position:fixed;top:0;right:0;bottom:0;z-index:var(--z-drawer);width:min(300px,84vw);display:flex;flex-direction:column;
@@ -646,7 +646,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .drawer .x{width:36px;height:36px;flex:none;display:flex;align-items:center;justify-content:center;
     border:1px solid var(--chrome-line);border-radius:var(--r-lg);background:transparent;color:var(--chrome-text)}
   .drawer .it{display:flex;align-items:center;gap:13px;padding:12px;margin:1px 0;border-radius:var(--r-lg);
-    color:var(--drawer-ink);font-size:var(--fs-15);font-weight:500;transition:background .15s ease,color .15s ease}
+    color:var(--drawer-ink);font-size:var(--fs-15);font-weight:500;transition:background var(--dur-press) ease, color var(--dur-press) ease}
   .drawer .it svg{width:20px;height:20px;flex:none}
   .drawer .it .ic-note{width:24px;height:24px;margin:-2px}
   .drawer .it .ic-note *{stroke-width:1.9}
@@ -680,7 +680,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lang.theme button{display:flex;align-items:center;gap:6px;padding:7px 11px}
   .lang.theme svg{width:13px;height:13px;flex:none}
   .sb:active,.mini:active,.chips button:active,.seg button:active,.menubtn:active,.drawer .it:active,.lang button:active,.tile:active .ic{transform:scale(.96)}
-  .sb,.mini,.chips button,.seg button,.menubtn,.drawer .it{transition-property:background,border-color,color,transform;transition-duration:.15s}
+  .sb,.mini,.chips button,.seg button,.menubtn,.drawer .it{transition-property:background,border-color,color,transform;transition-duration:var(--dur-press)}
   button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:var(--r-sm)}
   /* faint aurora in the brand's own tints */
   .wrap{background-color:var(--page);background-image:
@@ -903,15 +903,14 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
     .dock a,.dock button{position:relative;z-index:1;flex:1;min-width:0;display:flex;flex-direction:column;
       align-items:center;justify-content:center;gap:2px;padding:6px 2px 5px;border:0;
       background:transparent;color:var(--muted);font-size:var(--fs-10);font-weight:600;letter-spacing:-.15px;
-      transition:color .18s ease}
+      transition:color var(--dur-quick) ease}
     /* one glass pill for the whole bar: it slides to the tab you pick */
     .dock .dpill{position:absolute;top:0;left:0;width:0;height:0;z-index:0;opacity:0;pointer-events:none;
       border-radius:var(--r-pill);
       background:linear-gradient(180deg,rgba(var(--blue-rgb),.17),rgba(var(--blue-rgb),.10));
       box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 0 0 .5px rgba(var(--blue-rgb),.14),
                  0 4px 10px -6px rgba(var(--shadow-rgb),.35);
-      transition:transform .22s var(--ease-drawer),width .22s var(--ease-drawer),
-                 height .2s ease,opacity .22s ease}
+      transition:transform var(--dur-quick) var(--ease-drawer), width var(--dur-quick) var(--ease-drawer), height var(--dur-quick) var(--ease-move), opacity var(--dur-quick) ease}
     .dock svg{position:relative;width:24px;height:24px;flex:none;stroke-width:1.75}
     .dock a.on,.dock button.on{color:var(--blue-text)}
     .dock a.on span,.dock button.on span{font-weight:700}
@@ -925,7 +924,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
     .dock,.dock *{touch-action:pan-y}
     .dock{user-select:none;-webkit-user-select:none}
     .dock.dragging a:active,.dock.dragging button:active{opacity:1}
-    .dock.dragging a,.dock.dragging button{transition:color .12s ease}
+    .dock.dragging a,.dock.dragging button{transition:color var(--dur-press) ease}
     .dock.dragging .dpill{background:linear-gradient(180deg,rgba(var(--blue-rgb),.24),rgba(var(--blue-rgb),.15));
       box-shadow:0 6px 16px -8px rgba(var(--blue-rgb),.55);will-change:transform}
     .dock span{position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
@@ -995,7 +994,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .ofoot{align-items:center;gap:10px}
   .ofoot .oshare{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 15px;
     border-radius:var(--r-pill);border:1px solid currentColor;background:transparent;color:inherit;
-    font-family:inherit;font-size:var(--fs-13);font-weight:600;opacity:.8;transition:opacity .15s ease}
+    font-family:inherit;font-size:var(--fs-13);font-weight:600;opacity:.8;transition:opacity var(--dur-press) ease}
   .ofoot .oshare svg{width:15px;height:15px;flex:none}
 
   /* ---- every hover state, gated ----------------------------------------
@@ -1089,11 +1088,11 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .crumbs{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);white-space:nowrap;min-width:0}
   .crumbs .ai{width:14px;height:14px;color:var(--faint)}
   .crumbs strong{color:var(--ink);font-weight:600;overflow:hidden;text-overflow:ellipsis}
-  .crumbs .cback{color:var(--muted);text-decoration:none;padding:4px 8px;margin:-4px -8px;border-radius:8px;transition:color .15s ease,background-color .15s ease}
-  .crumbs .cback:hover{color:var(--ink);background:var(--paper-2)}
+  .crumbs .cback{color:var(--muted);text-decoration:none;padding:4px 8px;margin:-4px -8px;border-radius:8px;transition:color var(--dur-press) ease, background-color var(--dur-press) ease}
+  @media (hover:hover) and (pointer:fine){ .crumbs .cback:hover{color:var(--ink);background:var(--paper-2)} }
   .tacts{margin-left:auto;display:flex;align-items:center;gap:12px}
   .findsong{display:flex;align-items:center;gap:9px;height:38px;padding:0 14px 0 12px;min-width:210px;border-radius:10px;
-    background:var(--surface-2);border:1px solid var(--rule);color:var(--muted);font-size:13px;transition:border-color .15s ease,color .15s ease}
+    background:var(--surface-2);border:1px solid var(--rule);color:var(--muted);font-size:13px;transition:border-color var(--dur-press) ease, color var(--dur-press) ease}
   .findsong .ai{width:16px;height:16px}
   .tdiv{width:1px;height:24px;background:var(--rule)}
   .topbar .lang{background:var(--ios-track)}
@@ -1136,14 +1135,14 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .dtheme .lang.theme{width:100%;min-width:0}
   .dtheme .lang.theme button{flex:1 1 0;min-width:0;padding:7px 4px;gap:5px;font-size:12.5px;justify-content:center;white-space:nowrap;overflow:hidden}
   .drawer .dfoot{border-top:1px solid var(--chrome-line);padding-top:12px;margin-top:4px}
-  .dacct{display:flex;align-items:center;gap:10px;padding:6px;border-radius:12px;color:#f1f2ff;transition:background .15s ease}
+  .dacct{display:flex;align-items:center;gap:10px;padding:6px;border-radius:12px;color:#f1f2ff;transition:background var(--dur-press) ease}
   .dacct.on{background:rgba(255,255,255,.06)}
   .dav{width:36px;height:36px;flex:none;border-radius:11px;background:var(--chrome-hi);display:grid;place-items:center;color:#d7dcf6}
   .dav .ai{width:18px;height:18px}
   .grow2{flex:1;min-width:0;display:block}
   .dacct strong{display:block;font-size:13px;font-weight:600}
   .dacct small{display:block;font-size:11px;color:var(--chrome-text);margin-top:2px}
-  .dout{width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:10px;color:var(--chrome-text);transition:background .15s ease,color .15s ease}
+  .dout{width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:10px;color:var(--chrome-text);transition:background var(--dur-press) ease, color var(--dur-press) ease}
   .dout .ai{width:18px;height:18px}
   @media (hover: hover) and (pointer: fine){ .dout:hover{background:rgba(255,255,255,.1);color:#fff} .dacct.in:hover{background:transparent} }
   .dacct > .ai{width:15px;height:15px;color:var(--chrome-faint)}
@@ -1262,7 +1261,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .datechip strong{color:var(--ink);font-weight:600}
   .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:20px}
   .kpi{background:var(--card);border:1px solid var(--card-line);border-radius:16px;padding:18px 18px 16px;box-shadow:var(--shadow-card);
-    display:flex;flex-direction:column;min-width:0;color:var(--ink);transition:border-color .18s ease,transform .18s var(--ease-out)}
+    display:flex;flex-direction:column;min-width:0;color:var(--ink);transition:border-color var(--dur-quick) ease, transform var(--dur-quick) var(--ease-enter)}
   .kl{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;font-weight:550;color:var(--muted)}
   .ki{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:var(--blue-tint);color:var(--blue-text);flex:none}
   .ki .ai{width:17px;height:17px}
@@ -1309,9 +1308,9 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .sdate .ai{width:15px;height:15px}
   .sbact{display:flex;gap:14px;margin-top:22px}
   .sbtn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:var(--r-pill);background:var(--onnavy-btn-bg);color:var(--onnavy-btn-ink);
-    font-size:14px;font-weight:600;box-shadow:0 6px 14px -6px rgba(10,10,50,.45);transition:background .15s ease}
+    font-size:14px;font-weight:600;box-shadow:0 6px 14px -6px rgba(10,10,50,.45);transition:background var(--dur-press) ease}
   .sbtn .ai{width:14px;height:14px;fill:currentColor}
-  .sshare{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.07);color:#fff;padding:0;transition:background .15s ease}
+  .sshare{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.07);color:#fff;padding:0;transition:background var(--dur-press) ease}
   .sshare .ai{width:17px;height:17px}
   .sethd{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:18px 26px 4px;font-size:13.5px;font-weight:650}
   .sethd small{font-size:11.5px;font-weight:450;color:var(--muted)}
@@ -1321,7 +1320,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .sno{width:30px;height:32px;flex:none;display:grid;place-items:center;border-radius:8px;background:var(--surface-2);border:1px solid var(--card-line);
     font-size:11.5px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
   .sbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
-  .stl{font-size:15px;font-weight:600;line-height:1.3;letter-spacing:-.2px;transition:color .15s ease}
+  .stl{font-size:15px;font-weight:600;line-height:1.3;letter-spacing:-.2px;transition:color var(--dur-press) ease}
   .scr{display:flex;flex-wrap:wrap;gap:6px}
   .scr .who{margin-left:0}
   .srow2 > .ai{width:16px;height:16px;color:var(--faint)}
@@ -1391,7 +1390,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .reslist .res strong{margin-top:14px}
   .reslist.two{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}
   .res{display:block;min-width:0;border:1px solid var(--card-line);background:var(--surface-2);border-radius:13px;padding:15px 14px;color:var(--ink);
-    transition:border-color .18s ease,transform .18s var(--ease-out)}
+    transition:border-color var(--dur-quick) ease, transform var(--dur-quick) var(--ease-enter)}
   .reslist.two .res{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:12px;align-items:center;padding:12px 14px}
   .reslist.two .rico{grid-row:span 2;margin:0}
   .rico{width:36px;height:38px;border-radius:9px;display:grid;place-items:center;background:var(--blue-tint);color:var(--blue-text);margin-bottom:14px}
@@ -1414,7 +1413,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .recent{display:flex;flex-direction:column;margin-top:-6px}
   .rsvc{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--rule);color:var(--ink)}
   .rsvc:last-child{border-bottom:0;padding-bottom:0}
-  .rsvc strong{display:block;font-size:14px;font-weight:600;transition:color .15s ease}
+  .rsvc strong{display:block;font-size:14px;font-weight:600;transition:color var(--dur-press) ease}
   /* a little tear-off calendar: coloured month band over the day */
   .rsvc .mdate,.upc .mdate{position:relative;width:42px;height:46px;flex:none;display:flex;flex-direction:column;overflow:hidden;background:var(--card);
     border:1px solid var(--card-line);border-radius:9px;line-height:1;box-shadow:0 1px 0 var(--card-line),0 3px 8px -5px rgba(var(--shadow-rgb),.35)}
@@ -1477,7 +1476,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lninfo{display:flex;flex-direction:column;gap:14px;min-width:0}
   .lnft,.lntools{grid-column:1/-1}
   .lnpr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-  .lnb{display:flex;align-items:center;gap:10px;min-width:0;height:46px;padding:0 14px;border:0;border-radius:12px;font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:filter .15s ease}
+  .lnb{display:flex;align-items:center;gap:10px;min-width:0;height:46px;padding:0 14px;border:0;border-radius:12px;font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:filter var(--dur-press) ease}
   .lnb svg{width:18px;height:18px;flex:none}
   .lnb span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .lnb.t1{background:var(--tool1-bg);color:var(--tool1-ic)} .lnb.t2{background:var(--tool2-bg);color:var(--tool2-ic)}
@@ -1485,7 +1484,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lnb.off{background:var(--surface-2);color:var(--faint);cursor:default}
   .lnsoon{min-height:100px;display:grid;place-items:center;padding:0 16px;border:1px dashed var(--rule);border-radius:12px;font-size:13px;color:var(--muted);text-align:center}
   .lnft{display:flex;align-items:center;gap:8px;padding-top:14px;border-top:1px solid var(--rule)}
-  .lnib{display:grid;place-items:center;width:46px;height:46px;flex:none;padding:0;border:0;border-radius:12px;background:var(--surface-2);color:var(--muted);cursor:pointer;transition:background .15s ease,color .15s ease}
+  .lnib{display:grid;place-items:center;width:46px;height:46px;flex:none;padding:0;border:0;border-radius:12px;background:var(--surface-2);color:var(--muted);cursor:pointer;transition:background var(--dur-press) ease, color var(--dur-press) ease}
   .lnib svg{width:18px;height:18px}
   .lnib.on{background:var(--blue-tint);color:var(--blue-text)}
   .lnib[disabled]{opacity:.35;cursor:default;pointer-events:none}
@@ -1497,7 +1496,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lsc.alto,.recr.alto,.rsb.alto{--pc:var(--teal);--pw:var(--teal-tint)}
   .lsc.tenor,.recr.tenor,.rsb.tenor{--pc:var(--rose);--pw:var(--rose-wash)}
   .lsc.bass,.recr.bass,.rsb.bass{--pc:var(--amber);--pw:var(--amber-wash)}
-  .mini.lsbtn .lscar,.lnb.lsbtn .lscar,.songc .acts .mini.lsbtn .lscar{width:12px;height:12px;flex:none;transition:transform .25s ease}
+  .mini.lsbtn .lscar,.lnb.lsbtn .lscar,.songc .acts .mini.lsbtn .lscar{width:12px;height:12px;flex:none;transition:transform var(--dur-layer) var(--ease-enter)}
   .lnb.lsbtn .lscar{margin-left:auto}
   .lsbtn.on .lscar{transform:rotate(180deg)}
   .songc .acts .mini.play.on{background:var(--teal);color:var(--card)}
@@ -1506,8 +1505,8 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lsg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .lsg .lsc.w2{grid-column:1/-1}
   @container lsrow (min-width:660px){ .lsg{grid-template-columns:repeat(5,minmax(0,1fr))} .lsg .lsc,.lsg .lsc.w2{grid-column:var(--c);grid-row:var(--r)} }
-  .lsc{position:relative;overflow:hidden;display:flex;align-items:center;gap:10px;min-width:0;height:48px;padding:0 12px 0 8px;border:1px solid color-mix(in srgb,var(--pc) 26%,var(--rule));border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:border-color .15s ease,box-shadow .15s ease,transform .15s ease}
-  .lsc .pi{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:9px;background:var(--pw);color:var(--pc);transition:background .15s ease,color .15s ease}
+  .lsc{position:relative;overflow:hidden;display:flex;align-items:center;gap:10px;min-width:0;height:48px;padding:0 12px 0 8px;border:1px solid color-mix(in srgb,var(--pc) 26%,var(--rule));border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:border-color var(--dur-press) ease, box-shadow var(--dur-press) ease, transform var(--dur-press) var(--ease-enter)}
+  .lsc .pi{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:9px;background:var(--pw);color:var(--pc);transition:background var(--dur-press) ease, color var(--dur-press) ease}
   .lsc .pi svg{width:13px;height:13px}
   .lsc .lt{flex:1;min-width:0;display:grid;gap:2px;text-align:left}
   .lsc .lb{min-width:0;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1518,7 +1517,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lsc.off .pi{background:var(--surface-2);color:var(--faint)}
   .lsc.off .tm{color:var(--faint)}
   .lnfeat .lsc.off{background:color-mix(in srgb,var(--card) 55%,transparent)}
-  .lsc::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:calc(var(--lp,0) * 1%);background:var(--pc);transition:width .25s linear}
+  .lsc::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:calc(var(--lp,0) * 1%);background:var(--pc);transition:width var(--dur-layer) linear}
   .lsc.cur{border-color:var(--pc);box-shadow:0 0 0 1px var(--pc) inset}
   .lsc.cur .pi{background:var(--pc);color:var(--card)}
   .lsc.cur .tm{color:var(--pc)}
@@ -1535,11 +1534,11 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .shv{position:fixed;inset:0;z-index:70;pointer-events:none}
   body.shvon{overflow:hidden}
   body.shvon .plbar{z-index:71}
-  .shv-scrim{position:absolute;inset:0;background:rgba(10,14,30,.5);opacity:0;transition:opacity .22s ease;pointer-events:auto}
+  .shv-scrim{position:absolute;inset:0;background:rgba(10,14,30,.5);opacity:0;transition:opacity var(--dur-quick) ease;pointer-events:auto}
   .shv-box{position:absolute;top:calc(10px + env(safe-area-inset-top));left:10px;right:10px;bottom:var(--shv-b,calc(10px + env(safe-area-inset-bottom)));
     display:flex;flex-direction:column;min-width:0;overflow:hidden;border-radius:18px;background:var(--card);border:1px solid var(--card-line);
     box-shadow:0 30px 70px -24px rgba(0,0,0,.55);pointer-events:auto;opacity:0;transform:translateY(10px) scale(.98);
-    transition:opacity .2s ease,transform .26s cubic-bezier(.2,.8,.25,1),bottom .25s ease}
+    transition:opacity var(--dur-quick) ease, transform var(--dur-layer) var(--ease-enter), bottom var(--dur-layer) var(--ease-move)}
   .shv.on .shv-scrim{opacity:1} .shv.on .shv-box{opacity:1;transform:none}
   @media (min-width:900px){ .shv-box{top:24px;left:24px;right:24px;bottom:var(--shv-b,24px)} }
   .shv-hd{flex:none;display:flex;align-items:center;gap:12px;min-width:0;padding:10px 10px 10px 18px;border-bottom:1px solid var(--rule)}
@@ -1572,7 +1571,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   /* 5.57: the Sheet music button: a small chevron centred over the icon (up: the sheet opens above;
      down: put it away), the two stacked as one; it pulses twice when it appears, then stays still */
   .plbar .pl-k button[data-pl="sheet"]{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
-  .plbar .pl-k button[data-pl="sheet"] .pl-chev{flex:none;width:8px;height:5px;transition:transform .25s cubic-bezier(.2,.8,.25,1)}
+  .plbar .pl-k button[data-pl="sheet"] .pl-chev{flex:none;width:8px;height:5px;transition:transform var(--dur-layer) var(--ease-enter)}
   .plbar .pl-k button[data-pl="sheet"] .pl-ic{flex:none;width:16px;height:16px}
   .plbar .pl-k button[data-pl="sheet"].on .pl-chev{transform:rotate(180deg)}
   .plbar .pl-k button[data-pl="sheet"].nudge::after{content:"";position:absolute;inset:1px;border-radius:11px;pointer-events:none;animation:plnudge 1.3s ease-out .5s 2 both}
@@ -1583,7 +1582,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   /* 5.58: Listen at the bottom of the sheet window; the parts slide up from it */
   .shv-ft{flex:none;border-top:1px solid var(--rule);background:var(--card)}
   .shv-ft[hidden]{display:none}
-  .shv-lsw{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.2,.8,.25,1)}
+  .shv-lsw{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--dur-layer) var(--ease-move)}
   .shv-ft.open .shv-lsw{grid-template-rows:1fr}
   .shv-lsi{min-height:0;overflow:hidden}
   .shv-lsi .lsrow{border-top:0;background:none;padding:12px 12px 2px}
@@ -1594,7 +1593,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .shv-lst b{font-size:14.5px;font-weight:650;line-height:1.25}
   .shv-lst small{font-size:12.5px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .shv-ft.now .shv-lst small{color:var(--tool4-ic);font-weight:600}
-  .shv-lsch{flex:none;width:10px;height:6px;color:var(--muted);transition:transform .25s cubic-bezier(.2,.8,.25,1)}
+  .shv-lsch{flex:none;width:10px;height:6px;color:var(--muted);transition:transform var(--dur-layer) var(--ease-enter)}
   .shv-ft.open .shv-lsch{transform:rotate(180deg)}
   @media (hover:hover){ .shv-lsh:hover{background:var(--surface-2)} }
   @media (max-width:699px){ .shv-lsh{min-height:50px;padding:7px 14px 7px 10px} .shv-lsi .lsrow{padding:10px 10px 2px} }
@@ -1627,7 +1626,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lnfeat .lsc .tm{display:none}
   @media (max-width:699px){ .lsrow{padding:12px} .lncard > .lsrow{padding:0} }
   @media (hover:hover){ .lsc:not(.off):hover{border-color:var(--pc);transform:translateY(-1px)} }
-  .plbar{position:fixed;z-index:var(--z-float);left:50%;bottom:calc(16px + env(safe-area-inset-bottom));width:min(720px,calc(100vw - 20px));box-sizing:border-box;display:grid;grid-template-columns:max-content minmax(0,1fr) max-content;align-items:center;gap:14px;padding:10px 12px 10px 10px;border-radius:20px;background:var(--chrome);color:#fff;box-shadow:0 22px 44px -18px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.07) inset;transform:translate(-50%,calc(100% + 48px)) scale(.96);opacity:0;pointer-events:none;transition:transform .55s cubic-bezier(.18,1.25,.32,1),opacity .25s ease}
+  .plbar{position:fixed;z-index:var(--z-float);left:50%;bottom:calc(16px + env(safe-area-inset-bottom));width:min(720px,calc(100vw - 20px));box-sizing:border-box;display:grid;grid-template-columns:max-content minmax(0,1fr) max-content;align-items:center;gap:14px;padding:10px 12px 10px 10px;border-radius:20px;background:var(--chrome);color:#fff;box-shadow:0 22px 44px -18px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.07) inset;transform:translate(-50%,calc(100% + 48px)) scale(.96);opacity:0;pointer-events:none;transition:transform .55s var(--ease-enter), opacity var(--dur-layer) ease}
   .plbar.on{transform:translate(-50%,0);opacity:1;pointer-events:auto}
   .plbar.on .pl-pp{animation:pppop .5s cubic-bezier(.3,1.5,.5,1) .12s both}
   .plbar.on .pl-pm,.plbar.on .pl-k{animation:ppfade .4s ease .18s both}
@@ -1655,8 +1654,8 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .plbar .pl-trk{--lp:0;position:relative;flex:1;min-width:0;height:20px;display:flex;align-items:center}
   .plbar .pl-trk::before{content:"";position:absolute;left:0;right:0;height:4px;border-radius:4px;background:rgba(255,255,255,.18)}
   .plbar .pl-fill{position:absolute;left:0;height:4px;width:calc(var(--lp) * 1%);border-radius:4px;background:var(--gold)}
-  .plbar .pl-knob{position:absolute;left:calc(var(--lp) * 1%);width:14px;height:14px;margin-left:-7px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.45);transform:scale(.8);transition:transform .15s ease,box-shadow .15s ease}
-  .plbar .pl-trk:hover .pl-knob,.plbar .pl-trk:focus-within .pl-knob{transform:scale(1.05)}
+  .plbar .pl-knob{position:absolute;left:calc(var(--lp) * 1%);width:14px;height:14px;margin-left:-7px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.45);transform:scale(.8);transition:transform var(--dur-press) var(--ease-enter), box-shadow var(--dur-press) ease}
+  .plbar .pl-trk:focus-within .pl-knob{transform:scale(1.05)} @media (hover:hover) and (pointer:fine){ .plbar .pl-trk:hover .pl-knob{transform:scale(1.05)} }
   .plbar .pl-trk:focus-within .pl-knob{box-shadow:0 0 0 4px rgba(255,255,255,.22)}
   .plbar .pl-rg{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
   .plbar .pl-k{display:flex;align-items:center;gap:2px}
@@ -1671,14 +1670,14 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .modal.recm{width:min(640px,calc(100vw - 24px))}
   .recm .mhd h2{margin:0}
   .recm .rsub{margin:3px 0 0;font-size:14px;color:var(--muted);overflow-wrap:anywhere}
-  .recdrop{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1.5px dashed var(--line-strong-2);border-radius:14px;background:var(--surface-2);cursor:pointer;transition:border-color .15s ease,background .15s ease}
+  .recdrop{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1.5px dashed var(--line-strong-2);border-radius:14px;background:var(--surface-2);cursor:pointer;transition:border-color var(--dur-press) ease, background var(--dur-press) ease}
   .recdrop > svg{width:26px;height:26px;flex:none;color:var(--blue-text)}
   .recdrop .rdt{flex:1;min-width:0;display:grid;gap:3px}
   .recdrop .rdt strong{font-size:14.5px;font-weight:650;color:var(--ink)}
   .recdrop .rdt span{font-size:12.5px;line-height:1.4;color:var(--muted);text-wrap:pretty}
   .recm.drag .recdrop{border-color:var(--blue);background:var(--blue-wash)}
   .recl{display:grid;gap:8px;margin-top:14px}
-  .recr{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:12px;min-height:64px;box-sizing:border-box;padding:10px 12px;border:1px solid var(--rule);border-radius:14px;background:var(--card);transition:border-color .15s ease,background .15s ease,box-shadow .15s ease}
+  .recr{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:12px;min-height:64px;box-sizing:border-box;padding:10px 12px;border:1px solid var(--rule);border-radius:14px;background:var(--card);transition:border-color var(--dur-press) ease, background var(--dur-press) ease, box-shadow var(--dur-press) ease}
   .recr.drag{border-color:var(--pc);background:var(--pw);box-shadow:0 0 0 2px var(--pc) inset}
   .recr .rtag{display:grid;place-items:center;width:40px;height:40px;border-radius:11px;background:var(--pw);color:var(--pc);font-size:15px;font-weight:700}
   .recr .rtag svg{width:18px;height:18px}
@@ -1703,7 +1702,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .rprog .rpn span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .rprog .rpn b{flex:none;color:var(--pc);font-weight:700;font-variant-numeric:tabular-nums}
   .rprog i{position:relative;display:block;height:6px;border-radius:6px;background:var(--pw);overflow:hidden}
-  .rprog i::after{content:"";position:absolute;top:0;bottom:0;left:0;width:calc(var(--lp,0) * 1%);border-radius:6px;background:var(--pc);transition:width .2s ease}
+  .rprog i::after{content:"";position:absolute;top:0;bottom:0;left:0;width:calc(var(--lp,0) * 1%);border-radius:6px;background:var(--pc);transition:width var(--dur-quick) var(--ease-move)}
   .recsplit{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
   .recsplit > span{margin-right:4px;font-size:12.5px;font-weight:600;color:var(--muted)}
   .rsb{display:inline-flex;align-items:center;height:36px;box-sizing:border-box;padding:0 12px;border:1px dashed color-mix(in srgb,var(--pc) 50%,var(--rule));border-radius:10px;background:transparent;color:var(--pc);font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
@@ -1713,7 +1712,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   @media (max-width:599px){ .recr{grid-template-columns:40px minmax(0,1fr)} .recr .racts{grid-column:1/-1;justify-content:flex-start} .recdrop{flex-wrap:wrap} .recdrop .rbtn{width:100%} }
   @media (prefers-reduced-motion:reduce){ .lsrow.enter,.lsrow.enter .lsc,.plbar.on .pl-pp,.plbar.on .pl-pm,.plbar.on .pl-k,.plbar.playing .pl-eq i{animation:none} .plbar{transition:none} }
   .lnord{display:flex;gap:4px;padding-left:8px;margin-left:4px;border-left:1px solid var(--rule)}
-  .lnb.go,.lnadd{flex:none;margin-left:auto;height:36px;padding:0 14px;border:1px solid var(--rule);border-radius:10px;background:var(--card);color:var(--blue-text);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s}
+  .lnb.go,.lnadd{flex:none;margin-left:auto;height:36px;padding:0 14px;border:1px solid var(--rule);border-radius:10px;background:var(--card);color:var(--blue-text);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background var(--dur-press), border-color var(--dur-press)}
   .lnadd{margin-left:0;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
   @media (hover:hover){ .lnb.go:hover,.lnadd:hover{filter:none;background:var(--blue-tint);border-color:transparent} }
   @media (max-width:599px){ .lnft{flex-wrap:wrap} }
@@ -1733,18 +1732,18 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lnc4{--fc:var(--ln-plum);--fw:var(--ln-plum-w)} .lnc-n{--fc:var(--muted);--fw:var(--surface-2)}
   /* the Learning page: one card per folder; open, its songs are numbered rows inside it */
   .lnfolds{display:flex;flex-direction:column;gap:12px}
-  .lnfold{background:var(--card);border:1px solid var(--card-line);border-radius:20px;box-shadow:var(--shadow-card);overflow:hidden;transition:box-shadow .25s ease,border-color .25s ease}
+  .lnfold{background:var(--card);border:1px solid var(--card-line);border-radius:20px;box-shadow:var(--shadow-card);overflow:hidden;transition:box-shadow var(--dur-layer) ease, border-color var(--dur-layer) ease}
   .lnfold.open{border-color:color-mix(in srgb,var(--fc) 28%,var(--card-line));box-shadow:0 14px 34px -22px color-mix(in srgb,var(--fc) 60%,transparent),var(--shadow-card)}
   .lnfold .lnfh{display:flex;align-items:center;padding:4px}
   .lnfhd{flex:1;min-width:0;margin:0;font:inherit}
   .lnftog{width:100%;border:0;background:transparent;font:inherit;text-align:left;cursor:pointer}
-  .lnftog > svg:last-child{transition:transform .3s var(--spring-smooth)}
+  .lnftog > svg:last-child{transition:transform var(--dur-layer) var(--spring-smooth)}
   .lnfold.open .lnftog > svg:last-child{transform:rotate(90deg)}
-  .lnfold .lnfic{transition:background .25s ease,color .25s ease}
+  .lnfold .lnfic{transition:background var(--dur-layer) ease, color var(--dur-layer) ease}
   .lnfold.open .lnfic{background:var(--fc);color:var(--card)}
   .lnfbody{border-top:1px solid var(--rule);background:var(--card);padding:0 20px 6px}
   .lnfx{display:flex;align-items:center;gap:6px;flex:none;padding:0 8px 0 2px;animation:mfade .2s ease both}
-  .lnfx button{display:grid;place-items:center;width:34px;height:34px;padding:0;border:0;border-radius:10px;background:var(--surface-2);color:var(--muted);cursor:pointer;transition:background .15s ease,color .15s ease}
+  .lnfx button{display:grid;place-items:center;width:34px;height:34px;padding:0;border:0;border-radius:10px;background:var(--surface-2);color:var(--muted);cursor:pointer;transition:background var(--dur-press) ease, color var(--dur-press) ease}
   .lnfx button svg{width:15px;height:15px}
   @media (hover:hover){ .lnfx button:hover{background:var(--fw);color:var(--fc)} }
   .lnfold .lnftog strong{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
@@ -1797,7 +1796,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lnfeat .ft{display:block;margin-top:6px;font-size:18px;font-weight:650;letter-spacing:-.3px;line-height:1.25;color:var(--ink);overflow-wrap:anywhere;text-wrap:pretty}
   .lnfeat .fq{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;margin-top:12px}
   .lnfeat .fs{margin:8px 0 0;font-size:13px;color:var(--muted)}
-  .lnq{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;height:36px;padding:0 8px;border:0;border-radius:10px;font:inherit;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;background:var(--card);transition:transform .15s ease,box-shadow .15s ease}
+  .lnq{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;height:36px;padding:0 8px;border:0;border-radius:10px;font:inherit;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;background:var(--card);transition:transform var(--dur-press) var(--ease-enter), box-shadow var(--dur-press) ease}
   .lnq svg{width:16px;height:16px;flex:none}
   .lnq span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .lnq.t1{color:var(--tool1-ic)} .lnq.t3{color:var(--tool3-ic)} .lnq.t4{color:var(--tool4-ic)}
@@ -1811,12 +1810,12 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   /* 5.51: a row per folder, with its numbers */
   .lntile .lnfrs{flex:1;display:flex;flex-direction:column;margin:6px -22px 0;padding:4px 8px 0}
   /* a folder row: colour tile, name and countdown, the calendar badge, the arrow */
-  .lnfr{position:relative;display:flex;align-items:center;gap:14px;min-width:0;padding:12px 14px;border-radius:14px;color:var(--ink);text-decoration:none;transition:background .15s ease}
+  .lnfr{position:relative;display:flex;align-items:center;gap:14px;min-width:0;padding:12px 14px;border-radius:14px;color:var(--ink);text-decoration:none;transition:background var(--dur-press) ease}
   .lntile .lnfr + .lnfr::before{content:'';position:absolute;top:0;left:72px;right:14px;border-top:1px solid var(--rule)}
   .lnfr .lnfic{display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:13px;background:var(--fw);color:var(--fc)}
   .lnfr .lnfic svg{width:22px;height:22px;color:inherit}
   .lnfr .b{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-  .lnfr strong{font-size:16px;font-weight:650;letter-spacing:-.2px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s ease}
+  .lnfr strong{font-size:16px;font-weight:650;letter-spacing:-.2px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color var(--dur-press) ease}
   .lnfr small{font-size:13px;line-height:1.35;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .lnfr small em{font-style:normal;font-weight:600;color:var(--fc)}
   /* the next service, as a little calendar page */
@@ -1848,7 +1847,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lnbt p{margin:3px 0 0;font-size:13px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .lnband .lnnew{margin:0;align-self:center}
   .lnband .tlink{flex:none;display:inline-flex;align-items:center;gap:4px;padding:6px 8px 6px 11px;border-radius:8px;font-size:12px;font-weight:600;line-height:1.2;white-space:nowrap;color:var(--gold-text);
-    background:color-mix(in srgb,var(--card) 72%,transparent);border:1px solid color-mix(in srgb,var(--tool3-ic) 28%,transparent);transition:background .15s ease,border-color .15s ease}
+    background:color-mix(in srgb,var(--card) 72%,transparent);border:1px solid color-mix(in srgb,var(--tool3-ic) 28%,transparent);transition:background var(--dur-press) ease, border-color var(--dur-press) ease}
   .lnband .tlink .ai,.lnband .tlink svg{width:13px;height:13px;margin:0}
   @media (hover:hover){ .lnband:hover .tlink{background:var(--card);border-color:color-mix(in srgb,var(--tool3-ic) 45%,transparent)} }
   .lnbsk{height:80px;margin:0 -22px;border-radius:0}
@@ -1878,10 +1877,10 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .dlib .phd{margin-bottom:16px}
   .reslist.seven,.skres.seven{grid-template-columns:repeat(7,minmax(0,1fr))}
   @media (max-width:699px){ .reslist.seven,.skres.seven{grid-template-columns:repeat(3,minmax(0,1fr))} }
-  .lrow{display:flex;align-items:center;gap:14px;min-width:0;padding:12px;border-radius:12px;color:var(--ink);transition:background .15s ease}
+  .lrow{display:flex;align-items:center;gap:14px;min-width:0;padding:12px;border-radius:12px;color:var(--ink);transition:background var(--dur-press) ease}
   .lrow .n{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:10px;background:var(--tool3-bg);color:var(--tool3-ic);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
   .lrow .b{flex:1;min-width:0}
-  .lrow strong{display:block;font-size:14.5px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s ease}
+  .lrow strong{display:block;font-size:14.5px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color var(--dur-press) ease}
   .lrow small{display:block;margin-top:3px;font-size:12.5px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .lrow small.g{color:var(--gold-text);font-weight:600}
   .lrow > svg{width:16px;height:16px;flex:none;color:var(--faint)}
@@ -1933,7 +1932,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .htc .tlsongs{padding:0 18px 2px}
   .htc .srow2{min-height:50px;padding:9px 0}
   .htnavs{display:flex;gap:6px;align-self:center}
-  .htnav{width:32px;height:32px;display:grid;place-items:center;padding:0;border-radius:50%;border:1px solid var(--card-line);background:var(--card);color:var(--ink);box-shadow:var(--shadow-card);cursor:pointer;transition:border-color .15s ease}
+  .htnav{width:32px;height:32px;display:grid;place-items:center;padding:0;border-radius:50%;border:1px solid var(--card-line);background:var(--card);color:var(--ink);box-shadow:var(--shadow-card);cursor:pointer;transition:border-color var(--dur-press) ease}
   .htnav .ai{width:15px;height:15px}
   @media (hover:hover){ .htnav:hover{border-color:var(--line-strong-2)} }
   @media (hover:none),(max-width:699px){ .htnavs{display:none} }
@@ -1947,7 +1946,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   @media (pointer:coarse),(max-width:699px){ .htl{scroll-snap-type:x mandatory;touch-action:pan-x pan-y} }
   @media (prefers-reduced-motion:reduce){ .htday.next .tlnode::before{display:none} }
   /* home: the way into the services timeline, bottom right of the song-order banner */
-  .sfut{display:inline-flex;align-items:center;gap:3px;padding-right:6px;text-decoration:none;transition:background .15s ease,border-color .15s ease,color .15s ease}
+  .sfut{display:inline-flex;align-items:center;gap:3px;padding-right:6px;text-decoration:none;transition:background var(--dur-press) ease, border-color var(--dur-press) ease, color var(--dur-press) ease}
   .sfut .ai{width:12px;height:12px}
   .dsvc .sbact .sshare{margin-left:auto}   /* home: Share sits in the banner's bottom-right corner */
   @media (hover:hover){ .sfut:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4);color:#fff} }
@@ -2021,7 +2020,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .tlsongs .srow2{min-height:56px;padding:10px 0}
   .tlc.past .tlsongs{padding:0 18px 2px}
   .tlmore{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:999px;border:1px solid var(--card-line);background:var(--card);color:var(--ink);
-    font:inherit;font-size:13.5px;font-weight:600;box-shadow:var(--shadow-card);cursor:pointer;text-decoration:none;transition:border-color .15s ease,background .15s ease}
+    font:inherit;font-size:13.5px;font-weight:600;box-shadow:var(--shadow-card);cursor:pointer;text-decoration:none;transition:border-color var(--dur-press) ease, background var(--dur-press) ease}
   .tlmore .ai{width:15px;height:15px}
   @media (hover:hover){ .tlmore:hover{border-color:var(--line-strong-2);color:var(--ink)} }
   .tlempty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:44px 24px;border:1px dashed var(--card-line);border-radius:18px;background:var(--card)}
@@ -2192,8 +2191,8 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .tsugg em{flex:none;font-style:normal;font-size:11.5px;font-weight:600;color:var(--blue-text)}
   .tsnone{padding:14px 12px;font-size:13px;color:var(--muted)}
   /* a song opened from search or View Music stays lit until the reader scrolls on */
-  .songc{transition:box-shadow .45s ease}
-  .songc .li{transition:background-color .45s ease}
+  .songc{transition:box-shadow var(--dur-page) ease}
+  .songc .li{transition:background-color var(--dur-page) ease}
   .songc.hi{box-shadow:0 0 0 2px var(--gold),0 8px 20px -10px var(--gold)}
   .songc.hi .li{background:var(--gold-wash);border-radius:inherit}
   /* members list: the initials tile matches its part's section bar */
@@ -2236,19 +2235,19 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
     .srow .smeta{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px;font-size:12px;color:var(--faint)}
     .srow .smeta > *{display:inline;margin:0;font-size:12px;letter-spacing:0}
     .srow .smeta > * + *::before{content:'·';margin:0 5px;color:var(--faint);font-style:normal}
-    .srow > .ftile,.srow > .ord,.srow > .stxt{transition:opacity .2s ease,transform .34s cubic-bezier(.2,.8,.2,1)}
+    .srow > .ftile,.srow > .ord,.srow > .stxt{transition:opacity var(--dur-quick) ease, transform var(--dur-page) var(--ease-enter)}
     .songc.open .srow > .ftile,.songc.open .srow > .ord,.songc.open .srow > .stxt{opacity:0;transform:translateX(-16px);pointer-events:none}
     .srow .stray{display:flex;flex-direction:column;justify-content:center;gap:5px;position:absolute;left:14px;right:58px;top:0;bottom:0;visibility:hidden;transition:visibility 0s linear .36s}
     .songc.open .srow .stray{visibility:visible;transition-delay:0s}
-    .srow .scap{display:block;padding:0 2px;font-size:12px;font-weight:600;line-height:15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transform:translateY(5px);transition:opacity .16s ease,transform .26s ease}
+    .srow .scap{display:block;padding:0 2px;font-size:12px;font-weight:600;line-height:15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transform:translateY(5px);transition:opacity var(--dur-press) ease, transform var(--dur-layer) var(--ease-enter)}
     .songc.open .srow .scap{opacity:1;transform:none;transition-delay:.05s}
     .srow .scap b{font-weight:700;color:var(--muted);margin-right:6px;font-variant-numeric:tabular-nums}
     .srow .scap i{display:none}   /* the category badge already says it; the tray caption is just the title */
     .srow .sbtns{display:flex;gap:6px;width:100%}
     .srow .sbtns .mini{flex:1 1 0;min-width:0;width:auto;height:46px;padding:0 4px;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-      font-size:11px;font-weight:600;line-height:1.1;text-decoration:none;opacity:0;transform:translateX(26px);transition:opacity .14s ease,transform .2s ease,background .15s ease}
+      font-size:11px;font-weight:600;line-height:1.1;text-decoration:none;opacity:0;transform:translateX(26px);transition:opacity var(--dur-press) ease, transform var(--dur-quick) var(--ease-enter), background var(--dur-press) ease}
     .songc.open .srow .sbtns .mini{opacity:1;transform:none;
-      transition:opacity .26s ease calc(var(--k,0) * 45ms + 40ms),transform .44s cubic-bezier(.2,.9,.25,1.12) calc(var(--k,0) * 45ms + 40ms),background .15s ease}
+      transition:opacity var(--dur-layer) ease calc(var(--k,0) * 45ms + 40ms), transform var(--dur-page) var(--ease-enter) calc(var(--k,0) * 45ms + 40ms), background var(--dur-press) ease}
     .songc.open .srow .sbtns .mini:active{transform:scale(.95);transition-delay:0s}
     .srow .sbtns .mini span{display:block!important;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .srow .sbtns .mini span.dl{display:none!important}
@@ -2258,7 +2257,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .srow .sbtns .mini.lsbtn .lscar{position:absolute;top:6px;right:7px;width:10px;height:10px;opacity:.7}
   .srow .sbtns .mini.play.on{background:var(--teal);color:var(--card)}
     .srow .schev{display:grid;place-items:center;flex:none;width:40px;height:40px;margin-left:auto;padding:0;border:0;border-radius:50%;position:relative;z-index:1;
-      background:color-mix(in srgb,var(--blue) 9%,var(--card));color:var(--blue-text);transition:transform .4s cubic-bezier(.3,.8,.2,1.15),background .2s ease,color .2s ease}
+      background:color-mix(in srgb,var(--blue) 9%,var(--card));color:var(--blue-text);transition:transform var(--dur-page) var(--ease-enter), background var(--dur-quick) ease, color var(--dur-quick) ease}
     .srow .schev svg{width:18px;height:18px}
     .songc.open .srow .schev{transform:rotate(180deg);background:var(--blue);color:#fff}
     .srow .schev.hint{animation:chevnudge 1.5s ease-in-out .9s 2}
@@ -2267,7 +2266,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   @media (prefers-reduced-motion:reduce){ .srow,.srow *{transition-duration:.01s!important;transition-delay:0s!important} .srow .schev.hint{animation:none} }
   /* admin strip under a song: the same colour code (upload navy, lock grey, remove red, recording green, text gold) */
   .songc .ord{position:relative}
-  .songc .admstrip,.songc .audiorow{transition:opacity .2s ease,transform .25s ease}
+  .songc .admstrip,.songc .audiorow{transition:opacity var(--dur-quick) ease, transform var(--dur-layer) var(--ease-enter)}
   .songc .admstrip.out,.songc .audiorow.out{opacity:0;transform:translateY(-6px)}
   .songc .admstrip .mini.up{background:color-mix(in srgb,var(--blue) 12%,var(--card));color:var(--blue-text)}
   .songc .admstrip .mini.lk{background:color-mix(in srgb,var(--muted) 11%,var(--card));color:var(--muted)}
@@ -2298,7 +2297,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .fdeco.lights .b{animation:ftwk 2.6s ease-in-out infinite} .fdeco.lights .b2{animation-delay:.85s} .fdeco.lights .b3{animation-delay:1.7s}
   @keyframes ftwk{50%{opacity:.5}}
   @media (prefers-reduced-motion:reduce){ .fdeco.lights .b{animation:none} }
-  .li[data-mrow]{transition:background-color .45s ease,box-shadow .45s ease}
+  .li[data-mrow]{transition:background-color var(--dur-page) ease, box-shadow var(--dur-page) ease}
   .li.mhi{background:var(--gold-wash);box-shadow:inset 0 0 0 2px var(--gold);border-radius:10px}
   .tsi.av{width:34px;height:34px;border-radius:10px;overflow:hidden;font-size:11.5px}
   /* ---- member report card ---- */
@@ -2321,10 +2320,10 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   @media (prefers-reduced-motion:reduce){ .mpage.rip *{animation:none !important} }
   .mpage{display:flex;flex-direction:column;gap:16px;margin:14px 0 8px}
   .mpage .ctlbar{padding:0}
-  .mback{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;margin-bottom:-4px;padding:6px 12px 6px 6px;border-radius:999px;font-size:13px;font-weight:600;color:var(--text-2);text-decoration:none;transition:background-color .15s ease,color .15s ease}
+  .mback{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;margin-bottom:-4px;padding:6px 12px 6px 6px;border-radius:999px;font-size:13px;font-weight:600;color:var(--text-2);text-decoration:none;transition:background-color var(--dur-press) ease, color var(--dur-press) ease}
   .mback span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--card);border:1px solid var(--card-line);box-shadow:var(--shadow-card)}
   .mback .ai{width:15px;height:15px}
-  .mback:hover{color:var(--ink);background:var(--paper-2)}
+  @media (hover:hover) and (pointer:fine){ .mback:hover{color:var(--ink);background:var(--paper-2)} }
   .mav{box-shadow:0 0 0 3px var(--card),0 0 0 5.5px var(--tone,var(--blue))}
   .mverdict{display:inline-flex;align-items:baseline;gap:6px;margin-top:10px;padding:5px 11px 5px 9px;border-radius:999px;font-size:12px}
   .mverdict b{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -2398,7 +2397,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
     .mrow .ibtn + .ibtn{margin-left:-4px}
     .mrow .ibtn .ai{width:16px;height:16px}
   }
-  .mname{color:inherit} .mname:hover{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px}
+  .mname{color:inherit} @media (hover:hover) and (pointer:fine){ .mname:hover{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px} }
   @media (max-width:899px){ .mtop,.mbot{grid-template-columns:minmax(0,1fr)} }
   @media (max-width:699px){
     .mhead{flex-direction:column;align-items:center;text-align:center;gap:14px;padding:22px 18px 18px}
@@ -2445,7 +2444,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .bdg.locked strong{color:var(--muted)} .bdg.locked small{color:var(--faint)}
   .mpage.rip .bdg:not(.locked) .bmed{animation:mpop .5s cubic-bezier(.3,.7,.2,1.3) both;animation-delay:calc(.4s + var(--i,0) * 60ms)}
   .mpage.rip .bdg:not(.locked) .bface::after{animation:bshine 1.1s ease-out both;animation-delay:calc(.8s + var(--i,0) * 60ms)}
-  .bdg:not(.locked):hover .bface::after{animation:bshine .9s ease-out}
+  @media (hover:hover) and (pointer:fine){ .bdg:not(.locked):hover .bface::after{animation:bshine .9s ease-out} }
   @keyframes bshine{from{transform:translateX(-60%)}to{transform:translateX(60%)}}
   .mpage.rip .bdg.locked{animation:mfade .5s ease .5s both}
   .bminis{display:inline-flex;gap:3px;margin-left:7px;vertical-align:-3px;cursor:pointer}
@@ -2483,7 +2482,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   @media (max-width:1100px){ .lbg3{grid-template-columns:repeat(2,minmax(0,1fr))} .lbg3 > :last-child{grid-column:1 / -1} }
   @media (max-width:899px){ .lbg2,.lbg2b,.lbg3{grid-template-columns:minmax(0,1fr)} .lbg3 > :last-child{grid-column:auto} }
   .lbwho{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
-  .lbwho:hover .lbn{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px}
+  @media (hover:hover) and (pointer:fine){ .lbwho:hover .lbn{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px} }
   .lbwho.col{flex-direction:column;gap:7px;text-align:center;width:100%}
   .lbwho .bminis{margin-left:0;flex:none}
   .lbn{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -2513,8 +2512,8 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lbper > span{font-size:13px;font-weight:600;color:rgba(255,255,255,.8)}
   .lbper b{font-weight:inherit} .lbshort{display:none}
   .lbseg{display:inline-flex;gap:2px;padding:4px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18)}
-  .lbseg button{border:0;background:none;padding:8px 15px;border-radius:999px;font:inherit;font-size:13.5px;font-weight:600;color:rgba(255,255,255,.88);cursor:pointer;white-space:nowrap;transition:background-color .15s ease,color .15s ease}
-  .lbseg button:not(.on):hover{background:rgba(255,255,255,.12);color:#fff}
+  .lbseg button{border:0;background:none;padding:8px 15px;border-radius:999px;font:inherit;font-size:13.5px;font-weight:600;color:rgba(255,255,255,.88);cursor:pointer;white-space:nowrap;transition:background-color var(--dur-press) ease, color var(--dur-press) ease}
+  @media (hover:hover) and (pointer:fine){ .lbseg button:not(.on):hover{background:rgba(255,255,255,.12);color:#fff} }
   .lbseg button.on{background:linear-gradient(180deg,#f8df8c,#e2b33a);color:#3a2a00;box-shadow:0 2px 8px -2px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.6)}
   .lbempty{padding-bottom:26px}
   .lbemptyp{margin:20px 0 0;text-align:center;font-size:14px;color:rgba(255,255,255,.8)}
@@ -2532,11 +2531,11 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .pnames{display:flex;flex-direction:column;align-items:center;gap:3px;max-width:100%;min-width:0}
   .pname{max-width:100%;background:none;border:0;padding:0;font:inherit;font-size:14.5px;font-weight:600;line-height:1.25;color:#fff;text-wrap:balance;cursor:pointer}
   .multi .pname{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .pname:hover{text-decoration:underline;text-underline-offset:3px}
+  @media (hover:hover) and (pointer:fine){ .pname:hover{text-decoration:underline;text-underline-offset:3px} }
   .ptie{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;max-width:620px;margin:16px auto 0}
   .ptie > span{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#f2c94c;margin-right:4px}
   .ptchip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:999px;padding:5px 11px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
-  .ptchip:hover{background:rgba(255,255,255,.2)}
+  @media (hover:hover) and (pointer:fine){ .ptchip:hover{background:rgba(255,255,255,.2)} }
   .ptx{width:26px;height:26px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:16px;line-height:1;cursor:pointer}
   .pstep .lbn{max-width:100%;white-space:normal;line-height:1.25;text-wrap:balance;color:#fff;font-size:14.5px}
   .pstep .lbav.big{width:70px;height:70px;font-size:22px;background:rgba(255,255,255,.14);color:#fff}
@@ -2568,7 +2567,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lbwho.me .lbav{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--gold)} .lbwho.me .lbn{font-weight:700}
   .lbpin{margin-top:16px;padding-top:16px;border-top:1px dashed var(--card-line)}
   .lball{display:block;margin:18px auto 0;padding:8px 16px;border-radius:999px;border:1px solid var(--card-line);background:none;color:var(--ink);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
-  .lball:hover{background:var(--paper-2)}
+  @media (hover:hover) and (pointer:fine){ .lball:hover{background:var(--paper-2)} }
   .lbnb{gap:7px} .lbnb .bmini{flex:none} .lbnb small{font-size:12px;font-weight:600;color:var(--muted)}
   .bdg .brare{font-style:normal;font-size:10.5px;font-weight:650;line-height:1.25;color:var(--blue-text)}
   .lbacts{display:flex;gap:10px;margin-top:20px} .lbacts > *,.lbacts .lbrep{flex:1;margin:0;display:inline-flex;align-items:center;justify-content:center;gap:6px}
@@ -2579,7 +2578,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lbmecap{margin:8px 0 0;text-align:center;font-size:12px;color:var(--muted);text-wrap:pretty}
   .lbhh h1{margin-right:auto}
   .lbshotbtn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.1);color:#fff;font:inherit;font-size:12.5px;font-weight:650;cursor:pointer}
-  .lbshotbtn:hover{background:rgba(255,255,255,.18)} .lbshotbtn:disabled{opacity:.6;cursor:progress} .lbhh .lbshotbtn span{font-size:inherit;color:inherit}
+  @media (hover:hover) and (pointer:fine){ .lbshotbtn:hover{background:rgba(255,255,255,.18)} } .lbshotbtn:disabled{opacity:.6;cursor:progress} .lbhh .lbshotbtn span{font-size:inherit;color:inherit}
   .lbshot h3{margin:0;font-size:17px} .lbshot img{display:block;width:100%;height:auto;border-radius:14px;margin:14px 0}
   .lbshotb{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
   @media (max-width:699px){ .lbshotbtn{padding:7px} .lbhh .lbshotbtn span{display:none} }
@@ -2615,13 +2614,13 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lbsr.win .lbrider{box-shadow:0 0 0 2px #f2c94c,0 2px 8px rgba(0,0,0,.3)}
   .lbsr small{display:flex;gap:4px;min-width:0;margin-top:9px;font-size:11.5px;color:var(--muted)}
   .lbname{background:none;border:0;padding:0;font:inherit;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-  .lbname:hover{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px}
+  @media (hover:hover) and (pointer:fine){ .lbname:hover{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px} }
   .aname{background:none;border:0;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
-  .aname:hover{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px}
+  @media (hover:hover) and (pointer:fine){ .aname:hover{color:var(--blue-text);text-decoration:underline;text-underline-offset:3px} }
   .lbchips{display:flex;flex-wrap:wrap;gap:8px}
   .lbchip{display:inline-flex;align-items:center;gap:7px;padding:4px 6px 4px 4px;border-radius:999px;background:var(--surface-2);border:1px solid var(--rule);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
   .lbchip .lbav{width:24px;height:24px;font-size:9.5px}
-  .lbchip:hover{border-color:var(--blue-line)}
+  @media (hover:hover) and (pointer:fine){ .lbchip:hover{border-color:var(--blue-line)} }
   .lbok{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 34% 28%,#fff4c2,#f2c94c 45%,#c9971d);color:#5b3c00}
   .lbok .ai{width:11px;height:11px;stroke-width:3}
   .lbyr{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:12px 18px}
@@ -2692,7 +2691,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lbface .lbav{width:48px;height:48px;font-size:15px}
   .lbface .lbok{position:absolute;right:-3px;bottom:-3px;outline:2px solid var(--card)}
   .lbface small{display:flex;justify-content:center;gap:3px;min-width:0;max-width:100%;font-size:11.5px;font-weight:600;white-space:nowrap}   /* only the surname clips; the initial always shows */
-  .lbface:hover small{color:var(--blue-text)}
+  @media (hover:hover) and (pointer:fine){ .lbface:hover small{color:var(--blue-text)} }
   /* most improved: the old level in grey, the gain in green */
   .lbgains{gap:14px}
   .lbwas{flex:none;font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -2710,7 +2709,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .lbhof .phd h2::before{content:none !important}
   .lbhof .lbic{background:rgba(242,201,76,.16)}
   .lbhof .pcap{color:rgba(255,255,255,.72)}
-  .lbhof .lbn,.lbhof .lbname{color:#fff} .lbhof .lbwho:hover .lbn,.lbhof .lbname:hover{color:#f2c94c}
+  .lbhof .lbn,.lbhof .lbname{color:#fff} @media (hover:hover) and (pointer:fine){ .lbhof .lbwho:hover .lbn,.lbhof .lbname:hover{color:#f2c94c} }
   .lbhof .lbav{background:rgba(255,255,255,.14);color:#fff}
   .lbhof .lbpy{border-top-color:rgba(255,255,255,.16)} .lbhof .lbpy span{color:#f2c94c}
   /* medals on navy: a light rim and light ribbon tails so the dark edges don't sink into the plaque */
@@ -2784,8 +2783,8 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
       radial-gradient(circle at 24% 66%,rgba(255,255,255,.09) 0 1px,transparent 1.5px),radial-gradient(circle at 74% 70%,rgba(240,240,238,.35) 0 1px,transparent 1.6px),
       radial-gradient(circle at 60% 30%,rgba(255,255,255,.1) 0 1px,transparent 1.5px),
       var(--chrome);
-    box-shadow:none;transition:transform .2s ease,border-color .2s ease}
-  .lbtile:hover{transform:translateY(-2px);box-shadow:none;border-color:rgba(201,162,39,.75)}
+    box-shadow:none;transition:transform var(--dur-quick) var(--ease-enter), border-color var(--dur-quick) ease}
+  @media (hover:hover) and (pointer:fine){ .lbtile:hover{transform:translateY(-2px);box-shadow:none;border-color:rgba(201,162,39,.75)} }
   .lbglow{position:absolute;inset:-60%;z-index:-1;pointer-events:none;background:linear-gradient(115deg,transparent 44%,rgba(255,255,255,.11) 50%,transparent 56%);
     animation:lbsweep 7s ease-in-out 1.2s infinite}
   @keyframes lbsweep{0%{transform:translateX(-40%)}35%,100%{transform:translateX(40%)}}
@@ -2873,20 +2872,20 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .mast .themebtn .ai,.mast .themebtn svg{width:15px;height:15px}
   .msrch{position:absolute;left:0;right:0;bottom:0;height:58px;display:flex;align-items:center;gap:12px;
     padding:0 calc(var(--gut) + env(safe-area-inset-right)) 0 calc(var(--gut) + env(safe-area-inset-left));background:var(--chrome);
-    opacity:0;pointer-events:none;transition:opacity .2s ease}
+    opacity:0;pointer-events:none;transition:opacity var(--dur-quick) ease}
   .msf{flex:1;min-width:0;display:flex;align-items:center;gap:9px;height:40px;padding:0 12px;border-radius:12px;
     background:rgba(255,255,255,.12);color:var(--chrome-text-2);cursor:text;
-    clip-path:inset(0 0 0 calc(100% - 40px) round 12px);transition:clip-path .34s cubic-bezier(.3,.7,.2,1)}
+    clip-path:inset(0 0 0 calc(100% - 40px) round 12px);transition:clip-path var(--dur-page) var(--ease-enter)}
   .msf .ai{width:17px;height:17px;flex:none}
   .msf input{flex:1;min-width:0;border:0;background:transparent;outline:0;padding:0;color:#fff;font:inherit;font-size:16px;-webkit-appearance:none;appearance:none}
   .msf input::placeholder{color:rgba(255,255,255,.55)}
   .msf input::-webkit-search-cancel-button{-webkit-appearance:none}
   .mscancel{flex:none;background:none;border:0;padding:8px 0;font:inherit;font-size:15px;font-weight:500;color:#fff;
-    opacity:0;transform:translateX(10px);transition:opacity .2s ease .08s,transform .3s cubic-bezier(.3,.7,.2,1) .04s}
+    opacity:0;transform:translateX(10px);transition:opacity var(--dur-quick) ease .08s, transform var(--dur-layer) var(--ease-enter) .04s}
   .mast.msopen .msrch{opacity:1;pointer-events:auto}
   .mast.msopen .msf{clip-path:inset(0 0 0 0 round 12px)}
   .mast.msopen .mscancel{opacity:1;transform:none}
-  .mast > :not(.msrch){transition:opacity .18s ease}
+  .mast > :not(.msrch){transition:opacity var(--dur-quick) ease}
   .mast.msopen > :not(.msrch){opacity:0;pointer-events:none}
   .msrch .tsugg{top:calc(100% + 8px);left:calc(var(--gut) + env(safe-area-inset-left));right:calc(var(--gut) + env(safe-area-inset-right));width:auto;max-height:min(420px,60vh);max-height:min(420px,60dvh)}
   @media (prefers-reduced-motion:reduce){ .msrch,.msf,.mscancel,.mast > :not(.msrch){transition:none} }
@@ -2899,12 +2898,12 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .admh .pbtn{margin-left:auto}
   .pbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border:0;border-radius:12px;
     background:var(--blue);color:#fff;font-size:14.5px;font-weight:600;letter-spacing:-.1px;font-family:inherit;white-space:nowrap;
-    box-shadow:0 8px 18px -10px rgba(var(--blue-rgb),.8);transition:background .15s ease,transform .15s ease}
+    box-shadow:0 8px 18px -10px rgba(var(--blue-rgb),.8);transition:background var(--dur-press) ease, transform var(--dur-press) var(--ease-enter)}
   .pbtn .ai{width:16px;height:16px}
   .pbtn:active{transform:scale(.97)}
   .obtn2{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:40px;padding:0 15px;border-radius:11px;
     border:1px solid var(--card-line);background:var(--card);color:var(--blue-text);font-size:13.5px;font-weight:600;font-family:inherit;
-    box-shadow:var(--shadow-card);white-space:nowrap;transition:border-color .15s ease,background .15s ease}
+    box-shadow:var(--shadow-card);white-space:nowrap;transition:border-color var(--dur-press) ease, background var(--dur-press) ease}
   .obtn2 svg{width:15px;height:15px}
   .obtn2.on{background:var(--red-wash);border-color:var(--red-line);color:var(--red)}
   .obtn2[disabled]{opacity:.5}
@@ -2940,7 +2939,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .chd.bare{border:0;padding:22px 0 4px}
   button.chd{width:100%;border:0;background:transparent;font-family:inherit;color:var(--ink);cursor:pointer}
   button.chd[aria-expanded="false"]{border-bottom:0}
-  .chd .chev{width:9px;height:9px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);transform:rotate(45deg);transition:transform .15s var(--ease-in-out);flex:none;margin:0 4px}
+  .chd .chev{width:9px;height:9px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);transform:rotate(45deg);transition:transform var(--dur-press) var(--ease-in-out);flex:none;margin:0 4px}
   .chd .chev.up{transform:rotate(225deg)}
   .cfoot{padding:12px 20px}
   .cfoot .tlink{border:0;background:transparent;font-family:inherit;padding:0}
@@ -2964,7 +2963,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .li.arow.na{background:var(--card)}
   .att3{display:flex;flex:none;background:var(--ios-track);border-radius:12px;padding:3px;gap:2px}
   .att3 button{display:flex;align-items:center;gap:6px;border:0;background:transparent;border-radius:9px;padding:7px 11px;font-family:inherit;
-    font-size:12.5px;font-weight:500;color:var(--muted);white-space:nowrap;transition:background .15s ease,color .15s ease}
+    font-size:12.5px;font-weight:500;color:var(--muted);white-space:nowrap;transition:background var(--dur-press) ease, color var(--dur-press) ease}
   .att3 b{font-weight:700;font-size:13px;width:10px;text-align:center}
   .att3 button.present.on{background:var(--green-wash);color:var(--green);box-shadow:0 1px 2px rgba(var(--shadow-rgb),.08)}
   .att3 button.absent.on{background:var(--red-wash);color:var(--red);box-shadow:0 1px 2px rgba(var(--shadow-rgb),.08)}
@@ -3098,8 +3097,8 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .ukpis .k1{--k:#3d63dd;--kw:rgba(61,99,221,.10)} .ukpis .k2{--k:#c27a0a;--kw:rgba(232,160,30,.13)}
   .ukpis .k3{--k:#0f9a8a;--kw:rgba(15,159,143,.11)} .ukpis .k4{--k:#d6457a;--kw:rgba(214,69,122,.10)}
   .ukpis .ki{color:var(--k);background:color-mix(in srgb,var(--k) 15%,transparent)}
-  .uk .uchart i{background:linear-gradient(180deg,var(--k),color-mix(in srgb,var(--k) 40%,transparent));opacity:.6;transform-origin:bottom;transition:opacity .15s}
-  .uk .uchart i.hi,.uk .uchart i:hover{opacity:1}
+  .uk .uchart i{background:linear-gradient(180deg,var(--k),color-mix(in srgb,var(--k) 40%,transparent));opacity:.6;transform-origin:bottom;transition:opacity var(--dur-press)}
+  .uk .uchart i.hi{opacity:1} @media (hover:hover) and (pointer:fine){ .uk .uchart i:hover{opacity:1} }
   .uk .uchart i.hi{background:var(--k)}
   .uk .ucnt{background:color-mix(in srgb,var(--k) 14%,transparent);color:color-mix(in srgb,var(--k) 78%,var(--ink))}
   .uk .ubar{background:color-mix(in srgb,var(--k) 12%,transparent)}
@@ -3200,12 +3199,12 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   :root[data-theme="dark"] .drawer{border-right-color:var(--chrome-line);border-left-color:var(--chrome-line)}
   :root[data-theme="dark"] .demb{background:#282b36;color:var(--text-2)}
   :root[data-theme="dark"] .drawer .it.on{background:#252950;color:#fff;box-shadow:inset 0 0 0 1px rgba(140,136,255,.22)}
-  :root[data-theme="dark"] .drawer .it.on:hover{background:#2a2f5c}
+  @media (hover:hover) and (pointer:fine){ :root[data-theme="dark"] .drawer .it.on:hover{background:#2a2f5c} }
   :root[data-theme="dark"] .drawer .it.on .ai{color:var(--blue-text)}
   :root[data-theme="dark"] .it.on .cnt2,:root[data-theme="dark"] .it.on .cnt2.hot{background:rgba(255,255,255,.13);color:#fff;box-shadow:none}
   :root[data-theme="dark"] .chips > .ithumb{background:var(--thumb)}
   :root[data-theme="dark"] .lbtile{border-color:rgba(255,255,255,.09);border-bottom-color:#dfb866}
-  :root[data-theme="dark"] .lbtile:hover{border-color:rgba(255,255,255,.18);border-bottom-color:#dfb866}
+  @media (hover:hover) and (pointer:fine){ :root[data-theme="dark"] .lbtile:hover{border-color:rgba(255,255,255,.18);border-bottom-color:#dfb866} }
   :root[data-theme="dark"] .lbhero{border-color:rgba(255,255,255,.09);border-bottom-color:#dfb866;box-shadow:0 22px 50px -26px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06)}
   :root[data-theme="dark"] .lbhof{border-color:rgba(223,184,102,.3)}
   :root[data-theme="dark"] .lbm .pmed{outline-color:#0c0e15}
@@ -3216,10 +3215,10 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   :root[data-theme="dark"] .lbcut::before,:root[data-theme="dark"] .lbcut::after{border-top-color:color-mix(in srgb,var(--gold-text) 55%,transparent)}
   :root[data-theme="dark"] .rsvc .mdate span,:root[data-theme="dark"] .upc .mdate span{background:#4e2020;color:#fda19e}
   :root[data-theme="dark"] .songc .acts .mini.lyr,:root[data-theme="dark"] .songc .admstrip .mini.lx{background:color-mix(in srgb,var(--gold-text) 13%,var(--card))}
-  :root[data-theme="dark"] .songc .acts .mini.lyr:hover,:root[data-theme="dark"] .songc .admstrip .mini.lx:hover{background:color-mix(in srgb,var(--gold-text) 20%,var(--card))}
+  @media (hover:hover) and (pointer:fine){ :root[data-theme="dark"] .songc .acts .mini.lyr:hover,:root[data-theme="dark"] .songc .admstrip .mini.lx:hover{background:color-mix(in srgb,var(--gold-text) 20%,var(--card))} }
   :root[data-theme="dark"] .seat.sel,:root[data-theme="dark"] .chipx.sel,:root[data-theme="dark"] .li.mhi,:root[data-theme="dark"] .songc.hi .li{background:var(--blue-wash)}
   :root[data-theme="dark"] .tally.mid{color:var(--mid)}
-  :root[data-theme="dark"] .plbar .pl-k button.on,:root[data-theme="dark"] .plbar .pl-k button.on:hover{color:var(--blue-text)}
+  :root[data-theme="dark"] .plbar .pl-k button.on{color:var(--blue-text)} @media (hover:hover) and (pointer:fine){ :root[data-theme="dark"] .plbar .pl-k button.on:hover{color:var(--blue-text)} }
   :root[data-theme="dark"] .sectbar.bass,:root[data-theme="dark"] .blk.bass .blkh,:root[data-theme="dark"] .mrow .av.bass,:root[data-theme="dark"] .mpart.bass,:root[data-theme="dark"] .lbav.bass{color:var(--amber)}
   @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]) .topbar{background:rgba(12,14,21,.86)}
@@ -3232,12 +3231,12 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   :root:not([data-theme="light"]) .drawer{border-right-color:var(--chrome-line);border-left-color:var(--chrome-line)}
   :root:not([data-theme="light"]) .demb{background:#282b36;color:var(--text-2)}
   :root:not([data-theme="light"]) .drawer .it.on{background:#252950;color:#fff;box-shadow:inset 0 0 0 1px rgba(140,136,255,.22)}
-  :root:not([data-theme="light"]) .drawer .it.on:hover{background:#2a2f5c}
+  @media (hover:hover) and (pointer:fine){ :root:not([data-theme="light"]) .drawer .it.on:hover{background:#2a2f5c} }
   :root:not([data-theme="light"]) .drawer .it.on .ai{color:var(--blue-text)}
   :root:not([data-theme="light"]) .it.on .cnt2,:root:not([data-theme="light"]) .it.on .cnt2.hot{background:rgba(255,255,255,.13);color:#fff;box-shadow:none}
   :root:not([data-theme="light"]) .chips > .ithumb{background:var(--thumb)}
   :root:not([data-theme="light"]) .lbtile{border-color:rgba(255,255,255,.09);border-bottom-color:#dfb866}
-  :root:not([data-theme="light"]) .lbtile:hover{border-color:rgba(255,255,255,.18);border-bottom-color:#dfb866}
+  @media (hover:hover) and (pointer:fine){ :root:not([data-theme="light"]) .lbtile:hover{border-color:rgba(255,255,255,.18);border-bottom-color:#dfb866} }
   :root:not([data-theme="light"]) .lbhero{border-color:rgba(255,255,255,.09);border-bottom-color:#dfb866;box-shadow:0 22px 50px -26px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06)}
   :root:not([data-theme="light"]) .lbhof{border-color:rgba(223,184,102,.3)}
   :root:not([data-theme="light"]) .lbm .pmed{outline-color:#0c0e15}
@@ -3248,10 +3247,10 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   :root:not([data-theme="light"]) .lbcut::before,:root:not([data-theme="light"]) .lbcut::after{border-top-color:color-mix(in srgb,var(--gold-text) 55%,transparent)}
   :root:not([data-theme="light"]) .rsvc .mdate span,:root:not([data-theme="light"]) .upc .mdate span{background:#4e2020;color:#fda19e}
   :root:not([data-theme="light"]) .songc .acts .mini.lyr,:root:not([data-theme="light"]) .songc .admstrip .mini.lx{background:color-mix(in srgb,var(--gold-text) 13%,var(--card))}
-  :root:not([data-theme="light"]) .songc .acts .mini.lyr:hover,:root:not([data-theme="light"]) .songc .admstrip .mini.lx:hover{background:color-mix(in srgb,var(--gold-text) 20%,var(--card))}
+  @media (hover:hover) and (pointer:fine){ :root:not([data-theme="light"]) .songc .acts .mini.lyr:hover,:root:not([data-theme="light"]) .songc .admstrip .mini.lx:hover{background:color-mix(in srgb,var(--gold-text) 20%,var(--card))} }
   :root:not([data-theme="light"]) .seat.sel,:root:not([data-theme="light"]) .chipx.sel,:root:not([data-theme="light"]) .li.mhi,:root:not([data-theme="light"]) .songc.hi .li{background:var(--blue-wash)}
   :root:not([data-theme="light"]) .tally.mid{color:var(--mid)}
-  :root:not([data-theme="light"]) .plbar .pl-k button.on,:root:not([data-theme="light"]) .plbar .pl-k button.on:hover{color:var(--blue-text)}
+  :root:not([data-theme="light"]) .plbar .pl-k button.on{color:var(--blue-text)} @media (hover:hover) and (pointer:fine){ :root:not([data-theme="light"]) .plbar .pl-k button.on:hover{color:var(--blue-text)} }
   :root:not([data-theme="light"]) .sectbar.bass,:root:not([data-theme="light"]) .blk.bass .blkh,:root:not([data-theme="light"]) .mrow .av.bass,:root:not([data-theme="light"]) .mpart.bass,:root:not([data-theme="light"]) .lbav.bass{color:var(--amber)}
   }
   @media (hover: hover) and (pointer: fine){
@@ -3285,31 +3284,31 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
       box-shadow:0 14px 36px -14px rgba(var(--shadow-rgb),.38),0 2px 6px -2px rgba(var(--shadow-rgb),.1),0 0 0 1px var(--dk-line)}
     .dock::after{display:none}
     .dock a,.dock button{flex:none;flex-direction:row;gap:0;padding:0;height:100%;justify-content:center;overflow:hidden;
-      color:var(--dk-ink2);transition:width var(--dk-dur) var(--dk-ease),color .2s ease}
+      color:var(--dk-ink2);transition:width var(--dk-dur) var(--dk-ease), color var(--dur-quick) ease}
     .dock a.on,.dock button.on{color:var(--dk-ink)}
     .dock a:active,.dock button:active{opacity:1}
-    .dki{position:relative;display:block;width:22px;height:22px;flex:none;transition:transform .3s var(--dk-ease)}
+    .dki{position:relative;display:block;width:22px;height:22px;flex:none;transition:transform var(--dur-layer) var(--dk-ease)}
     .dock a:active .dki,.dock button:active .dki{transform:scale(.86)}
     .dock.dragging .dki{transform:none}
-    .dock .dki svg{position:absolute;inset:0;width:22px;height:22px;stroke-width:2;transition:opacity .22s ease}
+    .dock .dki svg{position:absolute;inset:0;width:22px;height:22px;stroke-width:2;transition:opacity var(--dur-quick) ease}
     .dock .dki .f{opacity:0}
     .dock .on .dki .f{opacity:1}
     .dock .on .dki .o{opacity:0}
     .dock .cut{stroke:var(--dk-pill)} .dock .cutf{fill:var(--dk-pill)}
     .dock .dkl{display:block;font-style:normal;font-size:15px;font-weight:600;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;
       max-width:0;margin-left:0;opacity:0;color:inherit;
-      transition:max-width var(--dk-dur) var(--dk-ease),margin var(--dk-dur) var(--dk-ease),opacity .14s ease}
+      transition:max-width var(--dk-dur) var(--dk-ease), margin var(--dk-dur) var(--dk-ease), opacity var(--dur-press) ease}
     .dock .on .dkl{max-width:var(--lw,90px);margin-left:8px;opacity:1;
-      transition:max-width var(--dk-dur) var(--dk-ease),margin var(--dk-dur) var(--dk-ease),opacity .3s ease .12s}
+      transition:max-width var(--dk-dur) var(--dk-ease), margin var(--dk-dur) var(--dk-ease), opacity var(--dur-layer) ease .12s}
     .dock .dpill{top:5px;bottom:5px;height:auto;left:0;background:var(--dk-pill);box-shadow:none;border:0;
-      transition:transform var(--dk-dur) var(--dk-ease),width var(--dk-dur) var(--dk-ease),opacity .2s ease}
+      transition:transform var(--dk-dur) var(--dk-ease), width var(--dk-dur) var(--dk-ease), opacity var(--dur-quick) ease}
     .dock.dragging .dpill{background:var(--dk-pill-drag);box-shadow:0 8px 20px -10px rgba(var(--shadow-rgb),.4);
-      transition:width var(--dk-dur) var(--dk-ease),background .2s ease}
+      transition:width var(--dk-dur) var(--dk-ease), background var(--dur-quick) ease}
     .dock.dragging .cut{stroke:var(--dk-pill-drag)} .dock.dragging .cutf{fill:var(--dk-pill-drag)}
-    .dock.dragging a,.dock.dragging button{transition:width var(--dk-dur) var(--dk-ease),color .15s ease}
+    .dock.dragging a,.dock.dragging button{transition:width var(--dk-dur) var(--dk-ease), color var(--dur-press) ease}
     .dock.noanim *{transition:none !important}
     /* tucked while scrolling down: the whole bar eases smaller toward the bottom */
-    .dock{transform-origin:50% 100%;transition:transform .38s var(--dk-ease),box-shadow .38s ease}
+    .dock{transform-origin:50% 100%;transition:transform var(--dur-page) var(--dk-ease), box-shadow var(--dur-page) ease}
     .dock.mini{transform:translateY(4px) scale(.86)}
     /* a glass rim: bright hairline along the top, a soft shade along the bottom,
        so the bar reads as its own layer over busy content */
@@ -3328,19 +3327,19 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   /* period pill: centred, and it opens by growing in place */
   .ctlbar,.ctlbar.wide{align-items:center;justify-content:center}
   .rpill{interpolate-size:allow-keywords;width:fit-content;max-width:100%;background:var(--card);border:1px solid var(--card-line);box-shadow:var(--shadow-card);
-    border-radius:22px;overflow:hidden;transition:width .32s cubic-bezier(.3,.7,.2,1),border-radius .32s ease,border-color .2s ease}
+    border-radius:22px;overflow:hidden;transition:width var(--dur-page) var(--ease-move), border-radius var(--dur-page) var(--ease-move), border-color var(--dur-quick) ease}
   .rpill.open{width:min(100%,460px);border-radius:18px;border-color:var(--blue-line)}
   .rhead{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:40px;padding:8px 16px;background:none;border:0;font:inherit;font-size:var(--fs-13);color:var(--ink);cursor:pointer;white-space:nowrap}
   .rhead > *{display:inline-flex;align-items:center;line-height:1}
   .rhead .lb{font-style:normal;font-size:var(--fs-10);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:1px}
   .rhead .rv{display:block;font-weight:600;line-height:1.2;overflow:hidden;text-overflow:ellipsis}
-  .rhead .rch{display:inline-flex;color:var(--muted);transition:transform .3s ease}
+  .rhead .rch{display:inline-flex;color:var(--muted);transition:transform var(--dur-layer) var(--ease-enter)}
   .rhead .rch svg{width:12px;height:12px}
   .rpill.open .rch{transform:rotate(180deg)}
-  .rbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s cubic-bezier(.3,.7,.2,1)}
+  .rbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--dur-page) var(--ease-move)}
   .rpill.open .rbody{grid-template-rows:1fr}
-  .rin{min-height:0;overflow:hidden;opacity:0;transition:opacity .18s ease}
-  .rpill.open .rin{opacity:1;transition:opacity .25s ease .1s}
+  .rin{min-height:0;overflow:hidden;opacity:0;transition:opacity var(--dur-quick) ease}
+  .rpill.open .rin{opacity:1;transition:opacity var(--dur-layer) ease .1s}
   .rin > div{display:flex;flex-direction:column;align-items:center;gap:10px;padding:2px 14px 14px;border-top:1px solid var(--rule);margin:0 14px;padding-left:0;padding-right:0;padding-top:12px}
   .rin .chips{justify-content:center;flex-wrap:wrap;margin:0}
   .rin .dates{width:100%;max-width:320px;flex:none}
@@ -3487,16 +3486,16 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   @property --fr{syntax:'<length>';inherits:false;initial-value:0px}
   .fx{-webkit-mask-image:linear-gradient(90deg,transparent,#000 var(--fl),#000 calc(100% - var(--fr)),transparent);
       mask-image:linear-gradient(90deg,transparent,#000 var(--fl),#000 calc(100% - var(--fr)),transparent);
-      transition:--fl .22s var(--ease-fade),--fr .22s var(--ease-fade)}
+      transition:--fl var(--dur-quick) var(--ease-fade), --fr var(--dur-quick) var(--ease-fade)}
 
   /* 7 - when one icon replaces another, the outgoing one blurs as it fades: the dock's outline and
      filled tab icons, the player's play / pause / loading, and the light / dark switch (inside the
      page's own cross-fade, where the browser supports it). */
   @media (max-width:999px){
-    .dock .dki svg{transition:opacity .22s ease,filter .22s ease}
+    .dock .dki svg{transition:opacity var(--dur-quick) ease, filter var(--dur-quick) ease}
     .dock .dki .f{filter:blur(4px)} .dock .on .dki .f{filter:none} .dock .on .dki .o{filter:blur(4px)}
   }
-  .plbar .pl-pp svg{grid-area:1/1;display:block;transition:opacity .2s var(--ease-fade),filter .2s var(--ease-fade),transform .28s var(--ease-out)}
+  .plbar .pl-pp svg{grid-area:1/1;display:block;transition:opacity var(--dur-quick) var(--ease-fade), filter var(--dur-quick) var(--ease-fade), transform var(--dur-layer) var(--ease-enter)}
   .plbar .pl-pp .i-pause,.plbar .pl-pp .i-load,.plbar.playing .pl-pp .i-play,.plbar.loading .pl-pp .i-play,.plbar.loading .pl-pp .i-pause{
     display:block;opacity:0;filter:blur(4px);transform:scale(.55)}
   .plbar.playing:not(.loading) .pl-pp .i-pause,.plbar.loading .pl-pp .i-load{opacity:1;filter:none;transform:none}
@@ -3686,6 +3685,118 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   }
   @media (prefers-reduced-motion:no-preference) and (max-width:699px){
     .lbsheet{animation:lbsl .47s var(--spring-smooth) both}
+  }
+  /* ======================= 5.64: motion review =======================
+     From the UX & animation review: one set of curves and durations; what people use many times a
+     session is quick; layers arrive on the enter curve and leave on the exit curve, a little quicker;
+     a press shows on the frame of the touch; reduced motion stops everything except spinners. */
+  :root{
+    --ease-enter:cubic-bezier(.32,.72,0,1);   /* appearing, answering a touch */
+    --ease-exit:cubic-bezier(.55,0,1,.45);    /* leaving */
+    --ease-move:cubic-bezier(.77,0,.175,1);   /* moving or resizing in place */
+    --dur-press:150ms; --dur-quick:200ms; --dur-layer:250ms; --dur-page:350ms;
+    --press-dim:.95;                          /* a pressed row or tile: a shade darker (lighter in dark mode) */
+  }
+  :root[data-theme="dark"]{--press-dim:1.12}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){--press-dim:1.12} }
+
+  /* 1. the bottom bar: a tab switch takes a quarter second, not half */
+  @media (max-width:999px){
+    .dock{--dk-dur:.26s;transition:transform var(--dur-layer) var(--dk-ease), box-shadow var(--dur-layer) ease}
+    .dock .dkl{transition:max-width var(--dk-dur) var(--dk-ease), margin var(--dk-dur) var(--dk-ease), opacity var(--dur-press) ease}
+    .dock .on .dkl{transition:max-width var(--dk-dur) var(--dk-ease), margin var(--dk-dur) var(--dk-ease), opacity var(--dur-quick) ease .06s}
+    .dki{transition:transform var(--dur-press) var(--ease-enter)}
+    .dock a:active .dki,.dock button:active .dki{transform:scale(.95)}
+  }
+
+  /* 3. the report card: only badges earned this week shine as it opens */
+  .mpage.rip .bdg:not(.locked) .bface::after{animation:none}
+  .mpage.rip .bdg.fresh:not(.locked) .bface::after{animation:bshine .9s var(--ease-enter) .9s both}
+
+  /* 4. a song row opening: its buttons come with the row, together, without a bounce */
+  @media (max-width:699px){
+    .srow > .ftile,.srow > .ord,.srow > .stxt{transition:opacity var(--dur-quick) ease, transform var(--dur-layer) var(--ease-enter)}
+    .srow .stray{transition:visibility 0s linear .2s}
+    .songc.open .srow .stray{transition-delay:0s}
+    .srow .sbtns .mini{transition:opacity var(--dur-press) ease, transform var(--dur-quick) var(--ease-exit), background var(--dur-press) ease}
+    .songc.open .srow .sbtns .mini{transition:opacity var(--dur-quick) ease, transform var(--dur-layer) var(--ease-enter), background var(--dur-press) ease}
+    .srow .schev{transition:transform var(--dur-layer) var(--ease-move), background var(--dur-quick) ease, color var(--dur-quick) ease}
+  }
+
+  /* 5. the profile sheet: in at 0.28s with its scrim on the same clock, out at 0.2s (closeLayer);
+     on a phone a handle shows that it can be pulled down */
+  .lbsheet{animation-duration:.28s;animation-timing-function:var(--ease-enter)}
+  .lbscrim{animation:mfade .28s ease both}
+  .lbgrab{display:none}
+  @media (max-width:699px){
+    .lbsheet{animation:lbsl .28s var(--ease-enter) both}
+    .lbsheet .lbgrab{display:block;position:absolute;top:8px;left:50%;width:36px;height:5px;margin-left:-18px;border-radius:3px;
+      background:var(--line-strong);pointer-events:none}
+  }
+
+  /* 7. a press shows on the frame of the touch: small controls shrink to 96%, wide rows and tiles
+     go a shade darker. The seating chart and the tabs keep their own feedback. */
+  :is(.ibtn,.lbshotbtn,.lball,.sbact .sshare,.sbact .sbtn,.abtn,.dhead .x,.dout,.lbav.big,.lbface,.lbseg button,.mmore,.lbx,.mx,.obtn2,.tbtn,.res,.kpi,.themebtn):active:not(:disabled){scale:.96}
+  .themebtn:active{transform:none}
+  .pbtn:active{transform:scale(.96)}
+  :is(.lbwho,.lbchip,.srow2,.rsvc,.lnband,.lnfr,.dacct,.btn,.rhead,.lbtile,.drawer .it,.sec.songc > .li.srow):active{filter:brightness(var(--press-dim))}
+  .drawer .it:active{transform:none}
+  :is(.ibtn,.lbshotbtn,.lball,.abtn,.dhead .x,.lbav.big,.lbface,.lbx,.mx,.mmore,.tbtn){transition:scale var(--dur-press) var(--ease-enter)}
+  .sbact .sshare,.sbact .sbtn{transition:background var(--dur-press) ease, scale var(--dur-press) var(--ease-enter)}
+  .dout{transition:background var(--dur-press) ease, color var(--dur-press) ease, scale var(--dur-press) var(--ease-enter)}
+  .lbseg button{transition:background-color var(--dur-press) ease, color var(--dur-press) ease, scale var(--dur-press) var(--ease-enter)}
+  .res,.kpi{transition:border-color var(--dur-quick) ease, transform var(--dur-quick) var(--ease-enter), scale var(--dur-press) var(--ease-enter)}
+  :is(.lbwho,.lbchip,.srow2,.rsvc,.lnband,.btn,.rhead){transition:filter var(--dur-press) ease}
+  .lnfr,.dacct{transition:background var(--dur-press) ease, filter var(--dur-press) ease}
+  .lbtile{transition:transform var(--dur-quick) var(--ease-enter), border-color var(--dur-quick) ease, filter var(--dur-press) ease}
+
+  /* 8. a tap area of at least 44px where the visible control is smaller; neighbours split the gap */
+  .mast .lang button,.mast .themebtn{position:relative}
+  .mast .lang button::after,.mast .themebtn::after{content:"";position:absolute;top:50%;left:-6px;right:-6px;height:44px;translate:0 -50%}
+  .mast .lang [data-lang="en"]::after{right:0}       /* EN and RU touch: each keeps its own half */
+  .mast .lang [data-lang="ru"]::after{left:0}
+  .mast .msbtn::after{right:-5px}
+  .mast .themebtn:not(.msbtn)::after{left:-5px}
+  .aname{padding:13px 6px;margin:-13px -6px}
+  .lbsr .lbname{padding:12px 6px;margin:-12px -6px}
+  :is(.lbrank,.lbstreaks,.lbsec,.lbir,.lbyr) .lbwho{padding-block:5px;margin-block:-5px}
+
+  /* 9 and 10. the app's own question and the message beside a field */
+  .askwrap .mscrim{z-index:400} .askwrap .modal{z-index:401}
+  .ask .askb{margin:0 0 4px;font-size:14px;line-height:1.45;color:var(--muted);text-wrap:pretty}
+  .ask .mfoot > button{flex:1 1 0}
+  .pbtn.askdanger{background:var(--red);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+  .ferr{margin:10px 0 0;font-size:13px;line-height:1.4;font-weight:600;color:var(--red)}
+  .toast.info{background:rgba(44,48,66,.94)}
+
+  /* 11. dialogs and toasts: 0.22s and 0.24s on the enter curve; a dialog only fades and grows a little */
+  .modal{animation:modalin .22s var(--ease-enter)}
+  .mscrim{animation:scrimin .22s var(--ease-enter)}
+  @keyframes modalin{from{opacity:0;transform:translate(-50%,-50%) scale(.97)}}
+  .toast{animation:toastin .24s var(--ease-enter)}
+  @keyframes toastin{from{opacity:0;transform:translateY(16px)}}
+  .drawer.on{animation:din .28s var(--ease-enter)}
+  .drawer.on .it{animation:none}            /* the menu's rows arrive with the menu, in one piece */
+
+  /* 12. a theme or language switch: no transition starts while the colours change */
+  html.theme-switching *,html.theme-switching *::before,html.theme-switching *::after{transition:none !important}
+
+  /* 14. progress fills move with a transform or a clip, not by changing their width;
+     the sheet viewer's bottom edge no longer animates when the player appears */
+  .lsc::after{width:100%;transform-origin:left;transform:scaleX(calc(var(--lp,0) / 100));transition:transform var(--dur-layer) linear}
+  .rprog i::after{width:100%;clip-path:inset(0 calc(100% - var(--lp,0) * 1%) 0 0 round 6px);transition:clip-path var(--dur-quick) var(--ease-enter)}
+  .shv-box{transition:opacity var(--dur-quick) ease, transform var(--dur-layer) var(--ease-enter)}
+
+  /* the light/dark icon cross-fades with a spin only for a theme flip; on a page change it stays put
+     (5.63 gave it its own transition name, and every page change replayed the spin) */
+  html.vt-nav::view-transition-group(themeic){animation:none}
+  html.vt-nav::view-transition-old(themeic){display:none}
+  html.vt-nav::view-transition-new(themeic){animation:none}
+  /* 6. reduced motion: nothing moves or fades; spinners still turn */
+  @media (prefers-reduced-motion:reduce){
+    .modal,.mscrim,.toast,.login,.lmsg,.lmsg.nudge,.lbsheet,.lbscrim,.drawer.on,.scrim.on{animation:none !important}
+    .dock,.dock *,.shv-box,.shv-scrim,.fx{transition:none !important}
+    :is(.ibtn,.lbshotbtn,.lball,.sbact .sshare,.sbact .sbtn,.abtn,.dhead .x,.dout,.lbav.big,.lbface,.lbseg button,.mmore,.lbx,.mx,.obtn2,.tbtn,.res,.kpi,.themebtn):active{scale:none;filter:brightness(var(--press-dim))}
   }
 </style>
 </head>
@@ -4079,6 +4190,11 @@ Object.assign(STR.ru, {
   shvLoading:'Открываем ноты…', shvErr:'Не удалось показать ноты здесь. Откройте их в новой вкладке.',
   lnInDays: n => n <= 0 ? 'сегодня' : n === 1 ? 'завтра' : 'через ' + n + ' ' + ruN(n, 'день', 'дня', 'дней')
 });
+/* 5.64: the app's own questions say what the button does */
+Object.assign(STR.en, { askDelSong:'Delete song', askDelSinger:'Delete singer', askDelEvent:'Delete event', askDelCat:'Delete category',
+  askDelBlock:'Delete block', askDropRole:'Remove role', askLeave:'Leave without saving', askStay:'Stay' });
+Object.assign(STR.ru, { askDelSong:'Удалить песню', askDelSinger:'Удалить хориста', askDelEvent:'Удалить событие', askDelCat:'Удалить категорию',
+  askDelBlock:'Удалить блок', askDropRole:'Убрать роль', askLeave:'Уйти без сохранения', askStay:'Остаться' });
 const MON = { en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
               ru:['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'] };
 const MONF = { en:['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -4297,13 +4413,18 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.63.0';
+const VERSION = '5.64.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Quicker and smoother: the bottom bar, opening a song and a singer’s card respond faster, buttons show that they’re pressed, and the small buttons at the top are easier to hit',
+    'Top attendance and the attendance report play their opening once a visit; changing the period slides the bars to their new lengths. Only badges earned this week shine',
+    'On a phone, pull a singer’s card down to close it',
+    'Deleting asks inside the app and says what will happen; a problem with a field is shown right beside it',
+    'With Reduce Motion turned on, nothing slides or fades. On phones the light/dark icon no longer spins on every page change',
     'Each voice part has one colour on every screen: sopranos gold, altos green, tenors blue, basses slate',
     'Design polish: borders take on the colour of tinted surfaces, colour sets have even brightness, icons match the weight of the text beside them, sideways lists fade at the edge that has more to see, icons that swap blur smoothly, and in dark mode what floats sits on a lighter surface',
     'No internet? The app now says so. Signing in, saving, opening a sheet that isn’t on your device or playing a recording tells you you’re offline (or that the server isn’t answering) instead of “Load failed”, and the sign-in and director pages show it before you start',
@@ -4399,6 +4520,11 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Быстрее и плавнее: нижняя панель, открытие песни и карточка хориста отзываются быстрее, кнопки показывают нажатие, а в маленькие кнопки вверху легче попасть',
+    '«Лучшая посещаемость» и отчёт о посещаемости показывают вступление один раз за посещение; при смене периода полосы плавно меняют длину. Блестят только значки, полученные на этой неделе',
+    'На телефоне карточку хориста можно закрыть, потянув её вниз',
+    'Удаление спрашивает внутри приложения и называет действие; ошибка в поле показывается прямо рядом с ним',
+    'При включённом «Уменьшении движения» ничего не скользит и не проявляется. На телефоне значок светлой/тёмной темы больше не крутится при каждом переходе',
     'У каждой партии теперь один цвет на всех экранах: сопрано — золотой, альты — зелёный, тенора — синий, басы — серо-синий',
     'Шлифовка дизайна: рамки принимают цвет подкрашенного фона, цвета в наборах одинаково яркие, значки по толщине совпадают с текстом рядом, списки с прокруткой вбок плавно гаснут у края, где есть ещё, сменяющиеся значки мягко размываются, а в тёмной теме всплывающие панели светлее фона под ними',
     'Нет интернета? Теперь приложение так и говорит. При входе, сохранении, открытии нот, которых нет на устройстве, или записи вы увидите, что нет сети (или что сервер не отвечает), а не «Load failed»; страницы входа и регента предупреждают об этом заранее',
@@ -6702,12 +6828,12 @@ function newBadges(from, to){
   out.sort((a, b) => w(b.b) - w(a.b) || a.s.name.localeCompare(b.s.name, 'ru'));
   X.memo.set(k, out); return out;
 }
-const medal = (b, i, R) => `<div class="bdg ${b.earned ? b.tier : 'locked'}${b.year ? ' yr' : ''}" style="--i:${i}" title="${esc(b.name + ' · ' + b.sub)}">
+const medal = (b, i, R) => `<div class="bdg ${b.earned ? b.tier : 'locked'}${b.year ? ' yr' : ''}${R && R.fresh && b.earned && R.fresh.has(b.id) ? ' fresh' : ''}" style="--i:${i}" title="${esc(b.name + ' · ' + b.sub)}">
         <span class="bmed"><span class="bface">${b.year ? `<b class="byr">${b.year}</b>` : BI[b.id]}</span></span><strong>${esc(b.name)}</strong><small>${esc(b.sub)}</small>${R && R.c && !b.year ? `<em class="brare">${esc(t('bRare')(R.c[b.id] || 0))}</em>` : ''}</div>`;
-function badgePanel(s, from){
+function badgePanel(s, from, fresh){
   const capped = !from || from < shift(B_MAX);
   const B = badgesFor(s, from), got = B.filter(b => b.earned).length, Y = yearAwards(s);
-  const hall = Y.won.concat(Y.live ? [Y.live] : []), R = { c: badgeHolders(from) };
+  const hall = Y.won.concat(Y.live ? [Y.live] : []), R = { c: badgeHolders(from), fresh };
   return `<section class="dpanel mbadges">
       <div class="phd"><h2>${esc(t('bTitle'))}</h2></div>
       ${hall.length ? `<div class="bgroup"><div class="bgh"><span>${esc(t('bHall'))}</span><small>${esc(t('bHallSub'))}</small></div>
@@ -6758,7 +6884,7 @@ function leaderPage(){
     lbFresh: AI('<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path><path d="M19 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"></path>') };
   const p = LB_PRESETS.includes(S.lbPreset) ? S.lbPreset : '3', from = shift(+p), to = today();
   const T = choirTable(from, to);
-  const rip = S.lbSeen !== p; if (T.ranked.length) S.lbSeen = p;
+  const rip = !S.lbSeen; if (T.ranked.length) S.lbSeen = p;   // 5.64: the reveal plays on the first view of the session; a new period moves the bars instead (lbSwap)
   /* the period is always on show, inside the stage: "Past [1 month] [3 months] …" */
   const picker = `<div class="lbper"><span><b class="lbfull">${esc(t('lbShow'))}</b><b class="lbshort">${esc(t('lbShowShort'))}</b></span><div class="lbseg" role="group" aria-label="${esc(t('period'))}">${LB_PRESETS.map(v =>
     `<button data-lbpreset="${v}" class="${p === v ? 'on' : ''}" aria-pressed="${p === v}"><b class="lbfull">${esc(t('lbP' + v))}</b><b class="lbshort">${esc(t('lbPs' + v))}</b></button>`).join('')}</div></div>`;
@@ -6897,7 +7023,7 @@ function lbSheet(from, p, label){
   const still = S.lbOpen === s.id ? ' still' : ''; S.lbOpen = s.id;
   const B = badgesFor(s, from).filter(b => b.earned), Y = yearAwards(s).won, R = { c: badgeHolders(from) }, me = S.me === s.id;
   return `<div class="lbscrim${still}" data-lbclose></div>
-    <div class="lbsheet${still}" role="dialog" aria-modal="true" aria-label="${esc(s.name)}">
+    <div class="lbsheet${still}" role="dialog" aria-modal="true" aria-label="${esc(s.name)}"><span class="lbgrab" aria-hidden="true"></span>
       <button class="lbx" data-lbclose aria-label="${esc(t('lbClose'))}">×</button>
       <div class="lbsh"><span class="lbav big ${s.part || ''}">${avIn(s)}</span>
         <div><h3>${esc(s.name)}</h3><div class="mmeta">${s.part ? `<span class="mpart ${s.part}">${esc(t(s.part))}</span>` : ''}${s.joined_on ? `<span class="lbsince">${esc(t('lbSince')(s.joined_on.slice(0, 4)))}</span>` : ''}</div></div></div>
@@ -6908,9 +7034,9 @@ function lbSheet(from, p, label){
       <p class="lbmecap">${esc(t(me ? 'lbMeOnCap' : 'lbMeCap'))}</p>
     </div>`;
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.lbWho) { S.lbWho = null; render(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.lbWho) closeLayer(() => { S.lbWho = null; }); });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && (S.audioEdit || S.pdfDel || S.planType || S.archAsk || S.learnEdit || S.learnMove)) { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.recAdd = []; S.pdfDel = null; render(); }
+  if (e.key === 'Escape' && (S.audioEdit || S.pdfDel || S.planType || S.archAsk || S.learnEdit || S.learnMove)) closeLayer(() => { S.learnEdit = null; S.learnMove = null; S.archAsk = null; S.planType = null; S.ptErr = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.recAdd = []; S.pdfDel = null; });
   if (e.key === 'Enter' && e.target.id && e.target.id.startsWith('audio-')) { e.preventDefault(); const b = document.querySelector('.modal [data-audio-save]'); if (b) b.click(); }
 });
 /* first view of a period: the percentages count up while the podium rises */
@@ -7117,7 +7243,11 @@ function memberPage(tok){
         <button class="mmore" data-mmiss hidden>${esc(t(S.mMissAll ? 'mLess' : 'mMore'))}</button>`
         : `<p class="pcap" style="margin:0">${esc(t('mNoneMissed'))}</p>`}
     </section>`;
-  return `<div class="mpage rip">${mBack()}${head}${pill}<div class="mtop">${ring}${stats}</div>${badgePanel(s, p === 'all' ? '' : shift(+p))}${chart}<div class="mbot">${strip}${miss}</div></div>`;
+  /* 5.64: the report card grows in on its first visit of the session; the shine crosses only the
+     badges earned this week, so the new one stands out */
+  const rip = !(S.mpSeen || (S.mpSeen = new Set())).has(s.id); S.mpSeen.add(s.id);
+  const bFrom = p === 'all' ? '' : shift(+p), fresh = new Set(newBadges(bFrom || shift(B_MAX), now).filter(x => x.s.id === s.id).map(x => x.b.id));
+  return `<div class="mpage${rip ? ' rip' : ''}">${mBack()}${head}${pill}<div class="mtop">${ring}${stats}</div>${badgePanel(s, bFrom, fresh)}${chart}<div class="mbot">${strip}${miss}</div></div>`;
 }
 function attendanceSummary(){
   const ev = S.events.filter(hasAtt).filter(e => inRange(e.date, S.from, S.to))
@@ -7367,7 +7497,7 @@ function upcomingBoard(){
         ${demo ? `<button class="mini"${act}>${esc(t('upMove'))}</button><button class="mini go"${act}>${esc(t('edit'))}</button>`
           : `<label class="mini upmv"><span>${esc(t('upMove'))}</span><input type="date" min="${now}" value="${e.date}" data-plan-move="${e.id}" aria-label="${esc(t('upMove'))}"></label>
         <a class="mini go" href="#/admin/songs/${e.id}">${esc(t('edit'))}</a>`}
-      </div></article>`; };
+      </div>${S.planErr && S.planErr.id === e.id ? `<p class="ferr" role="alert">${esc(S.planErr.msg)}</p>` : ''}</article>`; };
   /* the same rail as the public timeline, turned on its side: one node per day, cards hanging below */
   const days = [];
   list.forEach(e => { const g = days[days.length - 1]; if (g && g.date === e.date) g.evs.push(e); else days.push({ date: e.date, evs: [e] }); });
@@ -7465,7 +7595,8 @@ async function planMove(id, date){
   /* typing a year into a date field fires "change" for every digit (0002, 0020…):
      only a real, upcoming date moves a service, one move at a time */
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || date < today() || date > '2100-12-31' || S.planMoving) return;
-  if (S.events.some(x => x.id !== id && x.date === date && x.kind === ev.kind && (x.name || '') === (ev.name || ''))) { alert(t('upClash')); return render(); }
+  S.planErr = null;
+  if (S.events.some(x => x.id !== id && x.date === date && x.kind === ev.kind && (x.name || '') === (ev.name || ''))) { S.planErr = { id, msg: t('upClash') }; return render(); }
   if (!await ensureSession()) return render();
   S.planMoving = id;
   try {
@@ -7673,7 +7804,7 @@ function saveBar(mode){
     <div class="savebar">
       <div class="st ${dirty ? 'live' : ''}">${esc(status)}</div>
       <button class="sb ghost" data-cancel-marks="${mode}">${esc(t('cancel'))}</button>
-      <button class="sb go" data-save-marks ${dirty && !S.saving ? '' : 'disabled'}${S.saving ? ' aria-busy="true"' : ''}>${esc(S.saving ? t('saving') : t('save'))}</button>
+      <button class="sb go" data-save-marks ${dirty && !S.saving ? '' : 'disabled'}${S.saving ? ' aria-busy="true"' : ''}>${esc(S.savingShown ? t('saving') : t('save'))}</button>
     </div>`;
 }
 function markAttendance(ev){
@@ -8370,11 +8501,11 @@ function planTypeModal(){
         <div role="radiogroup" aria-label="${esc(t('ptTitle'))}" style="display:grid;gap:8px">${['morning','evening','other'].map(opt).join('')}</div>
         <div id="pt-other" style="display:${other ? 'grid' : 'none'};grid-template-columns:minmax(0,1fr) 84px;gap:8px 10px;margin-top:14px">
           <label style="display:grid;gap:6px;min-width:0"><span style="${lab}">${esc(t('eventName'))}</span>
-            <input class="field" id="pt-name" value="${esc(P.name)}" autocomplete="off" style="width:100%;min-width:0;box-sizing:border-box"></label>
+            <input class="field" id="pt-name" value="${esc(P.name)}"${S.ptErr === t('ptNeedName') ? ' aria-invalid="true"' : ''} autocomplete="off" style="width:100%;min-width:0;box-sizing:border-box"></label>
           <label style="display:grid;gap:6px;min-width:0"><span style="${lab}">${esc(t('shortLabel'))}</span>
             <input class="field" id="pt-label" value="${esc(P.label)}" maxlength="3" autocomplete="off" style="width:100%;min-width:0;box-sizing:border-box;text-align:center"></label>
           <div style="grid-column:1/-1;font-size:12.5px;line-height:1.4;color:var(--faint);text-wrap:pretty">${esc(t('labelHint'))}</div>
-        </div></div>
+        </div>${S.ptErr ? `<p class="ferr" role="alert">${esc(S.ptErr)}</p>` : ''}</div>
       <div class="mfoot"><button class="obtn2" data-modal-x>${esc(t('cancel'))}</button><button class="pbtn" data-pt-save>${esc(t('save'))}</button></div></div>`;
 }
 function ptRead(){ const n = document.getElementById('pt-name'), l = document.getElementById('pt-label');
@@ -8382,20 +8513,20 @@ function ptRead(){ const n = document.getElementById('pt-name'), l = document.ge
 async function planTypeSave(){
   ptRead();
   const P = S.planType, ev = eventById(P.id);
-  if (!ev) { S.planType = null; return render(); }
+  if (!ev) { S.planType = null; S.ptErr = null; return render(); }
   const other = P.kind === 'other', name = other ? (P.name || '').trim() : null;
-  if (other && !name) { alert(t('ptNeedName')); return; }
+  if (other && !name) { S.ptErr = t('ptNeedName'); render(); const f = document.getElementById('pt-name'); if (f) f.focus(); return; }
   const row = { kind: P.kind, name, label: other ? ((P.label || '').trim() || name.slice(0, 2)) : KIND_LABEL[S.lang][P.kind] };
   const day = (S.edit && S.edit.evId === ev.id && S.edit.newDate) || ev.date;
-  if (S.events.some(x => x.id !== ev.id && x.date === day && x.kind === row.kind && (x.name || '') === (row.name || ''))) { alert(t('upClash')); return; }
+  if (S.events.some(x => x.id !== ev.id && x.date === day && x.kind === row.kind && (x.name || '') === (row.name || ''))) { S.ptErr = t('upClash'); return render(); }
   if (S.edit && S.edit.evId === ev.id) {        // inside the editor: kept until Save, like the date
     const same = row.kind === ev.kind && (row.name || '') === (ev.name || '') && (row.label || '') === (ev.label || '');
-    S.edit.newType = same ? null : row; S.planType = null; return render();
+    S.edit.newType = same ? null : row; S.planType = null; S.ptErr = null; return render();
   }
   if (!await ensureSession()) return render();
   const res = await sb.from('events').update(row).eq('id', ev.id).select();
   if (!wrote(res)) return render();
-  Object.assign(ev, row); S.planType = null;
+  Object.assign(ev, row); S.planType = null; S.ptErr = null;
   return render();
 }
 /* ---------- Listen: Full + one button per recorded part ----------
@@ -9546,6 +9677,8 @@ function exportCSV(kind){
 const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const EASE = { out:'cubic-bezier(.2,.8,.3,1)', drawer:'cubic-bezier(.32,.72,0,1)',
                fade:'cubic-bezier(.33,0,.2,1)', exit:'cubic-bezier(.4,0,1,1)' };
+/* 5.64: the motion layer's three curves (--ease-enter, --ease-exit, --ease-move) */
+Object.assign(EASE, { enter:'cubic-bezier(.32,.72,0,1)', leave:'cubic-bezier(.55,0,1,.45)', move:'cubic-bezier(.77,0,.175,1)' });
 /* the two springs defined in CSS (--spring-smooth, --spring-snappy), so script
    animations move the same way; a cubic-bezier stand-in where linear() is unknown */
 const spring = k => (getComputedStyle(document.documentElement).getPropertyValue('--spring-' + k) || '').trim() || EASE.out;
@@ -9568,7 +9701,7 @@ function playOut(specs, then){
 function reveal(sel){
   const el = sel && document.querySelector(sel);
   if (!el || !el.animate) return;
-  if (calm()) return void el.animate([{opacity:0},{opacity:1}], { duration:120 });
+  if (calm()) return;                       // 5.64: reduced motion: no fade either
   const h = el.getBoundingClientRect().height;
   if (!h) return;
   const was = el.style.overflow;
@@ -9591,9 +9724,8 @@ function collapse(sel, then){
 function pop(sel){
   const el = sel && document.querySelector(sel);
   if (!el || !el.animate) return;
-  el.animate(calm() ? [{opacity:0},{opacity:1}]
-    : [{opacity:0,transform:'scale(.92)'},{opacity:1,transform:'none'}],
-    { duration:calm() ? 120 : 370, easing:calm() ? EASE.out : spring('snappy') });
+  if (calm()) return;                       // 5.64: with reduced motion it simply appears
+  el.animate([{opacity:0,transform:'scale(.95)'},{opacity:1,transform:'none'}], { duration:250, easing:EASE.enter });
 }
 /* The shimmer is replaced by a whole page of fresh geometry in one frame. The
    masthead was already there, so it does not take part. */
@@ -9602,14 +9734,20 @@ function fadeInBody(){
   if (!app) return;
   [...app.children].forEach(k => {
     if (!k.animate || (k.classList && k.classList.contains('mast'))) return;
-    k.animate([{opacity:0},{opacity:1}], { duration:calm() ? 120 : 300, easing:EASE.fade });
+    if (calm()) return;                     // 5.64: reduced motion: no fade either
+    k.animate([{opacity:0},{opacity:1}], { duration:300, easing:EASE.fade });
   });
 }
 /* A theme flip repaints every colour at once. Where the browser can cross-fade
    the whole document, let it. */
 function paint(fn){
-  if (calm() || !document.startViewTransition) return fn();
-  const vt = document.startViewTransition(fn);
+  /* 5.64: no transition starts while the colours change, so nothing (the bottom bar was the one)
+     keeps fading on its own clock after the page has cross-faded */
+  const root = document.documentElement;
+  const run = () => { root.classList.add('theme-switching');
+    try { fn(); } finally { requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('theme-switching'))); } };
+  if (calm() || !document.startViewTransition) return run();
+  const vt = document.startViewTransition(run);
   if (vt.ready) vt.ready.catch(() => {});        // a newer transition may cut this one short
 }
 /* The menu arrives over 300ms and used to leave in a single frame, while the
@@ -9622,7 +9760,7 @@ function dismissMenu(){
   if (matchMedia('(min-width:1000px)').matches) return render();   // a permanent sidebar
   menuClosing = true;
   playOut([
-    { el:document.querySelector('.drawer.on'), ms:250, easing:EASE.drawer,
+    { el:document.querySelector('.drawer.on'), ms:200, easing:EASE.leave,
       kf:[{transform:'none'},{transform:'translateX(105%)'}] },
     { el:document.querySelector('.scrim.on'), ms:200, easing:'ease',
       kf:[{opacity:1},{opacity:0}] }
@@ -9631,26 +9769,83 @@ function dismissMenu(){
 /* A dialog or sheet leaves the way it came. The state closes at once, so a
    render in between cannot bring it back; the live nodes play the exit (a dialog
    sinks and fades, a phone sheet slides down), then the page re-renders. */
-function closeLayer(apply){
-  const nodes = ['.modal', '.lbsheet', '.mscrim', '.lbscrim'].map(q => document.querySelector(q));
+function closeLayer(apply, drag){
+  /* (the app's own question, askFirst, lives outside #app and closes itself) */
+  const nodes = ['.modal', '.lbsheet', '.mscrim', '.lbscrim'].map(q => document.querySelector(':not(.askwrap) > ' + q));
   apply();
+  /* 5.64: a phone sheet slides back down in 0.2s on the leaving curve, or after a flick at the
+     flick's speed; a dialog fades and shrinks a little in 0.16s; each scrim keeps its layer's clock */
+  const sheetMs = drag ? drag.ms : 200;
   const exit = el => {
     const cs = getComputedStyle(el), base = cs.transform === 'none' ? '' : cs.transform + ' ';
     if (el.classList.contains('lbsheet') && cs.bottom === '0px')
-      return { el, ms:300, easing:EASE.drawer, kf:[{transform:base || 'none'}, {transform:base + 'translateY(100%)'}] };
-    return { el, ms:180, easing:EASE.exit, kf:[{opacity:1, transform:base || 'none'}, {opacity:0, transform:base + 'translateY(8px) scale(.97)'}] };
+      return { el, ms:sheetMs, easing:drag ? EASE.enter : EASE.leave, kf:[{transform:base || 'none'}, {transform:base + 'translateY(100%)'}] };
+    return { el, ms:160, easing:EASE.leave, kf:[{opacity:1, transform:base || 'none'}, {opacity:0, transform:base + 'translateY(8px) scale(.97)'}] };
   };
   const specs = [];
   if (nodes[0]) specs.push(exit(nodes[0]));
   if (nodes[1]) specs.push(exit(nodes[1]));
-  [nodes[2], nodes[3]].forEach(n => n && specs.push({ el:n, ms:200, easing:'ease', kf:[{opacity:1},{opacity:0}] }));
+  const scrimMs = nodes[1] && getComputedStyle(nodes[1]).bottom === '0px' ? sheetMs : 160;
+  [nodes[2], nodes[3]].forEach(n => n && specs.push({ el:n, ms:scrimMs, easing:'ease', kf:[{opacity:getComputedStyle(n).opacity},{opacity:0}] }));
   playOut(specs, render);
 }
-/* It arrives from 8px below; it leaves the same way. */
+/* 5.64: the app's own question, in place of the browser's OK/Cancel box. The red button says what it
+   does ("Delete song"); Cancel has the focus, so Enter or Escape keep everything. Resolves to true
+   only for the action. It sits outside #app, so a render underneath can't remove it. */
+function askFirst(text, o = {}){
+  return new Promise(done => {
+    const q = String(text), cut = q.indexOf('?') + 1, split = cut > 0 && cut < q.length;
+    const title = split ? q.slice(0, cut) : q, body = split ? q.slice(cut).trim() : '';
+    const danger = o.danger !== false, icon = o.icon !== false && danger, prev = document.activeElement;
+    const w = document.createElement('div'); w.className = 'askwrap';
+    w.innerHTML = `<div class="mscrim" data-ask="0"></div>
+      <div class="modal ask" role="alertdialog" aria-modal="true" aria-labelledby="ask-t"${body ? ' aria-describedby="ask-b"' : ''} style="width:min(420px,calc(100vw - 24px))">
+        <div class="mhd"><h2 id="ask-t" style="margin:0">${esc(title)}</h2></div>
+        ${body ? `<div class="mbody"><p id="ask-b" class="askb">${esc(body)}</p></div>` : ''}
+        <div class="mfoot"><button class="obtn2" data-ask="0">${esc(o.no || t('cancel'))}</button><button class="pbtn${danger ? ' askdanger' : ''}" data-ask="1">${icon ? TRASHSVG : ''}${esc(o.yes)}</button></div>
+      </div>`;
+    document.body.appendChild(w);
+    const modal = w.querySelector('.modal'), sc = w.querySelector('.mscrim');
+    let over = false;
+    const finish = yes => {
+      if (over) return; over = true;
+      document.removeEventListener('keydown', onKey, true);
+      const gone = () => { w.remove(); if (prev && prev.isConnected && prev.focus) prev.focus({ preventScroll: true }); };
+      if (calm() || !modal.animate) gone();
+      else {
+        const base = getComputedStyle(modal).transform, from = base === 'none' ? '' : base + ' ';
+        modal.animate([{ opacity: 1, transform: from || 'none' }, { opacity: 0, transform: from + 'scale(.97)' }], { duration: 160, easing: EASE.leave, fill: 'forwards' }).finished.then(gone, gone);
+        sc.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, easing: 'ease', fill: 'forwards' });
+      }
+      done(yes);
+    };
+    const onKey = e => {
+      if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); finish(false); }
+      else if (e.key === 'Tab') { const b = [...w.querySelectorAll('button')], i = b.indexOf(document.activeElement); e.preventDefault(); b[(i + (e.shiftKey ? b.length - 1 : 1)) % b.length].focus(); }
+    };
+    document.addEventListener('keydown', onKey, true);
+    w.addEventListener('click', e => { const b = e.target.closest('[data-ask]'); if (b) { e.stopPropagation(); finish(b.dataset.ask === '1'); } });
+    w.querySelector('button[data-ask="0"]').focus({ preventScroll: true });
+  });
+}
+/* 5.64: a pending label or spinner shows only once a wait passes 0.3s, and then stays at least
+   0.5s, so a quick save never flashes it */
+function slowShow(show){
+  let at = 0; const tm = setTimeout(() => { at = performance.now(); show(); }, 300);
+  return { done(){ clearTimeout(tm); return at ? new Promise(r => setTimeout(r, Math.max(0, 500 - (performance.now() - at)))) : Promise.resolve(); } };
+}
+/* 10. a message about a field is shown beside it: typing clears it */
+document.addEventListener('input', e => {
+  if (S.ptErr && e.target && e.target.id === 'pt-name') {
+    S.ptErr = null; e.target.removeAttribute('aria-invalid');
+    const m = document.querySelector('.modal .ferr'); if (m) m.remove();
+  }
+});
+/* It arrives from 16px below; it leaves the same way. */
 function hideToast(){
-  playOut([{ el:document.querySelector('.toast'), ms:160, easing:'ease-out',
-    kf:[{opacity:1,transform:'none'},{opacity:0,transform:'translateY(8px)'}] }],
-    () => { S.toast = ''; S.toastOk = false; S.retry = null; render(); });
+  playOut([{ el:document.querySelector('.toast'), ms:170, easing:EASE.leave,
+    kf:[{opacity:1,transform:'none'},{opacity:0,transform:'translateY(16px)'}] }],
+    () => { S.toast = ''; S.toastOk = false; S.toastInfo = false; S.retry = null; render(); });
 }
 
 /* ---------- moving between pages ----------
@@ -9699,7 +9894,7 @@ const NAV_KINDS = ['vt-push', 'vt-pop', 'vt-fade', 'vt-mast'];
 let navVT = null;
 function navTransition(kind, update, toY){
   const root = document.documentElement;
-  if (!document.startViewTransition || document.visibilityState !== 'visible') return update();
+  if (!document.startViewTransition || document.visibilityState !== 'visible' || calm()) return update();   // 5.64: reduced motion: no fade either
   /* slides belong to a phone's stack of pages; with the sidebar (1000px and up) a page
      swaps beside it, so it dissolves */
   const slide = (kind === 'push' || kind === 'pop') && !calm() && !matchMedia('(min-width:1000px)').matches;
@@ -9724,6 +9919,28 @@ function navTransition(kind, update, toY){
 }
 /* a period or filter changed on this page */
 const swap = () => navTransition('seg', render);
+/* 5.64: a new leaderboard period moves each bar from its old length to its new one, in place (0.3s,
+   on the move curve), instead of replaying the reveal. The podium and the numbers change at once;
+   the bars show by how much. */
+function lbSwap(){
+  const keyOf = el => {
+    const sr = el.closest('.lbsr'); if (sr) return 'sec:' + (PARTS.find(x => sr.classList.contains(x)) || '');
+    const li = el.closest('li'), w = li && li.querySelector('[data-lbwho]');
+    return w ? 'who:' + w.dataset.lbwho + (li.closest('.lbpin') ? ':pin' : '') : null;
+  };
+  const Q = '.lbpage .lbbar b, .lbpage .lbtrack b, .lbpage .lbrider';
+  const was = new Map();
+  document.querySelectorAll(Q).forEach(el => { const k = keyOf(el); if (k) was.set(k + (el.matches('.lbrider') ? ':r' : ''), el.getBoundingClientRect()); });
+  render();
+  if (calm() || !was.size) return;
+  document.querySelectorAll(Q).forEach(el => {
+    const k = keyOf(el); if (!k || !el.animate) return;
+    const rider = el.matches('.lbrider'), a = was.get(k + (rider ? ':r' : '')), b = el.getBoundingClientRect();
+    if (!a) return;
+    if (rider) { const dx = a.left - b.left; if (Math.abs(dx) >= 1) el.animate([{ translate: dx + 'px 0' }, { translate: '0 0' }], { duration: 300, easing: EASE.move }); }
+    else if (b.width && Math.abs(a.width - b.width) >= 1) { el.style.transformOrigin = 'left center'; el.animate([{ scale: (a.width / b.width) + ' 1' }, { scale: '1 1' }], { duration: 300, easing: EASE.move }); }
+  });
+}
 /* Where each page was scrolled when it was left, for going back to it. The browser
    is told not to restore positions itself: it did so before the new page was drawn,
    on top of the old one. */
@@ -9906,7 +10123,7 @@ function selDefault(n){
 
 function toastHTML(){
   if (!S.toast) return '';
-  return `<div class="toast ${S.toastOk ? 'ok' : ''}"><div class="m">${esc(S.toast)}</div>
+  return `<div class="toast ${S.toastOk ? 'ok' : S.toastInfo ? 'info' : ''}"><div class="m">${esc(S.toast)}</div>
     ${S.retry ? `<button data-retry>${esc(t('retry'))}</button>` : ''}
     <button data-dismiss>×</button></div>`;
 }
@@ -10023,11 +10240,12 @@ async function signIn(){
   const password = document.getElementById('pw').value;
   if (!email || !password || signingIn) return;
   signingIn = true;
-  const slow = setTimeout(() => loginBusy(true), 400);
+  { const b = document.querySelector('[data-login]'); if (b) b.disabled = true; }   // 5.64: disabled at once against a second tap
+  const slow = slowShow(() => loginBusy(true));                                     // the spinner only past 0.3s, then held 0.5s
   const { data, error } = await sb.auth.signInWithPassword({ email, password });
   const why = !error ? '' : (await whyFailed(error))
     || (error.code === 'invalid_credentials' || /invalid login credentials/i.test(error.message || '') ? 'bad' : '');
-  clearTimeout(slow); signingIn = false; loginBusy(false);
+  await slow.done(); signingIn = false; loginBusy(false);
   if (error) { S.loginWhy = why; S.error = why ? '' : error.message; return loginMsgPaint(true); }
   S.session = data.session; S.error = ''; S.loginWhy = '';
   needLive();
@@ -10076,10 +10294,55 @@ function wireFades(){
   });
 }
 addEventListener('resize', wireFades, { passive: true });
+/* 5.64: on a phone the profile sheet follows a downward pull 1:1 once its content is at the top.
+   Letting go past a quarter of its height, or with a flick, sends it away at that speed;
+   otherwise it settles back. A pull that ends over a button doesn't also press it. */
+function wireSheetDrag(){
+  const sh = document.querySelector('.lbsheet:not(.lbshot)');
+  if (!sh || sh.__drag || !matchMedia('(max-width:699px)').matches) return;
+  sh.__drag = 1;
+  let d = null;
+  const scrim = () => document.querySelector('.lbscrim');
+  sh.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1 || sh.scrollTop > 0) { d = null; return; }
+    const t0 = e.touches[0]; d = { y0: t0.clientY, x0: t0.clientX, y: t0.clientY, t: performance.now(), v: 0, on: false, dy: 0 };
+  }, { passive: true });
+  sh.addEventListener('touchmove', e => {
+    if (!d) return;
+    const q = e.touches[0], dy = q.clientY - d.y0, dx = q.clientX - d.x0;
+    if (!d.on) {
+      if (Math.abs(dy) < 6 && Math.abs(dx) < 6) return;
+      if (dy <= 0 || Math.abs(dx) > Math.abs(dy) || sh.scrollTop > 0) { d = null; return; }   // a scroll or a sideways swipe
+      d.on = true; sh.style.animation = 'none'; sh.style.transition = 'none';
+      const c = scrim(); if (c) { c.style.animation = 'none'; c.style.transition = 'none'; }
+    }
+    e.preventDefault();
+    const now = performance.now(); d.v = (q.clientY - d.y) / Math.max(1, now - d.t); d.y = q.clientY; d.t = now;
+    d.dy = Math.max(0, dy);
+    sh.style.transform = `translateY(${d.dy}px)`;
+    const c = scrim(); if (c) c.style.opacity = String(Math.max(0, 1 - d.dy / (sh.offsetHeight || 1)));
+  }, { passive: false });
+  const end = cancelled => () => {
+    if (!d) return;
+    const g = d; d = null;
+    if (!g.on) return;
+    const eat = ev => { ev.stopPropagation(); ev.preventDefault(); };
+    document.addEventListener('click', eat, true); setTimeout(() => document.removeEventListener('click', eat, true), 400);
+    const h = sh.offsetHeight || 1;
+    if (!cancelled && (g.dy > h * .25 || g.v > .3)) {
+      const ms = Math.round(Math.min(260, Math.max(120, (h - g.dy) / Math.max(g.v, 1.2))));
+      return closeLayer(() => { S.lbWho = null; }, { ms });
+    }
+    sh.style.transition = 'transform .25s cubic-bezier(.32,.72,0,1)'; sh.style.transform = '';
+    const c = scrim(); if (c) { c.style.transition = 'opacity .25s ease'; c.style.opacity = ''; }
+  };
+  sh.addEventListener('touchend', end(false)); sh.addEventListener('touchcancel', end(true));
+}
 function afterRender(){
   plSync();
   { const hx = document.querySelector('.htl'); if (hx && S.htlX) hx.scrollLeft = S.htlX; }
   wireFades();
+  wireSheetDrag();
   lbCountUp();
   document.querySelectorAll('textarea.lyrta').forEach(autoGrow);
   if (wasLoading) { wasLoading = false; fadeInBody(); }
@@ -10284,16 +10547,23 @@ function wrote(res){
 /* a confirmation, not a problem: green, and gone on its own */
 let toastTimer = null;
 function okToast(msg){
-  S.toast = msg; S.toastOk = true; S.retry = null;
+  S.toast = msg; S.toastOk = true; S.toastInfo = false; S.retry = null;
   clearTimeout(toastTimer);
   toastTimer = setTimeout(hideToast, 2500);
+}
+/* 5.64: a notice (a sample, a reminder): neutral, gone on its own after 4s */
+function infoToast(msg){
+  S.toast = msg; S.toastOk = false; S.toastInfo = true; S.retry = null;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, 4000);
+  render();
 }
 /* 5.62: a save that couldn't reach the server says so, instead of "Not saved — Load failed". The
    offline message shows at once; if the device turns out to be online after all, it becomes the
    server message a moment later. */
 let failSeq = 0;
 function fail(error, retry){
-  clearTimeout(toastTimer); S.toastOk = false;
+  clearTimeout(toastTimer); S.toastOk = false; S.toastInfo = false;
   S.retry = retry || null;
   const seq = ++failSeq;
   if (netError(error)) {
@@ -10476,7 +10746,7 @@ document.addEventListener('click', async e => {
   }
   if (d.peopleRole) { S.peopleRole = d.peopleRole; S.openPerson = null; return swap(); }
   if (d.person) { S.openPerson = S.openPerson === d.person ? null : d.person; return render(); }
-  if (d.lbpreset) { S.lbPreset = d.lbpreset; S.lbTie = 0; return swap(); }
+  if (d.lbpreset) { S.lbPreset = d.lbpreset; S.lbTie = 0; return lbSwap(); }
   if (d.lbtie !== undefined) { const k = +d.lbtie; S.lbTie = k && S.lbTie !== k ? k : 0; return render(); }
   if (d.lbme !== undefined) { S.me = d.lbme || null; try { S.me ? localStorage.setItem('bsebc-youth-me', S.me) : localStorage.removeItem('bsebc-youth-me'); } catch (err) {} return render(); }
   if (el.hasAttribute('data-lball')) { S.lbAll = !S.lbAll; return render(); }
@@ -10499,7 +10769,7 @@ document.addEventListener('click', async e => {
     else { legacyCopy(url); okToast(t('mLinkCopied')); }
     return;
   }
-  if (el.hasAttribute('data-up-demo-act')) { e.preventDefault(); alert(t('upDemoAct')); return; }
+  if (el.hasAttribute('data-up-demo-act')) { e.preventDefault(); infoToast(t('upDemoAct')); return; }
   if (el.hasAttribute('data-up-demo')) { S.upDemo = !S.upDemo; return render(); }
   if (d.songSort) { S.songSort = d.songSort; return swap(); }
   if (d.songDates) { S.openSong = S.openSong === d.songDates ? null : d.songDates; return render(); }
@@ -10536,7 +10806,7 @@ document.addEventListener('click', async e => {
     if (d.ptKind === 'other') { const n = document.getElementById('pt-name'); if (n && !n.value) n.focus(); }
     return; }
   if (el.hasAttribute('data-pt-save') && S.planType) return planTypeSave();
-  if (el.hasAttribute('data-modal-x')) return closeLayer(() => { S.learnEdit = null; S.learnMove = null; S.lnPick = null; S.lnFold = null; S.archAsk = null; S.planType = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.recAdd = []; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; });
+  if (el.hasAttribute('data-modal-x')) return closeLayer(() => { S.learnEdit = null; S.learnMove = null; S.lnPick = null; S.lnFold = null; S.archAsk = null; S.planType = null; S.ptErr = null; S.audioEdit = null; S.audioDraft = ''; S.recLink = null; S.recDel = null; S.recDraft = ''; S.recAdd = []; S.pdfDel = null; S.addOpen = null; S.editSongRow = null; S.editPerson = null; S.editCat = null; });
   if (d.toggleAbsent && S.edit) {              // present ↔ absent
     S.toast = ''; S.retry = null;
     S.edit.sel.has(d.toggleAbsent) ? S.edit.sel.delete(d.toggleAbsent)
@@ -10569,21 +10839,22 @@ document.addEventListener('click', async e => {
   }
   if (d.cancelMarks) {
     e.preventDefault();
-    if (editDirty() && !confirm(t('discardQ'))) return;
+    if (editDirty() && !await askFirst(t('discardQ'), { yes: t('askLeave'), no: t('askStay'), icon: false })) return;
     S.edit = null; S.pending = null;
     location.hash = '#/admin/' + (d.cancelMarks === 'att' ? 'attendance' : 'songs');
     return;
   }
   if (el.hasAttribute('data-save-marks')) {
     const E = S.edit; if (!E || S.saving) return;   // a second tap while saving must not save twice
-    S.saving = true; render();
-    try { await saveMarks(E); } finally { S.saving = false; render(); }
+    S.saving = true; render();                       // the button disables at once: a second tap can't save twice
+    const slow = slowShow(() => { S.savingShown = true; render(); });   // 5.64: "Saving…" only past 0.3s, then held 0.5s
+    try { await saveMarks(E); } finally { await slow.done(); S.saving = false; S.savingShown = false; render(); }
     return;
   }
 
   if (d.delEvent) {
     e.preventDefault();
-    if (!confirm(t('deleteEvent'))) return;
+    if (!await askFirst(t('deleteEvent'), { yes: t('askDelEvent') })) return;
     if (!await ensureSession()) return;
     const res = await sb.from('events').delete().eq('id', d.delEvent).select();
     if (!wrote(res)) return render();
@@ -10713,7 +10984,7 @@ document.addEventListener('click', async e => {
     return render();
   }
   if (el.hasAttribute('data-lyr-cancel')) {
-    if (lyrDirty() && !confirm(t('discardQ'))) return;
+    if (lyrDirty() && !await askFirst(t('discardQ'), { yes: t('askLeave'), no: t('askStay'), icon: false })) return;
     S.lyrFor = null; S.lyrDraft = null; return render();
   }
   if (d.lyrPrint) { const song = songById(d.lyrPrint); if (song) printLyrics(song); return; }
@@ -10760,7 +11031,7 @@ document.addEventListener('click', async e => {
   if (d.blkDel) {
     const L = S.lyrDraft || [], i = +d.blkDel;
     if (!L[i]) return;
-    if (String(L[i].x).trim() && !confirm(t('delBlockQ'))) return;
+    if (String(L[i].x).trim() && !await askFirst(t('delBlockQ'), { yes: t('askDelBlock') })) return;
     L.splice(i, 1);
     if (!L.length) L.push({ t:'v', x:'' });
     return render();
@@ -10815,7 +11086,7 @@ document.addEventListener('click', async e => {
   }
   if (d.editSong) { S.editSongRow = S.editSongRow === d.editSong ? null : d.editSong; return render(); }
   if (d.delSong) {
-    if (!confirm(t('deleteSong'))) return;
+    if (!await askFirst(t('deleteSong'), { yes: t('askDelSong') })) return;
     if (!await ensureSession()) return;
     const res = await sb.from('songs').delete().eq('id', d.delSong).select();
     if (!wrote(res)) return render();
@@ -10853,7 +11124,7 @@ document.addEventListener('click', async e => {
   if (d.dropRole) {
     const s = singerById(d.dropRole);
     const role = S.memTab === 'pianists' ? 'is_pianist' : 'is_conductor';
-    if (!s || !confirm(t('confirmDropRole'))) return;
+    if (!s || !await askFirst(t('confirmDropRole'), { yes: t('askDropRole'), icon: false })) return;
     if (!await ensureSession()) return;
     const res = await sb.from('singers').update({ [role]: false }).eq('id', s.id).select();
     if (!wrote(res)) return render();
@@ -10862,9 +11133,9 @@ document.addEventListener('click', async e => {
   if (d.delSinger) {
     const person = singerById(d.delSinger);
     if (S.memTab !== 'singers' && person && isSinger(person)) {
-      alert(t('singerKeepNote')); return;        // they sing; only the role can go
+      infoToast(t('singerKeepNote')); return;        // they sing; only the role can go
     }
-    if (!confirm(t('deleteSinger'))) return;
+    if (!await askFirst(t('deleteSinger'), { yes: t('askDelSinger') })) return;
     if (!await ensureSession()) return;
     const res = await sb.from('singers').delete().eq('id', d.delSinger).select();
     if (!wrote(res)) return render();
@@ -10995,7 +11266,7 @@ document.addEventListener('click', async e => {
     return render();
   }
   if (el.hasAttribute('data-toggle-cats')) { S.showCats = !S.showCats; return render(); }
-  if (el.hasAttribute('data-ln-demo-act')) { e.preventDefault(); alert(t('lnDemoAct')); return; }
+  if (el.hasAttribute('data-ln-demo-act')) { e.preventDefault(); infoToast(t('lnDemoAct')); return; }
   if (el.hasAttribute('data-ln-demo')) { S.lnDemo = !S.lnDemo; try { S.lnDemo ? localStorage.setItem('lnDemo', '1') : localStorage.removeItem('lnDemo'); } catch (_) {} return render(); }
   if (d.listen) {
     const k = d.listen, open = S.listenOpen !== k;
@@ -11219,7 +11490,7 @@ document.addEventListener('click', async e => {
     return render();
   }
   if (d.delCat) {
-    if (!confirm(t('deleteCat'))) return;
+    if (!await askFirst(t('deleteCat'), { yes: t('askDelCat') })) return;
     if (!await ensureSession()) return;
     const res = await sb.from('song_categories').delete().eq('id', d.delCat).select();
     if (!wrote(res)) return render();
@@ -11283,7 +11554,7 @@ document.addEventListener('change', async e => {
     const song = songById(el.dataset.upload);
     const file = el.files && el.files[0];
     if (!song || !file) return;
-    if (file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)) { alert(t('pdfOnly')); return; }
+    if (file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)) { S.toast = t('pdfOnly'); S.toastOk = false; S.toastInfo = false; S.retry = null; render(); return; }
     const kind = el.dataset.sheetKind || 'sheets', K = SHEETKIND[kind];
     const old = song[K.col];
     const path = sheetPath(song[K.lock], song.id);
@@ -11558,13 +11829,17 @@ function unsavedOn(route){
   return false;
 }
 window.addEventListener('beforeunload', e => { if (S.route && unsavedOn(S.route)) { e.preventDefault(); e.returnValue = ''; } });
+let leaveOk = false;          // 5.64: set when the person chose "Leave without saving" in the app's question
 window.addEventListener('hashchange', () => {
   const swiped = uaSwiped; uaSwiped = false;
   const nextRoute = normRoute(location.hash), here = (S.route || '').split('?')[0];
-  if (here && nextRoute.split('?')[0] !== here && !nextRoute.startsWith('#/login') && unsavedOn(S.route) && !confirm(t('discardLeave'))) {
-    history.replaceState(null, '', S.route);    // stay, with the changes intact
+  if (here && nextRoute.split('?')[0] !== here && !nextRoute.startsWith('#/login') && unsavedOn(S.route) && !leaveOk) {
+    history.replaceState(null, '', S.route);    // stay, with the changes intact, while the question is up
+    if (!document.querySelector('.askwrap'))
+      askFirst(t('discardLeave'), { yes: t('askLeave'), no: t('askStay'), icon: false }).then(go => { if (go) { leaveOk = true; location.hash = nextRoute; } });
     return;
   }
+  leaveOk = false;
   S.reviewKey = null;
   const prevPage = (S.route || '').split('?')[0], prevFull = S.route || '';
   if (prevFull) navScroll.set(prevFull, window.scrollY);
@@ -11574,7 +11849,7 @@ window.addEventListener('hashchange', () => {
   const toTop = S.route.split('?')[0] !== prevPage;
   prefetchSheets();
   trackRoute();
-  S.menuOpen = false; S.msOpen = false; S.lbWho = null; S.lbSeen = null; S.lbTie = 0;
+  S.menuOpen = false; S.msOpen = false; S.lbWho = null; S.lbTie = 0;
   if (!S.route.startsWith('#/sheets')) S.hiSong = null;
   if (!S.route.startsWith('#/attendance')) S.hiMember = null;
   document.body.classList.remove('mlock');
