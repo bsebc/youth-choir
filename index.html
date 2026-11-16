@@ -3531,10 +3531,11 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   /* ======================= 5.63: one colour per voice part =======================
      Every place a voice part is coloured reads these tokens. Before, attendance, the seating chart, the members list,
      recordings and the player used one set, the member page and leaderboard avatars another, and the section race a third.
-     Each role shares one OKLCH lightness: base L .52 (light) / .80 (dark), wash .968 / .275, race bars .74, player dots .82. */
+     Each role shares one OKLCH lightness: base L .52 (light) / .82 (dark), wash .968 / .25, race bars .74, player dots .82.
+     Dark values also keep the leaderboard's faded rows (66% opacity) and the grey counts on section bars at 4.5:1 or more. */
   :root{--part-s:#836412;--part-s-w:#fcf4e3;--part-s-hi:#cea529;--part-s-dot:#dec176;--part-s-on:#302504;--part-a:#357a47;--part-a-w:#ebf9ed;--part-a-hi:#62c37a;--part-a-dot:#95d7a2;--part-a-on:#122d19;--part-t:#3f66b0;--part-t-w:#eff5fe;--part-t-hi:#89a8f7;--part-t-dot:#b0c4f3;--part-t-on:#1b253f;--part-b:#5e697e;--part-b-w:#f2f4f9;--part-b-hi:#a1abc2;--part-b-dot:#bdc4d5;--part-b-on:#222630}
-  :root[data-theme="dark"]{--part-s:#dbb970;--part-s-w:#302613;--part-a:#89d298;--part-a-w:#1b2d1e;--part-t:#a0bef5;--part-t-w:#1e2839;--part-b:#b6becc;--part-b-w:#25282d}
-  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){--part-s:#dbb970;--part-s-w:#302613;--part-a:#89d298;--part-a-w:#1b2d1e;--part-t:#a0bef5;--part-t-w:#1e2839;--part-b:#b6becc;--part-b-w:#25282d} }
+  :root[data-theme="dark"]{--part-s:#e2bf76;--part-s-w:#29200d;--part-a:#8fd89e;--part-a-w:#152619;--part-t:#a6c5fc;--part-t-w:#182233;--part-b:#bcc5d3;--part-b-w:#1f2227}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){--part-s:#e2bf76;--part-s-w:#29200d;--part-a:#8fd89e;--part-a-w:#152619;--part-t:#a6c5fc;--part-t-w:#182233;--part-b:#bcc5d3;--part-b-w:#1f2227} }
   .sect.soprano .lbl{border-left-color:var(--part-s)} .sectbar.soprano{background:var(--part-s-w);color:var(--part-s);border-bottom-color:var(--rule)} .sectbar.soprano::before{background:var(--part-s)}
   .blk.soprano{border-color:color-mix(in srgb,var(--part-s) 32%,transparent);background:var(--part-s-w)} .blk.soprano .blkh{color:var(--part-s)} .prow.soprano{--pc:var(--part-s)}
   .lsc.soprano,.recr.soprano,.rsb.soprano{--pc:var(--part-s);--pw:var(--part-s-w)} .plbar .pl-part.soprano{--dc:var(--part-s-dot)}
