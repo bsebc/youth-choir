@@ -910,7 +910,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
       background:linear-gradient(180deg,rgba(var(--blue-rgb),.17),rgba(var(--blue-rgb),.10));
       box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 0 0 .5px rgba(var(--blue-rgb),.14),
                  0 4px 10px -6px rgba(var(--shadow-rgb),.35);
-      transition:transform var(--dur-quick) var(--ease-drawer), width var(--dur-quick) var(--ease-drawer), height var(--dur-quick) var(--ease-move), opacity var(--dur-quick) ease}
+      transition:transform var(--dur-quick) var(--ease-drawer), width var(--dur-quick) var(--ease-drawer), height var(--dur-quick) var(--ease-drawer), opacity var(--dur-quick) ease}
     .dock svg{position:relative;width:24px;height:24px;flex:none;stroke-width:1.75}
     .dock a.on,.dock button.on{color:var(--blue-text)}
     .dock a.on span,.dock button.on span{font-weight:700}
@@ -1582,7 +1582,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   /* 5.58: Listen at the bottom of the sheet window; the parts slide up from it */
   .shv-ft{flex:none;border-top:1px solid var(--rule);background:var(--card)}
   .shv-ft[hidden]{display:none}
-  .shv-lsw{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--dur-layer) var(--ease-move)}
+  .shv-lsw{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--dur-layer) var(--ease-enter)}
   .shv-ft.open .shv-lsw{grid-template-rows:1fr}
   .shv-lsi{min-height:0;overflow:hidden}
   .shv-lsi .lsrow{border-top:0;background:none;padding:12px 12px 2px}
@@ -3327,7 +3327,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   /* period pill: centred, and it opens by growing in place */
   .ctlbar,.ctlbar.wide{align-items:center;justify-content:center}
   .rpill{interpolate-size:allow-keywords;width:fit-content;max-width:100%;background:var(--card);border:1px solid var(--card-line);box-shadow:var(--shadow-card);
-    border-radius:22px;overflow:hidden;transition:width var(--dur-page) var(--ease-move), border-radius var(--dur-page) var(--ease-move), border-color var(--dur-quick) ease}
+    border-radius:22px;overflow:hidden;transition:width var(--dur-page) var(--ease-enter), border-radius var(--dur-page) var(--ease-enter), border-color var(--dur-quick) ease}
   .rpill.open{width:min(100%,460px);border-radius:18px;border-color:var(--blue-line)}
   .rhead{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:40px;padding:8px 16px;background:none;border:0;font:inherit;font-size:var(--fs-13);color:var(--ink);cursor:pointer;white-space:nowrap}
   .rhead > *{display:inline-flex;align-items:center;line-height:1}
@@ -3336,7 +3336,7 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
   .rhead .rch{display:inline-flex;color:var(--muted);transition:transform var(--dur-layer) var(--ease-enter)}
   .rhead .rch svg{width:12px;height:12px}
   .rpill.open .rch{transform:rotate(180deg)}
-  .rbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--dur-page) var(--ease-move)}
+  .rbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--dur-page) var(--ease-enter)}   /* 5.65: opening is arriving: a quick start (the move curve's slow start hid the buttons for the first 0.1s) */
   .rpill.open .rbody{grid-template-rows:1fr}
   .rin{min-height:0;overflow:hidden;opacity:0;transition:opacity var(--dur-quick) ease}
   .rpill.open .rin{opacity:1;transition:opacity var(--dur-layer) ease .1s}
@@ -4423,6 +4423,7 @@ if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'The period picker on Top attendance and on the attendance report opens promptly again (in 5.64 it started slowly, and a quick tap could miss its buttons)',
     'Learning: a folder given a date takes its place by that date, the soonest at the top, on the page and on the home tile. The director can still move folders with Move up and Move down',
     'Quicker and smoother: the bottom bar, opening a song and a singer’s card respond faster, buttons show that they’re pressed, and the small buttons at the top are easier to hit',
     'Top attendance and the attendance report play their opening once a visit; changing the period slides the bars to their new lengths. Only badges earned this week shine',
@@ -4524,6 +4525,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Выбор периода на «Лучшей посещаемости» и в отчёте о посещаемости снова открывается сразу (в 5.64 он начинал медленно, и быстрое нажатие могло не попасть по кнопке)',
     '«Разучиваем»: папка, которой дали дату, встаёт на место по этой дате, ближайшая сверху, и на странице, и на плитке на главной. Руководитель по-прежнему может переставлять папки кнопками «Выше» и «Ниже»',
     'Быстрее и плавнее: нижняя панель, открытие песни и карточка хориста отзываются быстрее, кнопки показывают нажатие, а в маленькие кнопки вверху легче попасть',
     '«Лучшая посещаемость» и отчёт о посещаемости показывают вступление один раз за посещение; при смене периода полосы плавно меняют длину. Блестят только значки, полученные на этой неделе',

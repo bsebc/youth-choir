@@ -879,7 +879,7 @@ async function guestChecks() {
     ok(tx.includes(t('mEvents', c.of)), 'counted events missing');
     await tap(page, '[data-toggle-range="member"]');
     await tap(page, '[data-mpreset="3"]'); await settle(page, 200);
-    ok(page.url().includes('?p=3'), 'period not in the address');
+    await until(async () => page.url().includes('?p=3'), 'period in the address');   // set once the period change has drawn
     const e3 = M.events.filter(e => M.hasAtt(e) && !e.cancelled && e.date >= shift(3) && e.date <= TODAY).filter(e => M.status(e, s) !== 'na');
     const came3 = e3.filter(e => M.status(e, s) === 'present').length;
     ok((await text(page)).includes(t('mOf', came3, e3.length)), `3-month figures "${t('mOf', came3, e3.length)}" missing`);
