@@ -4136,7 +4136,7 @@ Object.assign(STR.en, {
   lnNoFolder:'No folder', lnNewFolder:'New folder…',
   lnAllSongs:'All songs', lnFoldersN: n => n + (n === 1 ? ' folder' : ' folders'),
   lnDateOf: d => 'Folder date: ' + d,
-  lnFDate:'Date', lnFDateHint:'Shown on the folder, with a countdown. Folders with a date come first, the soonest at the top. Leave it empty for no date.', lnFDateX:'Remove the date',
+  lnFDate:'Date', lnFDateHint:'Shown on the folder, with a countdown. A folder given a date moves in among the dated folders, the soonest at the top; Move up and Move down can still change its place. Leave it empty for no date.', lnFDateX:'Remove the date',
   lnAllFolders:'All folders',
   plSheet:'Sheet music', shvNewTab:'Open in new tab', shvClose:'Close', shvZoomIn:'Zoom in', shvZoomOut:'Zoom out',
   shvPages: n => n + (n === 1 ? ' page' : ' pages'), shvPage: (i, n) => 'Page ' + i + ' of ' + n,
@@ -4185,7 +4185,7 @@ Object.assign(STR.ru, {
   lnNoFolder:'Без папки', lnNewFolder:'Новая папка…',
   lnAllSongs:'Все песни', lnFoldersN: n => n + ' ' + ruN(n, 'папка', 'папки', 'папок'),
   lnDateOf: d => 'Дата папки: ' + d,
-  lnFDate:'Дата', lnFDateHint:'Видна на папке, с обратным отсчётом. Папки с датой идут первыми, ближайшая сверху. Оставьте пустой, если даты нет.', lnFDateX:'Убрать дату',
+  lnFDate:'Дата', lnFDateHint:'Видна на папке, с обратным отсчётом. Папка с датой встаёт среди папок с датами, ближайшая сверху; кнопками «Выше» и «Ниже» её можно переставить. Оставьте пустой, если даты нет.', lnFDateX:'Убрать дату',
   lnAllFolders:'Все папки',
   plSheet:'Ноты', shvNewTab:'Открыть в новой вкладке', shvClose:'Закрыть', shvZoomIn:'Крупнее', shvZoomOut:'Мельче',
   shvPages: n => n + ' ' + ruN(n, 'страница', 'страницы', 'страниц'), shvPage: (i, n) => 'Страница ' + i + ' из ' + n,
@@ -4423,7 +4423,7 @@ if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
-    'Learning: folders with a date come first, the soonest at the top, on the page and on the home tile. Folders without a date follow, then folders whose date has passed',
+    'Learning: a folder given a date takes its place by that date, the soonest at the top, on the page and on the home tile. The director can still move folders with Move up and Move down',
     'Quicker and smoother: the bottom bar, opening a song and a singer’s card respond faster, buttons show that they’re pressed, and the small buttons at the top are easier to hit',
     'Top attendance and the attendance report play their opening once a visit; changing the period slides the bars to their new lengths. Only badges earned this week shine',
     'On a phone, pull a singer’s card down to close it',
@@ -4524,7 +4524,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
-    '«Разучиваем»: папки с датой идут первыми, ближайшая сверху, и на странице, и на плитке на главной. За ними папки без даты, затем папки, чья дата прошла',
+    '«Разучиваем»: папка, которой дали дату, встаёт на место по этой дате, ближайшая сверху, и на странице, и на плитке на главной. Руководитель по-прежнему может переставлять папки кнопками «Выше» и «Ниже»',
     'Быстрее и плавнее: нижняя панель, открытие песни и карточка хориста отзываются быстрее, кнопки показывают нажатие, а в маленькие кнопки вверху легче попасть',
     '«Лучшая посещаемость» и отчёт о посещаемости показывают вступление один раз за посещение; при смене периода полосы плавно меняют длину. Блестят только значки, полученные на этой неделе',
     'На телефоне карточку хориста можно закрыть, потянув её вниз',
@@ -5368,12 +5368,7 @@ function learnGroups(list){
   const by = new Map();
   list.slice().sort(lnCmp).forEach(s => { const f = lnFolder(s), k = f.toLowerCase();
     if (!by.has(k)) by.set(k, { name: f, key: f ? 'f:' + k : 'o', songs: [] }); by.get(k).songs.push(s); });
-  /* 5.65: folders with a date come first, the soonest at the top; then folders without one, in
-     the order the director set; then folders whose date has gone by, the latest first. Other
-     songs stay last. The director's order also settles folders that share a date. */
-  const rank = g => { if (!g.name) return [3, 0]; const due = lnDue(g); if (!due) return [1, 0];
-    const d = lnDaysTo(due); return d >= 0 ? [0, d] : [2, -d]; };
-  return [...by.values()].map(g => (g.r = rank(g), g)).sort((a, b) => a.r[0] - b.r[0] || a.r[1] - b.r[1]
+  return [...by.values()].sort((a, b) => (!a.name) - (!b.name)
     || (a.songs[0].learn_order ?? 1e9) - (b.songs[0].learn_order ?? 1e9) || a.name.localeCompare(b.name, 'ru'));
 }
 const learnReal = () => S.songs.filter(onLearning);
@@ -8457,14 +8452,14 @@ function learnModal(){
   if (S.lnFold != null) {
     const named = learnGroups(learnReal()).filter(g => g.name), i = named.findIndex(g => g.key === 'f:' + S.lnFold.toLowerCase());
     if (i < 0) return '';
-    const g = named[i], free = named.filter(x => !lnDue(x)), fi = free.indexOf(g), mvb = (dir, lab, ic, dis) => `<button class="obtn2 lnfmv" data-ln-fmv="${dir}" data-ln-fname="${esc(g.name)}"${dis ? ' disabled' : ''}>${ic}<span>${esc(t(lab))}</span></button>`;
+    const g = named[i], mvb = (dir, lab, ic, dis) => `<button class="obtn2 lnfmv" data-ln-fmv="${dir}" data-ln-fname="${esc(g.name)}"${dis ? ' disabled' : ''}>${ic}<span>${esc(t(lab))}</span></button>`;
     const due = lnDue(g);
     /* the date: a date box, and a way to empty it that works the same on every phone */
     const dateField = S.lnDatesOk ? `<div class="fl full lnfdate"><label for="ln-fdate">${esc(t('lnFDate'))}</label>
         <div class="lnfdw"><input class="field" id="ln-fdate" type="date" value="${esc(due)}"><button type="button" class="obtn2 lnfdx" data-ln-fdate-x${due ? '' : ' hidden'}>${esc(t('lnFDateX'))}</button></div>
         <small>${esc(t('lnFDateHint'))}</small></div>` : '';
     return shell(t('lnFEdit'), `<div class="fgrid"><label class="fl full"><span>${esc(t('lnFName'))}</span><input class="field" id="ln-fname" value="${esc(g.name)}" autocomplete="off" maxlength="80"></label>${dateField}</div>
-      ${fi >= 0 && free.length > 1 ? `<div class="lnfmvs">${mvb(-1, 'lnFUp', UPAR, fi === 0)}${mvb(1, 'lnFDown', DNAR, fi === free.length - 1)}</div>` : ''}
+      ${named.length > 1 ? `<div class="lnfmvs">${mvb(-1, 'lnFUp', UPAR, i === 0)}${mvb(1, 'lnFDown', DNAR, i === named.length - 1)}</div>` : ''}
       <p class="lnrh">${esc(t('lnFRemoveHint'))}</p>`,
       `<button class="pbtn" data-ln-fsave>${esc(t('save'))}</button>`,
       `<button class="obtn2 lnfrm" data-ln-fremove>${esc(t('lnFRemove'))}</button>`);
@@ -9523,6 +9518,20 @@ function lnPickDraw(){
 }
 /* Learning order: number every song in page order, folder by folder, and save what
    changed. If any write is refused, the page goes back and the data is re-read. */
+/* 5.65: a folder given a date (in Edit folder, or made from a service) moves in among the
+   folders with a date, before the first one whose date is later and ahead of those without
+   one. It happens once, when the date is set: the order stays the director's to change with
+   Move up / Move down, and a date that has passed moves nothing. */
+async function lnPlaceByDate(name){
+  const k = lnKey(name), due = k && S.lnDates && S.lnDates.get(k);
+  if (!due || lnDaysTo(due) < 0) return;
+  const groups = learnGroups(learnReal()), named = groups.filter(x => x.name), me = named.find(x => lnKey(x.name) === k);
+  if (!me) return;
+  const rest = named.filter(x => x !== me);
+  let at = rest.findIndex(x => { const d = lnDue(x); return !d || lnDaysTo(d) < 0 || d > due; });
+  rest.splice(at < 0 ? rest.length : at, 0, me);
+  return lnRenumber(rest.concat(groups.filter(x => !x.name)));
+}
 async function lnRenumber(groups){
   const changed = groups.flatMap(g => g.songs).map((x, k) => [x, k, x.learn_order]).filter(([x, k]) => x.learn_order !== k);
   if (!changed.length) return render();
@@ -11330,12 +11339,11 @@ document.addEventListener('click', async e => {
     return lnRenumber(groups);
   }
   if (d.lnFmv) {                                  // a whole folder up or down; songs without one stay last
-    const groups = learnGroups(learnReal()), named = groups.filter(x => x.name), free = named.filter(x => !lnDue(x));
-    const i = free.findIndex(x => x.key === 'f:' + String(d.lnFname || '').toLowerCase()), j = i + Number(d.lnFmv);
-    if (i < 0 || j < 0 || j >= free.length) return;     // folders with a date take their place from it
+    const groups = learnGroups(learnReal()), named = groups.filter(x => x.name);
+    const i = named.findIndex(x => x.key === 'f:' + String(d.lnFname || '').toLowerCase()), j = i + Number(d.lnFmv);
+    if (i < 0 || j < 0 || j >= named.length) return;
     if (!await ensureSession()) return;
-    const a = named.indexOf(free[i]), b = named.indexOf(free[j]);
-    [named[a], named[b]] = [named[b], named[a]];
+    [named[i], named[j]] = [named[j], named[i]];
     S.lnFold = null;
     return lnRenumber(named.concat(groups.filter(x => !x.name)));
   }
@@ -11385,6 +11393,7 @@ document.addEventListener('click', async e => {
       if (newK && keep !== (D.get(newK) || '') && !await lnSetDue(next, keep)) return render();
       if (D.has(oldK) && !await lnSetDue(g.name, '')) return render();
     }
+    if (next && due && due !== was) await lnPlaceByDate(next);
     if (lnOpenSet().has(g.key)) lnShow(next ? 'f:' + next.toLowerCase() : 'o');   // open stays open, under its new name
     return closeLayer(() => { S.lnFold = null; });
   }
@@ -11418,7 +11427,7 @@ document.addEventListener('click', async e => {
     if (done.length !== ids.length) { el.disabled = false; fail({ message: t('nothingChanged') }); return render(); }
     /* songs from a coming service: a folder without a date starts with the service's */
     const ev = P.from !== 'rep' ? eventById(P.from) : null;
-    if (ev && folder && ev.date >= today() && !lnDue({ name: folder })) await lnSetDue(folder, ev.date);
+    if (ev && folder && ev.date >= today() && !lnDue({ name: folder }) && await lnSetDue(folder, ev.date)) await lnPlaceByDate(folder);
     okToast(t('lnAddedN')(done.length, folder));
     if (S.route.startsWith('#/learning')) lnShow(folder ? 'f:' + folder.toLowerCase() : 'o');
     return closeLayer(() => { S.lnPick = null; });
