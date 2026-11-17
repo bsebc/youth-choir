@@ -4136,7 +4136,7 @@ Object.assign(STR.en, {
   lnNoFolder:'No folder', lnNewFolder:'New folder…',
   lnAllSongs:'All songs', lnFoldersN: n => n + (n === 1 ? ' folder' : ' folders'),
   lnDateOf: d => 'Folder date: ' + d,
-  lnFDate:'Date', lnFDateHint:'Shown on the folder, with a countdown. Leave it empty for no date.', lnFDateX:'Remove the date',
+  lnFDate:'Date', lnFDateHint:'Shown on the folder, with a countdown. Folders with a date come first, the soonest at the top. Leave it empty for no date.', lnFDateX:'Remove the date',
   lnAllFolders:'All folders',
   plSheet:'Sheet music', shvNewTab:'Open in new tab', shvClose:'Close', shvZoomIn:'Zoom in', shvZoomOut:'Zoom out',
   shvPages: n => n + (n === 1 ? ' page' : ' pages'), shvPage: (i, n) => 'Page ' + i + ' of ' + n,
@@ -4185,7 +4185,7 @@ Object.assign(STR.ru, {
   lnNoFolder:'Без папки', lnNewFolder:'Новая папка…',
   lnAllSongs:'Все песни', lnFoldersN: n => n + ' ' + ruN(n, 'папка', 'папки', 'папок'),
   lnDateOf: d => 'Дата папки: ' + d,
-  lnFDate:'Дата', lnFDateHint:'Видна на папке, с обратным отсчётом. Оставьте пустой, если даты нет.', lnFDateX:'Убрать дату',
+  lnFDate:'Дата', lnFDateHint:'Видна на папке, с обратным отсчётом. Папки с датой идут первыми, ближайшая сверху. Оставьте пустой, если даты нет.', lnFDateX:'Убрать дату',
   lnAllFolders:'Все папки',
   plSheet:'Ноты', shvNewTab:'Открыть в новой вкладке', shvClose:'Закрыть', shvZoomIn:'Крупнее', shvZoomOut:'Мельче',
   shvPages: n => n + ' ' + ruN(n, 'страница', 'страницы', 'страниц'), shvPage: (i, n) => 'Страница ' + i + ' из ' + n,
@@ -4416,13 +4416,14 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.64.0';
+const VERSION = '5.65.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Learning: folders with a date come first, the soonest at the top, on the page and on the home tile. Folders without a date follow, then folders whose date has passed',
     'Quicker and smoother: the bottom bar, opening a song and a singer’s card respond faster, buttons show that they’re pressed, and the small buttons at the top are easier to hit',
     'Top attendance and the attendance report play their opening once a visit; changing the period slides the bars to their new lengths. Only badges earned this week shine',
     'On a phone, pull a singer’s card down to close it',
@@ -4523,6 +4524,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    '«Разучиваем»: папки с датой идут первыми, ближайшая сверху, и на странице, и на плитке на главной. За ними папки без даты, затем папки, чья дата прошла',
     'Быстрее и плавнее: нижняя панель, открытие песни и карточка хориста отзываются быстрее, кнопки показывают нажатие, а в маленькие кнопки вверху легче попасть',
     '«Лучшая посещаемость» и отчёт о посещаемости показывают вступление один раз за посещение; при смене периода полосы плавно меняют длину. Блестят только значки, полученные на этой неделе',
     'На телефоне карточку хориста можно закрыть, потянув её вниз',
@@ -5366,7 +5368,12 @@ function learnGroups(list){
   const by = new Map();
   list.slice().sort(lnCmp).forEach(s => { const f = lnFolder(s), k = f.toLowerCase();
     if (!by.has(k)) by.set(k, { name: f, key: f ? 'f:' + k : 'o', songs: [] }); by.get(k).songs.push(s); });
-  return [...by.values()].sort((a, b) => (!a.name) - (!b.name)
+  /* 5.65: folders with a date come first, the soonest at the top; then folders without one, in
+     the order the director set; then folders whose date has gone by, the latest first. Other
+     songs stay last. The director's order also settles folders that share a date. */
+  const rank = g => { if (!g.name) return [3, 0]; const due = lnDue(g); if (!due) return [1, 0];
+    const d = lnDaysTo(due); return d >= 0 ? [0, d] : [2, -d]; };
+  return [...by.values()].map(g => (g.r = rank(g), g)).sort((a, b) => a.r[0] - b.r[0] || a.r[1] - b.r[1]
     || (a.songs[0].learn_order ?? 1e9) - (b.songs[0].learn_order ?? 1e9) || a.name.localeCompare(b.name, 'ru'));
 }
 const learnReal = () => S.songs.filter(onLearning);
@@ -8450,14 +8457,14 @@ function learnModal(){
   if (S.lnFold != null) {
     const named = learnGroups(learnReal()).filter(g => g.name), i = named.findIndex(g => g.key === 'f:' + S.lnFold.toLowerCase());
     if (i < 0) return '';
-    const g = named[i], mvb = (dir, lab, ic, dis) => `<button class="obtn2 lnfmv" data-ln-fmv="${dir}" data-ln-fname="${esc(g.name)}"${dis ? ' disabled' : ''}>${ic}<span>${esc(t(lab))}</span></button>`;
+    const g = named[i], free = named.filter(x => !lnDue(x)), fi = free.indexOf(g), mvb = (dir, lab, ic, dis) => `<button class="obtn2 lnfmv" data-ln-fmv="${dir}" data-ln-fname="${esc(g.name)}"${dis ? ' disabled' : ''}>${ic}<span>${esc(t(lab))}</span></button>`;
     const due = lnDue(g);
     /* the date: a date box, and a way to empty it that works the same on every phone */
     const dateField = S.lnDatesOk ? `<div class="fl full lnfdate"><label for="ln-fdate">${esc(t('lnFDate'))}</label>
         <div class="lnfdw"><input class="field" id="ln-fdate" type="date" value="${esc(due)}"><button type="button" class="obtn2 lnfdx" data-ln-fdate-x${due ? '' : ' hidden'}>${esc(t('lnFDateX'))}</button></div>
         <small>${esc(t('lnFDateHint'))}</small></div>` : '';
     return shell(t('lnFEdit'), `<div class="fgrid"><label class="fl full"><span>${esc(t('lnFName'))}</span><input class="field" id="ln-fname" value="${esc(g.name)}" autocomplete="off" maxlength="80"></label>${dateField}</div>
-      ${named.length > 1 ? `<div class="lnfmvs">${mvb(-1, 'lnFUp', UPAR, i === 0)}${mvb(1, 'lnFDown', DNAR, i === named.length - 1)}</div>` : ''}
+      ${fi >= 0 && free.length > 1 ? `<div class="lnfmvs">${mvb(-1, 'lnFUp', UPAR, fi === 0)}${mvb(1, 'lnFDown', DNAR, fi === free.length - 1)}</div>` : ''}
       <p class="lnrh">${esc(t('lnFRemoveHint'))}</p>`,
       `<button class="pbtn" data-ln-fsave>${esc(t('save'))}</button>`,
       `<button class="obtn2 lnfrm" data-ln-fremove>${esc(t('lnFRemove'))}</button>`);
@@ -11323,11 +11330,12 @@ document.addEventListener('click', async e => {
     return lnRenumber(groups);
   }
   if (d.lnFmv) {                                  // a whole folder up or down; songs without one stay last
-    const groups = learnGroups(learnReal()), named = groups.filter(x => x.name);
-    const i = named.findIndex(x => x.key === 'f:' + String(d.lnFname || '').toLowerCase()), j = i + Number(d.lnFmv);
-    if (i < 0 || j < 0 || j >= named.length) return;
+    const groups = learnGroups(learnReal()), named = groups.filter(x => x.name), free = named.filter(x => !lnDue(x));
+    const i = free.findIndex(x => x.key === 'f:' + String(d.lnFname || '').toLowerCase()), j = i + Number(d.lnFmv);
+    if (i < 0 || j < 0 || j >= free.length) return;     // folders with a date take their place from it
     if (!await ensureSession()) return;
-    [named[i], named[j]] = [named[j], named[i]];
+    const a = named.indexOf(free[i]), b = named.indexOf(free[j]);
+    [named[a], named[b]] = [named[b], named[a]];
     S.lnFold = null;
     return lnRenumber(named.concat(groups.filter(x => !x.name)));
   }
