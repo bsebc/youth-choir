@@ -3801,6 +3801,72 @@ addEventListener('error',function(e){var t=e&&e.target;if(!window.__up&&(t===win
     .dock,.dock *,.shv-box,.shv-scrim,.fx{transition:none !important}
     :is(.ibtn,.lbshotbtn,.lball,.sbact .sshare,.sbact .sbtn,.abtn,.dhead .x,.dout,.lbav.big,.lbface,.lbseg button,.mmore,.lbx,.mx,.obtn2,.tbtn,.res,.kpi,.themebtn):active{scale:none;filter:brightness(var(--press-dim))}
   }
+
+  /* ======================= 5.66: motion review, the 20 principles =======================
+     What people open many times a session plays its opening once (ripOnce); closing takes about half
+     as long as opening and runs on the leaving curve; dialogs grow from the control that opened them
+     (layerOrigin); things that arrive one after another finish within about 0.3s and stop staggering
+     after the first seven; nothing on a frequent control bounces. Everything here is off with Reduce
+     Motion, as in 5.64. */
+  @media (prefers-reduced-motion:no-preference){
+    /* closing faster than opening: the period pill 0.18s (opens in 0.35s) */
+    .rpill:not(.open){transition:width 180ms var(--ease-exit), border-radius 180ms var(--ease-exit), border-color var(--dur-quick) ease}
+    .rpill:not(.open) .rbody{transition:grid-template-rows 180ms var(--ease-exit)}
+    .rpill:not(.open) .rin{transition:opacity 100ms ease}
+    .rpill:not(.open) .rhead .rch{transition:transform 180ms var(--ease-exit)}
+    /* the phone header's search folds back into its button in 0.18s (opens in 0.35s) */
+    .mast:not(.msopen) .msf{transition:clip-path 180ms var(--ease-exit)}
+    .mast:not(.msopen) .mscancel{transition:opacity 100ms ease, transform 150ms var(--ease-exit)}
+    .mast:not(.msopen) .msrch{transition:opacity 150ms ease 40ms}
+    /* a song's admin tools fade out in 0.15s */
+    .songc .admstrip.out,.songc .audiorow.out{transition:opacity 120ms ease, transform 150ms var(--ease-exit)}
+    /* the Listen row: open in 0.25s, the part chips 30ms apart without the bounce, the whole row settled
+       by about 0.4s (was 0.67s); it folds away in 0.15s */
+    .lsrow.enter{animation:lsopen .25s var(--ease-enter) both}
+    .lsrow.enter .lsc{animation:lspop2 .22s var(--ease-enter) both;animation-delay:calc(min(var(--k,0), 7) * 30ms + 40ms)}
+    @keyframes lspop2{from{opacity:0;transform:translateY(-6px) scale(.96)}}
+    .lsrow.out{animation:lsclose .15s var(--ease-exit) both;pointer-events:none}
+    /* the player bar: arrives in 0.3s (was 0.55s) with its play button landing just after it, leaves
+       in 0.2s on the leaving curve (it left in 0.55s on the arriving one) */
+    .plbar{transition:transform 200ms var(--ease-exit), opacity 150ms ease 40ms}
+    .plbar.on{transition:transform 300ms var(--ease-enter), opacity var(--dur-quick) ease}
+    .plbar.on .pl-pp{animation:pppop2 .3s var(--spring-snappy) .05s both}
+    @keyframes pppop2{from{transform:scale(.7);opacity:0}}
+    .plbar.on .pl-pm,.plbar.on .pl-k{animation:ppfade .24s var(--ease-enter) .06s both}
+    /* lists that arrive in turn: 40ms apart, the eighth on together, done within about 0.7s */
+    .tline.rip::before{animation:tlrail .7s var(--ease-out) both}
+    .tline.rip > *{animation:tlin .4s var(--ease-out) both;animation-delay:calc(min(var(--i,0), 7) * 40ms + 40ms)}
+    .mpage.rip .mdots span{animation-delay:calc(.3s + var(--i,0) * 12ms)}
+    .mpage.rip .bdg:not(.locked) .bmed{animation-delay:calc(.4s + min(var(--i,0), 7) * 45ms)}
+    .urip .kpi,.urip .dpanel{animation-delay:calc(min(var(--d,0), 7) * 45ms)}
+    .urip .uchart i{animation-delay:calc(.3s + min(var(--i,0) * 12ms, 300ms))}
+    .urip .ubar em{animation-delay:calc(.45s + min(var(--i,0), 7) * 45ms)}
+    .urip .uweek i{animation-delay:calc(.55s + min(var(--i,0), 7) * 40ms)}
+    .urip .udev .pbar b{animation-delay:calc(.55s + min(var(--i,0), 7) * 45ms)}
+    .urip .urec{animation-delay:calc(.65s + min(var(--i,0), 7) * 35ms)}
+    /* a wrong password: three quick shakes in 0.3s (was two slower ones in 0.45s) */
+    .lmsg.nudge{animation:lshake .3s ease}
+    @keyframes lshake{15%{transform:translateX(-6px)}30%{transform:translateX(6px)}45%{transform:translateX(-5px)}60%{transform:translateX(4px)}75%{transform:translateX(-2px)}90%{transform:translateX(1px)}}
+    /* a confirmation ends on a check mark that draws itself in as the toast lands */
+    .toast.ok .tchk path{stroke-dasharray:1;stroke-dashoffset:1;animation:tchk .26s var(--ease-enter) .12s forwards}
+    @keyframes tchk{to{stroke-dashoffset:0}}
+  }
+  @media (max-width:699px) and (prefers-reduced-motion:no-preference){
+    /* putting a song's buttons away: gone in 0.12s and the title back in 0.18s (they come out in 0.25s) */
+    .srow > .ftile,.srow > .ord,.srow > .stxt{transition:opacity 140ms ease, transform 180ms var(--ease-enter)}
+    .songc.open .srow > .ftile,.songc.open .srow > .ord,.songc.open .srow > .stxt{transition:opacity var(--dur-quick) ease, transform var(--dur-layer) var(--ease-enter)}
+    .srow .stray{transition:visibility 0s linear .12s}
+    .songc.open .srow .stray{transition-delay:0s}
+    .srow .scap{transition:opacity 100ms ease, transform 140ms var(--ease-exit)}
+    .songc.open .srow .scap{transition:opacity var(--dur-press) ease .05s, transform var(--dur-layer) var(--ease-enter) .05s}
+    .srow .sbtns .mini{transition:opacity 100ms ease, transform 120ms var(--ease-exit), background var(--dur-press) ease}
+    .srow .schev{transition:transform 180ms var(--ease-move), background var(--dur-quick) ease, color var(--dur-quick) ease}
+    .songc.open .srow .schev{transition:transform var(--dur-layer) var(--ease-move), background var(--dur-quick) ease, color var(--dur-quick) ease}
+  }
+  .toast .tchk{flex:none;width:20px;height:20px;margin-right:-4px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  /* dialogs and the wide-screen profile card grow a little more (95%), so the point they grow from reads */
+  @keyframes modalin{from{opacity:0;transform:translate(-50%,-50%) scale(.95)}}
+  @keyframes lbin{from{opacity:0;transform:translate(-50%,-50%) scale(.95)}}
 </style>
 </head>
 <body>
@@ -4416,13 +4482,14 @@ function localISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padS
 function today(){ return localISO(new Date()); }
 const EPOCH = '2017-01-01';
 const LEARN_NEW_UNTIL = '2026-11-22';   // the "New" launch badge on the home Learning card shows until this date        // no choir records exist before this
-const VERSION = '5.65.0';
+const VERSION = '5.66.0';
 /* the church card in the sidebar */
 const CHURCH = { mark:'B', name:'Brookhaven Slavic Baptist Church', choir:{ en:'Youth choir', ru:'Молодёжный хор' } };
 if (location.search.indexOf('menu') > -1) S.menuOpen = true;
 /* what to say under "Release notes" — one list per major version */
 const NOTES = { '5': {
   en: [
+    'Calmer and quicker: Home plays its opening once each time the app is opened, not every time you come back to it; panels, search, the player and a singer’s card close about twice as fast as they open; dialogs grow out of the button that opened them; Listen and the player settle sooner, without a bounce; and “Saved.” ends on a check mark',
     'The period picker on Top attendance and on the attendance report opens promptly again (in 5.64 it started slowly, and a quick tap could miss its buttons)',
     'Learning: a folder given a date takes its place by that date, the soonest at the top, on the page and on the home tile. The director can still move folders with Move up and Move down',
     'Quicker and smoother: the bottom bar, opening a song and a singer’s card respond faster, buttons show that they’re pressed, and the small buttons at the top are easier to hit',
@@ -4525,6 +4592,7 @@ const NOTES = { '5': {
     'A new look: overview home page, sidebar on computers, slimmer phone tab bar, light mode by default with dark mode one tap away'
   ],
   ru: [
+    'Спокойнее и быстрее: «Главная» показывает своё вступление один раз за открытие приложения, а не при каждом возвращении на неё; панели, поиск, плеер и карточка хориста закрываются примерно вдвое быстрее, чем открываются; окна вырастают из кнопки, которая их открыла; «Слушать» и плеер появляются быстрее и без подпрыгивания; а «Сохранено.» заканчивается галочкой',
     'Выбор периода на «Лучшей посещаемости» и в отчёте о посещаемости снова открывается сразу (в 5.64 он начинал медленно, и быстрое нажатие могло не попасть по кнопке)',
     '«Разучиваем»: папка, которой дали дату, встаёт на место по этой дате, ближайшая сверху, и на странице, и на плитке на главной. Руководитель по-прежнему может переставлять папки кнопками «Выше» и «Ниже»',
     'Быстрее и плавнее: нижняя панель, открытие песни и карточка хориста отзываются быстрее, кнопки показывают нажатие, а в маленькие кнопки вверху легче попасть',
@@ -6413,14 +6481,15 @@ function homePage(){
 
   const svc = latestService();
   const list = svc ? songsFor(svc.id) : [];
+  const rip = ripOnce('home') ? ' rip' : '';       // 5.66: the opening plays on the first visit of a session
   setTimeout(() => { S.ripple = false; }, 0);      // plays once per visit, not on every redraw
   const setRow = (x, i) => {
     const inner = `<span class="sno">${String(i + 1).padStart(2, '0')}</span>
       <span class="sbody"><span class="stl">${esc(x.title)}${pvTag(x)}</span>${creditPills(songRow(svc.id, x.id)) ? `<span class="scr">${creditPills(songRow(svc.id, x.id))}</span>` : ''}</span>`;
     return `<a class="srow2" href="#/sheets/order-${shortId(svc.id)}">${inner}${AIC.chev}</a>`;   // same place as View & Listen
   };
-  const service = svc ? `<section class="dsvc${S.ripple ? ' rip' : ''}">
-      <div class="sban${S.ripple ? ' rip' : ''}">
+  const service = svc ? `<section class="dsvc${rip}">
+      <div class="sban${rip}">
         <div class="sbtop"><span class="eye">${esc(t(svc.date >= now ? 'upcomingSvc' : 'songOrder'))}</span><a class="sstat sfut" href="#/services">${esc(t('futureSvc'))}${AIC.chev}</a></div>
         <h2>${esc(svc.name || t(svc.kind))}</h2>
         <p class="sdate">${AIC.cal}${esc(fmtLong(svc.date))}</p>
@@ -6446,7 +6515,7 @@ function homePage(){
       const pc = Math.round(ps.filter(m => attStatus(lastEv.id, m.id) === 'present').length / ps.length * 100);
       const pn = t(p); return `<div class="prow ${p}"><span><i></i>${esc(pn.charAt(0) + pn.slice(1).toLowerCase())}</span><div class="pbar"><b style="width:${pc}%"></b></div><strong>${pc}%</strong></div>`;
     }).join('');
-    att = `<section class="dpanel datt${S.ripple ? ' rip' : ''}">
+    att = `<section class="dpanel datt${rip}">
       <div class="phd"><h2>${esc(t('lastAtt'))}</h2>${AIC.att}</div>
       <p class="pcap">${esc(lastEv.name || t(lastEv.kind))} · ${esc(fmtLong(lastEv.date))}</p>
       <div class="donut" style="--pn:${rate}" role="img" aria-label="${rate}% ${esc(t('present'))}"><svg viewBox="0 0 184 184" aria-hidden="true"><circle class="trk" cx="92" cy="92" r="84"></circle>${rate ? '<circle class="val" cx="92" cy="92" r="84" pathLength="100"></circle>' : ''}</svg><div><strong>${rate}%</strong><span>${esc(t('present'))}</span></div></div>
@@ -6482,7 +6551,7 @@ function homePage(){
   const learnCard = `<section class="dpanel lntile">
       <a class="lnband" href="#/learning"><span class="lnbdeco" aria-hidden="true">${lnNote(47, 16, 13, 0)}${lnNote(61, 52, 11, 1.6)}${lnNote(73, 12, 10, 3.1)}${lnNote(86, 58, 12, 2.3)}</span>
         <span class="lnbic">${AIC.learn}</span>
-        <span class="lnbt"><h2>${esc(t('lnTitle'))}${lnNew ? `<span class="lnnew${S.ripple ? ' rip' : ''}">${esc(t('lnNew'))}</span>` : ''}</h2>
+        <span class="lnbt"><h2>${esc(t('lnTitle'))}${lnNew ? `<span class="lnnew${rip}">${esc(t('lnNew'))}</span>` : ''}</h2>
           <p>${esc(learnList.length ? (lnNamed ? t('lnFoldersN')(lnNamed) + ' · ' : '') + t('songsCount')(learnList.length) : t('lnNone'))}</p></span>
         <span class="tlink">${esc(lnNamed ? t('lnAllFolders') : t('viewAll'))}${AIC.arrow}</span></a>
       ${learnList.length ? `<div class="lnfrs">${lnGroups.slice(0, 5).map(lnRow).join('')}</div>`
@@ -7551,7 +7620,7 @@ const futureServices = () => { const now = today(); return S.events.filter(e => 
 /* one service timeline, shared by the Services page and the Song history "Service" tab:
    a node per day down the rail, the song-order cards beside it, newest or soonest first */
 function svcTimeline(list, o){
-  const now = today(), past = !!o.past, nextId = o.nextId || null, rip = S.ripple;
+  const now = today(), past = !!o.past, nextId = o.nextId || null, rip = ripOnce(past ? 'tl-past' : 'tl-up');   // 5.66: once a session
   setTimeout(() => { S.ripple = false; }, 0);      // the rail draws in once per visit
   const days = [];
   list.forEach(e => { const g = days[days.length - 1]; if (g && g.date === e.date) g.evs.push(e); else days.push({ date: e.date, evs: [e] }); });
@@ -8722,16 +8791,19 @@ function plSync(){
   if (sk) {
     const open = !!SV.el && SV.id === PL.id;
     sk.classList.toggle('on', open); sk.setAttribute('aria-expanded', String(open));
-    if (open) sk.classList.remove('nudge');
+    if (open && sk.classList.contains('nudge')) { sk.classList.remove('nudge'); try { localStorage.setItem('bsebc-plsheet-seen', '1'); } catch (_) {} }
   }
   svFrame(); svLs();
 }
+/* 5.66 (frequency of use): the Sheet music button pulses until the sheet has been opened from the
+   player once, not every time a part starts */
+function plSheetSeen(){ try { return !!localStorage.getItem('bsebc-plsheet-seen'); } catch (_) { return true; } }
 function plBarHTML(){
   return `<button class="pl-pp" data-pl="toggle" aria-label="${esc(t('plPlay'))}">${LS_PI}</button>
     <div class="pl-pm"><div class="pl-pt"><strong class="pl-ttl"></strong><span class="pl-part"><i></i><b></b></span><span class="pl-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
       <div class="pl-ps"><span class="pl-cur">0:00</span><span class="pl-trk"><i class="pl-fill"></i><b class="pl-knob"></b><input class="pl-rg" type="range" min="0" max="1000" step="1" value="0" aria-label="${esc(t('plSeek'))}"></span><span class="pl-dur">–:––</span></div></div>
     <div class="pl-k"><button data-pl="back" aria-label="${esc(t('plBack'))}" title="${esc(t('plBack'))}">${BACK10SVG}</button>${plSheetKind(songById(PL.id))
-      ? `<button class="nudge" data-pl="sheet" aria-label="${esc(t('plSheet'))}" title="${esc(t('plSheet'))}" aria-expanded="false"><svg class="pl-chev" viewBox="0 0 8 5" aria-hidden="true"><path d="M1 4l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>${SHEETSVG.replace('<svg ', '<svg class="pl-ic" ')}</button>`
+      ? `<button class="${plSheetSeen() ? '' : 'nudge'}" data-pl="sheet" aria-label="${esc(t('plSheet'))}" title="${esc(t('plSheet'))}" aria-expanded="false"><svg class="pl-chev" viewBox="0 0 8 5" aria-hidden="true"><path d="M1 4l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>${SHEETSVG.replace('<svg ', '<svg class="pl-ic" ')}</button>`
       : `<button data-pl="fwd" aria-label="${esc(t('plFwd'))}" title="${esc(t('plFwd'))}">${FWD10SVG}</button>`}<button data-pl="close" aria-label="${esc(t('plClose'))}" title="${esc(t('plClose'))}">${XSVG}</button></div>`;
 }
 function plBarBuild(){
@@ -8740,6 +8812,7 @@ function plBarBuild(){
   b.setAttribute('role', 'region');
   b.setAttribute('aria-label', t('plTitle'));
   document.body.appendChild(b);
+  void getComputedStyle(b).transform;     // 5.66: its first appearance slides up like the later ones
   b.addEventListener('click', e => {
     const k = e.target.closest('[data-pl]'); if (!k) return;
     const a = plEl(), v = k.dataset.pl;
@@ -9489,7 +9562,7 @@ function lnClose(k, then){
   const cs = getComputedStyle(body);
   const a = body.animate([{ height: h + 'px', opacity: 1, paddingTop: cs.paddingTop, paddingBottom: cs.paddingBottom, borderTopWidth: cs.borderTopWidth },
     { height: '0px', opacity: 0, paddingTop: '0px', paddingBottom: '0px', borderTopWidth: '0px' }],
-    { duration: Math.round(Math.min(320, 220 + h / 12)), easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });   // even, no long tail
+    { duration: Math.round(Math.min(200, 150 + h / 24)), easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });   // even, no long tail; 5.66: about half its opening
   let fired = false; const fin = () => { if (!fired) { fired = true; done(); } };
   a.onfinish = a.oncancel = fin; setTimeout(fin, 600);
 }
@@ -9711,11 +9784,43 @@ Object.assign(EASE, { enter:'cubic-bezier(.32,.72,0,1)', leave:'cubic-bezier(.55
 /* the two springs defined in CSS (--spring-smooth, --spring-snappy), so script
    animations move the same way; a cubic-bezier stand-in where linear() is unknown */
 const spring = k => (getComputedStyle(document.documentElement).getPropertyValue('--spring-' + k) || '').trim() || EASE.out;
+/* 5.66 (frequency of use): a page's opening reveal plays on its first visit of a session; opened
+   again, the page simply appears. Every render of that first visit still gets it (S.ripple holds
+   until the visit has drawn), so a redraw half-way doesn't cut it short. */
+function ripOnce(k){
+  const seen = S.ripSeen || (S.ripSeen = new Set());
+  if (!S.ripple || seen.has(k)) return false;
+  setTimeout(() => seen.add(k), 0);
+  return true;
+}
+/* 5.66 (origin awareness): a dialog grows out of the control that opened it. The tap that opened it
+   (from the keyboard: the focused control) becomes its transform-origin, measured where the dialog
+   comes to rest, so its small entrance scale runs from that point and its exit shrinks back to it. */
+let lastTap = null;
+document.addEventListener('pointerdown', e => { lastTap = { x: e.clientX, y: e.clientY, t: performance.now() }; }, { capture: true, passive: true });
+function layerOrigin(el, from){
+  if (!el || calm() || !el.getAnimations) return;
+  let p = lastTap && performance.now() - lastTap.t < 1500 ? lastTap : null;
+  if (!p && from && from.getBoundingClientRect && from !== document.body && !el.contains(from)) {
+    const b = from.getBoundingClientRect(); if (b.width) p = { x: b.left + b.width / 2, y: b.top + b.height / 2 };
+  }
+  if (!p) return;
+  /* where it will rest: step its entrance to the end for one measurement; nothing paints in between */
+  const runs = el.getAnimations().filter(a => a.effect && a.effect.getComputedTiming().endTime !== Infinity);
+  const at = runs.map(a => a.currentTime);
+  runs.forEach(a => { a.currentTime = a.effect.getComputedTiming().endTime; });
+  const r = el.getBoundingClientRect();
+  runs.forEach((a, i) => { a.currentTime = at[i]; });
+  if (r.width) el.style.transformOrigin = `${Math.round(p.x - r.left)}px ${Math.round(p.y - r.top)}px`;
+}
+let modalUp = '';             // 5.66: the dialog on screen at the previous paint
+const layerO = {};            // 5.66: where the open dialog and profile card grew from
 let pendingReveal = null;     // selector of a panel that should grow open
 let pendingPop = null;        // selector of an element that should land
 let menuClosing = false;      // an exit slide is in flight
 let wasLoading = false;       // the last paint was the loading shimmer
 let toastWasUp = false;       // a toast was on screen at the previous paint
+let toastAt = 0;              // 5.66: when the toast on screen arrived
 function playOut(specs, then){
   const runs = calm() ? [] : specs.filter(s => s.el && s.el.animate)
     .map(s => s.el.animate(s.kf, { duration:s.ms, easing:s.easing, fill:'forwards' }));
@@ -9747,7 +9852,8 @@ function collapse(sel, then){
   const h = el.getBoundingClientRect().height;
   if (!h) return then();
   el.style.overflow = 'hidden';
-  playOut([{ el, ms:240, easing:EASE.drawer, kf:[{height:h+'px', opacity:1}, {height:'0px', opacity:0}] }], then);
+  /* 5.66: closing takes about half as long as opening (0.16s against reveal's 0.3s) */
+  playOut([{ el, ms:160, easing:'cubic-bezier(.4,0,.2,1)', kf:[{height:h+'px', opacity:1}, {height:'0px', opacity:0}] }], then);
 }
 /* One thing lands; the seat it left stays put. Two moving things read as a glitch. */
 function pop(sel){
@@ -9794,11 +9900,15 @@ function dismissMenu(){
   document.body.classList.remove('mlock');
   if (matchMedia('(min-width:1000px)').matches) return render();   // a permanent sidebar
   menuClosing = true;
+  /* 5.66: it leaves in 0.15s (it arrives in 0.28s), from wherever it is, so closing it while it is
+     still sliding in turns it round instead of jumping it open first */
+  const dr = document.querySelector('.drawer.on'), sc = document.querySelector('.scrim.on');
+  const from = dr ? getComputedStyle(dr).transform : 'none';
   playOut([
-    { el:document.querySelector('.drawer.on'), ms:200, easing:EASE.leave,
-      kf:[{transform:'none'},{transform:'translateX(105%)'}] },
-    { el:document.querySelector('.scrim.on'), ms:200, easing:'ease',
-      kf:[{opacity:1},{opacity:0}] }
+    { el:dr, ms:150, easing:EASE.leave,
+      kf:[{transform:from},{transform:'translateX(105%)'}] },
+    { el:sc, ms:150, easing:'ease',
+      kf:[{opacity:sc ? getComputedStyle(sc).opacity : 1},{opacity:0}] }
   ], () => { menuClosing = false; if (!S.menuOpen) render(); });
 }
 /* A dialog or sheet leaves the way it came. The state closes at once, so a
@@ -9808,19 +9918,21 @@ function closeLayer(apply, drag){
   /* (the app's own question, askFirst, lives outside #app and closes itself) */
   const nodes = ['.modal', '.lbsheet', '.mscrim', '.lbscrim'].map(q => document.querySelector(':not(.askwrap) > ' + q));
   apply();
-  /* 5.64: a phone sheet slides back down in 0.2s on the leaving curve, or after a flick at the
-     flick's speed; a dialog fades and shrinks a little in 0.16s; each scrim keeps its layer's clock */
-  const sheetMs = drag ? drag.ms : 200;
+  /* 5.64: a phone sheet slides back down on the leaving curve, or after a flick at the flick's speed;
+     a dialog fades and shrinks a little; each scrim keeps its layer's clock. 5.66: closing takes about
+     half as long as opening: a sheet 0.15s (in 0.28s), a dialog 0.12s (in 0.22s), each from where it
+     is, so one closed while still arriving doesn't flash back to full strength first. */
+  const sheetMs = drag ? drag.ms : 150;
   const exit = el => {
     const cs = getComputedStyle(el), base = cs.transform === 'none' ? '' : cs.transform + ' ';
     if (el.classList.contains('lbsheet') && cs.bottom === '0px')
       return { el, ms:sheetMs, easing:drag ? EASE.enter : EASE.leave, kf:[{transform:base || 'none'}, {transform:base + 'translateY(100%)'}] };
-    return { el, ms:160, easing:EASE.leave, kf:[{opacity:1, transform:base || 'none'}, {opacity:0, transform:base + 'translateY(8px) scale(.97)'}] };
+    return { el, ms:120, easing:EASE.leave, kf:[{opacity:cs.opacity, transform:base || 'none'}, {opacity:0, transform:base + 'translateY(8px) scale(.97)'}] };
   };
   const specs = [];
   if (nodes[0]) specs.push(exit(nodes[0]));
   if (nodes[1]) specs.push(exit(nodes[1]));
-  const scrimMs = nodes[1] && getComputedStyle(nodes[1]).bottom === '0px' ? sheetMs : 160;
+  const scrimMs = nodes[1] && getComputedStyle(nodes[1]).bottom === '0px' ? sheetMs : 120;
   [nodes[2], nodes[3]].forEach(n => n && specs.push({ el:n, ms:scrimMs, easing:'ease', kf:[{opacity:getComputedStyle(n).opacity},{opacity:0}] }));
   playOut(specs, render);
 }
@@ -9841,6 +9953,7 @@ function askFirst(text, o = {}){
       </div>`;
     document.body.appendChild(w);
     const modal = w.querySelector('.modal'), sc = w.querySelector('.mscrim');
+    layerOrigin(modal, prev);                 // 5.66: it grows from the button that asked
     let over = false;
     const finish = yes => {
       if (over) return; over = true;
@@ -9848,9 +9961,10 @@ function askFirst(text, o = {}){
       const gone = () => { w.remove(); if (prev && prev.isConnected && prev.focus) prev.focus({ preventScroll: true }); };
       if (calm() || !modal.animate) gone();
       else {
-        const base = getComputedStyle(modal).transform, from = base === 'none' ? '' : base + ' ';
-        modal.animate([{ opacity: 1, transform: from || 'none' }, { opacity: 0, transform: from + 'scale(.97)' }], { duration: 160, easing: EASE.leave, fill: 'forwards' }).finished.then(gone, gone);
-        sc.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, easing: 'ease', fill: 'forwards' });
+        const cs = getComputedStyle(modal), base = cs.transform, from = base === 'none' ? '' : base + ' ';
+        /* 5.66: 0.12s, half its entrance, from where it is */
+        modal.animate([{ opacity: cs.opacity, transform: from || 'none' }, { opacity: 0, transform: from + 'scale(.97)' }], { duration: 120, easing: EASE.leave, fill: 'forwards' }).finished.then(gone, gone);
+        sc.animate([{ opacity: getComputedStyle(sc).opacity }, { opacity: 0 }], { duration: 120, easing: 'ease', fill: 'forwards' });
       }
       done(yes);
     };
@@ -9878,8 +9992,10 @@ document.addEventListener('input', e => {
 });
 /* It arrives from 16px below; it leaves the same way. */
 function hideToast(){
-  playOut([{ el:document.querySelector('.toast'), ms:170, easing:EASE.leave,
-    kf:[{opacity:1,transform:'none'},{opacity:0,transform:'translateY(16px)'}] }],
+  const tn = document.querySelector('.toast'), cs = tn && getComputedStyle(tn);
+  /* 5.66: 0.13s (it arrives in 0.24s), from where it is */
+  playOut([{ el:tn, ms:130, easing:EASE.leave,
+    kf:[{opacity:cs ? cs.opacity : 1,transform:cs ? cs.transform : 'none'},{opacity:0,transform:'translateY(16px)'}] }],
     () => { S.toast = ''; S.toastOk = false; S.toastInfo = false; S.retry = null; render(); });
 }
 
@@ -10158,7 +10274,8 @@ function selDefault(n){
 
 function toastHTML(){
   if (!S.toast) return '';
-  return `<div class="toast ${S.toastOk ? 'ok' : S.toastInfo ? 'info' : ''}"><div class="m">${esc(S.toast)}</div>
+  /* 5.66: a confirmation ends on a check mark that draws itself in as the toast arrives */
+  return `<div class="toast ${S.toastOk ? 'ok' : S.toastInfo ? 'info' : ''}">${S.toastOk ? '<svg class="tchk" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M5.5 12.5l4.2 4.2L18.5 7.8"/></svg>' : ''}<div class="m">${esc(S.toast)}</div>
     ${S.retry ? `<button data-retry>${esc(t('retry'))}</button>` : ''}
     <button data-dismiss>×</button></div>`;
 }
@@ -10347,15 +10464,21 @@ function wireSheetDrag(){
     const q = e.touches[0], dy = q.clientY - d.y0, dx = q.clientX - d.x0;
     if (!d.on) {
       if (Math.abs(dy) < 6 && Math.abs(dx) < 6) return;
-      if (dy <= 0 || Math.abs(dx) > Math.abs(dy) || sh.scrollTop > 0) { d = null; return; }   // a scroll or a sideways swipe
+      /* 5.66: an upward pull is a scroll when there is something to scroll; on a card that fits, it
+         stretches the card a little (below) */
+      const room = sh.scrollHeight - sh.clientHeight > 1;
+      if ((dy <= 0 && room) || Math.abs(dx) > Math.abs(dy) || sh.scrollTop > 0) { d = null; return; }   // a scroll or a sideways swipe
       d.on = true; sh.style.animation = 'none'; sh.style.transition = 'none';
       const c = scrim(); if (c) { c.style.animation = 'none'; c.style.transition = 'none'; }
     }
     e.preventDefault();
     const now = performance.now(); d.v = (q.clientY - d.y) / Math.max(1, now - d.t); d.y = q.clientY; d.t = now;
-    d.dy = Math.max(0, dy);
-    sh.style.transform = `translateY(${d.dy}px)`;
-    const c = scrim(); if (c) c.style.opacity = String(Math.max(0, 1 - d.dy / (sh.offsetHeight || 1)));
+    d.dy = dy;
+    /* 5.66 (rubber banding): above its resting place the card gives a little, with growing
+       resistance, instead of stopping dead; the strip below it is filled in its own colour */
+    if (dy < 0 && !d.fill) { const cs = getComputedStyle(sh); sh.style.boxShadow = '0 64px 0 0 ' + cs.backgroundColor + (cs.boxShadow !== 'none' ? ', ' + cs.boxShadow : ''); d.fill = true; }   // first, so it sits above the drop shadow
+    sh.style.transform = `translateY(${dy >= 0 ? dy : rubberband(dy, 56)}px)`;
+    const c = scrim(); if (c) c.style.opacity = String(Math.max(0, Math.min(1, 1 - Math.max(0, dy) / (sh.offsetHeight || 1))));
   }, { passive: false });
   const end = cancelled => () => {
     if (!d) return;
@@ -10384,8 +10507,33 @@ function afterRender(){
   /* A second message inside the 2.5s window swaps the words in place: the node
      is new every render, so the entrance would otherwise replay under it. */
   const tn = document.querySelector('.toast');
-  if (tn) { if (toastWasUp) tn.style.animation = 'none'; toastWasUp = true; }
+  /* 5.66: ...and a redraw while it is still arriving carries the entrance (and its check mark) on
+     from where they were, instead of snapping them into place; once in, it simply stays */
+  if (tn) {
+    const now = performance.now();
+    if (!toastWasUp) toastAt = now;
+    else tn.style.animationDelay = -(now - toastAt) + 'ms';
+    const ck = tn.querySelector('.tchk path'); if (ck) ck.style.animationDelay = (120 - (now - toastAt)) + 'ms';
+    toastWasUp = true;
+  }
   else toastWasUp = false;
+  /* 5.66: a dialog that was already open stays still when the page redraws under it (the app
+     re-reads its data when it comes back to the front; that replayed the entrance); a newly opened
+     one, and the profile card on a wide screen, grow from the control that opened them */
+  {
+    const md = document.querySelector(':not(.askwrap) > .modal');
+    const mk = md ? (((md.querySelector('h2') || md).textContent || '').trim().slice(0, 80) || '1') : '';
+    if (md && mk === modalUp) {
+      md.style.animation = 'none'; md.style.transformOrigin = layerO.modal || '';    // its exit still shrinks toward the button
+      const sc = document.querySelector(':not(.askwrap) > .mscrim'); if (sc) sc.style.animation = 'none';
+    } else if (md) { layerOrigin(md); layerO.modal = md.style.transformOrigin; }
+    modalUp = mk;
+    const lc = document.querySelector('.lbsheet:not(.lbshot)');
+    if (lc && getComputedStyle(lc).bottom !== '0px') {
+      if (lc.classList.contains('still')) lc.style.transformOrigin = layerO.card || '';
+      else { layerOrigin(lc); layerO.card = lc.style.transformOrigin; }
+    }
+  }
   reveal(pendingReveal); pendingReveal = null;
   if (S.lnJump) {                                 // a folder opened by its link: bring it into view
     const f = document.querySelector(`.lnfold[data-k="${CSS.escape(S.lnJump)}"]`);
@@ -10659,7 +10807,7 @@ function toggleTray(card, force){
     const k = S.listenOpen; S.listenOpen = null; S.listenEnter = null;
     const row = lsShut.querySelector('.lsrow'), b = lsShut.querySelector('[data-listen]');
     if (b) { b.classList.remove('on'); b.setAttribute('aria-expanded', 'false'); }
-    if (row && !calm()) { row.classList.remove('enter'); row.classList.add('out'); setTimeout(() => { if (S.listenOpen !== k) render(); }, 270); }
+    if (row && !calm()) { row.classList.remove('enter'); row.classList.add('out'); setTimeout(() => { if (S.listenOpen !== k) render(); }, 160); }
     else render();
   }
   /* and that song's admin tools */
@@ -10667,7 +10815,7 @@ function toggleTray(card, force){
   if (shut.length) {
     shut.forEach(c => c.querySelectorAll('.admstrip,.audiorow').forEach(x => x.classList.add('out')));
     S.admRow = null; S.audioEdit = null;
-    setTimeout(render, 360);
+    setTimeout(render, calm() ? 0 : 180);     // 5.66: they fade out in 0.15s
   }
   if (on) try { localStorage.setItem('bsebc-tray-seen', '1'); } catch (_) {}
 }
@@ -11305,7 +11453,16 @@ document.addEventListener('click', async e => {
   if (el.hasAttribute('data-ln-demo')) { S.lnDemo = !S.lnDemo; try { S.lnDemo ? localStorage.setItem('lnDemo', '1') : localStorage.removeItem('lnDemo'); } catch (_) {} return render(); }
   if (d.listen) {
     const k = d.listen, open = S.listenOpen !== k;
+    const was = !open && [...document.querySelectorAll('#app .lsrow')].find(r => !r.closest('.shv'));
     S.listenOpen = open ? k : null; S.listenEnter = open ? k : null;
+    /* 5.66: folding the row away with its own button plays the same short exit as putting the
+       song's buttons away (0.15s), instead of vanishing */
+    if (was && !calm()) {
+      el.classList.remove('on'); el.setAttribute('aria-expanded', 'false');
+      was.classList.remove('enter'); was.classList.add('out');
+      setTimeout(() => { if (S.listenOpen !== k) render(); }, 160);
+      return;
+    }
     render();
     if (open) setTimeout(() => { if (S.listenEnter === k) S.listenEnter = null; }, 800);
     return;
